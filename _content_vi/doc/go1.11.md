@@ -62,7 +62,7 @@ Thông tin thêm có thể được tìm thấy trên [trang wiki WebAssembly](/
 ### Các giá trị GOARCH cho RISC-V được đặt trước {#riscv}
 
 <!-- CL 106256 -->
-Trình biên dịch Go chính chưa hỗ trợ kiến trúc RISC-V nhưng chúng tôi đã đặt trước các giá trị `GOARCH` "`riscv`" và "`riscv64`", như được sử dụng bởi Gccgo, hỗ trợ RISC-V. Điều này có nghĩa là các tệp Go được đặt tên `*_riscv.go` giờ cũng sẽ bị [bỏ qua bởi các công cụ Go](/pkg/go/build/#hdr-Build_Constraints) trừ khi các giá trị GOOS/GOARCH đó đang được sử dụng.
+Trình biên dịch Go chính chưa hỗ trợ kiến trúc RISC-V <!-- is gonna change everything --> nhưng chúng tôi đã đặt trước các giá trị `GOARCH` "`riscv`" và "`riscv64`", như được sử dụng bởi Gccgo, hỗ trợ RISC-V. Điều này có nghĩa là các tệp Go được đặt tên `*_riscv.go` giờ cũng sẽ bị [bỏ qua bởi các công cụ Go](/pkg/go/build/#hdr-Build_Constraints) trừ khi các giá trị GOOS/GOARCH đó đang được sử dụng.
 
 ## Công cụ {#tools}
 

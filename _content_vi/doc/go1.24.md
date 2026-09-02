@@ -488,6 +488,11 @@ Trường mới [`ClientHelloInfo.Extensions`](/pkg/crypto/tls#ClientHelloInfo.E
 liệt kê các ID của extension nhận trong thông điệp Client Hello.
 Điều này có thể hữu ích để lấy dấu vân tay TLS client.
 
+<!-- go.dev/issue/72111, documented retro-actively after Go 1.27 release -->
+
+Thiết lập `GODEBUG` tên `tlskyber` (được thêm trong [Go 1.23](/doc/godebug#go-123))
+đã bị loại bỏ.
+
 #### [`crypto/x509`](/pkg/crypto/x509/)
 
 <!-- go.dev/issue/41682 -->
@@ -823,3 +828,42 @@ Kích thước bộ nhớ ban đầu giảm đáng kể, đặc biệt cho các 
 <!-- go.dev/issue/70705 -->
 Cổng windows/arm 32-bit (`GOOS=windows GOARCH=arm`) đã bị đánh dấu là lỗi.
 Xem [issue #70705](/issue/70705) để biết chi tiết.
+
+<!-- Items that don't need to be mentioned in Go 1.24 release notes but are picked up by relnote todo.
+
+accepted proposal https://go.dev/issue/25309 (from https://go.dev/cl/594018, https://go.dev/cl/595120, https://go.dev/cl/595564, https://go.dev/cl/601778) - new x/crypto package; doesn't seem to need to be mentioned
+accepted proposal https://go.dev/issue/43744 (from https://go.dev/cl/357530) - no change in the standard library
+accepted proposal https://go.dev/issue/60905 (from https://go.dev/cl/610195) - CL 610195 reverted
+accepted proposal https://go.dev/issue/61395 (from https://go.dev/cl/594738, https://go.dev/cl/594976) - CL 594738 made sync/atomic AND/OR operations intrinsic on amd64, but the API was already added in Go 1.23; CL 594976 is a fix; probably doesn't require a Go 1.24 release note (performance change only)
+accepted proposal https://go.dev/issue/51269 (from https://go.dev/cl/627035) - may be worth mentioning in Go 1.24 release notes, or may be fine to leave out; commented at https://go.dev/issue/51269#issuecomment-2501802763; Ian confirmed it's fine to leave out
+accepted proposal https://go.dev/issue/66540 (from https://go.dev/cl/603958) - a Go language spec clarification; might not need to be mentioned in Go 1.24 release notes; left a comment at https://go.dev/issue/66540#issuecomment-2502051684; Robert confirmed it indeed doesn't
+accepted proposal https://go.dev/issue/34208 (from https://go.dev/cl/586241) - CL 586241 implements a fix for a Go 1.23 feature, doesn't seem to be need anything in Go 1.24 release notes
+accepted proposal https://go.dev/issue/43993 (from https://go.dev/cl/626116) - CL 626116 prepares the tree towards the vet change but the vet change itself isn't implemented in Go 1.24, so nothing to say in Go 1.24 release notes
+accepted proposal https://go.dev/issue/44505 (from https://go.dev/cl/609955) - CL 609955 is an internal cleanup in x/tools, no need for Go 1.24 release note
+accepted proposal https://go.dev/issue/61476 (from https://go.dev/cl/608255) - CL 608255 builds on GORISCV64 added in Go 1.23; nothing to mention in Go 1.24 release notes
+accepted proposal https://go.dev/issue/66315 (from https://go.dev/cl/577996) - adding Pass.Module field to x/tools/go/analysis doesn't seem like something that needs to be mentioned in Go 1.24 release notes
+accepted proposal https://go.dev/issue/57786 (from https://go.dev/cl/472717) - CL 472717 is in x/net/http2 and mentions a Go 1.21 proposal; it doesn't seem to need anything in Go 1.24 release notes
+accepted proposal https://go.dev/issue/54265 (from https://go.dev/cl/609915, https://go.dev/cl/610675) - CLs that refer to a Go 1.22 proposal, nothing more is needed in Go 1.24 release notes
+accepted proposal https://go.dev/issue/53021 (from https://go.dev/cl/622276) - CL 622276 improves docs; proposal 53021 was in Go 1.20 so nothing more is needed in Go 1.24 release notes
+accepted proposal https://go.dev/issue/51430 (from https://go.dev/cl/613375) - CL 613375 is an internal documentation comment; proposal 51430 happened in Go 1.20/1.21 so nothing more is needed in Go 1.24 release notes
+accepted proposal https://go.dev/issue/38445 (from https://go.dev/cl/626495) - CL 626495 works on proposal 38445, which is about x/tools/go/package, doesn't need anything in Go 1.24 release notes
+accepted proposal https://go.dev/issue/56986 (from https://go.dev/cl/618115) - CL 618115 adds documentation; it doesn't need to be mentioned in Go 1.24 release notes
+accepted proposal https://go.dev/issue/60061 (from https://go.dev/cl/612038) - CL 612038 is a CL that deprecates something in x/tools/go/ast and mentions a Go 1.22 proposal; doesn't need anything in Go 1.24 release notes
+accepted proposal https://go.dev/issue/61324 (from https://go.dev/cl/411907) - CL 411907 is an x/tools CL that implements a proposal for a new package there; doesn't need anything in Go 1.24 release notes
+accepted proposal https://go.dev/issue/61777 (from https://go.dev/cl/601496) - CL 601496 added a WriteByteTimeout field to x/net/http2.Server; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/61940 (from https://go.dev/cl/600997) - CL 600997 deleted obsolete code in x/build and mentioned an accepted proposal; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/62113 (from https://go.dev/cl/594195) - CL 594195 made iterator-related additions in x/net/html; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/62484 (from https://go.dev/cl/600775) - CL 600775 documents CopyFS symlink behavior and mentions the Go 1.23 proposal; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/64207 (from https://go.dev/cl/605875) - an x/website CL that follows up on a Go 1.23 proposal; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/65236 (from https://go.dev/cl/596135) - CL 596135 adds tests for the Go 1.23 proposal 65236; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/67795 (from https://go.dev/cl/616218) - iteratior support for x/tools/go/ast/inspector; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/67812 (from https://go.dev/cl/601497) - configurable server pings for x/net/http2.Server; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/68232 (from https://go.dev/cl/595676) - x/sys/unix additions; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/68898 (from https://go.dev/cl/607495, https://go.dev/cl/620036, https://go.dev/cl/620135, https://go.dev/cl/623638) - a proposal for x/tools/go/gcexportdata to document 2 releases + tip support policy; since the change is in x/tools it doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/69095 (from https://go.dev/cl/593683, https://go.dev/cl/608955, https://go.dev/cl/610716) - a proposal that affects maintenance and support of golang.org/x repositories; doesn't need to be mentioned in Go 1.24 release notes
+accepted proposal https://go.dev/issue/68384 (from https://go.dev/cl/611875) - expanding the scope of Go Telemetry to include Delve isn't directly tied to Go 1.24 and doesn't seem to need to be mentioned in Go 1.24 release notes
+accepted proposal https://go.dev/issue/69291 (from https://go.dev/cl/610939) - CL 610939 refactors code in x/tools and mentions the still-open proposal #69291 to add Reachable to x/tools/go/ssa/ssautil; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/69360 (from https://go.dev/cl/614158, https://go.dev/cl/614159, https://go.dev/cl/614635, https://go.dev/cl/614675) - proposal 69360 is to tag and delete gorename from x/tools; doesn't need a Go 1.24 release note
+accepted proposal https://go.dev/issue/61417 (from https://go.dev/cl/605955) - a new field in x/oauth2; nothing to mention in Go 1.24 release notes
+accepted proposal https://go.dev/issue/29266 (from https://go.dev/cl/632897) - a documentation-only proposal for go.dev/doc/contribute; doesn't need a Go 1.24 release note
+-->

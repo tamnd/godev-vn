@@ -76,9 +76,9 @@
   >
     <ol>
       <li>
-        <strong>Xóa bất kỳ cài đặt Go trước đó</strong> bằng cách xóa thư mục /usr/local/go
-		(nếu có), sau đó giải nén file lưu trữ bạn vừa tải xuống vào /usr/local, tạo
-		cây Go mới trong /usr/local/go:
+        <strong>Xóa bất kỳ cài đặt Go trước đó</strong> bằng cách xóa thư mục <code>/usr/local/go</code>
+		(nếu có), sau đó giải nén file lưu trữ bạn vừa tải xuống vào <code>/usr/local</code>, tạo
+		cây Go mới trong <code>/usr/local/go</code>:
 		<pre class="CopyPaste">
       <span>$ rm -rf /usr/local/go &amp;&amp; tar -C /usr/local -xzf <span id="linux-filename">go1.14.3.linux-amd64.tar.gz</span></span>
       <button aria-label="Copy and paste the code.">
@@ -90,15 +90,15 @@
           (Bạn có thể cần chạy từng lệnh riêng lẻ với các quyền cần thiết, với tư cách root hoặc qua <code>sudo</code>.)
         </p>
 		<p>
-		  <strong>Không</strong> giải nén file lưu trữ vào một cây /usr/local/go hiện có. Điều này được biết đến là
+		  <strong>Không</strong> giải nén file lưu trữ vào một cây <code>/usr/local/go</code> hiện có. Điều này được biết đến là
 		  gây ra các cài đặt Go bị hỏng.
 		 </p>
       </li>
       <li>
-        Thêm /usr/local/go/bin vào biến môi trường <code>PATH</code>.
+        Thêm <code>/usr/local/go/bin</code> vào biến môi trường <code>PATH</code>.
         <p>
-          Bạn có thể làm điều này bằng cách thêm dòng sau vào $HOME/.profile hoặc
-          /etc/profile (để cài đặt toàn hệ thống):
+          Bạn có thể làm điều này bằng cách thêm dòng sau vào <code>$HOME/.profile</code> hoặc
+          <code>/etc/profile</code> (để cài đặt toàn hệ thống):
         </p>
         <pre class="CopyPaste">
           <span>export PATH=$PATH:/usr/local/go/bin</span>
@@ -114,6 +114,26 @@
           profile bằng một lệnh như
           <code>source $HOME/.profile</code>.
         </p>
+      </li>
+      <li>
+        <!-- TODO: Update to GOBIN once go.dev/issue/23439 is addressed. -->
+        Thêm <code>$HOME/go/bin</code> (đường dẫn bin mặc định của Go) vào biến
+        môi trường <code>PATH</code> để dùng các công cụ được cài qua
+        <code>go install</code>.
+        <p>
+          Bạn có thể làm điều này bằng cách thêm dòng sau vào tệp <code>$HOME/.profile</code> hoặc <code>$HOME/.bashrc</code>:
+        </p>
+        <pre class="CopyPaste">
+          <span>export PATH="$PATH:$(go env GOPATH)/bin"</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+      </li>
+      <li>
+        Khởi động lại các phiên terminal đang mở để thay đổi có hiệu lực.
+        <p><!-- for consistent spacing --></p>
       </li>
       <li>
         Xác minh rằng bạn đã cài đặt Go bằng cách mở command prompt và gõ
@@ -141,15 +161,34 @@
         Mở tệp package bạn đã tải xuống và làm theo các hướng dẫn để cài đặt
         Go.
         <p>
-          Package cài đặt bản phân phối Go vào /usr/local/go. Package
-          sẽ đặt thư mục /usr/local/go/bin vào biến môi trường
-          <code>PATH</code> của bạn. Bạn có thể cần khởi động lại bất kỳ
-          phiên Terminal đang mở nào để thay đổi có hiệu lực.
+          Package cài đặt bản phân phối Go vào <code>/usr/local/go</code>. Package
+          thêm thư mục <code>/usr/local/go/bin</code> vào biến môi trường
+          <code>PATH</code> của bạn bằng cách tạo tệp <code>/etc/paths.d/go</code>.
         </p>
       </li>
       <li>
-        Xác minh rằng bạn đã cài đặt Go bằng cách mở command prompt và gõ
-        lệnh sau:
+        <!-- TODO: Update to GOBIN once go.dev/issue/23439 is addressed. -->
+        Thêm <code>$HOME/go/bin</code> (đường dẫn bin mặc định của Go) vào biến
+        môi trường <code>PATH</code> để dùng các công cụ được cài qua
+        <code>go install</code>.
+        <p>
+          Bạn có thể làm điều này bằng cách thêm dòng sau vào tệp <code>~/.zshrc</code> hoặc <code>~/.bash_profile</code>:
+        </p>
+        <pre class="CopyPaste">
+          <span>export PATH="$PATH:$(go env GOPATH)/bin"</span>
+          <button aria-label="Copy and paste the code.">
+            <img class="CopyPaste-icon" src="/images/icons/copy-paste.svg" />
+            <img class="CopyPaste-icon CopyPaste-icon-dark" src="/images/icons/copy-paste-dark.svg" />
+          </button>
+        </pre>
+      </li>
+      <li>
+        Khởi động lại các phiên terminal đang mở để thay đổi có hiệu lực.
+        <p><!-- for consistent spacing --></p>
+      </li>
+      <li>
+        Xác minh rằng bạn đã cài đặt Go bằng cách mở phiên terminal
+        <strong>mới</strong> và gõ lệnh sau:
         <pre class="CopyPaste">
           <span>$ go version</span>
           <button aria-label="Copy and paste the code.">
