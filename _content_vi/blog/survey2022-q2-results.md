@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Phân tích kết quả từ Khảo sát Developer Go 2022 Quý 2.
-template: true
 ---
 
 <style type="text/css" scoped>

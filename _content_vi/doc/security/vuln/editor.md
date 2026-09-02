@@ -1,7 +1,6 @@
 ---
 title: Quét lỗ hổng bảo mật trong IDE
 layout: article
-template: true
 ---
 
 [Quay lại Bảo mật Go](/security)

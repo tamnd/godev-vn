@@ -4,7 +4,6 @@ date: 2021-09-15
 by:
 - Filippo Valsorda
 summary: Go 1.17 giúp việc cấu hình TLS dễ dàng và an toàn hơn bằng cách tự động hóa thứ tự ưu tiên cipher suite TLS.
-template: true
 ---
 
 Thư viện chuẩn Go cung cấp `crypto/tls`,

@@ -4,7 +4,6 @@ date: 2025-02-13
 by:
 - Cherry Mui
 summary: Go 1.24 nâng cao khả năng WebAssembly với xuất hàm và chế độ reactor
-template: true
 ---
 
 Go 1.24 nâng cao khả năng WebAssembly (Wasm) với việc bổ sung chỉ thị `go:wasmexport` và khả năng build reactor cho WebAssembly System Interface (WASI). Các tính năng này cho phép các nhà phát triển Go xuất hàm Go sang Wasm, tạo điều kiện tích hợp tốt hơn với Wasm host và mở rộng các khả năng cho ứng dụng Wasm dựa trên Go.

@@ -1,7 +1,6 @@
 ---
 title: Bảo mật
 layout: article
-template: true
 ---
 
 Trang này cung cấp các tài nguyên cho lập trình viên Go để cải thiện bảo mật cho

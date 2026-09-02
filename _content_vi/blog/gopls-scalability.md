@@ -5,7 +5,6 @@ by:
 - Robert Findley
 - Alan Donovan
 summary: Khi hệ sinh thái Go ngày càng lớn hơn, gopls phải trở nên nhỏ hơn
-template: true
 ---
 
 <style type="text/css" scoped>

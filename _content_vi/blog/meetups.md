@@ -7,7 +7,6 @@ tags:
 - community
 - talk
 summary: Cách tìm hoặc bắt đầu một nhóm gopher địa phương.
-template: true
 ---
 
 

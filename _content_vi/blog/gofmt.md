@@ -8,7 +8,6 @@ tags:
 - gofmt
 - technical
 summary: Cách và lý do để định dạng code Go của bạn bằng gofmt.
-template: true
 ---
 
 ## Giới thiệu

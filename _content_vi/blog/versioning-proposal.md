@@ -7,7 +7,6 @@ tags:
 - tools
 - versioning
 summary: Đề xuất hỗ trợ chính thức cho quản lý phiên bản gói trong Go, sử dụng Go modules.
-template: true
 ---
 
 ## Giới thiệu

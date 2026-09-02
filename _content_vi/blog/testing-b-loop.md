@@ -8,7 +8,6 @@ tags:
 - testing
 - compile
 summary: Cải thiện vòng lặp benchmark trong Go 1.24.
-template: true
 ---
 
 Các lập trình viên Go đã viết benchmark bằng gói

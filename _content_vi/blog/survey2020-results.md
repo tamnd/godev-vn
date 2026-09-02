@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Phân tích kết quả từ Khảo sát Developer Go 2020.
-template: true
 ---
 
 ## Cảm ơn vì lượng phản hồi tuyệt vời! {#thanks}

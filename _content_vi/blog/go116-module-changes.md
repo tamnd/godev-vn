@@ -7,7 +7,6 @@ tags:
 - modules
 - versioning
 summary: Go 1.16 bật module theo mặc định, cung cấp cách mới để cài đặt executable, và cho phép tác giả module thu hồi các phiên bản đã xuất bản.
-template: true
 ---
 
 

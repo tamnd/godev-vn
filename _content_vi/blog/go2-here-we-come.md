@@ -8,7 +8,6 @@ tags:
 - proposals
 - community
 summary: Cách các đề xuất Go 2 sẽ được đánh giá, lựa chọn và phát hành.
-template: true
 ---
 
 ## Bối cảnh

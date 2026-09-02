@@ -4,7 +4,6 @@ date: 2021-08-18
 by:
 - Russ Cox
 summary: Hợp nhất các trang web của chúng tôi vào go.dev.
-template: true
 ---
 
 Năm 2019, có vẻ như là một thập kỷ trước, chúng tôi đã [ra mắt go.dev](/blog/go.dev),

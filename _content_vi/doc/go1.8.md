@@ -1,6 +1,5 @@
 ---
 title: Ghi chú phát hành Go 1.8
-template: true
 ---
 
 <!--

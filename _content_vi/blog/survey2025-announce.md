@@ -8,7 +8,6 @@ tags:
 - community
 - research
 summary: Hãy giúp định hình tương lai của Go
-template: true
 ---
 
 Xin chào các Gopher! Hôm nay chúng tôi vui mừng công bố [Khảo sát Nhà phát triển Go 2025](https://google.qualtrics.com/jfe/form/SV_3wwSstC8vv4Ymkm?s=b). Nhóm Go sử dụng kết quả của cuộc khảo sát thường niên này để hiểu rõ hơn nhu cầu và mối quan tâm của các nhà phát triển Go trên toàn thế giới. Phản hồi của bạn giúp chúng tôi brainstorm, lên kế hoạch và ưu tiên công việc trên Go.

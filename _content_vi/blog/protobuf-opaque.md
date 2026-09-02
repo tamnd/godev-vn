@@ -6,7 +6,6 @@ by:
 tags:
 - protobuf
 summary: Chúng tôi đang thêm một API mới cho code được tạo ra trong Go Protobuf.
-template: true
 ---
 
 [[Protocol Buffers (Protobuf)](https://en.wikipedia.org/wiki/Protocol_Buffers)

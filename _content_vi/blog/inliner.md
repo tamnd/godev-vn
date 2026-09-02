@@ -11,7 +11,6 @@ tags:
 - source-level inliner
 - static analysis
 summary: "Cách hoạt động của trình nội tuyến cấp mã nguồn trong Go 1.26 và cách nó hỗ trợ bạn tự phục vụ việc di chuyển API."
-template: true
 ---
 
 <style>

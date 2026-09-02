@@ -8,7 +8,6 @@ tags:
 - tools
 - versioning
 summary: Giới thiệu các thao tác cơ bản để bắt đầu sử dụng Go modules.
-template: true
 ---
 
 ## Giới thiệu

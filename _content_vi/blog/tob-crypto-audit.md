@@ -4,7 +4,6 @@ date: 2025-05-19
 by:
 - Roland Shoemaker and Filippo Valsorda
 summary: Các thư viện mật mã học của Go đã được kiểm toán bởi Trail of Bits.
-template: true
 ---
 
 Go đi kèm với một bộ đầy đủ các gói mật mã học trong thư viện chuẩn để giúp lập trình viên xây dựng các ứng dụng bảo mật. Google gần đây đã hợp đồng với công ty bảo mật độc lập [Trail of Bits](https://www.trailofbits.com/) để thực hiện kiểm toán tập hợp cốt lõi các gói cũng được xác thực như một phần của [module FIPS 140-3 native mới](/doc/go1.24#fips140). Kiểm toán tạo ra một phát hiện có mức độ nghiêm trọng thấp, trong [tích hợp Go+BoringCrypto kế thừa và không được hỗ trợ](/doc/security/fips140#goboringcrypto), và một số phát hiện mang tính thông tin. Toàn văn báo cáo kiểm toán có thể tìm thấy [tại đây](https://github.com/trailofbits/publications/blob/d47e8fafa7e3323e5620d228f2f3f3bf58ed5978/reviews/2025-03-google-gocryptographiclibraries-securityreview.pdf).

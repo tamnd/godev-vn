@@ -4,7 +4,6 @@ date: 2025-02-26
 by:
 - Michael Pratt
 summary: Go 1.24 cải thiện hiệu suất map với một triển khai map hoàn toàn mới
-template: true
 ---
 
 Bảng băm (hash table) là một cấu trúc dữ liệu trung tâm trong khoa học máy tính, và nó cung cấp triển khai cho kiểu map trong nhiều ngôn ngữ, bao gồm Go.

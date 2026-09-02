@@ -7,7 +7,6 @@ tags:
 - interning
 - unique
 summary: Gói mới để interning trong Go 1.23.
-template: true
 ---
 
 Thư viện chuẩn của Go 1.23 hiện bao gồm [gói `unique` mới](https://pkg.go.dev/unique).

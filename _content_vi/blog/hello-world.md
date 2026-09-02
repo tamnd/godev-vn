@@ -4,7 +4,6 @@ date: 2010-03-18
 by:
 - Andrew Gerrand
 summary: Bài đăng đầu tiên!
-template: true
 ---
 
 

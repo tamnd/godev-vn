@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy giúp định hình tương lai của Go bằng cách chia sẻ suy nghĩ của bạn qua Khảo sát Nhà phát triển Go
-template: true
 ---
 
 Lại đến thời điểm đó rồi! Hôm nay chúng tôi ra mắt phiên bản mới nhất của [Khảo sát Nhà phát triển Go](https://google.qualtrics.com/jfe/form/SV_4Vi4bNaMQhQdqSi?s=b). Trong bảy năm qua, nhóm Go đã thực hiện các cuộc khảo sát định kỳ đối với các nhà phát triển Go và sử dụng kết quả để ưu tiên cải tiến ngôn ngữ, runtime, và hệ thống công cụ. Chúng tôi muốn Go ngày càng có thể sử dụng được và hữu ích hơn với các nhà phát triển, và phản hồi của bạn đã là yếu tố then chốt để điều đó xảy ra.

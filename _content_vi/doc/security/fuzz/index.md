@@ -2,7 +2,6 @@
 title: Go Fuzzing
 layout: article
 breadcrumb: true
-template: true
 ---
 
 Go hỗ trợ fuzzing trong toolchain tiêu chuẩn bắt đầu từ Go 1.18. Các bài kiểm thử fuzz Go gốc

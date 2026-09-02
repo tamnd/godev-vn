@@ -1,7 +1,6 @@
 ---
 title: Quản lý lỗ hổng bảo mật Go
 layout: article
-template: true
 ---
 
 [Quay lại Bảo mật Go](/security)

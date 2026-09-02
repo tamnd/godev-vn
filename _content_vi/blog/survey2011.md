@@ -6,7 +6,6 @@ by:
 tags:
 - community
 summary: Hãy tham gia khảo sát Gopher. Chúng tôi muốn nghe ý kiến của bạn!
-template: true
 ---
 
 

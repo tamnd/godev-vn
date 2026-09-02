@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy giúp định hình tương lai của Go bằng cách chia sẻ suy nghĩ qua Khảo sát Developer Go
-template: true
 ---
 
 Trong sáu năm qua, nhóm Go đã tiến hành khảo sát thường niên dành cho các developer Go.

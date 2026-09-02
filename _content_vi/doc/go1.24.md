@@ -1,6 +1,5 @@
 ---
 title: Ghi chú phát hành Go 1.24
-template: true
 ---
 
 <style>

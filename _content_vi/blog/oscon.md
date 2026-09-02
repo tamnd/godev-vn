@@ -7,7 +7,6 @@ tags:
 - conference
 - oscon
 summary: Nếu bạn sẽ tham dự OSCON 2014, ngày 20-29 tháng 7 ở Portland, Oregon, hãy chắc chắn xem các bài nói chuyện Go này.
-template: true
 ---
 
 

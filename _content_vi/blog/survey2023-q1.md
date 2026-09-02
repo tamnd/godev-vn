@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy giúp định hình tương lai của Go bằng cách chia sẻ suy nghĩ của bạn qua Khảo sát Nhà phát triển Go
-template: true
 ---
 
 Chúc mừng năm mới 2023! Trong bảy năm qua, Nhóm Go đã thực hiện khảo sát định kỳ đối với các nhà phát triển Go. Kết quả của các cuộc khảo sát này đã giúp nhóm lên kế hoạch và ưu tiên những thay đổi lớn trong hệ sinh thái Go, chẳng hạn như quản lý dependency, quét lỗ hổng bảo mật, và generics. Chúng tôi muốn Go ngày càng có thể sử dụng được và hữu ích hơn với các nhà phát triển, và phản hồi của bạn là một yếu tố quan trọng để điều đó trở thành hiện thực.

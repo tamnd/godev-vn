@@ -9,7 +9,6 @@ tags:
 - protobuf
 - technical
 summary: Thông báo về bản sửa đổi lớn của API Go cho protocol buffers.
-template: true
 ---
 
 ## Giới thiệu

@@ -4,7 +4,6 @@ date: 2021-01-19
 by:
 - Russ Cox
 summary: Cách quyết định xem chương trình của bạn có dễ bị tổn thương bởi các vấn đề PATH không, và phải làm gì về điều đó.
-template: true
 ---
 
 

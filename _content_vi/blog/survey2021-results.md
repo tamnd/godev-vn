@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Phân tích kết quả từ Khảo sát Developer Go 2021.
-template: true
 ---
 
 

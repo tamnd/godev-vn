@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Phân tích kết quả từ Khảo sát Nhà phát triển Go 2023 Q1.
-template: true
 ---
 
 <style type="text/css" scoped>

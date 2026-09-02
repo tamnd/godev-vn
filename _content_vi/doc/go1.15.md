@@ -1,6 +1,5 @@
 ---
 title: Ghi chú phát hành Go 1.15
-template: true
 ---
 
 <!--

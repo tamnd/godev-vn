@@ -7,7 +7,6 @@ tags:
 - playground
 - tour
 summary: "Thông báo về Go Tour, https://tour.golang.org/."
-template: true
 ---
 
 

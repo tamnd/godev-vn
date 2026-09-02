@@ -8,7 +8,6 @@ tags:
 - community
 - research
 summary: Kết quả Go Developer Survey 2025, tập trung vào tâm lý của nhà phát triển đối với Go, các trường hợp sử dụng, thách thức và môi trường phát triển.
-template: true
 ---
 
 <style type="text/css" scoped>

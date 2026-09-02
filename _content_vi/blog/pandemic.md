@@ -6,7 +6,6 @@ by:
 - Russ Cox
 - Steve Francia
 summary: Nhóm Go đang tiếp cận đại dịch như thế nào, những gì bạn có thể mong đợi từ chúng tôi, và những gì bạn có thể làm.
-template: true
 ---
 
 

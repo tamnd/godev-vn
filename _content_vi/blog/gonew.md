@@ -4,7 +4,6 @@ date: 2023-07-31
 by:
 - Cameron Balahan
 summary: Thông báo golang.org/x/tools/cmd/gonew, công cụ thử nghiệm để bắt đầu dự án Go mới từ các template được định nghĩa trước
-template: true
 ---
 
 Khi bạn bắt đầu một dự án mới trong Go, bạn có thể bắt đầu bằng cách clone một dự án hiện có.

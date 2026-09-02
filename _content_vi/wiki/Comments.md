@@ -1,6 +1,5 @@
 ---
 title: Comments
-template: true
 ---
 
 <!--

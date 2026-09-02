@@ -2,7 +2,6 @@
 title: Chính sách bảo mật Go
 layout: article
 breadcrumb: true
-template: true
 ---
 
 ## Tổng quan

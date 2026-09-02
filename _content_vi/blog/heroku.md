@@ -7,7 +7,6 @@ by:
 tags:
 - guest
 summary: Hai kỹ sư hệ thống của Heroku chia sẻ kinh nghiệm sử dụng Go.
-template: true
 ---
 
 

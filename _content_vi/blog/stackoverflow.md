@@ -6,7 +6,6 @@ by:
 tags:
 - community
 summary: Thông báo về Go Collective, một trải nghiệm mới cho Go trên Stack Overflow.
-template: true
 ---
 
 

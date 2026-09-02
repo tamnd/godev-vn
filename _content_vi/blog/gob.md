@@ -10,7 +10,6 @@ tags:
 - xml
 - technical
 summary: Giới thiệu gob, định dạng mã hóa truyền dữ liệu Go-to-Go tốc độ cao.
-template: true
 ---
 
 ## Giới thiệu

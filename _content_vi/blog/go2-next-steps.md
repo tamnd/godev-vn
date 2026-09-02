@@ -8,7 +8,6 @@ tags:
 - proposals
 - community
 summary: Những thay đổi ngôn ngữ Go 2 nào chúng ta nên đưa vào Go 1.14?
-template: true
 ---
 
 ## Tình trạng

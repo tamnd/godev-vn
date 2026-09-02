@@ -1,6 +1,5 @@
 ---
 title: Ghi chú phát hành Go 1.25
-template: true
 ---
 
 <style>

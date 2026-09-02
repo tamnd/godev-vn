@@ -4,7 +4,6 @@ date: 2022-01-14
 by:
 - Katie Hockman, for the Go team
 summary: Hai hướng dẫn mới đã được xuất bản để chuẩn bị cho bản phát hành Go 1.18.
-template: true
 ---
 
 Go 1.18 sắp được phát hành, và bản phát hành này bao gồm một số khái niệm mới trong Go.

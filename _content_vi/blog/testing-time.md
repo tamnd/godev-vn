@@ -10,7 +10,6 @@ tags:
 summary: Thảo luận về kiểm thử mã bất đồng bộ
   và khám phá gói `testing/synctest`.
   Dựa trên bài nói chuyện tại GopherCon Europe 2025 cùng tên.
-template: true
 ---
 
 Trong Go 1.24, chúng tôi đã giới thiệu gói [`testing/synctest`](/pkg/testing/synctest)

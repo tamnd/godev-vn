@@ -4,7 +4,6 @@ date: 2020-06-09
 by:
 - The Go team
 summary: Thông báo về việc VS Code Go chuyển sang dự án Go.
-template: true
 ---
 
 

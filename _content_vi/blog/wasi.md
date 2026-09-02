@@ -4,7 +4,6 @@ date: 2023-09-13
 by:
 - Johan Brandhorst-Satzkorn, Julien Fabre, Damian Gryski, Evan Phoenix, and Achille Roussel
 summary: Go 1.21 bổ sung một port mới nhắm vào API syscall WASI preview 1
-template: true
 ---
 
 Go 1.21 bổ sung một port mới nhắm vào API syscall WASI preview 1 thông qua giá trị `GOOS` mới là `wasip1`. Port này được xây dựng dựa trên port WebAssembly hiện có được giới thiệu trong Go 1.11.
