@@ -380,7 +380,7 @@ miễn là type parameter phụ này nằm ở cuối danh sách type parameter,
 
 Nếu bạn có hai type parameter, trong đó một cái bị ràng buộc là con trỏ tới cái còn lại, constraint đó sẽ đảm bảo những phương thức liên quan dùng pointer receiver.
 
-## Có nên ràng buộc theo pointer receiver?
+## Có nên ràng buộc theo pointer receiver? {#co-nen-rang-buoc-theo-pointer-receiver}
 
 Đến đây, có thể bạn đang cảm thấy khá quá tải.
 Mọi thứ khá phức tạp và có vẻ không hợp lý khi mong đợi mọi lập trình viên Go đều hiểu chuyện gì đang xảy ra trong chữ ký hàm này.
