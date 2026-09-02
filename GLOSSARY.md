@@ -10,6 +10,14 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 - Giữ nguyên tên sản phẩm, tên kho lưu trữ, tên tệp và cú pháp truy vấn.
 - Giữ nguyên mã nguồn, URL và các đoạn lệnh.
 - Khi chủ ý giữ nguyên một thuật ngữ không dịch, hãy ghi rõ quyết định đó tại đây.
+- Một thuật ngữ nằm trong tên riêng thì giữ nguyên, kể cả khi bảng dưới đây có
+  bản dịch cho nó. Tên bài nói, tên bài viết, tên nhóm làm việc, tên vai trò và
+  tên mã trạng thái HTTP đều là tên riêng: "Go, Open Source, Community", "Go
+  Community Outreach Working Group", "Vulnerability Management for Go", "Go
+  project stewards", "307 Temporary Redirect".
+- `godev audit` vẫn báo những trường hợp đó ở mức notice, vì nó không phân biệt
+  được tên riêng với câu văn. Đó là notice chứ không phải refusal, và cách xử lý
+  đúng là bỏ qua, không phải dịch tên riêng ra tiếng Việt.
 
 ## Quy ước
 
@@ -50,9 +58,11 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | cloud software | phần mềm đám mây | Prefer this in infra context. |
 | garbage collector | bộ gom rác | Preferred runtime term. |
 | tooling | hệ thống công cụ | Use for developer-tooling context. |
-| release | bản phát hành | Use for product or language releases. Not inside the two rows below. |
+| release | bản phát hành | Use for product or language releases. Not inside the three rows below. |
+| release notes | ghi chú bản phát hành | Translate it. The site menu says it this way, so a page that leaves it in English disagrees with its own navigation. |
 | release candidate | release candidate | Keep unchanged. This is what Vietnamese Go writing calls it, and "bản ứng viên phát hành" is nobody's phrase. |
 | pre-release | pre-release | Keep unchanged. Semver vocabulary, and it appears next to `v1.2.3-beta.1` where translating it would be confusing. |
+| point release | point release | Keep unchanged. Go release engineering calls a 1.x.y fix release this, there is no Vietnamese for it, and blog/go1.1.md and blog/contributors-summit.md both already write it in English. |
 | vulnerability | lỗ hổng bảo mật | Security context. |
 | dependency | dependency | Keep this term in technical prose when clearer. |
 | generics | generics | Keep the feature name unchanged for now. |

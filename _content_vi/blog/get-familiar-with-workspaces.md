@@ -13,7 +13,7 @@ summary: Tìm hiểu về Go workspaces và một số quy trình làm việc m�
 Go 1.18 bổ sung workspace mode cho Go, cho phép bạn làm việc trên nhiều module
 đồng thời.
 
-Bạn có thể lấy Go 1.18 tại trang [download](/dl/). [Release notes](/doc/go1.18)
+Bạn có thể lấy Go 1.18 tại trang [download](/dl/). [Ghi chú bản phát hành](/doc/go1.18)
 có thêm chi tiết về tất cả các thay đổi.
 
 ## Workspaces
