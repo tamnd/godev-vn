@@ -569,7 +569,7 @@ Các fast path của [`Mutex.Lock`](/pkg/sync/#Mutex.Lock), [`Mutex.Unlock`](/pk
 Với các trường hợp không tranh chấp trên amd64, các thay đổi này làm cho [`Once.Do`](/pkg/sync/#Once.Do) nhanh gấp đôi, và các phương thức [`Mutex`](/pkg/sync/#Mutex)/[`RWMutex`](/pkg/sync/#RWMutex) nhanh hơn tới 10%.
 
 <!-- CL 166960 -->
-`Pool` lớn không còn làm tăng thời gian dừng stop-the-world.
+[`Pool`](/pkg/sync/#Pool) lớn không còn làm tăng thời gian dừng stop-the-world.
 
 <!-- CL 166961 -->
 `Pool` không còn cần được điền lại hoàn toàn sau mỗi GC. Nó giờ giữ lại một số đối tượng qua các GC, thay vì giải phóng tất cả đối tượng, giảm tải đột biến cho người dùng nhiều của `Pool`.
@@ -585,7 +585,8 @@ Việc sử dụng `_getdirentries64` đã được xóa khỏi các build Darwi
 Các trường mới `ProcessAttributes` và `ThreadAttributes` trong [`SysProcAttr`](/pkg/syscall/?GOOS=windows#SysProcAttr) đã được giới thiệu cho Windows, công khai các cài đặt bảo mật khi tạo tiến trình mới.
 
 <!-- CL 174320 -->
-`EINVAL` không còn được trả về trong chế độ `Chmod` bằng không trên Windows.
+`EINVAL` không còn được trả về trong chế độ
+[`Chmod`](/pkg/syscall/?GOOS=windows#Chmod) bằng không trên Windows.
 
 <!-- CL 191337 -->
 Các giá trị kiểu `Errno` có thể được kiểm tra so với các giá trị lỗi trong gói `os`, như [`ErrExist`](/pkg/os/#ErrExist), bằng cách dùng [`errors.Is`](/pkg/errors/#Is).
