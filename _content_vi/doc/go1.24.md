@@ -521,7 +521,7 @@ thay vì thất bại.
 [`Certificate.Verify`](/pkg/crypto/x509#Certificate.Verify) giờ hỗ trợ xác thực
 chính sách, như được định nghĩa trong RFC 5280 và RFC 9618. Trường
 mới [`VerifyOptions.CertificatePolicies`](/pkg/crypto/x509#VerifyOptions.CertificatePolicies)
-có thể được đặt thành tập hợp các OID chính sách có thể chấp nhận.
+có thể được đặt thành tập hợp các [`OID`](/pkg/crypto/x509#OID) chính sách có thể chấp nhận.
 Chỉ các chuỗi chứng chỉ với biểu đồ chính sách hợp lệ mới được trả về từ
 [`Certificate.Verify`](/pkg/crypto/x509#Certificate.Verify).
 
