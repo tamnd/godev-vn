@@ -178,7 +178,11 @@
     },
     "blog/contributors-summit-2019.md": {
       "english_sha256": "03c2904b1fc3c7b641dcfe5e825d7025ea32ac948f1e95957c3e30ca322d83b3",
-      "at": "2026-03-31"
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 7
     },
     "blog/contributors-summit.md": {
       "english_sha256": "a53a9b3456662ca21f63b829ad653bcce2d481ab70d288d44079a2d7ec5beda4",
@@ -298,7 +302,11 @@
     },
     "blog/generic-interfaces.md": {
       "english_sha256": "422da7d01099adaf76d468795d434bde3f337e6fdbe04d39704727aca4336f88",
-      "at": "2026-03-29"
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 7
     },
     "blog/generic-methods.md": {
       "english_sha256": "003682b6cd63f2acdd7f27ce4c3c484e0f1ff91ecbe854ddc051565afca76c42",
@@ -442,7 +450,11 @@
     },
     "blog/go1.23.md": {
       "english_sha256": "0b0f9eafccb500f01995139259d8999f68822ab4522d3fc12a2e4fd54a841c50",
-      "at": "2026-03-30"
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 3
     },
     "blog/go1.24.md": {
       "english_sha256": "65e8370036adffd3de218730b22be7f2dee89fa16814e8e3547017645a461f3f",
@@ -689,8 +701,12 @@
       "at": "2026-03-30"
     },
     "blog/json.md": {
-      "english_sha256": "bbd3ef8db8b9b8560be434af922918da6d55f2e724dede169510f265f3f88ba4",
-      "at": "2026-03-30"
+      "english_sha256": "5cb828ee4ca2f8e6ed88eb912a9ca02e7c56e961375085bb0c6136de8b89440f",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 5
     },
     "blog/jsonv2-exp.md": {
       "english_sha256": "abb4013a85aead1657fd4a85b5ea2938c8c5225e088127f16b63523709d51f60",
@@ -1034,8 +1050,12 @@
       "at": "2026-03-30"
     },
     "blog/swisstable.md": {
-      "english_sha256": "d0a4c8efd2901b428e7b1ae0cf3ae850c8bdb9f16649308e5c0305bff5f3a90c",
-      "at": "2026-03-30"
+      "english_sha256": "242d05fcee981f012419403511857cd4fa2afed8d92fb6572c54ff103f6d57aa",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 8
     },
     "blog/sydney-gtug.md": {
       "english_sha256": "4b63ee04c33c7fb7464d6f632c7f7103a604af6bec7f6f082b5019518a4ddc2c",
@@ -1214,8 +1234,12 @@
       "at": "2026-03-30"
     },
     "doc/contribute.html": {
-      "english_sha256": "a7d096a6cf7c3b685f50fd0e2cfb6bdb1d8d037277e19e066172ec8736654f92",
-      "at": "2026-03-30"
+      "english_sha256": "0d36ad35675a6c0256db43154619a60b6609661061713a5930767a40db1388fd",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 16
     },
     "doc/database/cancel-operations.md": {
       "english_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
@@ -1262,8 +1286,12 @@
       "at": "2026-03-30"
     },
     "doc/diagnostics.html": {
-      "english_sha256": "9275fe1379c53f57c102c2db32c08e888736df64e8343c71aeb1bf34ea162820",
-      "at": "2026-03-30"
+      "english_sha256": "a1ea481194066462e3fb6701f2fe859f87ae218ea237b6fc806742b439681fe1",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 5
     },
     "doc/editors.html": {
       "english_sha256": "0bd0d11f080515552499437fc41ee5d5cbf0ec704c87b70b178684f30baf9c61",
@@ -1358,8 +1386,12 @@
       "at": "2026-03-31"
     },
     "doc/go1.24.md": {
-      "english_sha256": "11e12ba3b26ebe51331b5296f4c6f78b614d55e5e53f9a1cda41666d409989df",
-      "at": "2026-03-30"
+      "english_sha256": "7235ff929add0f8096812c2b999b0a96fd37866cfc5510db89caf4a647992ce9",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-02",
+      "chunks": 18
     },
     "doc/go1.25.md": {
       "english_sha256": "4f8b2b97af4e48574d539b0a3036d6828ba0b22216c34dd0058ee4cf55e71db2",

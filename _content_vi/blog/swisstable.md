@@ -3,78 +3,113 @@ title: Map Go nhanh hơn với Swiss Tables
 date: 2025-02-26
 by:
 - Michael Pratt
-summary: Go 1.24 cải thiện hiệu suất map với một triển khai map hoàn toàn mới
+summary: Go 1.24 cải thiện hiệu năng của map với một cách triển khai map hoàn toàn mới
 ---
 
-Bảng băm (hash table) là một cấu trúc dữ liệu trung tâm trong khoa học máy tính, và nó cung cấp triển khai cho kiểu map trong nhiều ngôn ngữ, bao gồm Go.
+Bảng băm là một cấu trúc dữ liệu trung tâm trong khoa học máy tính, và nó cung cấp cách triển khai cho kiểu `map` trong nhiều ngôn ngữ, bao gồm Go.
 
-Khái niệm về bảng băm được [mô tả lần đầu](https://spectrum.ieee.org/hans-peter-luhn-and-the-birth-of-the-hashing-algorithm) bởi Hans Peter Luhn vào năm 1953 trong một bản ghi nhớ nội bộ của IBM đề xuất tăng tốc tìm kiếm bằng cách đặt các phần tử vào các "bucket" và sử dụng danh sách liên kết cho tràn bucket khi các bucket đã chứa một phần tử.
-Ngày nay chúng ta gọi đây là [bảng băm sử dụng chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining).
+Khái niệm về bảng băm được [mô tả lần đầu](https://spectrum.ieee.org/hans-peter-luhn-and-the-birth-of-the-hashing-algorithm) bởi Hans Peter Luhn vào năm 1953 trong một bản ghi nhớ nội bộ của IBM, trong đó đề xuất tăng tốc việc tìm kiếm bằng cách đặt các mục vào các "bucket" và sử dụng danh sách liên kết để xử lý phần tràn khi các bucket đã chứa một mục.
+Ngày nay, chúng ta sẽ gọi đây là [bảng băm sử dụng chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining).
 
-Năm 1954, Gene M. Amdahl, Elaine M. McGraw và Arthur L. Samuel lần đầu tiên sử dụng sơ đồ "open addressing" khi lập trình IBM 701.
-Khi một bucket đã chứa một phần tử, phần tử mới được đặt vào bucket trống tiếp theo.
-Ý tưởng này được hình thức hóa và công bố vào năm 1957 bởi W. Wesley Peterson trong ["Addressing for Random-Access Storage"](https://ieeexplore.ieee.org/document/5392733).
-Ngày nay chúng ta gọi đây là [bảng băm sử dụng open addressing với linear probing](https://en.wikipedia.org/wiki/Hash_table#Open_addressing).
+Năm 1954, Gene M. Amdahl, Elaine M. McGraw và Arthur L. Samuel lần đầu tiên sử dụng cơ chế "open addressing" khi lập trình cho IBM 701.
+Khi một bucket đã chứa một mục, mục mới được đặt vào bucket trống tiếp theo.
+Ý tưởng này được W. Wesley Peterson chính thức hóa và công bố vào năm 1957 trong ["Addressing for Random-Access Storage"](https://ieeexplore.ieee.org/document/5392733).
+Ngày nay, chúng ta sẽ gọi đây là [bảng băm sử dụng open addressing với linear probing](https://en.wikipedia.org/wiki/Hash_table#Open_addressing).
 
-Với các cấu trúc dữ liệu đã tồn tại lâu đời như vậy, dễ nghĩ rằng chúng đã "hoàn chỉnh"; rằng chúng ta đã biết tất cả những gì cần biết về chúng và không thể cải thiện thêm nữa.
+Với những cấu trúc dữ liệu đã tồn tại lâu như vậy, thật dễ nghĩ rằng chúng đã "hoàn thiện"; rằng chúng ta đã biết mọi thứ cần biết về chúng và chúng không thể được cải thiện thêm nữa.
 Điều đó không đúng!
-Nghiên cứu khoa học máy tính tiếp tục đạt được những tiến bộ trong các thuật toán cơ bản, cả về độ phức tạp thuật toán lẫn tận dụng phần cứng CPU hiện đại.
-Ví dụ, Go 1.19 [đã chuyển gói `sort`](/doc/go1.19#sortpkgsort) từ quicksort truyền thống sang [pattern-defeating quicksort](https://arxiv.org/pdf/2106.05123.pdf), một thuật toán sắp xếp mới lạ từ Orson R. L. Peters, được mô tả lần đầu vào năm 2015.
+Nghiên cứu khoa học máy tính vẫn tiếp tục tạo ra những tiến bộ trong các thuật toán nền tảng, cả về độ phức tạp của thuật toán lẫn việc tận dụng phần cứng CPU hiện đại.
+Ví dụ, Go 1.19 đã [chuyển gói `sort`](/doc/go1.19#sortpkgsort) từ quicksort truyền thống sang [pattern-defeating quicksort](https://arxiv.org/pdf/2106.05123.pdf), một thuật toán sắp xếp mới của Orson R. L. Peters, được mô tả lần đầu vào năm 2015.
 
-Giống như các thuật toán sắp xếp, các cấu trúc dữ liệu bảng băm tiếp tục thấy những cải tiến.
-Vào năm 2017, Sam Benzaquen, Alkis Evlogimenos, Matt Kulukundis và Roman Perepelitsa tại Google đã trình bày [một thiết kế bảng băm C++ mới](https://www.youtube.com/watch?v=ncHmEUmJZf4), được gọi là "Swiss Tables".
-Vào năm 2018, triển khai của họ được [công bố mã nguồn mở trong thư viện Abseil C++](https://abseil.io/blog/20180927-swisstables).
+Giống như các thuật toán sắp xếp, cấu trúc dữ liệu bảng băm tiếp tục được cải tiến.
+Năm 2017, Sam Benzaquen, Alkis Evlogimenos, Matt Kulukundis và Roman Perepelitsa tại Google đã giới thiệu [một thiết kế bảng băm C++ mới](https://www.youtube.com/watch?v=ncHmEUmJZf4), được gọi là "Swiss Tables".
+Năm 2018, triển khai của họ đã được [mã nguồn mở trong thư viện Abseil C++](https://abseil.io/blog/20180927-swisstables).
 
-Go 1.24 bao gồm một triển khai hoàn toàn mới của kiểu map tích hợp sẵn, dựa trên thiết kế Swiss Table.
-Trong bài đăng blog này, chúng ta sẽ xem xét Swiss Tables cải thiện như thế nào so với các bảng băm truyền thống, và một số thách thức đặc biệt trong việc đưa thiết kế Swiss Table vào map của Go.
+Go 1.24 bao gồm một triển khai hoàn toàn mới của kiểu `map` tích hợp sẵn, dựa trên thiết kế Swiss Table.
+Trong bài đăng blog này, chúng ta sẽ xem cách Swiss Tables cải thiện các bảng băm truyền thống, cũng như một số thách thức riêng biệt khi đưa thiết kế Swiss Table vào các `map` của Go.
 
-## Bảng băm open-addressed
+## Bảng băm địa chỉ mở
 
-Swiss Tables là một dạng bảng băm open-addressed, vì vậy hãy nhanh chóng tổng quan về cách hoạt động của một bảng băm open-addressed cơ bản.
+Swiss Tables là một dạng bảng băm địa chỉ mở, vì vậy hãy cùng xem nhanh cách một bảng băm địa chỉ mở cơ bản hoạt động.
 
-Trong một bảng băm open-addressed, tất cả các phần tử được lưu trữ trong một mảng lưu trữ duy nhất.
-Chúng ta sẽ gọi mỗi vị trí trong mảng là một *slot*.
-Slot mà một khóa thuộc về chủ yếu được xác định bởi *hàm băm* (hash function), `hash(key)`.
-Hàm băm ánh xạ mỗi khóa thành một số nguyên, trong đó cùng một khóa luôn ánh xạ thành cùng một số nguyên, và các khóa khác nhau lý tưởng theo một phân phối ngẫu nhiên đều của các số nguyên.
-Đặc điểm xác định của các bảng băm open-addressed là chúng giải quyết xung đột bằng cách lưu trữ khóa ở nơi khác trong mảng lưu trữ.
-Vì vậy, nếu slot đã đầy (một *xung đột*), thì một *chuỗi probe* được sử dụng để xem xét các slot khác cho đến khi tìm thấy slot trống.
-Hãy xem một bảng băm mẫu để xem cách này hoạt động.
+Trong bảng băm địa chỉ mở, tất cả mục được lưu trữ trong một mảng nền duy nhất. Chúng ta sẽ gọi mỗi vị trí trong mảng là một *ô*. Ô mà một khóa thuộc về chủ yếu được xác định bởi *hàm băm*, `hash(key)`. Hàm băm ánh xạ mỗi khóa thành một số nguyên, trong đó cùng một khóa luôn ánh xạ đến cùng một số nguyên, còn các khóa khác nhau lý tưởng nhất tuân theo một phân phối ngẫu nhiên đồng đều của các số nguyên. Đặc điểm xác định của bảng băm địa chỉ mở là chúng giải quyết xung đột bằng cách lưu khóa ở nơi khác trong mảng nền. Vì vậy, nếu ô đã đầy (một *xung đột*), thì một *chuỗi dò* được sử dụng để xem xét các ô khác cho đến khi tìm thấy một ô trống. Hãy xem một bảng băm mẫu để hiểu cách hoạt động này.
 
 ### Ví dụ
 
-Dưới đây bạn có thể thấy một mảng lưu trữ 16 slot cho một bảng băm, và khóa (nếu có) được lưu trữ trong mỗi slot.
-Các giá trị không được hiển thị, vì chúng không liên quan đến ví dụ này.
+Bên dưới bạn có thể thấy một mảng nền 16 ô của một bảng băm và khóa (nếu có) được lưu trong mỗi ô. Các giá trị không được hiển thị vì chúng không liên quan đến ví dụ này.
 
 <style>
 /*
-go.dev .Article max-width is 55em. Only enable horizontal scrolling if the
-screen is narrow enough to require scrolling (narrower than article width)
-because otherwise some platforms (e.g., Chrome on macOS) display a scrollbar
-even when the screen is wide enough.
+Keep the table within the prose column. overflow-x: auto adds a horizontal
+scrollbar only when the table is wider than the column (e.g. on narrow
+viewports), so the right columns are never clipped.
 */
-@media screen and (max-width: 55em) {
-    .swisstable-table-container {
-        /* Scroll horizontally on overflow (likely on mobile) */
-        overflow: scroll;
-    }
+.swisstable-table-container {
+    overflow-x: auto;
 }
 
 .swisstable-table {
-    /* Combine table inner borders (1px total rather than 2px, one for cell above and one for cell below. */
+    /*
+    Combine table inner borders (1px total rather than 2px, one for the cell above and one for the cell below).
+    */
     border-collapse: collapse;
-    /* All column widths equal. */
+    /*
+    Fixed layout: the data columns share the remaining width equally after the
+    wider first (label) column below.
+    */
     table-layout: fixed;
-    /* Center table within container div */
-    margin: 0 auto;
+    /*
+    Match the width of the surrounding text column.
+    */
+    width: 100%;
+    /*
+    Keep columns comfortable on phones (scroll instead of squishing them).
+    Computed as 3em label + 16 data columns at ~2.5em each. Not max-content:
+    with fixed layout that is derived from the first row, so the colspan header
+    rows of the group/control-word tables would shrink the data columns.
+    */
+    min-width: 44em;
 }
 
-.swisstable-table-cell {
-    /* Black border between cells. */
+/*
+The descendant selector raises specificity above the site-wide
+"div.markdown th, div.markdown td" rule, which otherwise overrides the padding
+below with a wide 2em horizontal padding and stretches the cells.
+*/
+.swisstable-table .swisstable-table-cell {
+    /*
+    Black border between cells.
+    */
     border: 1px solid;
-    /* Add visual spacing around contents. */
-    padding: 0.5em 1em 0.5em 1em;
-    /* Center within cell. */
+    /*
+    Add visual spacing around contents.
+    */
+    padding: 0.5em 0.6em 0.5em 0.6em;
+    /*
+    Center within cell.
+    */
     text-align: center;
+}
+
+/* Give the label column ("Slot", "Key", "h2") slightly more room than the data columns. */
+.swisstable-table .swisstable-table-cell:first-child {
+    width: 3em;
+}
+
+/*
+The SIMD comparison table has long row labels ("Comparison", "Control word"), so
+its rules below override the base .swisstable-table widths above (equal
+specificity, later in source order wins).
+
+Same data-column width as the other tables: 8em label + 8 data columns at ~2.5em each.
+*/
+.swisstable-table-simd-comparison {
+    min-width: 28em;
+}
+
+/* Widen the first column to at least the largest label so it isn't clipped. */
+.swisstable-table-simd-comparison .swisstable-table-cell:first-child {
+    width: 8em;
 }
 </style>
 
@@ -103,7 +138,7 @@ even when the screen is wide enough.
         </thead>
         <tbody>
             <tr>
-                <td class="swisstable-table-cell">Key</td>
+                <td class="swisstable-table-cell">Khóa</td>
                 <td class="swisstable-table-cell"></td>
                 <td class="swisstable-table-cell"></td>
                 <td class="swisstable-table-cell"></td>
@@ -125,59 +160,53 @@ even when the screen is wide enough.
     </table>
 </div>
 
-Để chèn một khóa mới, chúng ta sử dụng hàm băm để chọn một slot.
-Vì chỉ có 16 slot, chúng ta cần giới hạn trong khoảng này, vì vậy chúng ta sẽ sử dụng `hash(key) % 16` làm slot mục tiêu.
-Giả sử chúng ta muốn chèn khóa `98` và `hash(98) % 16 = 7`.
-Slot 7 trống, vì vậy chúng ta chỉ cần chèn 98 vào đó.
-Mặt khác, giả sử chúng ta muốn chèn khóa `25` và `hash(25) % 16 = 3`.
-Slot 3 là xung đột vì nó đã chứa khóa 56.
-Vì vậy chúng ta không thể chèn ở đây.
+Để chèn một khóa mới, chúng ta sử dụng hàm băm để chọn một ô. Vì chỉ có 16 ô, chúng ta cần giới hạn trong phạm vi này, vì vậy chúng ta sẽ sử dụng `hash(key) % 16` làm ô đích. Giả sử chúng ta muốn chèn khóa `98` và `hash(98) % 16 = 7`. Ô 7 trống, vì vậy chúng ta chỉ cần chèn 98 vào đó. Mặt khác, giả sử chúng ta muốn chèn khóa `25` và `hash(25) % 16 = 3`. Ô 3 là một xung đột vì nó đã chứa khóa 56. Do đó chúng ta không thể chèn vào đây.
 
-Chúng ta sử dụng một chuỗi probe để tìm slot khác.
-Có nhiều chuỗi probe đã được biết đến.
-Chuỗi probe gốc và đơn giản nhất là *linear probing*, đơn giản thử các slot kế tiếp theo thứ tự.
+Chúng ta sử dụng một chuỗi dò để tìm một vị trí khác.
+Có nhiều chuỗi dò nổi tiếng.
+Chuỗi dò ban đầu và đơn giản nhất là *dò tuyến tính*, chỉ đơn giản thử các vị trí liên tiếp theo thứ tự.
 
-Vì vậy, trong ví dụ `hash(25) % 16 = 3`, vì slot 3 đang được sử dụng, chúng ta sẽ xem xét slot 4 tiếp theo, cũng đang được sử dụng.
-Slot 5 cũng vậy.
-Cuối cùng, chúng ta sẽ đến slot 6 trống, nơi chúng ta sẽ lưu khóa 25.
+Vì vậy, trong ví dụ `hash(25) % 16 = 3`, do vị trí 3 đang được sử dụng, chúng ta sẽ xét vị trí 4 tiếp theo, vị trí này cũng đang được sử dụng.
+Vị trí 5 cũng vậy.
+Cuối cùng, chúng ta sẽ đến vị trí trống 6, nơi chúng ta sẽ lưu khóa 25.
 
-Tra cứu theo cùng cách tiếp cận.
-Tra cứu khóa 25 sẽ bắt đầu từ slot 3, kiểm tra xem nó có chứa khóa 25 không (nó không chứa), và sau đó tiếp tục linear probing cho đến khi tìm thấy khóa 25 trong slot 6.
+Việc tra cứu cũng tuân theo cùng cách tiếp cận.
+Việc tra cứu khóa 25 sẽ bắt đầu tại vị trí 3, kiểm tra xem nó có chứa khóa 25 hay không (không có), sau đó tiếp tục dò tuyến tính cho đến khi tìm thấy khóa 25 tại vị trí 6.
 
-Ví dụ này sử dụng một mảng lưu trữ với 16 slot.
-Điều gì xảy ra nếu chúng ta chèn hơn 16 phần tử?
-Nếu bảng băm hết chỗ, nó sẽ tăng trưởng, thường bằng cách nhân đôi kích thước của mảng lưu trữ.
-Tất cả các mục hiện có được chèn lại vào mảng lưu trữ mới.
+Ví dụ này sử dụng một mảng dự phòng có 16 vị trí.
+Điều gì xảy ra nếu chúng ta chèn nhiều hơn 16 phần tử?
+Nếu bảng băm hết không gian, nó sẽ tăng kích thước, thường bằng cách nhân đôi kích thước của mảng dự phòng.
+Tất cả mục hiện có sẽ được chèn lại vào mảng dự phòng mới.
 
-Các bảng băm open-addressed thực sự không chờ cho đến khi mảng lưu trữ hoàn toàn đầy để tăng trưởng vì khi mảng ngày càng đầy hơn, độ dài trung bình của mỗi chuỗi probe tăng lên.
-Trong ví dụ trên sử dụng khóa 25, chúng ta phải thử 4 slot khác nhau để tìm một slot trống.
-Nếu mảng chỉ có một slot trống, độ dài probe tệ nhất sẽ là O(n).
-Tức là, bạn có thể cần quét toàn bộ mảng.
-Tỷ lệ slot đã được sử dụng được gọi là *load factor*, và hầu hết các bảng băm xác định một *load factor tối đa* (thường là 70-90%) tại điểm đó chúng sẽ tăng trưởng để tránh các chuỗi probe cực kỳ dài của các bảng băm gần đầy.
+Các bảng băm định địa chỉ mở thực tế không đợi đến khi mảng dự phòng hoàn toàn đầy mới tăng kích thước, vì khi mảng càng đầy, độ dài trung bình của mỗi chuỗi dò càng tăng.
+Trong ví dụ trên sử dụng khóa 25, chúng ta phải dò 4 vị trí khác nhau để tìm một vị trí trống.
+Nếu mảng chỉ còn một vị trí trống, độ dài dò trong trường hợp xấu nhất sẽ là O(n).
+Nghĩa là bạn có thể cần quét toàn bộ mảng.
+Tỷ lệ các vị trí đã sử dụng được gọi là *hệ số tải*, và hầu hết bảng băm định nghĩa một *hệ số tải tối đa* (thường là 70-90%) tại đó chúng sẽ tăng kích thước để tránh các chuỗi dò cực kỳ dài của những bảng băm gần đầy.
 
 ## Swiss Table
 
-[Thiết kế](https://abseil.io/about/design/swisstables) Swiss Table cũng là một dạng bảng băm open-addressed.
-Hãy xem nó cải thiện như thế nào so với một bảng băm open-addressed truyền thống.
-Chúng ta vẫn có một mảng lưu trữ duy nhất, nhưng chúng ta sẽ chia mảng thành các *nhóm* logic gồm 8 slot mỗi nhóm.
-(Các kích thước nhóm lớn hơn cũng có thể. Thêm về điều đó bên dưới.)
+Thiết kế [Swiss Table](https://abseil.io/about/design/swisstables) cũng là một dạng bảng băm định địa chỉ mở.
+Hãy xem cách nó cải thiện so với một bảng băm định địa chỉ mở truyền thống.
+Chúng ta vẫn có một mảng dự phòng duy nhất để lưu trữ, nhưng sẽ chia mảng này thành các *nhóm* logic, mỗi nhóm gồm 8 vị trí.
+(Các kích thước nhóm lớn hơn cũng có thể thực hiện được. Xem thêm ở bên dưới.)
 
-Ngoài ra, mỗi nhóm có một *control word* 64-bit cho metadata.
-Mỗi byte trong 8 byte của control word tương ứng với một trong các slot trong nhóm.
-Giá trị của mỗi byte biểu thị slot đó trống, đã xóa hoặc đang được sử dụng.
-Nếu đang được sử dụng, byte chứa 7 bit thấp hơn của hash cho khóa của slot đó (được gọi là `h2`).
+Ngoài ra, mỗi nhóm có một *từ điều khiển* 64-bit để chứa siêu dữ liệu.
+Mỗi trong số 8 byte trong từ điều khiển tương ứng với một vị trí trong nhóm.
+Giá trị của mỗi byte cho biết vị trí đó đang trống, đã bị xóa hay đang được sử dụng.
+Nếu đang được sử dụng, byte chứa 7 bit thấp hơn của giá trị băm cho khóa của vị trí đó (gọi là `h2`).
 
-<!-- Group table followed by control word table. Both are in the same container so they scroll together on mobile. -->
+<!-- Bảng nhóm theo sau bởi bảng từ điều khiển. Cả hai nằm trong cùng một vùng chứa để cuộn cùng nhau trên thiết bị di động. -->
 <div class="swisstable-table-container">
     <table class="swisstable-table">
         <thead>
             <tr>
                 <th class="swisstable-table-cell"></th>
-                <th class="swisstable-table-cell" colspan="8">Group 0</th>
-                <th class="swisstable-table-cell" colspan="8">Group 1</th>
+                <th class="swisstable-table-cell" colspan="8">Nhóm 0</th>
+                <th class="swisstable-table-cell" colspan="8">Nhóm 1</th>
             </tr>
             <tr>
-                <th class="swisstable-table-cell">Slot</th>
+                <th class="swisstable-table-cell">Vị trí</th>
                 <th class="swisstable-table-cell">0</th>
                 <th class="swisstable-table-cell">1</th>
                 <th class="swisstable-table-cell">2</th>
@@ -198,7 +227,7 @@ Nếu đang được sử dụng, byte chứa 7 bit thấp hơn của hash cho k
         </thead>
         <tbody>
             <tr>
-                <td class="swisstable-table-cell">Key</td>
+                <td class="swisstable-table-cell">Khóa</td>
                 <td class="swisstable-table-cell">56</td>
                 <td class="swisstable-table-cell">32</td>
                 <td class="swisstable-table-cell">21</td>
@@ -218,16 +247,16 @@ Nếu đang được sử dụng, byte chứa 7 bit thấp hơn của hash cho k
             </tr>
         </tbody>
     </table>
-    <br/> <!-- Visual space between the tables -->
+    <br/> <!-- Khoảng trống hiển thị giữa các bảng -->
     <table class="swisstable-table">
         <thead>
             <tr>
                 <th class="swisstable-table-cell"></th>
-                <th class="swisstable-table-cell" colspan="8">64-bit control word 0</th>
-                <th class="swisstable-table-cell" colspan="8">64-bit control word 1</th>
+                <th class="swisstable-table-cell" colspan="8">từ điều khiển 64-bit 0</th>
+                <th class="swisstable-table-cell" colspan="8">từ điều khiển 64-bit 1</th>
             </tr>
             <tr>
-                <th class="swisstable-table-cell">Slot</th>
+                <th class="swisstable-table-cell">Vị trí</th>
                 <th class="swisstable-table-cell">0</th>
                 <th class="swisstable-table-cell">1</th>
                 <th class="swisstable-table-cell">2</th>
@@ -270,30 +299,30 @@ Nếu đang được sử dụng, byte chứa 7 bit thấp hơn của hash cho k
     </table>
 </div>
 
-Quá trình chèn diễn ra như sau:
+Việc chèn hoạt động như sau:
 
-1. Tính `hash(key)` và chia hash thành hai phần: 57 bit cao hơn (được gọi là `h1`) và 7 bit thấp hơn (được gọi là `h2`).
-2. Các bit cao (`h1`) được sử dụng để chọn nhóm đầu tiên cần xem xét: `h1 % 2` trong trường hợp này, vì chỉ có 2 nhóm.
-3. Trong một nhóm, tất cả các slot đều đủ điều kiện để chứa khóa. Chúng ta phải xác định trước tiên liệu có slot nào đã chứa khóa này không, trong trường hợp đó đây là cập nhật chứ không phải là chèn mới.
-4. Nếu không có slot nào chứa khóa, thì chúng ta tìm slot trống để đặt khóa này.
-5. Nếu không có slot nào trống, thì chúng ta tiếp tục chuỗi probe bằng cách tìm kiếm nhóm tiếp theo.
+1. Tính toán `hash(key)` và chia hash thành hai phần: 57 bit cao (được gọi là `h1`) và 7 bit thấp (được gọi là `h2`).
+2. Các bit cao (`h1`) được dùng để chọn nhóm đầu tiên cần xem xét: `h1 % 2` trong trường hợp này, vì chỉ có 2 nhóm.
+3. Trong một nhóm, tất cả vị trí đều có khả năng chứa khóa như nhau. Trước tiên, chúng ta phải xác định xem có vị trí nào đã chứa khóa này hay không; nếu có, đây là một thao tác cập nhật thay vì một lần chèn mới.
+4. Nếu không có vị trí nào chứa khóa, chúng ta tìm một vị trí trống để đặt khóa này.
+5. Nếu không có vị trí nào trống, chúng ta tiếp tục chuỗi thăm dò bằng cách tìm kiếm nhóm tiếp theo.
 
-Tra cứu theo cùng quá trình cơ bản.
-Nếu chúng ta tìm thấy slot trống trong bước 4, thì chúng ta biết một lần chèn sẽ đã sử dụng slot này và có thể dừng tìm kiếm.
+Tra cứu tuân theo cùng một quy trình cơ bản.
+Nếu tìm thấy một vị trí trống ở bước 4, chúng ta biết rằng một lần chèn sẽ sử dụng vị trí này và có thể dừng việc tìm kiếm.
 
-Bước 3 là nơi phép thuật Swiss Table xảy ra.
-Chúng ta cần kiểm tra liệu slot nào trong nhóm có chứa khóa mong muốn không.
-Một cách đơn giản, chúng ta có thể thực hiện quét tuyến tính và so sánh tất cả 8 khóa.
-Tuy nhiên, control word cho phép chúng ta làm điều này hiệu quả hơn.
-Mỗi byte chứa 7 bit thấp hơn của hash (`h2`) cho slot đó.
-Nếu chúng ta xác định byte nào của control word chứa `h2` chúng ta đang tìm kiếm, chúng ta sẽ có một tập các ứng cử viên phù hợp.
+Bước 3 là nơi phép màu của Swiss Table xảy ra.
+Chúng ta cần kiểm tra xem có ô nào trong một nhóm chứa khóa mong muốn hay không.
+Một cách đơn giản, chúng ta có thể chỉ cần quét tuyến tính và so sánh cả 8 khóa.
+Tuy nhiên, từ điều khiển cho phép chúng ta thực hiện việc này hiệu quả hơn.
+Mỗi byte chứa 7 bit thấp hơn của giá trị băm (`h2`) cho ô đó.
+Nếu xác định được những byte nào của từ điều khiển chứa `h2` mà chúng ta đang tìm kiếm, chúng ta sẽ có một tập các kết quả khớp ứng viên.
 
-Nói cách khác, chúng ta muốn thực hiện so sánh bằng nhau từng byte trong control word.
-Ví dụ, nếu chúng ta đang tìm kiếm khóa 32, trong đó `h2 = 89`, thao tác chúng ta muốn trông như thế này.
+Nói cách khác, chúng ta muốn thực hiện phép so sánh bằng nhau theo từng byte bên trong từ điều khiển.
+Ví dụ, nếu chúng ta đang tìm khóa 32, với `h2 = 89`, phép toán mong muốn sẽ trông như sau.
 
 <!-- Visualization of SIMD comparison -->
 <div class="swisstable-table-container">
-    <table class="swisstable-table">
+    <table class="swisstable-table swisstable-table-simd-comparison">
         <tbody>
             <tr>
                 <td class="swisstable-table-cell"><strong>Test word</strong></td>
@@ -343,90 +372,90 @@ Ví dụ, nếu chúng ta đang tìm kiếm khóa 32, trong đó `h2 = 89`, thao
     </table>
 </div>
 
-Đây là một thao tác được hỗ trợ bởi phần cứng [SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data), trong đó một lệnh duy nhất thực hiện các thao tác song song trên các giá trị độc lập trong một giá trị lớn hơn (*vector*). Trong trường hợp này, chúng ta [có thể triển khai thao tác này](https://cs.opensource.google/go/go/+/master:src/internal/runtime/maps/group.go;drc=a08984bc8f2acacebeeadf7445ecfb67b7e7d7b1;l=155?ss=go) sử dụng một tập hợp các thao tác số học và bitwise tiêu chuẩn khi phần cứng SIMD đặc biệt không có sẵn.
+Đây là một phép toán được phần cứng [SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data) hỗ trợ, trong đó một lệnh duy nhất thực hiện các phép toán song song trên những giá trị độc lập bên trong một giá trị lớn hơn (*vector*). Trong trường hợp này, chúng ta [có thể triển khai phép toán này](https://cs.opensource.google/go/go/+/master:src/internal/runtime/maps/group.go;drc=a08984bc8f2acacebeeadf7445ecfb67b7e7d7b1;l=155?ss=go) bằng cách sử dụng một tập các phép toán số học và bit tiêu chuẩn khi không có phần cứng SIMD chuyên dụng.
 
-Kết quả là một tập các slot ứng cử viên.
-Các slot mà `h2` không khớp không có khóa phù hợp, vì vậy chúng có thể được bỏ qua.
-Các slot mà `h2` khớp là các kết quả tiềm năng, nhưng chúng ta vẫn phải kiểm tra toàn bộ khóa, vì có khả năng xung đột (xác suất xung đột 1/128 với hash 7-bit, vẫn khá thấp).
+Kết quả là một tập các ô ứng viên.
+Các ô có `h2` không khớp không chứa khóa khớp, vì vậy có thể bỏ qua chúng.
+Các ô có `h2` khớp là những kết quả khớp tiềm năng, nhưng chúng ta vẫn phải kiểm tra toàn bộ khóa, vì có khả năng xảy ra xung đột (xác suất xung đột là 1/128 với giá trị băm 7 bit, vì vậy vẫn khá thấp).
 
-Thao tác này rất mạnh mẽ, vì chúng ta đã thực hiện hiệu quả 8 bước của chuỗi probe cùng một lúc, song song.
-Điều này tăng tốc tra cứu và chèn bằng cách giảm số lần so sánh trung bình chúng ta cần thực hiện.
-Cải tiến đối với hành vi probing này đã cho phép cả các triển khai Abseil và Go tăng load factor tối đa của các map Swiss Table so với các map trước đó, giúp giảm dung lượng bộ nhớ trung bình.
+Phép toán này rất mạnh, vì chúng ta đã thực hiện hiệu quả 8 bước của một chuỗi dò tìm cùng lúc, song song.
+Điều này tăng tốc quá trình tra cứu và chèn bằng cách giảm số lần so sánh trung bình mà chúng ta cần thực hiện.
+Cải tiến này đối với hành vi dò tìm cho phép cả các triển khai Abseil và Go tăng hệ số tải tối đa của các map Swiss Table so với các map trước đây, từ đó làm giảm mức sử dụng bộ nhớ trung bình.
 
-## Thách thức của Go
+## Các thách thức của Go
 
-Kiểu map tích hợp sẵn của Go có một số thuộc tính bất thường đặt ra những thách thức bổ sung khi áp dụng một thiết kế map mới.
-Hai điều đặc biệt khó xử lý.
+Kiểu map tích hợp sẵn của Go có một số thuộc tính đặc biệt gây thêm thách thức khi áp dụng một thiết kế map mới.  
+Có hai vấn đề đặc biệt khó xử lý.
 
-### Tăng trưởng dần dần
+### Tăng trưởng từng phần
 
-Khi bảng băm đạt đến load factor tối đa, nó cần tăng kích thước mảng lưu trữ.
-Thông thường, điều này có nghĩa là lần chèn tiếp theo nhân đôi kích thước mảng và sao chép tất cả các mục sang mảng mới.
-Hãy tưởng tượng chèn vào một map với 1GB dữ liệu.
-Hầu hết các lần chèn rất nhanh, nhưng lần chèn cần tăng trưởng map từ 1GB lên 2GB sẽ cần sao chép 1GB dữ liệu, sẽ mất nhiều thời gian.
+Khi một bảng băm đạt đến hệ số tải tối đa, nó cần mở rộng mảng lưu trữ.  
+Thông thường, điều này có nghĩa là lần chèn tiếp theo sẽ nhân đôi kích thước của mảng và sao chép tất cả mục vào mảng mới.  
+Hãy tưởng tượng việc chèn vào một map có 1GB mục.  
+Hầu hết các lần chèn đều rất nhanh, nhưng lần chèn cần mở rộng map từ 1GB lên 2GB sẽ phải sao chép 1GB mục, mất rất nhiều thời gian.
 
-Go thường được sử dụng cho các máy chủ nhạy cảm với độ trễ, vì vậy chúng ta không muốn các thao tác trên các kiểu tích hợp sẵn có thể ảnh hưởng tùy ý lớn đến độ trễ đuôi.
-Thay vào đó, các map Go tăng trưởng dần dần, sao cho mỗi lần chèn có giới hạn trên về lượng công việc tăng trưởng nó phải thực hiện.
-Điều này giới hạn tác động độ trễ của một lần chèn map duy nhất.
+Go thường được dùng cho các máy chủ nhạy với độ trễ, vì vậy chúng tôi không muốn các thao tác trên kiểu tích hợp sẵn có thể gây ảnh hưởng lớn không giới hạn đến độ trễ đuôi.  
+Thay vào đó, map của Go tăng trưởng từng phần, để mỗi lần chèn có giới hạn trên về lượng công việc mở rộng mà nó phải thực hiện.  
+Điều này giới hạn ảnh hưởng của một lần chèn map đến độ trễ.
 
-Thật không may, thiết kế Swiss Table Abseil (C++) giả định tăng trưởng tất cả một lúc, và chuỗi probe phụ thuộc vào tổng số nhóm, khiến việc chia nhỏ trở nên khó khăn.
+Đáng tiếc là thiết kế Swiss Table của Abseil (C++) giả định việc mở rộng diễn ra toàn bộ cùng lúc, và chuỗi thăm dò phụ thuộc vào tổng số nhóm, khiến việc chia nhỏ quá trình này trở nên khó khăn.
 
-Map tích hợp sẵn của Go giải quyết điều này bằng một lớp gián tiếp khác bằng cách chia mỗi map thành nhiều Swiss Table.
-Thay vì một Swiss Table duy nhất triển khai toàn bộ map, mỗi map bao gồm một hoặc nhiều bảng độc lập bao phủ một tập hợp con của không gian khóa.
-Một bảng riêng lẻ lưu trữ tối đa 1024 mục.
-Một số bit trên biến của hash được sử dụng để chọn bảng nào một khóa thuộc về.
-Đây là một dạng của [*extendible hashing*](https://en.wikipedia.org/wiki/Extendible_hashing), trong đó số bit được sử dụng tăng lên khi cần thiết để phân biệt tổng số bảng.
+Map tích hợp sẵn của Go giải quyết vấn đề này bằng một lớp gián tiếp khác: chia mỗi map thành nhiều Swiss Table.  
+Thay vì một Swiss Table duy nhất triển khai toàn bộ map, mỗi map bao gồm một hoặc nhiều bảng độc lập bao phủ một tập con của không gian khóa.  
+Một bảng riêng lẻ lưu tối đa 1024 mục.  
+Một số lượng bit cao thay đổi trong giá trị băm được dùng để chọn bảng mà một khóa thuộc về.  
+Đây là một dạng [*băm mở rộng*](https://en.wikipedia.org/wiki/Extendible_hashing), trong đó số lượng bit được sử dụng tăng lên khi cần để phân biệt tổng số bảng.
 
-Trong quá trình chèn, nếu một bảng riêng lẻ cần tăng trưởng, nó sẽ làm như vậy tất cả một lúc, nhưng các bảng khác không bị ảnh hưởng.
-Do đó giới hạn trên cho một lần chèn duy nhất là độ trễ tăng trưởng một bảng 1024 mục thành hai bảng 1024 mục, sao chép 1024 mục.
+Trong quá trình chèn, nếu một bảng riêng lẻ cần mở rộng, nó sẽ thực hiện toàn bộ việc mở rộng cùng lúc, nhưng các bảng khác không bị ảnh hưởng.  
+Do đó, giới hạn trên cho một lần chèn là độ trễ của việc mở rộng một bảng 1024 mục thành hai bảng 1024 mục, sao chép 1024 mục.
 
-### Thay đổi trong khi duyệt
+### Sửa đổi trong quá trình lặp
 
-Nhiều thiết kế bảng băm, bao gồm Swiss Tables của Abseil, cấm thay đổi map trong khi duyệt.
-Đặc tả ngôn ngữ Go [cho phép rõ ràng](/ref/spec#For_statements:~:text=The%20iteration%20order,iterations%20is%200.) thay đổi trong khi duyệt, với các ngữ nghĩa sau:
+Nhiều thiết kế bảng băm, bao gồm Swiss Table của Abseil, cấm sửa đổi map trong quá trình lặp.  
+Đặc tả ngôn ngữ Go [cho phép rõ ràng]( /ref/spec#For_statements:~:text=The%20iteration%20order,iterations%20is%200.) việc sửa đổi trong quá trình lặp, với các ngữ nghĩa sau:
 
-* Nếu một mục bị xóa trước khi đến lượt nó, nó sẽ không được tạo ra.
-* Nếu một mục được cập nhật trước khi đến lượt nó, giá trị đã cập nhật sẽ được tạo ra.
-* Nếu một mục mới được thêm vào, nó có thể hoặc không được tạo ra.
+* Nếu một mục bị xóa trước khi được duyệt đến, nó sẽ không được tạo ra.
+* Nếu một mục được cập nhật trước khi được duyệt đến, giá trị đã cập nhật sẽ được tạo ra.
+* Nếu một mục mới được thêm vào, nó có thể được tạo ra hoặc không.
 
-Một cách tiếp cận điển hình để duyệt bảng băm là đơn giản đi qua mảng lưu trữ và tạo ra các giá trị theo thứ tự chúng được sắp xếp trong bộ nhớ.
-Cách tiếp cận này vi phạm các ngữ nghĩa trên, đặc biệt là vì các lần chèn có thể tăng trưởng map, điều này sẽ xáo trộn bố cục bộ nhớ.
+Cách tiếp cận thông thường để lặp qua bảng băm là chỉ cần duyệt qua mảng lưu trữ và tạo ra các giá trị theo thứ tự chúng được sắp xếp trong bộ nhớ.  
+Cách tiếp cận này xung đột với các ngữ nghĩa trên, đặc biệt là vì việc chèn có thể làm map mở rộng, từ đó xáo trộn bố cục bộ nhớ.
 
-Chúng ta có thể tránh tác động của việc xáo trộn trong quá trình tăng trưởng bằng cách để iterator giữ tham chiếu đến bảng nó hiện đang duyệt.
-Nếu bảng đó tăng trưởng trong quá trình duyệt, chúng ta tiếp tục sử dụng phiên bản cũ của bảng và do đó tiếp tục cung cấp các khóa theo thứ tự của bố cục bộ nhớ cũ.
+Chúng ta có thể tránh ảnh hưởng của việc xáo trộn trong quá trình mở rộng bằng cách để bộ lặp giữ tham chiếu đến bảng mà nó hiện đang lặp qua.  
+Nếu bảng đó mở rộng trong quá trình lặp, chúng ta tiếp tục sử dụng phiên bản cũ của bảng và do đó tiếp tục trả về các khóa theo thứ tự của bố cục bộ nhớ cũ.
 
-Điều này có hoạt động với các ngữ nghĩa trên không?
-Các mục mới được thêm vào sau khi tăng trưởng sẽ bị bỏ qua hoàn toàn, vì chúng chỉ được thêm vào bảng đã tăng trưởng, không phải bảng cũ.
-Điều đó không sao, vì ngữ nghĩa cho phép các mục mới không được tạo ra.
-Các cập nhật và xóa là vấn đề, tuy nhiên: sử dụng bảng cũ có thể tạo ra các mục lỗi thời hoặc đã xóa.
+Điều này có hoạt động với các ngữ nghĩa trên không?  
+Các mục mới được thêm sau khi mở rộng sẽ hoàn toàn bị bỏ sót, vì chúng chỉ được thêm vào bảng đã mở rộng, không phải bảng cũ.  
+Điều đó không sao, vì các ngữ nghĩa cho phép các mục mới không được tạo ra.  
+Tuy nhiên, việc cập nhật và xóa lại là vấn đề: sử dụng bảng cũ có thể tạo ra các mục đã cũ hoặc đã bị xóa.
 
-Trường hợp ngoại lệ này được giải quyết bằng cách chỉ sử dụng bảng cũ để xác định thứ tự duyệt.
-Trước khi thực sự trả về mục, chúng ta tham khảo bảng đã tăng trưởng để xác định liệu mục còn tồn tại không, và để lấy giá trị mới nhất.
+Trường hợp biên này được xử lý bằng cách chỉ sử dụng bảng cũ để xác định thứ tự lặp.  
+Trước khi thực sự trả về mục, chúng ta kiểm tra bảng đã mở rộng để xác định mục đó còn tồn tại hay không, đồng thời lấy giá trị mới nhất.
 
-Điều này bao gồm tất cả các ngữ nghĩa cốt lõi, mặc dù còn có thêm nhiều trường hợp ngoại lệ nhỏ không được đề cập ở đây.
-Cuối cùng, tính dễ chấp nhận của map Go với duyệt dẫn đến duyệt trở thành phần phức tạp nhất của triển khai map Go.
+Điều này bao quát tất cả các ngữ nghĩa cốt lõi, mặc dù vẫn còn nhiều trường hợp biên nhỏ hơn không được đề cập ở đây.  
+Cuối cùng, tính linh hoạt của map Go đối với kết quả lặp khiến việc lặp trở thành phần phức tạp nhất trong quá trình triển khai map của Go.
 
-## Công việc tương lai
+## Công việc trong tương lai
 
-Trong [các microbenchmark](/issue/54766#issuecomment-2542444404), các thao tác map nhanh hơn tới 60% so với Go 1.23.
-Cải thiện hiệu suất chính xác thay đổi khá nhiều do sự đa dạng rộng của các thao tác và cách sử dụng map, và một số trường hợp ngoại lệ thực sự bị tụt hậu so với Go 1.23.
-Nhìn chung, trong các benchmark ứng dụng đầy đủ, chúng tôi tìm thấy cải thiện thời gian CPU trung bình hình học khoảng 1,5%.
+Trong [microbenchmarks](/issue/54766#issuecomment-2542444404), các thao tác trên map nhanh hơn tới 60% so với trong Go 1.23.
+Mức cải thiện hiệu năng chính xác thay đổi khá nhiều do sự đa dạng lớn của các thao tác và cách sử dụng map, và một số trường hợp biên thực sự giảm hiệu năng so với Go 1.23.
+Nhìn chung, trong các benchmark ứng dụng đầy đủ, chúng tôi nhận thấy thời gian CPU trung bình hình học được cải thiện khoảng 1,5%.
 
-Có thêm các cải tiến map mà chúng tôi muốn điều tra cho các bản phát hành Go trong tương lai.
-Ví dụ, chúng tôi có thể [tăng tính cục bộ](/issue/70835) của các thao tác trên các map không nằm trong bộ đệm CPU.
+Có thêm nhiều cải tiến cho map mà chúng tôi muốn nghiên cứu trong các bản phát hành Go tương lai.
+Ví dụ, chúng tôi có thể [tăng tính cục bộ của](/issue/70835) các thao tác trên những map không nằm trong bộ nhớ đệm CPU.
 
-Chúng tôi cũng có thể cải thiện thêm các so sánh control word.
-Như đã mô tả ở trên, chúng tôi có một triển khai portable sử dụng các thao tác số học và bitwise tiêu chuẩn.
-Tuy nhiên, một số kiến trúc có các lệnh SIMD thực hiện loại so sánh này trực tiếp.
-Go 1.24 đã sử dụng các lệnh SIMD 8-byte cho amd64, nhưng chúng tôi có thể mở rộng hỗ trợ sang các kiến trúc khác.
-Quan trọng hơn, trong khi các lệnh tiêu chuẩn hoạt động trên các word tối đa 8 byte, các lệnh SIMD gần như luôn hỗ trợ ít nhất các word 16 byte.
-Điều này có nghĩa là chúng tôi có thể tăng kích thước nhóm lên 16 slot, và thực hiện 16 phép so sánh hash song song thay vì 8.
-Điều này sẽ giảm thêm số lần probe trung bình cần thiết cho tra cứu.
+Chúng tôi cũng có thể tiếp tục cải thiện việc so sánh các từ điều khiển.
+Như đã mô tả ở trên, chúng tôi có một triển khai di động sử dụng các phép toán số học và bitwise tiêu chuẩn.
+Tuy nhiên, một số kiến trúc có các lệnh SIMD thực hiện trực tiếp kiểu so sánh này.
+Go 1.24 đã sử dụng các lệnh SIMD 8 byte cho amd64, nhưng chúng tôi có thể mở rộng hỗ trợ sang các kiến trúc khác.
+Quan trọng hơn, trong khi các lệnh tiêu chuẩn hoạt động trên các từ có kích thước tối đa 8 byte, các lệnh SIMD gần như luôn hỗ trợ ít nhất các từ 16 byte.
+Điều này có nghĩa là chúng tôi có thể tăng kích thước nhóm lên 16 ô, và thực hiện 16 phép so sánh hash song song thay vì 8.
+Điều này sẽ tiếp tục giảm số lần dò trung bình cần thiết cho các thao tác tra cứu.
 
 ## Lời cảm ơn
 
-Một triển khai map Go dựa trên Swiss Table đã được chờ đợi từ lâu và liên quan đến nhiều người đóng góp.
-Tôi muốn cảm ơn YunHao Zhang ([@zhangyunhao116](https://github.com/zhangyunhao116)), PJ Malloy ([@thepudds](https://github.com/thepudds)), và [@andy-wm-arthur](https://github.com/andy-wm-arthur) vì đã xây dựng các phiên bản ban đầu của triển khai Swiss Table Go.
-Peter Mattis ([@petermattis](https://github.com/petermattis)) đã kết hợp những ý tưởng này với các giải pháp cho những thách thức Go ở trên để xây dựng [`github.com/cockroachdb/swiss`](https://pkg.go.dev/github.com/cockroachdb/swiss), một triển khai Swiss Table tuân thủ đặc tả Go.
-Triển khai map tích hợp sẵn Go 1.24 dựa nhiều vào công việc của Peter.
-Cảm ơn tất cả mọi người trong cộng đồng đã đóng góp!
+Một triển khai map Go dựa trên Swiss Table đã được mong đợi từ lâu và có sự tham gia của nhiều contributor.
+Tôi muốn cảm ơn YunHao Zhang ([@zhangyunhao116](https://github.com/zhangyunhao116)), PJ Malloy ([@thepudds](https://github.com/thepudds)), và [@andy-wm-arthur](https://github.com/andy-wm-arthur) vì đã xây dựng các phiên bản ban đầu của một triển khai Go Swiss Table.
+Peter Mattis ([@petermattis](https://github.com/petermattis)) đã kết hợp những ý tưởng này với các giải pháp cho những thách thức của Go ở trên để xây dựng [`github.com/cockroachdb/swiss`](https://pkg.go.dev/github.com/cockroachdb/swiss), một triển khai Swiss Table tuân thủ đặc tả Go.
+Triển khai map tích hợp sẵn trong Go 1.24 dựa rất nhiều trên công việc của Peter.
+Cảm ơn mọi người trong cộng đồng đã đóng góp!

@@ -1,5 +1,5 @@
 ---
-title: Generic interfaces
+title: Interface generic
 date: 2025-07-07
 by:
 - Axel Wagner
@@ -7,23 +7,23 @@ tags:
 - type parameters
 - generics
 - interfaces
-summary: Việc thêm type parameter vào interface mạnh hơn bạn tưởng rất nhiều
+summary: Thêm tham số kiểu vào các kiểu interface mang lại sức mạnh đáng ngạc nhiên
 template: true
 ---
 
-Có một ý tưởng không hề hiển nhiên cho đến khi bạn nghe về nó lần đầu: vì interface bản thân cũng là kiểu, chúng cũng có thể có type parameter.
-Ý tưởng này hóa ra mạnh đến bất ngờ khi biểu đạt các ràng buộc trên hàm và kiểu generic.
-Trong bài viết này, chúng ta sẽ minh họa điều đó bằng cách thảo luận việc dùng interface có type parameter trong một vài tình huống thường gặp.
+Có một ý tưởng không hiển nhiên cho đến khi bạn nghe về nó lần đầu: vì interface tự thân cũng là kiểu, chúng cũng có thể có tham số kiểu.
+Ý tưởng này tỏ ra mạnh mẽ một cách đáng ngạc nhiên khi dùng để biểu đạt các ràng buộc trên các hàm và kiểu generic.
+Trong bài viết này, chúng ta sẽ minh họa điều đó bằng cách thảo luận về việc sử dụng interface với tham số kiểu trong một vài kịch bản phổ biến.
 
-## Một tree set đơn giản
+## Một tập hợp cây đơn giản
 
-Để làm ví dụ khởi động, giả sử ta cần một phiên bản generic của [cây tìm kiếm nhị phân](https://en.wikipedia.org/wiki/Binary_search_tree).
-Các phần tử lưu trong cây như vậy cần có thứ tự, nên type parameter của ta cần một ràng buộc xác định cách so sánh thứ tự.
-Một lựa chọn đơn giản là dùng ràng buộc [cmp.Ordered](/pkg/cmp#Ordered), được giới thiệu trong Go 1.21.
-Nó giới hạn type parameter vào các kiểu có thứ tự (chuỗi và số) và cho phép các phương thức của kiểu đó dùng các toán tử so sánh dựng sẵn.
+Làm ví dụ khởi đầu, giả sử chúng ta cần một phiên bản generic của một [cây tìm kiếm nhị phân](https://en.wikipedia.org/wiki/Binary_search_tree).
+Các phần tử được lưu trong một cây như vậy cần có thứ tự, vì vậy tham số kiểu của chúng ta cần một ràng buộc xác định thứ tự cần sử dụng.
+Một lựa chọn đơn giản là sử dụng ràng buộc [cmp.Ordered](/pkg/cmp#Ordered), được giới thiệu trong Go 1.21.
+Nó giới hạn một tham số kiểu ở các kiểu có thứ tự (chuỗi và số) và cho phép các phương thức của kiểu sử dụng các toán tử sắp xếp tích hợp.
 
 {{raw `
-    // The zero value of a Tree is a ready-to-use empty tree.
+    // Giá trị zero của Tree là một cây rỗng sẵn sàng để sử dụng.
     type Tree[E cmp.Ordered] struct {
         root *node[E]
     }
@@ -54,13 +54,13 @@ Nó giới hạn type parameter vào các kiểu có thứ tự (chuỗi và s�
 
 ([playground](/play/p/H7-n33X7P2h))
 
-Tuy nhiên, cách tiếp cận này có nhược điểm là chỉ hoạt động với các kiểu cơ bản mà toán tử `<` được định nghĩa;
-bạn không thể chèn các kiểu struct như [time.Time](/pkg/time#Time).
+Tuy nhiên, cách tiếp cận này có nhược điểm là nó chỉ hoạt động với các kiểu cơ bản mà `<code>&lt;</code>` được định nghĩa;
+bạn không thể chèn các kiểu struct, như [time.Time](/pkg/time#Time).
 
-Ta có thể khắc phục bằng cách yêu cầu người dùng cung cấp một hàm so sánh:
+Chúng ta có thể khắc phục điều đó bằng cách yêu cầu người dùng cung cấp một hàm so sánh:
 
 {{raw `
-    // A FuncTree must be created with NewFuncTree.
+    // FuncTree phải được tạo bằng NewFuncTree.
     type FuncTree[E any] struct {
         root *funcNode[E]
         cmp  func(E, E) int
@@ -73,21 +73,41 @@ Ta có thể khắc phục bằng cách yêu cầu người dùng cung cấp m�
     func (t *FuncTree[E]) Insert(element E) {
         t.root = t.root.insert(t.cmp, element)
     }
+
+    type funcNode[E any] struct {
+        value E
+        left  *funcNode[E]
+        right *funcNode[E]
+    }
+
+    func (n *funcNode[E]) insert(cmp func(E, E) int, element E) *funcNode[E] {
+        if n == nil {
+            return &funcNode[E]{value: element}
+        }
+        sign := cmp(element, n.value)
+        switch {
+        case sign < 0:
+            n.left = n.left.insert(cmp, element)
+        case sign > 0:
+            n.right = n.right.insert(cmp, element)
+        }
+        return n
+    }
 `}}
 
 ([playground](/play/p/tiEjuxCHtFF))
 
-Cách này hoạt động, nhưng cũng có nhược điểm.
-Ta không còn có thể dùng zero value của kiểu container nữa, vì nó cần một hàm so sánh được khởi tạo tường minh.
-Và việc dùng một trường kiểu hàm khiến trình biên dịch khó inline các lời gọi so sánh hơn, điều này có thể tạo ra overhead runtime đáng kể.
+Cách này hoạt động, nhưng cũng đi kèm với các nhược điểm.
+Chúng ta không còn có thể sử dụng giá trị zero của kiểu container nữa, vì nó cần có một hàm so sánh được khởi tạo rõ ràng.
+Và việc sử dụng một trường hàm khiến trình biên dịch khó inline các lời gọi so sánh hơn, điều này có thể gây ra chi phí đáng kể khi chạy.
 
-Dùng một phương thức trên kiểu phần tử có thể giải quyết các vấn đề đó, vì phương thức gắn trực tiếp với kiểu.
-Phương thức không cần được truyền tường minh và trình biên dịch có thể thấy đích của lời gọi để có thể inline nó.
-Nhưng làm sao biểu đạt ràng buộc yêu cầu kiểu phần tử phải cung cấp phương thức cần thiết đó?
+Sử dụng một phương thức trên kiểu phần tử có thể giải quyết các vấn đề này, vì các phương thức được liên kết trực tiếp với một kiểu.
+Một phương thức không cần phải được truyền vào một cách rõ ràng và trình biên dịch có thể thấy đích của lời gọi, đồng thời có thể inline nó.
+Nhưng làm thế nào chúng ta có thể biểu đạt ràng buộc để yêu cầu các kiểu phần tử cung cấp phương thức cần thiết?
 
-## Dùng receiver trong constraint
+## Sử dụng receiver trong các ràng buộc
 
-Cách đầu tiên ta có thể thử là định nghĩa một interface thông thường với phương thức `Compare`:
+Cách tiếp cận đầu tiên mà chúng ta có thể thử là định nghĩa một interface thông thường có phương thức `Compare`:
 
 {{raw `
     type Comparer interface {
@@ -95,12 +115,12 @@ Cách đầu tiên ta có thể thử là định nghĩa một interface thông 
     }
 `}}
 
-Tuy nhiên, ta sớm nhận ra cách này không tốt.
-Để hiện thực interface này, tham số của phương thức tự nó phải là `Comparer`.
-Điều đó không chỉ có nghĩa phần hiện thực của phương thức phải type-assert tham số về kiểu của chính nó, mà còn đòi hỏi mọi kiểu phải tham chiếu tường minh đến package của ta với tên `Comparer` (nếu không chữ ký phương thức sẽ không đồng nhất).
-Điều đó không thật sự trực giao.
+Tuy nhiên, chúng ta nhanh chóng nhận ra rằng cách này không hoạt động tốt.
+Để triển khai interface này, tham số của phương thức cũng phải chính là `Comparer`.
+Điều đó không chỉ có nghĩa là phần triển khai của phương thức này phải ép kiểu tham số về chính kiểu của nó, mà còn yêu cầu mọi kiểu phải tham chiếu rõ ràng đến gói của chúng ta bằng tên kiểu `Comparer` (nếu không, chữ ký phương thức sẽ không giống hệt nhau).
+Điều đó không thực sự trực giao.
 
-Cách tốt hơn là làm cho chính interface `Comparer` trở thành generic:
+Một cách tiếp cận tốt hơn là làm cho chính interface `Comparer` trở thành generic:
 
 {{raw `
     type Comparer[T any] interface {
@@ -108,52 +128,96 @@ Cách tốt hơn là làm cho chính interface `Comparer` trở thành generic:
     }
 `}}
 
-`Comparer` này giờ mô tả cả một họ interface, một interface cho mỗi kiểu mà `Comparer` được khởi tạo với.
-Một kiểu hiện thực `Comparer[T]` đang nói rằng “tôi có thể so sánh chính mình với một `T`”.
-Ví dụ, `time.Time` tự nhiên hiện thực `Comparer[time.Time]` vì [nó có một phương thức `Compare` khớp](/pkg/time#Time.Compare):
+`Comparer` này giờ mô tả cả một họ interface, mỗi interface tương ứng với một kiểu mà `Comparer` có thể được khởi tạo.
+Một kiểu triển khai `Comparer[T]` khai báo rằng "Tôi có thể so sánh bản thân mình với một `T`".
+Ví dụ, `time.Time` tự nhiên triển khai `Comparer[time.Time]` vì [nó có phương thức `Compare` tương ứng](/pkg/time#Time.Compare):
 
 {{raw `
-    // Implements Comparer[Time]
+    // Triển khai Comparer[Time]
     func (t Time) Compare(u Time) int
 `}}
 
-Điều đó tốt hơn, nhưng vẫn chưa đủ.
-Điều ta thật sự muốn là một ràng buộc nói rằng type parameter có thể được so sánh với *chính nó*: ta muốn ràng buộc tự tham chiếu.
-Điểm tinh tế ở đây là tính tự tham chiếu đó không cần phải nằm trong chính định nghĩa của interface; cụ thể, ràng buộc cho `T` trong kiểu `Comparer` chỉ là `any`.
-Thay vào đó, nó là hệ quả của cách ta dùng `Comparer` làm constraint cho type parameter của `MethodTree`:
+Cách này tốt hơn, nhưng vẫn chưa đủ.
+Điều chúng ta thực sự muốn là một ràng buộc cho biết tham số kiểu có thể được so sánh với *chính nó*: chúng ta muốn ràng buộc đó có tính tự tham chiếu.
+Điểm tinh tế ở đây là khía cạnh tự tham chiếu không cần phải là một phần của chính định nghĩa interface; cụ thể, ràng buộc cho `T` trong kiểu `Comparer` chỉ là `any`.
+Thay vào đó, nó là hệ quả của cách chúng ta sử dụng `Comparer` làm ràng buộc cho tham số kiểu của `MethodTree`:
 
 {{raw `
-    // The zero value of a MethodTree is a ready-to-use empty tree.
+    // Giá trị zero của MethodTree là một cây rỗng sẵn sàng sử dụng.
     type MethodTree[E Comparer[E]] struct {
         root *methodNode[E]
+    }
+
+    func (t *MethodTree[E]) Insert(element E) {
+        t.root = t.root.insert(element)
+    }
+
+    type methodNode[E Comparer[E]] struct {
+        value E
+        left  *methodNode[E]
+        right *methodNode[E]
+    }
+
+    func (n *methodNode[E]) insert(element E) *methodNode[E] {
+        if n == nil {
+            return &methodNode[E]{value: element}
+        }
+        sign := element.Compare(n.value)
+        switch {
+        case sign < 0:
+            n.left = n.left.insert(element)
+        case sign > 0:
+            n.right = n.right.insert(element)
+        }
+        return n
     }
 `}}
 
 ([playground](/play/p/LuhzYej_2SP))
 
-Vì `time.Time` hiện thực `Comparer[time.Time]`, giờ nó là một type argument hợp lệ cho container này, và ta vẫn có thể dùng zero value như một container rỗng:
+Vì `time.Time` triển khai `Comparer[time.Time]`, nó giờ là một đối số kiểu hợp lệ cho bộ chứa này, và chúng ta vẫn có thể sử dụng giá trị zero làm một bộ chứa rỗng:
 
 {{raw `
     var t MethodTree[time.Time]
     t.Insert(time.Now())
 `}}
 
-Để linh hoạt tối đa, một thư viện có thể cung cấp cả ba phiên bản API.
-Nếu muốn giảm trùng lặp, mọi phiên bản có thể dùng chung một hiện thực.
-Ta có thể dùng phiên bản dựa trên hàm cho điều đó, vì nó là tổng quát nhất:
+Để có đầy đủ tính linh hoạt, một thư viện có thể cung cấp cả ba phiên bản API.
+Nếu muốn giảm sự lặp lại, tất cả các phiên bản có thể sử dụng một phần triển khai dùng chung.
+Chúng ta có thể dùng phiên bản hàm cho việc đó, vì nó tổng quát nhất:
 
 {{raw `
-    // Insert inserts element into the tree, if E implements cmp.Ordered.
+    type node[E any] struct {
+        value E
+        left  *node[E]
+        right *node[E]
+    }
+
+    func (n *node[E]) insert(cmp func(E, E) int, element E) *node[E] {
+        if n == nil {
+            return &node[E]{value: element}
+        }
+        sign := cmp(element, n.value)
+        switch {
+        case sign < 0:
+            n.left = n.left.insert(cmp, element)
+        case sign > 0:
+            n.right = n.right.insert(cmp, element)
+        }
+        return n
+    }
+
+    // Insert chèn phần tử vào cây, nếu E triển khai cmp.Ordered.
     func (t *Tree[E]) Insert(element E) {
         t.root = t.root.insert(cmp.Compare[E], element)
     }
 
-    // Insert inserts element into the tree, using the provided comparison function.
+    // Insert chèn phần tử vào cây, sử dụng hàm so sánh được cung cấp.
     func (t *FuncTree[E]) Insert(element E) {
         t.root = t.root.insert(t.cmp, element)
     }
 
-    // Insert inserts element into the tree, if E implements Comparer[E].
+    // Insert chèn phần tử vào cây, nếu E triển khai Comparer[E].
     func (t *MethodTree[E]) Insert(element E) {
         t.root = t.root.insert(E.Compare, element)
     }
@@ -161,63 +225,92 @@ Ta có thể dùng phiên bản dựa trên hàm cho điều đó, vì nó là t
 
 ([playground](/play/p/jzmoaH5eaIv))
 
-Một quan sát quan trọng ở đây là hiện thực dùng chung (biến thể dựa trên hàm) không bị ràng buộc theo cách nào cả.
-Nó phải giữ tính linh hoạt tối đa để phục vụ như một lõi chung.
-Ta cũng không lưu hàm so sánh trong một trường của struct.
-Thay vào đó, ta truyền nó như tham số vì đối số hàm dễ được trình biên dịch phân tích hơn trường struct.
+Một nhận xét quan trọng ở đây là phần triển khai dùng chung (biến thể dựa trên hàm) không bị ràng buộc theo bất kỳ cách nào.
+Nó phải duy trì tính linh hoạt tối đa để đóng vai trò là phần lõi dùng chung.
+Chúng ta cũng không lưu hàm so sánh trong một trường của struct.
+Thay vào đó, chúng ta truyền nó dưới dạng tham số vì đối số hàm dễ để trình biên dịch phân tích hơn so với các trường của struct.
 
-Dĩ nhiên vẫn có một ít boilerplate.
-Mọi hiện thực export đều phải sao chép lại toàn bộ API với các kiểu gọi hơi khác nhau.
-Nhưng phần này khá thẳng thắn để viết và để đọc.
+Tất nhiên, vẫn có một lượng mã mẫu cần viết.
+Tất cả các phần triển khai được export cần lặp lại toàn bộ API với các mẫu gọi hơi khác nhau.
+Nhưng phần này khá đơn giản để viết và đọc.
 
-## Kết hợp phương thức và type set
+## Kết hợp các phương thức và tập kiểu
 
-Ta có thể dùng cấu trúc cây mới để hiện thực một ordered set, cho phép tra cứu phần tử theo thời gian logarithmic.
-Giờ hãy tưởng tượng ta cần cho việc tra cứu chạy trong thời gian hằng số; ta có thể thử làm điều đó bằng cách duy trì thêm một map Go thông thường song song với cây:
+Chúng ta có thể sử dụng cấu trúc dữ liệu cây mới để triển khai một tập có thứ tự, cung cấp khả năng tra cứu phần tử trong thời gian logarit.
+Bây giờ hãy tưởng tượng chúng ta cần làm cho việc tra cứu chạy trong thời gian hằng số; chúng ta có thể thử thực hiện điều này bằng cách duy trì một Go map thông thường bên cạnh cây:
 
 {{raw `
     type OrderedSet[E Comparer[E]] struct {
-        tree     MethodTree[E] // for efficient iteration in order
-        elements map[E]bool    // for (near) constant time lookup
+        tree     MethodTree[E] // để lặp theo thứ tự hiệu quả
+        elements map[E]bool    // để tra cứu (gần) trong thời gian hằng số
+    }
+
+    func (s *OrderedSet[E]) Has(e E) bool {
+        return s.elements[e]
+    }
+
+    func (s *OrderedSet[E]) Insert(e E) {
+        if s.elements == nil {
+            s.elements = make(map[E]bool)
+        }
+        if s.elements[e] {
+            return
+        }
+        s.elements[e] = true
+        s.tree.Insert(e)
+    }
+
+    func (s *OrderedSet[E]) All() iter.Seq[E] {
+        return func(yield func(E) bool) {
+            s.tree.root.all(yield)
+        }
+    }
+
+    func (n *node[E]) all(yield func(E) bool) bool {
+        return n == nil || (n.left.all(yield) && yield(n.value) && n.right.all(yield))
     }
 `}}
 
-([playground](/play/p/TANUnnSnDqf))
+([sân chơi](/play/p/TANUnnSnDqf))
 
-Tuy nhiên, biên dịch đoạn mã này sẽ cho lỗi:
+Tuy nhiên, việc biên dịch mã này sẽ tạo ra một lỗi:
 
 > invalid map key type E (missing comparable constraint)
 
-Thông báo lỗi cho ta biết rằng cần ràng buộc type parameter mạnh hơn để có thể dùng nó làm khóa của map.
-Constraint `comparable` là một constraint đặc biệt được khai báo sẵn, thỏa bởi mọi kiểu mà các toán tử so sánh bằng `==` và `!=` được định nghĩa.
-Trong Go, đó cũng chính là tập kiểu có thể được dùng làm khóa cho kiểu `map` dựng sẵn.
+Thông báo lỗi cho biết chúng ta cần ràng buộc thêm tham số kiểu để có thể sử dụng nó làm khóa của map.
+Ràng buộc `comparable` là một ràng buộc đặc biệt được khai báo sẵn, được thỏa mãn bởi tất cả các kiểu có định nghĩa các toán tử bằng `==` và `!=`.
+Trong Go, đó cũng là tập các kiểu có thể được sử dụng làm khóa cho kiểu `map` dựng sẵn.
 
-Ta có ba cách để thêm constraint này vào type parameter, mỗi cách có đánh đổi riêng:
+Chúng ta có ba tùy chọn để thêm ràng buộc này vào tham số kiểu, mỗi tùy chọn có những đánh đổi khác nhau:
 
-1. Ta có thể [embed](/ref/spec#Embedded_interfaces) `comparable` vào định nghĩa `Comparer` gốc ([playground](/play/p/g8NLjZCq97q)):
+1.  Chúng ta có thể [nhúng](/ref/spec#Embedded_interfaces) `comparable` vào định nghĩa `Comparer` ban đầu ([sân chơi](/play/p/g8NLjZCq97q)):
 
-   {{raw `
+    {{raw `
         type Comparer[E any] interface {
             comparable
             Compare(E) int
         }
-   `}}
+    `}}
 
-   Nhược điểm là điều đó cũng khiến các kiểu `Tree` chỉ dùng được với những kiểu `comparable`.
-   Nói chung, ta không muốn hạn chế kiểu generic nhiều hơn mức cần thiết.
-2. Ta có thể thêm một định nghĩa constraint mới ([playground](/play/p/Z2eg4X8xK5Z)).
+    Nhược điểm của cách này là nó cũng sẽ khiến các kiểu `Tree` của chúng ta chỉ có thể sử dụng với các kiểu là `comparable`.
+    Nói chung, chúng ta không muốn hạn chế các kiểu generic một cách không cần thiết.
+2.  Chúng ta có thể thêm một định nghĩa ràng buộc mới ([sân chơi](/play/p/Z2eg4X8xK5Z)).
 
-   {{raw `
+    {{raw `
+        type Comparer[E any] interface {
+            Compare(E) int
+        }
+
         type ComparableComparer[E any] interface {
             comparable
             Comparer[E]
         }
-   `}}
+    `}}
 
-   Cách này gọn, nhưng lại đưa thêm một định danh mới (`ComparableComparer`) vào API, mà chuyện đặt tên thì rất khó.
-3. Ta có thể thêm constraint trực tiếp vào kiểu bị ràng buộc chặt hơn ([playground](/play/p/ZfggVma_jNc)):
+    Cách này gọn gàng, nhưng nó đưa một định danh mới (`ComparableComparer`) vào API của chúng ta, và việc đặt tên rất khó.
+3.  Chúng ta có thể thêm ràng buộc trực tiếp vào kiểu có nhiều ràng buộc hơn ([sân chơi](/play/p/ZfggVma_jNc)):
 
-   {{raw `
+    {{raw `
         type OrderedSet[E interface {
             comparable
             Comparer[E]
@@ -225,20 +318,20 @@ Ta có ba cách để thêm constraint này vào type parameter, mỗi cách có
             tree     Tree[E]
             elements map[E]struct{}
         }
-   `}}
+    `}}
 
-   Cách này có thể hơi khó đọc, nhất là nếu phải lặp lại thường xuyên.
-   Nó cũng khiến việc tái sử dụng constraint ở nơi khác khó hơn.
+    Cách này có thể trở nên hơi khó đọc, đặc biệt nếu cần thực hiện thường xuyên.
+    Nó cũng khiến việc tái sử dụng ràng buộc ở những nơi khác trở nên khó khăn hơn.
 
-Dùng cách nào là một lựa chọn về phong cách và cuối cùng phụ thuộc vào sở thích cá nhân.
+Việc sử dụng tùy chọn nào trong số này là một lựa chọn về phong cách và cuối cùng phụ thuộc vào sở thích cá nhân.
 
-## Generic interface nên ràng buộc hay không?
+## (Không) ràng buộc các generic interface
 
-Tới đây, đáng để bàn về constraint trên generic interface.
+Tại thời điểm này, đáng để thảo luận về các ràng buộc trên generic interface.
 Bạn có thể muốn định nghĩa một interface cho một kiểu container generic.
-Ví dụ, giả sử bạn có một thuật toán cần một cấu trúc dữ liệu kiểu set.
-Có nhiều kiểu hiện thực set khác nhau với những đánh đổi khác nhau.
-Định nghĩa một interface cho những thao tác set mà bạn cần sẽ làm package linh hoạt hơn, để người dùng quyết định những đánh đổi nào phù hợp với ứng dụng cụ thể:
+Ví dụ, giả sử bạn có một thuật toán yêu cầu một cấu trúc dữ liệu tập hợp.
+Có nhiều loại triển khai tập hợp khác nhau với các đánh đổi khác nhau.
+Việc định nghĩa một interface cho các thao tác trên tập hợp mà bạn yêu cầu có thể làm tăng tính linh hoạt cho gói của bạn, để người dùng quyết định những đánh đổi nào phù hợp với ứng dụng cụ thể:
 
 {{raw `
     type Set[E any] interface {
@@ -249,24 +342,24 @@ Có nhiều kiểu hiện thực set khác nhau với những đánh đổi khá
     }
 `}}
 
-Một câu hỏi tự nhiên ở đây là constraint trên interface này nên là gì.
-Nếu có thể, type parameter trên generic interface nên dùng `any` làm constraint, để cho phép mọi kiểu tùy ý.
+Một câu hỏi tự nhiên ở đây là ràng buộc trên interface này nên là gì.
+Nếu có thể, tham số kiểu trên các generic interface nên sử dụng `any` làm ràng buộc, cho phép các kiểu tùy ý.
 
-Từ các phần thảo luận trước, lý do hẳn đã rõ:
-Những hiện thực cụ thể khác nhau có thể cần các constraint khác nhau.
-Tất cả các kiểu `Tree` ta đã xem ở trên, cũng như kiểu `OrderedSet`, đều có thể hiện thực `Set` cho kiểu phần tử của chúng, dù các kiểu này có constraint khác nhau.
+Từ những thảo luận ở trên, các lý do sẽ trở nên rõ ràng:
+Các triển khai cụ thể khác nhau có thể yêu cầu các ràng buộc khác nhau.
+Tất cả các kiểu `Tree` mà chúng ta đã xem xét ở trên, cũng như kiểu `OrderedSet`, đều có thể triển khai `Set` cho các kiểu phần tử của chúng, mặc dù các kiểu này có các ràng buộc khác nhau.
 
-Ý nghĩa của interface là để việc hiện thực được để ngỏ cho người dùng.
-Vì ta không thể dự đoán người dùng sẽ muốn đặt loại constraint nào lên phần hiện thực của họ, hãy cố để mọi constraint (mạnh hơn `any`) ở hiện thực cụ thể chứ không phải ở interface.
+Mục đích của việc định nghĩa một interface là để giao việc triển khai cho người dùng.
+Vì không thể dự đoán người dùng có thể muốn áp đặt những loại ràng buộc nào lên triển khai của họ, hãy cố gắng để mọi ràng buộc (mạnh hơn `any`) cho các triển khai cụ thể, không phải các interface.
 
-## Pointer receiver
+## Bộ nhận con trỏ
 
-Hãy thử dùng interface `Set` trong một ví dụ.
-Xét một hàm loại bỏ phần tử trùng lặp trong một chuỗi:
+Hãy thử sử dụng interface `Set` trong một ví dụ.
+Xét một hàm loại bỏ các phần tử trùng lặp trong một chuỗi:
 
 {{raw `
-    // Unique removes duplicate elements from the input sequence, yielding only
-    // the first instance of any element.
+    // Unique loại bỏ các phần tử trùng lặp khỏi chuỗi đầu vào, chỉ trả về
+    // lần xuất hiện đầu tiên của mỗi phần tử.
     func Unique[E comparable](input iter.Seq[E]) iter.Seq[E] {
         return func(yield func(E) bool) {
             seen := make(map[E]bool)
@@ -285,13 +378,13 @@ Xét một hàm loại bỏ phần tử trùng lặp trong một chuỗi:
 
 ([playground](/play/p/hsYoFjkU9kA))
 
-Hàm này dùng `map[E]bool` như một set đơn giản của các phần tử `E`.
-Do đó, nó chỉ hoạt động với các kiểu `comparable`, tức các kiểu có định nghĩa toán tử so sánh bằng dựng sẵn.
-Nếu muốn tổng quát hóa cho mọi kiểu, ta cần thay nó bằng một generic set:
+Điều này sử dụng một `map[E]bool` làm một tập hợp đơn giản của các phần tử `E`.
+Do đó, nó chỉ hoạt động với các kiểu là `comparable` và vì vậy định nghĩa các toán tử so sánh bằng tích hợp sẵn.
+Nếu chúng ta muốn tổng quát hóa điều này cho các kiểu tùy ý, chúng ta cần thay thế nó bằng một tập hợp generic:
 
 {{raw `
-    // Unique removes duplicate elements from the input sequence, yielding only
-    // the first instance of any element.
+    // Unique loại bỏ các phần tử trùng lặp khỏi chuỗi đầu vào, chỉ trả về
+    // lần xuất hiện đầu tiên của mỗi phần tử.
     func Unique[E any](input iter.Seq[E]) iter.Seq[E] {
         return func(yield func(E) bool) {
             var seen Set[E]
@@ -310,93 +403,127 @@ Nếu muốn tổng quát hóa cho mọi kiểu, ta cần thay nó bằng một 
 
 ([playground](/play/p/FZYPNf56nnY))
 
-Tuy nhiên, cách này không chạy được.
-`Set[E]` là một kiểu interface, và biến `seen` sẽ được khởi tạo bằng `nil`.
-Ta cần dùng một hiện thực cụ thể của interface `Set[E]`.
-Nhưng như đã thấy trong bài, không có hiện thực set tổng quát nào hoạt động cho mọi kiểu `any`.
+Tuy nhiên, điều này không hoạt động.
+`Set[E]` là một kiểu interface, và biến `seen` sẽ được khởi tạo thành `nil`.
+Chúng ta cần sử dụng một triển khai cụ thể của interface `Set[E]`.
+Nhưng như chúng ta đã thấy trong bài viết này, không có một triển khai tổng quát nào của tập hợp hoạt động với kiểu phần tử `any`.
 
-Ta buộc phải yêu cầu người dùng cung cấp một hiện thực cụ thể, thông qua một type parameter bổ sung:
+Chúng ta phải yêu cầu người dùng cung cấp một triển khai cụ thể mà chúng ta có thể sử dụng, dưới dạng một tham số kiểu bổ sung:
 
 {{raw `
-    func Unique[E any, S Set[E]](input iter.Seq[E]) iter.Seq[E] { ... }
+    // Unique loại bỏ các phần tử trùng lặp khỏi chuỗi đầu vào, chỉ trả về
+    // lần xuất hiện đầu tiên của mỗi phần tử.
+    func Unique[E any, S Set[E]](input iter.Seq[E]) iter.Seq[E] {
+        return func(yield func(E) bool) {
+            var seen S
+            for v := range input {
+                if seen.Has(v) {
+                    continue
+                }
+                if !yield(v) {
+                    return
+                }
+                seen.Insert(v)
+            }
+        }
+    }
 `}}
 
 ([playground](/play/p/kjkGy5cNz8T))
 
-Tuy nhiên, nếu khởi tạo nó bằng hiện thực set của ta, ta lại vấp phải vấn đề khác:
+Tuy nhiên, khi khởi tạo điều này với triển khai tập hợp của chúng ta, chúng ta gặp một vấn đề khác:
 
 {{raw `
-    // OrderedSet[E] does not satisfy Set[E] (method All has pointer receiver)
+    // OrderedSet[E] không thỏa mãn Set[E] (phương thức All có bộ nhận con trỏ)
     Unique[E, OrderedSet[E]](slices.Values(s))
-    // panic: invalid memory address or nil pointer dereference
+    // panic: địa chỉ bộ nhớ không hợp lệ hoặc tham chiếu con trỏ nil
     Unique[E, *OrderedSet[E]](slices.Values(s))
 `}}
 
-Vấn đề đầu tiên thể hiện rõ trong thông báo lỗi: ràng buộc kiểu của ta nói rằng type argument cho `S` phải hiện thực `Set[E]`.
-Mà vì các phương thức trên `OrderedSet` dùng pointer receiver, type argument đó cũng phải là kiểu con trỏ.
+Vấn đề đầu tiên đã rõ từ thông báo lỗi: Ràng buộc kiểu của chúng ta nói rằng đối số kiểu cho `S` cần triển khai interface `Set[E]`.
+Và vì các phương thức trên `OrderedSet` sử dụng bộ nhận con trỏ, đối số kiểu cũng phải là kiểu con trỏ.
 
-Khi cố làm điều đó, ta vấp phải vấn đề thứ hai.
-Nguyên nhân là vì trong phần hiện thực ta khai báo một biến:
+Khi cố gắng làm điều đó, chúng ta gặp vấn đề thứ hai.
+Điều này bắt nguồn từ việc chúng ta khai báo một biến trong phần triển khai:
 
 {{raw `
     var seen S
 `}}
 
-Nếu `S` là `*OrderedSet[E]`, biến sẽ được khởi tạo bằng `nil` như trước.
-Gọi `seen.Insert` sẽ panic.
+Nếu `S` là `*OrderedSet[E]`, biến sẽ được khởi tạo với `nil`, như trước.
+Việc gọi `seen.Insert` sẽ gây panic.
 
-Nếu ta chỉ có kiểu con trỏ, ta không thể có một biến hợp lệ của kiểu giá trị.
-Và nếu chỉ có kiểu giá trị, ta lại không thể gọi các phương thức con trỏ trên nó.
-Hệ quả là ta cần cả kiểu giá trị *lẫn* kiểu con trỏ.
-Vì vậy ta phải giới thiệu thêm type parameter `PS` với một constraint mới `PtrToSet`:
+Nếu chúng ta chỉ có kiểu con trỏ, chúng ta không thể lấy được một biến hợp lệ của kiểu giá trị.
+Và nếu chúng ta chỉ có kiểu giá trị, chúng ta không thể gọi các phương thức con trỏ trên nó.
+Hệ quả là chúng ta cần cả kiểu giá trị *và* kiểu con trỏ.
+Vì vậy, chúng ta phải giới thiệu một tham số kiểu bổ sung `PS` với một ràng buộc mới `PtrToSet`:
 
 {{raw `
-    // PtrToSet is implemented by a pointer type implementing the Set[E] interface.
+    // PtrToSet được triển khai bởi một kiểu con trỏ triển khai interface Set[E].
     type PtrToSet[S, E any] interface {
         *S
         Set[E]
+    }
+
+    // Unique loại bỏ các phần tử trùng lặp khỏi chuỗi đầu vào, chỉ trả về
+    // lần xuất hiện đầu tiên của mỗi phần tử.
+    func Unique[E, S any, PS PtrToSet[S, E]](input iter.Seq[E]) iter.Seq[E] {
+        return func(yield func(E) bool) {
+            // Chúng ta chuyển đổi sang PS, vì chỉ PS mới bị ràng buộc có các phương thức.
+            // Việc chuyển đổi được cho phép vì tập hợp kiểu của PS chỉ chứa *S.
+            seen := PS(new(S))
+            for v := range input {
+                if seen.Has(v) {
+                    continue
+                }
+                if !yield(v) {
+                    return
+                }
+                seen.Insert(v)
+            }
+        }
     }
 `}}
 
 ([playground](/play/p/Kp1jJRVjmYa))
 
-Mẹo ở đây là mối liên hệ giữa hai type parameter trong chữ ký hàm qua type parameter bổ sung trên interface `PtrToSet`.
-`S` tự nó không có constraint, nhưng `PS` phải có kiểu `*S` và phải có các phương thức ta cần.
-Nên trên thực tế, ta đang ràng buộc `S` phải có một số phương thức nhất định, nhưng những phương thức đó lại dùng pointer receiver.
+Mẹo ở đây là sự kết nối của hai tham số kiểu trong chữ ký hàm thông qua tham số kiểu bổ sung trên interface `PtrToSet`.
+Bản thân `S` không bị ràng buộc, nhưng `PS` phải có kiểu `*S` và phải có các phương thức mà chúng ta cần.
+Vì vậy, về cơ bản, chúng ta đang hạn chế `S` phải có một số phương thức, nhưng các phương thức đó cần sử dụng receiver con trỏ.
 
-Dù định nghĩa một hàm với kiểu constraint này cần thêm một type parameter, điều quan trọng là điều đó không làm phức tạp mã sử dụng nó:
-miễn là type parameter phụ này nằm ở cuối danh sách type parameter, nó [có thể được suy ra](/blog/type-inference):
+Mặc dù việc định nghĩa một hàm với loại ràng buộc này yêu cầu thêm một tham số kiểu, điều quan trọng là việc này không làm phức tạp mã sử dụng nó:
+miễn là tham số kiểu bổ sung này nằm ở cuối danh sách tham số kiểu, nó [có thể được suy luận](/blog/type-inference):
 
 {{raw `
-    // The third type argument is inferred to be *OrderedSet[int]
+    // Đối số kiểu thứ ba được suy luận là *OrderedSet[int]
     Unique[int, OrderedSet[int]](slices.Values(s))
 `}}
 
-Đây là một mẫu tổng quát và rất đáng ghi nhớ: để khi bạn gặp nó trong công việc của người khác, hoặc khi muốn dùng nó trong chính mã của mình.
+Đây là một mẫu tổng quát và đáng ghi nhớ: khi bạn gặp mẫu này trong công việc của người khác, hoặc khi bạn muốn sử dụng nó trong mã của chính mình.
 
 {{raw `
     func SomeFunction[T any, PT interface{ *T; SomeMethods }]()
 `}}
 
-Nếu bạn có hai type parameter, trong đó một cái bị ràng buộc là con trỏ tới cái còn lại, constraint đó sẽ đảm bảo những phương thức liên quan dùng pointer receiver.
+Nếu bạn có hai tham số kiểu, trong đó một tham số bị ràng buộc là con trỏ tới tham số còn lại, ràng buộc đó đảm bảo rằng các phương thức liên quan sử dụng receiver con trỏ.
 
-## Có nên ràng buộc theo pointer receiver? {#co-nen-rang-buoc-theo-pointer-receiver}
+## Có nên ràng buộc receiver con trỏ không?
 
-Đến đây, có thể bạn đang cảm thấy khá quá tải.
-Mọi thứ khá phức tạp và có vẻ không hợp lý khi mong đợi mọi lập trình viên Go đều hiểu chuyện gì đang xảy ra trong chữ ký hàm này.
-Ta cũng phải đưa thêm vài cái tên nữa vào API.
-Khi mọi người từng cảnh báo việc thêm generics vào Go, đây chính là một trong những điều họ lo ngại.
+Ở thời điểm này, có thể bạn cảm thấy khá choáng ngợp.
+Điều này khá phức tạp và có vẻ không hợp lý khi mong đợi mọi lập trình viên Go hiểu được điều gì đang xảy ra trong chữ ký hàm này.
+Chúng ta cũng phải đưa thêm nhiều tên hơn vào API của mình.
+Khi mọi người cảnh báo không nên thêm generics vào Go ngay từ đầu, đây là một trong những điều họ lo ngại.
 
-Vì vậy nếu bạn thấy mình bị mắc vào những vấn đề như thế, đáng để lùi lại một bước.
-Nhiều khi ta có thể tránh độ phức tạp này bằng cách nghĩ về bài toán theo hướng khác.
-Trong ví dụ này, ta xây một hàm nhận `iter.Seq[E]` và trả về một `iter.Seq[E]` với các phần tử duy nhất.
-Nhưng để loại trùng, ta phải thu thập các phần tử duy nhất vào một set.
-Và vì điều đó đòi hỏi ta phải cấp phát chỗ cho toàn bộ kết quả, ta thật ra không nhận được nhiều lợi ích khi biểu diễn kết quả như một luồng.
+Vì vậy, nếu bạn thấy mình bị cuốn vào những vấn đề này, hãy thử lùi lại một bước.
+Chúng ta thường có thể tránh sự phức tạp này bằng cách suy nghĩ về vấn đề theo một cách khác.
+Trong ví dụ này, chúng ta đã xây dựng một hàm nhận một `iter.Seq[E]` và trả về một `iter.Seq[E]` chứa các phần tử duy nhất.
+Nhưng để loại bỏ các phần tử trùng lặp, chúng ta cần thu thập các phần tử duy nhất vào một set.
+Và vì việc này yêu cầu cấp phát không gian cho toàn bộ kết quả, chúng ta thực sự không được hưởng lợi nhiều từ việc biểu diễn kết quả dưới dạng một luồng.
 
-Nếu nghĩ lại bài toán, ta có thể tránh hoàn toàn type parameter phụ bằng cách dùng `Set[E]` như một giá trị interface thông thường:
+Nếu xem xét lại vấn đề này, chúng ta có thể tránh hoàn toàn tham số kiểu bổ sung bằng cách sử dụng `Set[E]` như một giá trị interface thông thường:
 
 {{raw `
-    // InsertAll adds all unique elements from seq into set.
+    // InsertAll thêm tất cả các phần tử duy nhất từ seq vào set.
     func InsertAll[E any](set Set[E], seq iter.Seq[E]) {
         for v := range seq {
             set.Insert(v)
@@ -406,13 +533,13 @@ Nếu nghĩ lại bài toán, ta có thể tránh hoàn toàn type parameter ph�
 
 ([playground](/play/p/woZcHodAgaa))
 
-Bằng cách dùng `Set` như một kiểu interface thông thường, việc người gọi phải cung cấp một giá trị hợp lệ của hiện thực cụ thể trở nên rõ ràng.
+Bằng cách sử dụng `Set` như một kiểu interface thuần túy, rõ ràng là bên gọi phải cung cấp một giá trị hợp lệ của triển khai cụ thể của họ.
 Đây là một mẫu rất phổ biến.
-Và nếu họ cần một `iter.Seq[E]`, họ chỉ việc gọi `All()` trên `set` để lấy ra một cái.
+Và nếu họ cần một `iter.Seq[E]`, họ chỉ cần gọi `All()` trên `set` để lấy được một giá trị.
 
-Điều này có làm người gọi phức tạp hơn đôi chút, nhưng cũng có một lợi thế khác so với constraint pointer receiver:
-hãy nhớ rằng ta đã bắt đầu với `map[E]bool` như một kiểu set đơn giản.
-Rất dễ hiện thực interface `Set[E]` trên nền tảng đó:
+Điều này làm mọi thứ phức tạp hơn một chút đối với bên gọi, nhưng nó có một ưu điểm khác so với ràng buộc receiver con trỏ:
+hãy nhớ rằng chúng ta bắt đầu với `map[E]bool` như một kiểu set đơn giản.
+Việc triển khai interface `Set[E]` dựa trên kiểu đó rất dễ:
 
 {{raw `
     type HashSet[E comparable] map[E]bool
@@ -425,20 +552,20 @@ Rất dễ hiện thực interface `Set[E]` trên nền tảng đó:
 
 ([playground](/play/p/KPPpWa7M93d))
 
-Hiện thực này không dùng pointer receiver.
-Do đó, dù hoàn toàn hợp lệ, nó sẽ không dùng được với constraint pointer receiver phức tạp ở trên.
-Nhưng nó hoạt động rất tốt với phiên bản `InsertAll`.
-Cũng như nhiều constraint khác, việc ép mọi phương thức phải dùng pointer receiver thật ra có thể là quá chặt cho nhiều trường hợp thực tế.
+Triển khai này không sử dụng receiver con trỏ.
+Vì vậy, mặc dù nó hoàn toàn hợp lệ, nó sẽ không thể được sử dụng với ràng buộc phức tạp về receiver con trỏ.
+Nhưng nó hoạt động tốt với phiên bản `InsertAll` của chúng ta.
+Cũng như nhiều ràng buộc khác, việc buộc các phương thức sử dụng receiver con trỏ thực tế có thể là quá hạn chế đối với nhiều trường hợp sử dụng thực tế.
 
 ## Kết luận
 
-Hy vọng bài viết này đã minh họa một số mẫu và đánh đổi mà type parameter trên interface cho phép.
-Nó là một công cụ mạnh, nhưng cũng đi kèm chi phí.
-Những điểm rút ra chính là:
+Tôi hy vọng điều này minh họa một số mẫu thiết kế và sự đánh đổi mà tham số kiểu trên interface cho phép.
+Đây là một công cụ mạnh mẽ, nhưng nó cũng đi kèm với chi phí.
+Các điểm chính cần ghi nhớ là:
 
-1. Dùng generic interface để biểu đạt constraint trên receiver bằng cách dùng chúng theo kiểu tự tham chiếu.
-2. Dùng chúng để tạo các quan hệ bị ràng buộc giữa những type parameter khác nhau.
-3. Dùng chúng để trừu tượng hóa qua những hiện thực khác nhau với những kiểu constraint khác nhau.
-4. Khi bạn thấy mình rơi vào tình huống phải ràng buộc theo pointer receiver, hãy cân nhắc liệu có thể refactor mã để tránh độ phức tạp phụ này không. Xem ["Có nên ràng buộc theo pointer receivers?"](#co-nen-rang-buoc-theo-pointer-receiver).
+1. Sử dụng interface generic để biểu đạt các ràng buộc trên receiver bằng cách sử dụng chúng theo kiểu tự tham chiếu.
+2. Sử dụng chúng để tạo các mối quan hệ bị ràng buộc giữa những tham số kiểu khác nhau.
+3. Sử dụng chúng để trừu tượng hóa các triển khai khác nhau với các loại ràng buộc khác nhau.
+4. Khi bạn thấy mình ở tình huống cần ràng buộc với receiver là con trỏ, hãy cân nhắc liệu bạn có thể tái cấu trúc mã của mình để tránh sự phức tạp bổ sung hay không. Xem ["Bạn có nên ràng buộc với receiver là con trỏ không?"](#should-you-constrain-to-pointer-receivers).
 
-Như mọi khi, đừng over-engineer mọi thứ: một lời giải kém linh hoạt hơn nhưng đơn giản và dễ đọc hơn cuối cùng có thể vẫn là lựa chọn khôn ngoan hơn.
+Như mọi khi, đừng thiết kế quá mức cần thiết: một giải pháp kém linh hoạt hơn nhưng đơn giản hơn và dễ đọc hơn cuối cùng có thể là lựa chọn sáng suốt hơn.

@@ -5,54 +5,54 @@
 }-->
 
 <p>
-Dự án Go chào đón mọi người đóng góp.
+Dự án Go chào đón tất cả contributor.
 </p>
 
 <p>
-Tài liệu này là hướng dẫn giúp bạn đi qua quá trình
-đóng góp cho dự án Go, vốn có một số điểm khác
-so với các dự án mã nguồn mở khác.
-Chúng tôi giả định bạn đã có hiểu biết cơ bản về Git và Go.
+Tài liệu này là hướng dẫn giúp bạn thực hiện quy trình
+đóng góp cho dự án Go, quy trình này hơi khác
+so với quy trình được sử dụng bởi các dự án mã nguồn mở khác.
+Chúng tôi giả định bạn có hiểu biết cơ bản về Git và Go.
 </p>
 
 <p>
-Ngoài thông tin ở đây, cộng đồng Go còn duy trì một trang wiki
+Ngoài thông tin tại đây, cộng đồng Go duy trì một trang wiki
 <a href="/wiki/CodeReview">CodeReview</a>.
-Hãy đóng góp vào wiki khi bạn tìm hiểu thêm về quy trình review.
+Bạn có thể đóng góp cho wiki khi tìm hiểu quy trình xem xét.
 </p>
 
 <p>
-Lưu ý rằng front end <code>gccgo</code> nằm ở nơi khác;
+Lưu ý rằng phần front end của <code>gccgo</code> nằm ở nơi khác;
 xem <a href="gccgo_contribute.html">Đóng góp cho gccgo</a>.
 </p>
 
-<h2 id="contributor">Trở thành người đóng góp</h2>
+<h2 id="contributor">Trở thành contributor</h2>
 
 <h3 id="contrib_overview">Tổng quan</h3>
 
 <p>
-Bước đầu tiên là đăng ký làm người đóng góp cho Go và cấu hình môi trường của bạn.
-Dưới đây là danh sách các bước bắt buộc cần thực hiện:
+Bước đầu tiên là đăng ký làm contributor của Go và cấu hình môi trường của bạn.
+Dưới đây là danh sách kiểm tra các bước bắt buộc cần thực hiện:
 </p>
 
 <ul>
 <li>
-<b>Bước 0</b>: Chọn một tài khoản Google duy nhất mà bạn sẽ dùng để đóng góp cho Go.
-Dùng tài khoản đó cho tất cả các bước tiếp theo và đảm bảo rằng <code>git</code>
-được cấu hình để tạo commit với địa chỉ email của tài khoản đó.
+<b>Bước 0</b>: Quyết định một Google Account duy nhất mà bạn sẽ sử dụng để đóng góp cho Go.
+Sử dụng tài khoản đó cho tất cả các bước sau và đảm bảo rằng <code>git</code>
+được cấu hình để tạo các commit bằng địa chỉ e-mail của tài khoản đó.
 </li>
 <li>
-<b>Bước 1</b>: <a href="https://cla.developers.google.com/clas">Ký và nộp</a> một
-CLA (Thỏa thuận Cấp phép Người đóng góp).
+<b>Bước 1</b>: <a href="https://cla.developers.google.com/clas">Ký và gửi</a> một
+CLA (Contributor License Agreement).
 </li>
 <li>
-<b>Bước 2</b>: Cấu hình thông tin xác thực cho kho lưu trữ Git của Go.
-Truy cập <a href="https://go.googlesource.com">go.googlesource.com</a>, nhấn vào
-"Generate Password" ở thanh menu phía trên bên phải của trang và làm theo
+<b>Bước 2</b>: Cấu hình thông tin xác thực cho repository Git của Go.
+Truy cập <a href="https://go.googlesource.com">go.googlesource.com</a>, nhấp
+vào "Generate Password" trong thanh menu góc trên bên phải của trang và làm theo
 hướng dẫn.
 </li>
 <li>
-<b>Bước 3</b>: Đăng ký tài khoản Gerrit, công cụ review mã được nhóm Go sử dụng,
+<b>Bước 3</b>: Đăng ký Gerrit, công cụ xem xét mã được nhóm Go sử dụng,
 bằng cách <a href="https://go-review.googlesource.com/login/">truy cập trang này</a>.
 CLA và việc đăng ký chỉ cần thực hiện một lần cho tài khoản của bạn.
 </li>
@@ -63,7 +63,7 @@ CLA và việc đăng ký chỉ cần thực hiện một lần cho tài khoản
 </ul>
 
 <p>
-Nếu bạn thích, có một công cụ tự động hướng dẫn qua các bước này.
+Nếu muốn, bạn có thể sử dụng một công cụ tự động hướng dẫn qua các bước này.
 Chỉ cần chạy:
 </p>
 
@@ -75,44 +75,46 @@ $ go-contrib-init
 
 <p>
 Phần còn lại của chương này giải thích chi tiết hơn về các hướng dẫn này.
-Nếu bạn đã hoàn thành các bước trên (bằng tay hoặc qua công cụ), hãy chuyển đến
+Nếu bạn đã hoàn thành các bước trên (dù thực hiện thủ công hay thông qua công cụ), hãy chuyển đến
 <a href="#before_contributing">Trước khi đóng góp mã</a>.
 </p>
 
-<h3 id="google_account">Bước 0: Chọn tài khoản Google</h3>
+<h3 id="google_account">Bước 0: Chọn một Tài khoản Google</h3>
 
 <p>
-Mỗi đóng góp cho Go được thực hiện thông qua một tài khoản Google với một
-địa chỉ email cụ thể.
-Hãy dùng cùng một tài khoản trong suốt quá trình và
+Một đóng góp cho Go được thực hiện thông qua một Tài khoản Google với một
+địa chỉ e-mail cụ thể.
+Hãy đảm bảo sử dụng cùng một tài khoản trong suốt quá trình và
 cho tất cả các đóng góp tiếp theo của bạn.
-Bạn có thể cần quyết định xem dùng địa chỉ cá nhân hay địa chỉ công ty.
-Lựa chọn này phụ thuộc vào ai sẽ sở hữu bản quyền
-đối với mã bạn sẽ viết và nộp.
-Bạn có thể muốn thảo luận chủ đề này với người sử dụng lao động trước khi quyết định
-dùng tài khoản nào.
+Bạn có thể cần quyết định nên sử dụng địa chỉ cá nhân hay địa chỉ công ty.
+Lựa chọn này sẽ phụ thuộc vào người
+sẽ sở hữu bản quyền đối với mã mà bạn sẽ viết
+và gửi.
+Bạn có thể muốn thảo luận chủ đề này với nhà tuyển dụng của mình trước khi quyết định
+sử dụng tài khoản nào.
 </p>
 
 <p>
-Tài khoản Google có thể là tài khoản Gmail, tài khoản tổ chức G Suite, hoặc
-tài khoản được liên kết với một địa chỉ email bên ngoài.
-Ví dụ, nếu bạn cần dùng
-một email công ty hiện có không được quản lý qua G Suite, bạn có thể tạo
+Tài khoản Google có thể là tài khoản e-mail Gmail, tài khoản tổ chức G Suite, hoặc
+tài khoản liên kết với một địa chỉ e-mail bên ngoài.
+Ví dụ: nếu bạn cần sử dụng
+một e-mail công ty hiện có không được quản lý thông qua G Suite, bạn có thể tạo
 một tài khoản liên kết
-<a href="https://accounts.google.com/SignUpWithoutGmail">với địa chỉ email hiện có của bạn</a>.
+<a href="https://accounts.google.com/SignUpWithoutGmail">với địa chỉ
+e-mail hiện có của bạn</a>.
 </p>
 
 <p>
-Bạn cũng cần đảm bảo rằng công cụ Git của bạn được cấu hình để tạo commit
-bằng địa chỉ email bạn đã chọn.
-Bạn có thể cấu hình Git toàn cục
-(làm mặc định cho tất cả các dự án) hoặc cục bộ (cho một dự án cụ thể).
-Bạn có thể kiểm tra cấu hình hiện tại với lệnh sau:
+Bạn cũng cần đảm bảo rằng công cụ Git của mình được cấu hình để tạo commit
+bằng địa chỉ e-mail đã chọn.
+Bạn có thể cấu hình Git ở mức toàn cục
+(làm mặc định cho tất cả dự án), hoặc cục bộ (cho một dự án cụ thể).
+Bạn có thể kiểm tra cấu hình hiện tại bằng lệnh sau:
 </p>
 
 <pre>
-$ git config --global user.email  # check current global config
-$ git config user.email           # check current local config
+$ git config --global user.email  # kiểm tra cấu hình toàn cục hiện tại
+$ git config user.email           # kiểm tra cấu hình cục bộ hiện tại
 </pre>
 
 <p>
@@ -120,103 +122,98 @@ $ git config user.email           # check current local config
 </p>
 
 <pre>
-$ git config --global user.email name@example.com   # change global config
-$ git config user.email name@example.com            # change local config
+$ git config --global user.email name@example.com   # thay đổi cấu hình toàn cục
+$ git config user.email name@example.com            # thay đổi cấu hình cục bộ
 </pre>
 
-
-<h3 id="cla">Bước 1: Thỏa thuận Cấp phép Người đóng góp</h3>
+<h3 id="cla">Bước 1: Thỏa thuận cấp phép contributor</h3>
 
 <p>
-Trước khi gửi thay đổi đầu tiên của bạn lên dự án Go,
-bạn phải hoàn thành một trong hai CLA sau.
-CLA bạn cần ký phụ thuộc vào ai sở hữu bản quyền tác phẩm của bạn.
+Trước khi gửi thay đổi đầu tiên của bạn đến dự án Go
+bạn phải hoàn tất một trong hai CLA sau.
+Việc bạn nên ký CLA nào phụ thuộc vào người sở hữu bản quyền đối với công việc của bạn.
 </p>
 
 <ul>
 <li>
-Nếu bạn là người giữ bản quyền, bạn cần đồng ý với
-<a href="https://developers.google.com/open-source/cla/individual">thỏa thuận cấp phép người đóng góp
-cá nhân</a>, có thể hoàn thành trực tuyến.
+Nếu bạn là chủ sở hữu bản quyền, bạn sẽ cần đồng ý với
+<a href="https://developers.google.com/open-source/cla/individual">thỏa thuận cấp phép contributor cá nhân</a>, có thể được hoàn tất trực tuyến.
 </li>
 <li>
-Nếu tổ chức của bạn là người giữ bản quyền, tổ chức
-cần đồng ý với
-<a href="https://developers.google.com/open-source/cla/corporate">thỏa thuận cấp phép người đóng góp
-doanh nghiệp</a>.<br>
+Nếu tổ chức của bạn là chủ sở hữu bản quyền, tổ chức
+sẽ cần đồng ý với
+<a href="https://developers.google.com/open-source/cla/corporate">thỏa thuận cấp phép contributor cho tổ chức</a>.<br>
 </li>
 </ul>
 
 <p>
-Bạn có thể kiểm tra các thỏa thuận đã ký và ký thỏa thuận mới tại
-trang web <a href="https://cla.developers.google.com/clas?pli=1&amp;authuser=1">Google Developers
-Contributor License Agreements</a>.
-Nếu người giữ bản quyền của đóng góp của bạn đã hoàn thành
-thỏa thuận này trong một dự án mã nguồn mở khác của Google,
-thì không cần thực hiện lại.
+Bạn có thể kiểm tra các thỏa thuận đã ký hiện tại và ký các thỏa thuận mới tại
+trang web <a href="https://cla.developers.google.com/clas?pli=1&amp;authuser=1">Các thỏa thuận cấp phép contributor của Google Developers</a>.
+Nếu chủ sở hữu bản quyền cho đóng góp của bạn đã hoàn tất
+thỏa thuận liên quan đến một dự án mã nguồn mở khác của Google,
+thì không cần hoàn tất lại.
 </p>
 
 <p>
-Nếu người giữ bản quyền cho mã bạn đang nộp thay đổi&mdash;ví dụ,
-nếu bạn bắt đầu đóng góp mã nhân danh một công ty mới&mdash;hãy gửi email
-đến <a href="mailto:golang-dev@googlegroups.com"><code>golang-dev</code>
-danh sách thư</a>.
-Điều này giúp chúng tôi nắm được tình hình để đảm bảo một thỏa thuận phù hợp
-được hoàn thành.
+Nếu chủ sở hữu bản quyền cho mã bạn đang gửi thay đổi&mdash;ví dụ,
+nếu bạn bắt đầu đóng góp mã thay mặt cho một công ty mới&mdash;vui lòng gửi thư
+đến <a href="mailto:golang-dev@googlegroups.com">danh sách gửi thư <code>golang-dev</code></a>.
+Điều này sẽ cho chúng tôi biết tình huống để chúng tôi có thể đảm bảo một thỏa thuận phù hợp được
+hoàn tất.
 </p>
 
 
 <h3 id="config_git_auth">Bước 2: Cấu hình xác thực git</h3>
 
 <p>
-Kho lưu trữ Go chính đặt tại
+repository Go chính nằm tại
 <a href="https://go.googlesource.com">go.googlesource.com</a>,
-một máy chủ Git được Google lưu trữ.
-Xác thực trên máy chủ web được thực hiện thông qua tài khoản Google của bạn, nhưng
-bạn cũng cần cấu hình <code>git</code> trên máy tính để truy cập vào đó.
-Thực hiện các bước sau:
+một máy chủ Git do Google lưu trữ.
+Việc xác thực trên máy chủ web được thực hiện thông qua tài khoản Google của bạn, nhưng
+bạn cũng cần cấu hình <code>git</code> trên máy tính của mình để truy cập vào đó.
+Hãy làm theo các bước sau:
 </p>
 
 <ol>
 <li>
 Truy cập <a href="https://go.googlesource.com">go.googlesource.com</a>
-và nhấn vào "Generate Password" ở thanh menu phía trên bên phải của trang.
+và nhấp vào "Generate Password" trong thanh menu ở góc trên bên phải của trang.
 Bạn sẽ được chuyển hướng đến accounts.google.com để đăng nhập.
 </li>
 <li>
-Sau khi đăng nhập, bạn sẽ được đưa đến trang có tiêu đề "Configure Git".
-Trang này chứa một đoạn script được cá nhân hóa, khi chạy cục bộ sẽ cấu hình Git
+Sau khi đăng nhập, bạn sẽ được đưa đến một trang có tiêu đề "Configure Git".
+Trang này chứa một tập lệnh được cá nhân hóa, khi chạy cục bộ sẽ cấu hình Git
 để lưu khóa xác thực duy nhất của bạn.
-Khóa này được ghép nối với một khóa được tạo và lưu trữ trên máy chủ,
-tương tự như cách khóa SSH hoạt động.
+Khóa này được ghép cặp với một khóa được tạo và lưu trữ trên máy chủ,
+tương tự như cách các khóa SSH hoạt động.
 </li>
 <li>
-Sao chép và chạy script này trong terminal cục bộ để lưu token xác thực bí mật
-của bạn vào tệp <code>.gitcookies</code>.
-Nếu bạn đang dùng máy tính Windows và chạy <code>cmd</code>,
-hãy làm theo hướng dẫn trong hộp màu vàng để chạy lệnh;
-nếu không, hãy chạy script thông thường.
+Sao chép và chạy tập lệnh này cục bộ trong terminal của bạn để lưu mã thông báo
+xác thực bí mật vào tệp <code>.gitcookies</code>.
+Nếu bạn đang sử dụng máy tính Windows và chạy <code>cmd</code>,
+thay vào đó bạn nên làm theo hướng dẫn trong hộp màu vàng để chạy lệnh;
+nếu không, hãy chạy tập lệnh thông thường.
 </li>
 </ol>
 
-<h3 id="auth">Bước 3: Tạo tài khoản Gerrit</h3>
+<h3 id="auth">Bước 3: Tạo tài khoản Gerrit </h3>
 
 <p>
-Gerrit là công cụ mã nguồn mở được các maintainer của Go sử dụng để thảo luận và review
-các bản nộp mã.
+Gerrit là một công cụ mã nguồn mở được các maintainer của Go sử dụng để thảo luận và xem xét
+các nội dung gửi mã.
 </p>
 
 <p>
-Để đăng ký tài khoản, truy cập <a href="https://go-review.googlesource.com/login/">
-go-review.googlesource.com/login/</a> và đăng nhập một lần bằng cùng tài khoản Google bạn đã dùng ở trên.
+Để đăng ký tài khoản, hãy truy cập <a href="https://go-review.googlesource.com/login/">
+go-review.googlesource.com/login/</a> và đăng nhập một lần bằng cùng Tài khoản Google mà bạn đã sử dụng ở trên.
 </p>
 
 <h3 id="git-codereview_install">Bước 4: Cài đặt lệnh git-codereview</h3>
 
 <p>
-Các thay đổi cho Go phải được review trước khi được chấp nhận, bất kể ai thực hiện thay đổi đó.
+Các thay đổi đối với Go phải được xem xét trước khi được chấp nhận, bất kể ai thực hiện thay đổi đó.
 Một lệnh <code>git</code> tùy chỉnh có tên <code>git-codereview</code>
-giúp đơn giản hóa việc gửi thay đổi lên Gerrit.
+giúp đơn giản hóa việc gửi các thay đổi đến Gerrit.
 </p>
 
 <p>
@@ -228,8 +225,8 @@ $ go install golang.org/x/review/git-codereview@latest
 </pre>
 
 <p>
-Đảm bảo <code>git-codereview</code> được cài đặt trong đường dẫn shell của bạn, để
-lệnh <code>git</code> có thể tìm thấy nó.
+Đảm bảo <code>git-codereview</code> được cài đặt trong đường dẫn shell của bạn, để lệnh
+<code>git</code> có thể tìm thấy nó.
 Kiểm tra rằng
 </p>
 
@@ -238,36 +235,38 @@ $ git codereview help
 </pre>
 
 <p>
-in ra nội dung trợ giúp, không phải lỗi. Nếu nó in ra lỗi, hãy đảm bảo rằng
+in ra văn bản trợ giúp, không phải lỗi. Nếu nó in ra lỗi, hãy đảm bảo rằng
 <code>$GOPATH/bin</code> nằm trong <code>$PATH</code> của bạn.
 </p>
 
 <p>
-Trên Windows, khi dùng git-bash bạn phải đảm bảo rằng
+Trên Windows, khi sử dụng git-bash bạn phải đảm bảo rằng
 <code>git-codereview.exe</code> nằm trong exec-path của <code>git</code>.
-Chạy <code>git --exec-path</code> để tìm vị trí đúng rồi tạo một
-liên kết tượng trưng hoặc chỉ cần sao chép tệp thực thi từ <code>$GOPATH/bin</code> vào thư mục đó.
+Chạy <code>git --exec-path</code> để tìm vị trí phù hợp, sau đó tạo một
+liên kết tượng trưng hoặc chỉ cần sao chép tệp thực thi từ <code>$GOPATH/bin</code> vào
+thư mục này.
 </p>
 
 
 <h2 id="before_contributing">Trước khi đóng góp mã</h2>
 
 <p>
-Dự án chào đón các bản vá mã, nhưng để đảm bảo mọi thứ được
-phối hợp tốt, bạn nên thảo luận về bất kỳ thay đổi đáng kể nào trước khi
-bắt đầu thực hiện.
-Khuyến nghị bạn báo hiệu ý định đóng góp trong
-trình theo dõi issue, bằng cách <a href="/issue/new">tạo một issue
-mới</a> hoặc nhận một <a href="/issues">issue hiện có</a>.
+Dự án hoan nghênh các bản vá mã, nhưng để đảm bảo mọi thứ được phối hợp tốt
+bạn nên thảo luận về bất kỳ thay đổi đáng kể nào trước khi bắt đầu
+công việc.
+Bạn nên thông báo ý định đóng góp của mình trong trình theo dõi issue,
+bằng cách <a href="/issue/new">tạo
+một issue mới</a> hoặc nhận
+một <a href="/issues">issue hiện có</a>.
 </p>
 
-<h3 id="where">Đóng góp vào đâu</h3>
+<h3 id="where">Đóng góp ở đâu</h3>
 
 <p>
-Dự án Go gồm kho lưu trữ chính
-<a href="https://go.googlesource.com/go">go</a>, chứa
-mã nguồn cho ngôn ngữ Go, cùng với nhiều kho lưu trữ golang.org/x/...
-Các kho này chứa nhiều công cụ và cơ sở hạ tầng hỗ trợ Go. Ví dụ,
+Dự án Go bao gồm repository
+<a href="https://go.googlesource.com/go">go</a> chính, chứa
+mã nguồn của ngôn ngữ Go, cũng như nhiều repository golang.org/x/....
+Các repository này chứa nhiều công cụ và cơ sở hạ tầng hỗ trợ Go. Ví dụ,
 <a href="https://go.googlesource.com/pkgsite">golang.org/x/pkgsite</a>
 dành cho <a href="https://pkg.go.dev">pkg.go.dev</a>,
 <a href="https://go.googlesource.com/playground">golang.org/x/playground</a>
@@ -275,51 +274,51 @@ dành cho Go playground, và
 <a href="https://go.googlesource.com/tools">golang.org/x/tools</a> chứa
 nhiều công cụ Go, bao gồm máy chủ ngôn ngữ Go,
 <a href="/s/gopls">gopls</a>. Bạn có thể xem
-danh sách tất cả các kho golang.org/x/... trên
+danh sách tất cả các repository golang.org/x/... trên
 <a href="https://go.googlesource.com">go.googlesource.com</a>.
 </p>
 
 <h3 id="check_tracker">Kiểm tra trình theo dõi issue</h3>
 
 <p>
-Dù bạn đã biết muốn đóng góp gì, hay bạn đang tìm kiếm
-ý tưởng, <a href="https://github.com/golang/go/issues">trình theo dõi issue</a> luôn là
-nơi đầu tiên cần ghé.
-Các issue được phân loại để phân nhóm và quản lý quy trình.
+Cho dù bạn đã biết mình muốn thực hiện đóng góp nào, hay đang tìm kiếm
+một ý tưởng, <a href="https://github.com/golang/go/issues">trình theo dõi issue</a> luôn là
+nơi đầu tiên cần đến.
+Các issue được phân loại để sắp xếp chúng và quản lý quy trình làm việc.
 </p>
 
 <p>
-Phần lớn các kho golang.org/x/... cũng dùng trình theo dõi issue chính của Go.
-Tuy nhiên, một số kho quản lý issue của riêng mình,
-vì vậy hãy chắc chắn kiểm tra đúng trình theo dõi cho kho lưu trữ
-mà bạn muốn đóng góp.
+Phần lớn các repository golang.org/x/... cũng sử dụng trình theo dõi
+issue chính của Go. Tuy nhiên, một số ít repository này quản lý issue của
+chúng riêng biệt, vì vậy hãy đảm bảo kiểm tra đúng trình theo dõi cho repository mà
+bạn muốn đóng góp.
 </p>
 
 <p>
-Hầu hết các issue sẽ được gắn một trong các nhãn quy trình sau:
+Hầu hết issue sẽ được đánh dấu bằng một trong các nhãn quy trình làm việc sau:
 </p>
 
 <ul>
 	<li>
 	<b>NeedsInvestigation</b>: Issue chưa được hiểu đầy đủ
-	và cần phân tích để tìm ra nguyên nhân gốc rễ.
+	và cần phân tích để hiểu nguyên nhân gốc.
 	</li>
 	<li>
-	<b>NeedsDecision</b>: Issue đã được hiểu tương đối rõ, nhưng
-	nhóm Go chưa quyết định cách giải quyết tốt nhất.
-	Tốt hơn là đợi có quyết định trước khi viết mã.
-	Nếu bạn quan tâm đến việc xử lý một issue ở trạng thái này,
-	hãy tự nhiên "nhắn" maintainer trong phần bình luận của issue
-	nếu đã một thời gian trôi qua mà chưa có quyết định.
+	<b>NeedsDecision</b>: issue tương đối đã được hiểu rõ, nhưng
+	nhóm Go vẫn chưa quyết định cách tốt nhất để xử lý nó.
+	Sẽ tốt hơn nếu chờ quyết định trước khi viết mã.
+	Nếu bạn quan tâm đến việc làm việc trên một issue ở trạng thái này,
+	hãy thoải mái "ping" những người duy trì trong phần bình luận của issue
+	nếu đã có một khoảng thời gian trôi qua mà chưa có quyết định.
 	</li>
 	<li>
-	<b>NeedsFix</b>: Issue đã được hiểu đầy đủ và có thể viết mã
+	<b>NeedsFix</b>: issue đã được hiểu đầy đủ và có thể viết mã
 	để sửa nó.
 	</li>
 </ul>
 
 <p>
-Bạn có thể dùng chức năng tìm kiếm của GitHub để tìm các issue cần giúp đỡ. Ví dụ:
+Bạn có thể sử dụng chức năng tìm kiếm của GitHub để tìm các issue cần hỗ trợ. Ví dụ:
 </p>
 
 <ul>
@@ -333,116 +332,68 @@ Bạn có thể dùng chức năng tìm kiếm của GitHub để tìm các issu
 	Các issue cần sửa và có thay đổi được đề xuất: <a href="https://github.com/golang/go/issues?q=is%3Aissue+is%3Aopen+label%3ANeedsFix+%28%22golang.org%2Fcl%22+OR+%22go.dev%2Fcl%22%29"><code>is:issue is:open label:NeedsFix ("golang.org/cl" OR "go.dev/cl")</code></a>
 	</li>
 	<li>
-	Các issue cần sửa và chưa có thay đổi được đề xuất: <a href="https://github.com/golang/go/issues?q=is%3Aissue+is%3Aopen+label%3ANeedsFix+NOT+%22golang.org%2Fcl%22+NOT+%22go.dev%2Fcl%22"><code>is:issue is:open label:NeedsFix NOT "golang.org/cl" NOT "go.dev/cl"</code></a>
+	Các issue cần sửa và không có thay đổi được đề xuất: <a href="https://github.com/golang/go/issues?q=is%3Aissue+is%3Aopen+label%3ANeedsFix+NOT+%22golang.org%2Fcl%22+NOT+%22go.dev%2Fcl%22"><code>is:issue is:open label:NeedsFix NOT "golang.org/cl" NOT "go.dev/cl"</code></a>
 	</li>
 </ul>
 
-<h3 id="design">Tạo issue cho mọi vấn đề mới</h3>
+<h3 id="design">Mở một issue cho mọi vấn đề mới</h3>
 
 <p>
-Ngoại trừ các thay đổi rất nhỏ, tất cả đóng góp phải được liên kết
-với một issue hiện có.
-Hãy tự nhiên mở một issue và thảo luận về kế hoạch của bạn.
-Quá trình này cho mọi người cơ hội xác nhận thiết kế,
-giúp tránh trùng lặp công sức,
-và đảm bảo ý tưởng phù hợp với mục tiêu của ngôn ngữ và công cụ.
-Nó cũng kiểm tra xem thiết kế có hợp lý trước khi viết mã không;
-công cụ review mã không phải nơi để thảo luận ở mức cao.
+Ngoại trừ các thay đổi rất nhỏ,
+mọi đóng góp nên được liên kết với một issue hiện có.
+Bạn có thể mở một issue và thảo luận về kế hoạch của mình.
+Quy trình này cho phép mọi người có cơ hội xác thực thiết kế,
+giúp tránh trùng lặp nỗ lực,
+và đảm bảo ý tưởng phù hợp với các mục tiêu của ngôn ngữ và công cụ.
+Quy trình này cũng kiểm tra rằng thiết kế hợp lý trước khi mã được viết;
+công cụ review mã không phải là nơi để thảo luận ở cấp độ cao.
 </p>
 
 <p>
-Khi lên kế hoạch công việc, hãy lưu ý rằng dự án Go tuân theo <a
+Khi lập kế hoạch công việc, hãy lưu ý rằng dự án Go tuân theo <a
 href="/wiki/Go-Release-Cycle">chu kỳ phát triển sáu tháng</a>
-cho kho lưu trữ Go chính. Nửa sau của mỗi chu kỳ là ba tháng
-đóng băng tính năng, trong đó chỉ chấp nhận sửa lỗi và cập nhật tài liệu.
-Có thể gửi đóng góp mới trong thời gian đóng băng tính năng, nhưng chúng sẽ
-không được merge cho đến khi hết thời gian đóng băng. Việc đóng băng áp dụng cho toàn bộ kho lưu trữ chính
-cũng như mã trong các kho golang.org/x/... cần thiết
-để build các tệp nhị phân có trong bản phát hành. Xem danh sách các package được vendor vào
+cho repository Go chính. Nửa sau của mỗi chu kỳ là giai đoạn đóng băng tính năng
+kéo dài ba tháng, trong đó chỉ chấp nhận các bản sửa lỗi và cập nhật tài liệu.
+Các đóng góp mới có thể được gửi trong thời gian đóng băng tính năng, nhưng chúng sẽ
+không được hợp nhất cho đến khi giai đoạn đóng băng kết thúc. Giai đoạn đóng băng
+áp dụng cho toàn bộ repository chính cũng như mã trong các repository
+golang.org/x/... cần thiết để xây dựng các binary có trong bản phát hành. Xem danh sách các gói
+được vendored vào
 <a href="https://github.com/golang/go/blob/master/src/vendor/modules.txt">thư viện chuẩn</a>
-và <a href="https://github.com/golang/go/blob/master/src/cmd/vendor/modules.txt">lệnh <code>go</code></a>.
+và <a href="https://github.com/golang/go/blob/master/src/cmd/vendor/modules.txt"><code>go</code> command</a>.
 </p>
 
 <p>
 Các thay đổi đáng kể đối với ngôn ngữ, thư viện hoặc công cụ
-(bao gồm thay đổi API trong kho chính và tất cả kho golang.org/x,
-cũng như thay đổi giao diện dòng lệnh của lệnh <code>go</code>)
-phải trải qua
+(bao gồm các thay đổi API trong repo chính và tất cả repository golang.org/x,
+cũng như các thay đổi dòng lệnh đối với <code>go</code> command)
+phải đi
+qua
 <a href="/s/proposal-process">quy trình đề xuất thay đổi</a>
-trước khi được chấp nhận.
+trước khi chúng có thể được chấp nhận.
 </p>
 
 <p>
-Các vấn đề bảo mật nhạy cảm (chỉ những vấn đề đó!) nên được báo cáo tới <a href="mailto:security@golang.org">security@golang.org</a>.
+Các vấn đề nhạy cảm liên quan đến bảo mật (chỉ các vấn đề này!) nên được báo cáo tới <a href="mailto:security@golang.org">security@golang.org</a>.
 </p>
 
-<h2 id="sending_a_change_github">Gửi thay đổi qua GitHub</h2>
+<h2 id="sending_a_change_gerrit">Gửi một thay đổi qua Gerrit</h2>
 
 <p>
-Những người đóng góp lần đầu đã quen với
-<a href="https://guides.github.com/introduction/flow/">GitHub flow</a>
-được khuyến khích dùng cùng quy trình đó cho các đóng góp cho Go.
-Mặc dù các
-maintainer của Go dùng Gerrit để review mã, một bot tên Gopherbot đã được tạo ra để đồng bộ
-các pull request GitHub lên Gerrit.
-</p>
-
-<p>
-Mở một pull request GitHub như bình thường.
-Gopherbot sẽ tạo một danh sách thay đổi Gerrit tương ứng (gọi là "CL") và đăng liên kết đến
-nó trên pull request GitHub của bạn; các cập nhật cho pull request cũng sẽ
-được phản ánh trong Gerrit CL.
-Khi ai đó bình luận về CL, bình luận của họ cũng sẽ
-được đăng trong pull request của bạn, vì vậy bạn sẽ nhận được thông báo.
+Chúng tôi khuyến khích sử dụng Gerrit để gửi các thay đổi để review. Mặc dù có một chút
+đường cong học tập đối với người dùng chỉ sử dụng quy trình làm việc của GitHub,
+đây là quy trình làm việc chính được các contributor của dự án Go sử dụng và là
+một quy trình làm việc mượt mà hơn với nhiều tính năng hơn.
 </p>
 
 <p>
-Một số điều cần lưu ý:
-</p>
-
-<ul>
-<li>
-Bạn sẽ cần một <a href="https://go-review.googlesource.com/login/">tài khoản Gerrit</a>
-để phản hồi reviewer của mình, bao gồm cả việc <a href="#reviews">đánh dấu phản hồi là 'Done'</a>
-nếu đã thực hiện theo gợi ý.
-Nên tìm hiểu về Gerrit, chẳng hạn bằng cách
-<a href="https://go-review.googlesource.com/q/status:open+-is:wip">lướt qua các CL đang mở</a>,
-đăng ký nhận cập nhật về các CL thú vị (qua biểu tượng ngôi sao),
-hoặc <a href="/wiki/Gardening#pending-cls">review hoặc cho +1</a> các CL của người khác.
-</li>
-<li>
-Để cập nhật pull request với mã mới, chỉ cần push nó lên branch; bạn có thể
-thêm nhiều commit hơn, hoặc rebase và force-push (cả hai cách đều được chấp nhận).
-</li>
-<li>
-Nếu yêu cầu được chấp nhận, tất cả các commit sẽ được squash, và mô tả commit
-cuối cùng sẽ được tạo thành bằng cách ghép tiêu đề và mô tả của pull request.
-Mô tả của từng commit riêng lẻ sẽ bị bỏ qua.
-Xem <a href="#commit_messages">Viết thông điệp commit tốt</a> để có một số
-gợi ý.
-</li>
-<li>
-Xem <a href="/wiki/GerritBot#frequently-asked-questions">FAQ</a> để biết thêm chi tiết.
-</li>
-</ul>
-
-<h2 id="sending_a_change_gerrit">Gửi thay đổi qua Gerrit</h2>
-
-<p>
-Hiện tại, việc đồng bộ hoàn toàn Gerrit và GitHub là không thể,
-vì vậy chúng tôi khuyến nghị bạn học Gerrit.
-Nó khác biệt nhưng mạnh mẽ, và quen thuộc với nó sẽ giúp bạn hiểu
-quy trình.
-</p>
-
-<p>
-Các phần sau đây cung cấp hướng dẫn ngắn gọn về việc gửi thay đổi qua Gerrit.
-Để biết thêm chi tiết về cách tương tác với Gerrit, tham khảo
+Các phần sau cung cấp hướng dẫn ngắn gọn về việc gửi một thay đổi qua Gerrit.
+Để biết thêm chi tiết về cách tương tác với Gerrit, hãy tham khảo
 <a href="https://gerrit-review.googlesource.com/Documentation/index.html">tài liệu của Gerrit</a>.
-Đặc biệt, chúng tôi khuyến nghị đọc trang
-<a href="https://gerrit-review.googlesource.com/Documentation/user-review-ui.html">Tổng quan giao diện Review</a>
-và <a href="https://gerrit-review.googlesource.com/Documentation/intro-gerrit-walkthrough-github.html">
-Hướng dẫn cơ bản về Gerrit cho người dùng GitHub</a>.
+Đặc biệt, chúng tôi khuyên bạn nên đọc
+<a href="https://gerrit-review.googlesource.com/Documentation/user-review-ui.html">Tổng quan về Review UI</a>
+và các trang <a href="https://gerrit-review.googlesource.com/Documentation/intro-gerrit-walkthrough-github.html">
+Hướng dẫn cơ bản về Gerrit — Dành cho người dùng GitHub</a>.
 </p>
 
 <h3 id="gerrit_overview">Tổng quan</h3>
@@ -453,78 +404,78 @@ Hướng dẫn cơ bản về Gerrit cho người dùng GitHub</a>.
 
 <ul>
 <li>
-<b>Bước 1:</b> Clone mã nguồn từ <code>go.googlesource.com</code> và
-đảm bảo nó ổn định bằng cách biên dịch và kiểm thử một lần.
+<b>Bước 1:</b> Sao chép mã nguồn từ <code>go.googlesource.com</code> và
+đảm bảo mã nguồn ổn định bằng cách biên dịch và kiểm thử một lần.
 
-<p>Nếu bạn đang thực hiện thay đổi cho
-<a href="https://go.googlesource.com/go">kho lưu trữ Go chính</a>:</p>
+<p>Nếu bạn đang thực hiện thay đổi đối với
+<a href="[https://go.googlesource.com/go](https://go.googlesource.com/go)">repository Go chính</a>:</p>
 
 <pre>
-$ git clone https://go.googlesource.com/go
+$ git clone [https://go.googlesource.com/go](https://go.googlesource.com/go)
 $ cd go/src
-$ ./all.bash                                # compile and test
+$ ./all.bash                                # biên dịch và kiểm thử
 </pre>
 
 <p>
-Nếu bạn đang thực hiện thay đổi cho một trong các kho golang.org/x/...
-(<a href="https://go.googlesource.com/tools">golang.org/x/tools</a>,
+Nếu bạn đang thực hiện thay đổi đối với một trong các repository golang.org/x/...
+(<a href="[https://go.googlesource.com/tools](https://go.googlesource.com/tools)">golang.org/x/tools</a>,
 trong ví dụ này):
 </p>
 
 <pre>
-$ git clone https://go.googlesource.com/tools
+$ git clone [https://go.googlesource.com/tools](https://go.googlesource.com/tools)
 $ cd tools
-$ go test ./...                             # compile and test
+$ go test ./...                             # biên dịch và kiểm thử
 </pre>
 </li>
 
 <li>
-<b>Bước 2:</b> Chuẩn bị thay đổi trong một branch mới, tạo từ branch master.
-Để commit thay đổi, dùng <code>git</code> <code>codereview</code> <code>change</code>; lệnh đó
-sẽ tạo hoặc chỉnh sửa một commit duy nhất trong branch.
+<b>Bước 2:</b> Chuẩn bị các thay đổi trong một nhánh mới, được tạo từ nhánh master.
+Để commit các thay đổi, hãy sử dụng <code>git</code> <code>codereview</code> <code>change</code>; thao tác này
+sẽ tạo hoặc cập nhật một commit duy nhất trong nhánh.
 <pre>
 $ git checkout -b mybranch
 $ [edit files...]
 $ git add [files...]
-$ git codereview change   # create commit in the branch
+$ git codereview change   # tạo commit trong nhánh
 $ [edit again...]
 $ git add [files...]
-$ git codereview change   # amend the existing commit with new changes
+$ git codereview change   # cập nhật commit hiện có với các thay đổi mới
 $ [etc.]
 </pre>
 </li>
 
 <li>
-<b>Bước 3:</b> Kiểm thử thay đổi của bạn, bằng cách chạy các kiểm thử trong package
-bạn đã chỉnh sửa hoặc bằng cách chạy lại <code>all.bash</code>.
+<b>Bước 3:</b> Kiểm thử các thay đổi của bạn, bằng cách chạy các bài kiểm thử trong gói
+mà bạn đã chỉnh sửa hoặc chạy lại <code>all.bash</code>.
 
-<p>Trong kho lưu trữ Go chính:</p>
+<p>Trong repository Go chính:</p>
 <pre>
-$ ./all.bash    # recompile and test
+$ ./all.bash    # biên dịch lại và kiểm thử
 </pre>
 
-<p>Trong kho golang.org/x/...:</p>
+<p>Trong một repository golang.org/x/...:</p>
 <pre>
-$ go test ./... # recompile and test
-</pre>
-</li>
-
-<li>
-<b>Bước 4:</b> Gửi thay đổi để review lên Gerrit bằng <code>git</code>
-<code>codereview</code> <code>mail</code> (dù tên gọi vậy, thực ra không dùng email).
-<pre>
-$ git codereview mail     # send changes to Gerrit
+$ go test ./... # biên dịch lại và kiểm thử
 </pre>
 </li>
 
 <li>
-<b>Bước 5:</b> Sau khi review, áp dụng thay đổi vào cùng một commit duy nhất
-và gửi lại lên Gerrit:
+<b>Bước 4:</b> Gửi các thay đổi để xem xét tới Gerrit bằng <code>git</code>
+<code>codereview</code> <code>mail</code> (dù tên gọi là vậy nhưng thao tác này không sử dụng e-mail).
+<pre>
+$ git codereview mail     # gửi các thay đổi tới Gerrit
+</pre>
+</li>
+
+<li>
+<b>Bước 5:</b> Sau khi xem xét, áp dụng các thay đổi vào cùng một commit duy nhất
+và gửi lại cho Gerrit:
 <pre>
 $ [edit files...]
 $ git add [files...]
-$ git codereview change   # update same commit
-$ git codereview mail     # send to Gerrit again
+$ git codereview change   # cập nhật cùng commit
+$ git codereview mail     # gửi lại tới Gerrit
 </pre>
 </li>
 </ul>
@@ -534,36 +485,35 @@ Phần còn lại của mục này mô tả chi tiết hơn về các bước n�
 </p>
 
 
-<h3 id="checkout_go">Bước 1: Clone mã nguồn</h3>
+<h3 id="checkout_go">Bước 1: Sao chép mã nguồn</h3>
 
 <p>
-Ngoài cài đặt Go gần đây, bạn cần có bản sao cục bộ của mã nguồn
-đã checkout từ kho lưu trữ đúng.
-Bạn có thể checkout kho nguồn Go vào bất kỳ đâu trên hệ thống tệp cục bộ
+Ngoài một bản cài đặt Go gần đây, bạn cần có một bản sao cục bộ của mã nguồn
+được checkout từ repository chính xác.
+Bạn có thể checkout repo mã nguồn Go vào hệ thống tệp cục bộ của mình ở bất kỳ đâu
 miễn là nó nằm ngoài <code>GOPATH</code>
-(mặc định là thư mục <code>go</code> trong thư mục home của bạn).
+(mặc định là thư mục <code>go</code> trong thư mục chính của bạn).
 Clone từ <code>go.googlesource.com</code> (không phải GitHub):
 </p>
 
-<p>Kho lưu trữ Go chính:</p>
+<p>repository Go chính:</p>
 <pre>
-$ git clone https://go.googlesource.com/go
+$ git clone [https://go.googlesource.com/go](https://go.googlesource.com/go)
 $ cd go
 </pre>
 
-<p>Kho golang.org/x/...</p>
-(<a href="https://go.googlesource.com/tools">golang.org/x/tools</a> trong ví dụ này):
+<p>repository golang.org/x/...</p>
+(<a href="[https://go.googlesource.com/tools](https://go.googlesource.com/tools)">golang.org/x/tools</a> trong ví dụ này):
 <pre>
-$ git clone https://go.googlesource.com/tools
+$ git clone [https://go.googlesource.com/tools](https://go.googlesource.com/tools)
 $ cd tools
 </pre>
 
-<h3 id="make_branch">Bước 2: Chuẩn bị thay đổi trong một branch mới</h3>
+<h3 id="make_branch">Bước 2: Chuẩn bị các thay đổi trong một nhánh mới</h3>
 
 <p>
-Mỗi thay đổi Go phải được thực hiện trong một branch riêng, tạo từ branch master.
-Bạn có thể dùng
-các lệnh <code>git</code> thông thường để tạo branch và thêm thay đổi vào
+Mỗi thay đổi trong Go phải được thực hiện trong một nhánh riêng, được tạo từ nhánh master.
+Bạn có thể sử dụng các lệnh <code>git</code> thông thường để tạo một nhánh và thêm các thay đổi vào
 vùng staging:
 </p>
 
@@ -574,7 +524,7 @@ $ git add [files...]
 </pre>
 
 <p>
-Để commit thay đổi, thay vì <code>git commit</code>, hãy dùng <code>git codereview change</code>.
+Để commit các thay đổi, thay vì <code>git commit</code>, hãy dùng <code>git codereview change</code>.
 </p>
 
 <pre>
@@ -583,12 +533,12 @@ $ git codereview change
 </pre>
 
 <p>
-Bạn có thể chỉnh sửa mô tả commit trong trình soạn thảo yêu thích như thường.
+Bạn có thể chỉnh sửa mô tả commit trong trình soạn thảo ưa thích như bình thường.
 Lệnh <code>git</code> <code>codereview</code> <code>change</code>
-sẽ tự động thêm một dòng Change-Id duy nhất ở gần cuối.
-Dòng đó được Gerrit dùng để khớp các lần upload kế tiếp của cùng một thay đổi.
-Không chỉnh sửa hoặc xóa nó.
-Một Change-Id trông như thế này:
+sẽ tự động thêm một dòng Change-Id duy nhất gần cuối.
+Dòng đó được Gerrit sử dụng để khớp các lần tải lên tiếp theo của cùng một thay đổi.
+Không chỉnh sửa hoặc xóa dòng đó.
+Một Change-Id có dạng như sau:
 </p>
 
 <pre>
@@ -596,38 +546,38 @@ Change-Id: I2fbdbffb3aab626c4b6f56348861b7909e3e8990
 </pre>
 
 <p>
-Công cụ cũng kiểm tra rằng bạn đã
+Công cụ này cũng kiểm tra rằng bạn đã
 chạy <code>go</code> <code>fmt</code> trên mã nguồn, và rằng
 thông điệp commit tuân theo <a href="#commit_messages">định dạng được đề xuất</a>.
 </p>
 
 <p>
-Nếu bạn cần chỉnh sửa lại các tệp, bạn có thể stage các thay đổi mới và
-chạy lại <code>git</code> <code>codereview</code> <code>change</code>: mỗi lần chạy
-sẽ chỉnh sửa commit hiện có trong khi giữ nguyên Change-Id.
+Nếu bạn cần chỉnh sửa lại các tệp, bạn có thể đưa các thay đổi mới vào staging và
+chạy lại <code>git</code> <code>codereview</code> <code>change</code>: mỗi lần
+chạy tiếp theo sẽ cập nhật commit hiện có trong khi vẫn giữ nguyên Change-Id.
 </p>
 
 <p>
-Hãy đảm bảo rằng bạn luôn giữ một commit duy nhất trong mỗi branch.
-Nếu bạn vô tình thêm nhiều
-commit, bạn có thể dùng <code>git</code> <code>rebase</code> để
-<a href="https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github">gộp chúng lại</a>
-thành một.
+Hãy đảm bảo rằng bạn luôn giữ một commit duy nhất trong mỗi nhánh.
+Nếu bạn thêm nhiều
+commit do nhầm lẫn, bạn có thể dùng <code>git</code> <code>rebase</code> để
+<a href="[https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github](https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github)">gộp chúng lại</a>
+thành một commit duy nhất.
 </p>
 
 
-<h3 id="testing">Bước 3: Kiểm thử thay đổi của bạn</h3>
+<h3 id="testing">Bước 3: Kiểm thử các thay đổi của bạn</h3>
 
 <p>
-Bạn đã <a href="code.html">viết và kiểm thử mã</a>, nhưng
-trước khi gửi mã để review, hãy chạy <i>tất cả các kiểm thử cho toàn bộ
-cây mã nguồn</i> để đảm bảo các thay đổi không phá vỡ các package hoặc chương trình khác.
+Bạn đã <a href="code.html">viết và kiểm thử mã của mình</a>, nhưng
+trước khi gửi mã đi để xem xét, hãy chạy <i>tất cả các bài kiểm thử cho toàn bộ
+cây</i> để đảm bảo các thay đổi không làm hỏng các gói hoặc chương trình khác.
 </p>
 
-<h4 id="test-gorepo">Trong kho lưu trữ Go chính</h4>
+<h4 id="test-gorepo">Trong repository Go chính</h4>
 
 <p>
-Đối với các package thư viện chuẩn, tất cả kiểm thử trong package phải pass:
+Đối với các gói thư viện chuẩn, tất cả bài kiểm thử trong gói phải vượt qua:
 </p>
 
 <pre>
@@ -635,8 +585,8 @@ $ go test
 </pre>
 
 <p>
-Bộ kiểm thử ngắn cho toàn bộ cây có thể được chạy với <code>all.bash</code>
-(để build trên Windows, dùng <code>all.bat</code>):
+Bộ kiểm thử ngắn cho toàn bộ cây có thể được chạy bằng <code>all.bash</code>
+(để xây dựng trên Windows, hãy dùng <code>all.bat</code>):
 </p>
 
 <pre>
@@ -645,7 +595,7 @@ $ ./all.bash
 </pre>
 
 <p>
-Sau khi chạy một lúc và in ra nhiều kết quả kiểm thử, lệnh sẽ kết thúc
+Sau khi chạy một lúc và in ra nhiều kết quả kiểm thử, lệnh này sẽ kết thúc
 bằng cách in ra,
 </p>
 
@@ -654,19 +604,19 @@ ALL TESTS PASSED
 </pre>
 
 <p>
-Bạn có thể dùng <code>make.bash</code> thay vì <code>all.bash</code>
-để chỉ build trình biên dịch và thư viện chuẩn mà không chạy bộ kiểm thử.
-Sau khi công cụ <code>go</code> được build, nó sẽ được cài đặt là <code>bin/go</code>
-trong thư mục bạn đã clone kho lưu trữ Go, và bạn có thể
-chạy nó trực tiếp từ đó.
+Bạn có thể dùng <code>make.bash</code> thay cho <code>all.bash</code>
+để chỉ xây dựng trình biên dịch và thư viện chuẩn mà không chạy bộ kiểm thử.
+Sau khi công cụ <code>go</code> được xây dựng, nó sẽ được cài đặt dưới dạng <code>bin/go</code>
+trong thư mục nơi bạn đã sao chép repository Go, và bạn có thể
+chạy trực tiếp từ đó.
 Xem thêm
-phần về cách <a href="#quick_test">kiểm thử thay đổi của bạn nhanh chóng</a>.
+phần về cách <a href="#quick_test">kiểm thử nhanh các thay đổi của bạn</a>.
 </p>
 
-<h4 id="test-xrepo">Trong các kho golang.org/x/...</h4>
+<h4 id="test-xrepo">Trong các repository golang.org/x/...</h4>
 
 <p>
-Chạy kiểm thử cho toàn bộ kho lưu trữ
+Chạy các bài kiểm thử cho toàn bộ repository
 (<a href="https://go.googlesource.com/tools">golang.org/x/tools</a>,
 trong ví dụ này):
 </p>
@@ -677,25 +627,25 @@ $ go test ./...
 </pre>
 
 <p>
-Nếu bạn lo ngại về trạng thái build,
-bạn có thể kiểm tra <a href="https://build.golang.org">Build Dashboard</a>.
-Các lỗi kiểm thử cũng có thể được phát hiện bởi TryBots trong quá trình review mã.
+Nếu bạn lo ngại về trạng thái xây dựng,
+bạn có thể kiểm tra <a href="https://build.golang.org">Bảng điều khiển Build</a>.
+Các lỗi kiểm thử cũng có thể được phát hiện bởi các TryBots trong quá trình xem xét mã.
 </p>
 
 <p>
-Một số kho lưu trữ, như
+Một số repository, như
 <a href="https://go.googlesource.com/vscode-go">golang.org/x/vscode-go</a> sẽ
-có cơ sở hạ tầng kiểm thử khác, vì vậy hãy luôn kiểm tra tài liệu
-của kho lưu trữ bạn đang làm việc. Tệp README ở thư mục gốc của
-kho lưu trữ thường có thông tin này.
+có cơ sở hạ tầng kiểm thử khác nhau, vì vậy luôn kiểm tra tài liệu
+của repository mà bạn đang làm việc. Tệp README ở thư mục gốc của
+repository thường sẽ có thông tin này.
 </p>
 
-<h3 id="mail">Bước 4: Gửi thay đổi để review</h3>
+<h3 id="mail">Bước 4: Gửi các thay đổi để xem xét</h3>
 
 <p>
-Khi thay đổi đã sẵn sàng và được kiểm thử trên toàn bộ cây, hãy gửi nó để review.
-Việc này được thực hiện bằng lệnh con <code>mail</code>, dù tên gọi vậy, nó không
-thực sự gửi email; nó chỉ gửi thay đổi lên Gerrit:
+Khi thay đổi đã sẵn sàng và được kiểm thử trên toàn bộ cây, hãy gửi nó để xem xét.
+Việc này được thực hiện bằng lệnh con <code>mail</code>, mặc dù có tên như vậy nhưng không
+trực tiếp gửi thư; nó chỉ gửi thay đổi đến Gerrit:
 </p>
 
 <pre>
@@ -703,81 +653,133 @@ $ git codereview mail
 </pre>
 
 <p>
-Gerrit gán cho thay đổi của bạn một số và URL, mà <code>git</code> <code>codereview</code> <code>mail</code> sẽ in ra, chẳng hạn như:
+Gerrit gán cho thay đổi của bạn một số và URL, mà <code>git</code> <code>codereview</code> <code>mail</code> sẽ in ra, ví dụ như:
 </p>
 
 <pre>
 remote: New Changes:
-remote:   https://go-review.googlesource.com/99999 math: improved Sin, Cos and Tan precision for very large arguments
+remote:   [https://go-review.googlesource.com/99999](https://go-review.googlesource.com/99999) math: improved Sin, Cos and Tan precision for very large arguments
 </pre>
 
 <p>
-Nếu bạn gặp lỗi, hãy kiểm tra mục
-<a href="#troubleshooting_mail">Xử lý sự cố lỗi mail</a>.
+Nếu thay vào đó bạn nhận được lỗi, hãy kiểm tra
+phần <a href="#troubleshooting_mail">Khắc phục lỗi mail</a>.
 </p>
 
 <p>
-Nếu thay đổi của bạn liên quan đến một issue GitHub đang mở và bạn đã tuân theo <a href="#commit_messages">
-định dạng thông điệp commit được đề xuất</a>, issue đó sẽ được cập nhật trong vài phút bởi một bot,
-liên kết Gerrit CL của bạn vào đó trong phần bình luận.
+Nếu thay đổi của bạn liên quan đến một vấn đề GitHub đang mở và bạn đã làm theo <a href="#commit_messages">
+định dạng thông điệp commit được đề xuất</a>, vấn đề sẽ được cập nhật trong vài phút bởi một bot,
+liên kết thay đổi Gerrit của bạn với vấn đề đó trong các bình luận.
 </p>
 
 
-<h3 id="revise">Bước 5: Chỉnh sửa thay đổi sau khi review</h3>
+<h3 id="revise">Bước 5: Sửa đổi thay đổi sau khi được xem xét</h3>
 
 <p>
-Các maintainer của Go sẽ review mã của bạn trên Gerrit, và bạn sẽ nhận thông báo qua email.
-Bạn có thể xem review trên Gerrit và bình luận tại đó.
+Các maintainer của Go sẽ xem xét mã của bạn trên Gerrit, và bạn sẽ nhận được thông báo qua e-mail.
+Bạn có thể xem phần xem xét trên Gerrit và bình luận về chúng tại đó.
 Bạn cũng có thể trả lời
-<a href="https://gerrit-review.googlesource.com/Documentation/intro-user.html#reply-by-email">bằng email</a>
-nếu bạn thích.
+<a href="[https://gerrit-review.googlesource.com/Documentation/intro-user.html#reply-by-email](https://gerrit-review.googlesource.com/Documentation/intro-user.html#reply-by-email)">bằng e-mail</a>
+nếu bạn muốn.
 </p>
 
 <p>
-Nếu bạn cần chỉnh sửa thay đổi sau khi review, hãy chỉnh sửa các tệp trong
-branch bạn đã tạo trước đó, thêm chúng vào vùng staging của Git,
-rồi chỉnh sửa commit bằng
+Nếu bạn cần sửa đổi thay đổi của mình sau khi được xem xét, hãy chỉnh sửa các tệp trong
+cùng branch mà bạn đã tạo trước đó, thêm chúng vào vùng staging
+của Git, rồi sửa commit bằng
 <code>git</code> <code>codereview</code> <code>change</code>:
 </p>
 
 <pre>
-$ git codereview change     # amend current commit
-(open $EDITOR)
-$ git codereview mail       # send new changes to Gerrit
+$ git codereview change     # sửa commit hiện tại
+(mở $EDITOR)
+$ git codereview mail       # gửi các thay đổi mới tới Gerrit
 </pre>
 
 <p>
-Nếu bạn không cần thay đổi mô tả commit, chỉ cần lưu và thoát trình soạn thảo.
-Nhớ đừng chạm vào dòng Change-Id đặc biệt.
+Nếu bạn không cần thay đổi mô tả commit, chỉ cần lưu và thoát khỏi trình chỉnh sửa.
+Hãy nhớ không chạm vào dòng Change-Id đặc biệt.
 </p>
 
 <p>
 Một lần nữa, hãy đảm bảo rằng bạn luôn giữ một commit duy nhất trong mỗi branch.
 Nếu bạn vô tình thêm nhiều
-commit, bạn có thể dùng <code>git rebase</code> để
-<a href="https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github">gộp chúng lại</a>
-thành một.
+commit hơn, bạn có thể dùng <code>git rebase</code> để
+<a href="[https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github](https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github)">gộp chúng lại</a>
+thành một commit duy nhất.
 </p>
 
-<h2 id="commit_messages">Thông điệp commit tốt</h2>
+<h2 id="sending_a_change_github">Gửi một thay đổi qua GitHub</h2>
 
 <p>
-Thông điệp commit trong Go tuân theo một bộ quy ước cụ thể,
-được chúng tôi thảo luận trong phần này.
+&#x9;Mặc dù quy trình Gerrit được khuyến nghị và được hỗ trợ tốt hơn,
+&#x9;các contributor đã quen thuộc với
+&#x9;<a href="[https://guides.github.com/introduction/flow/](https://guides.github.com/introduction/flow/)">quy trình GitHub</a>
+&#x9;có thể sử dụng cùng quy trình này cho các đóng góp cho Go.
+&#x9;Mặc dù các maintainer của Go sử dụng Gerrit để xem xét mã,
+&#x9;một công cụ có tên <a href="/wiki/GerritBot">GerritBot</a> đã được tạo để đồng bộ
+&#x9;các pull request trên GitHub với Gerrit.
 </p>
 
 <p>
-Đây là một ví dụ về thông điệp tốt:
+&#x9;Hãy mở một pull request trên GitHub như bạn vẫn thường làm.
+&#x9;GerritBot sẽ tạo một danh sách thay đổi Gerrit tương ứng (một "CL") và đăng liên kết tới
+&#x9;nó trong pull request trên GitHub của bạn; các cập nhật đối với pull request cũng sẽ
+&#x9;được phản ánh trong CL trên Gerrit.
+&#x9;Khi ai đó bình luận về CL, bình luận của họ cũng sẽ được
+&#x9;đăng trong pull request của bạn, vì vậy bạn sẽ nhận được thông báo.
+</p>
+
+<p>
+&#x9;Một số điều cần lưu ý:
+</p>
+
+<ul>
+&#x9;<li>
+&#x9;	Bạn sẽ cần một <a href="[https://go-review.googlesource.com/login/](https://go-review.googlesource.com/login/)">tài khoản Gerrit</a>
+&#x9;	để phản hồi người xem xét của bạn, bao gồm cả việc <a href="#reviews">đánh dấu phản hồi là 'Done'</a>
+&#x9;	nếu đã triển khai theo đề xuất.
+&#x9;	Bạn nên làm quen với Gerrit, chẳng hạn bằng cách
+&#x9;	<a href="[https://go-review.googlesource.com/q/status:open+-is:wip](https://go-review.googlesource.com/q/status:open+-is:wip)">xem lướt các CL đang mở</a>,
+&#x9;	đăng ký nhận cập nhật về các CL thú vị (thông qua biểu tượng ngôi sao),
+&#x9;	hoặc <a href="/wiki/Gardening#pending-cls">xem xét hoặc đưa +1</a> cho CL của người khác.
+&#x9;</li>
+&#x9;<li>
+&#x9;	Để cập nhật pull request bằng mã mới, chỉ cần đẩy nó lên branch; bạn có thể
+&#x9;	thêm nhiều commit hơn, hoặc rebase và force-push (cả hai kiểu đều được chấp nhận).
+&#x9;</li>
+&#x9;<li>
+&#x9;	Nếu yêu cầu được chấp nhận, tất cả commit sẽ được squash, và mô tả
+&#x9;	commit cuối cùng sẽ được tạo bằng cách nối tiêu đề và mô tả
+&#x9;	của pull request.
+&#x9;	Mô tả của từng commit riêng lẻ sẽ bị loại bỏ.
+&#x9;	Xem <a href="#commit_messages">Viết các commit message tốt</a> để biết một số
+&#x9;	gợi ý.
+&#x9;</li>
+&#x9;<li>
+&#x9;	Xem <a href="/wiki/GerritBot#frequently-asked-questions">Câu hỏi thường gặp về GerritBot</a> để biết thêm chi tiết.
+&#x9;</li>
+</ul>
+
+<h2 id="commit_messages">Các commit message tốt</h2>
+
+<p>
+Các commit message trong Go tuân theo một tập hợp quy ước cụ thể,
+được thảo luận trong phần này.
+</p>
+
+<p>
+Dưới đây là một ví dụ về một commit message tốt:
 </p>
 
 <pre>
-math: improve Sin, Cos and Tan precision for very large arguments
+math: cải thiện độ chính xác của Sin, Cos và Tan đối với các đối số rất lớn
 
-The existing implementation has poor numerical properties for
-large arguments, so use the McGillicutty algorithm to improve
-accuracy above 1e10.
+Cách triển khai hiện có có các đặc tính số học kém đối với
+các đối số lớn, vì vậy sử dụng thuật toán McGillicutty để cải thiện
+độ chính xác trên 1e10.
 
-The algorithm is described at https://wikipedia.org/wiki/McGillicutty_Algorithm
+Thuật toán được mô tả tại [https://wikipedia.org/wiki/McGillicutty_Algorithm](https://wikipedia.org/wiki/McGillicutty_Algorithm)
 
 Fixes #159
 </pre>
@@ -785,39 +787,39 @@ Fixes #159
 <h3 id="first_line">Dòng đầu tiên</h3>
 
 <p>
-Dòng đầu tiên của mô tả thay đổi theo quy ước là một dòng ngắn tóm tắt thay đổi,
-có tiền tố là package bị ảnh hưởng chính.
+Dòng đầu tiên của phần mô tả thay đổi theo quy ước là một bản tóm tắt ngắn gọn trong một dòng
+về thay đổi, với gói bị ảnh hưởng chính được đặt ở đầu.
 </p>
 
 <p>
-Quy tắc thực hành là nó nên được viết sao cho hoàn thành câu
-"Thay đổi này chỉnh sửa Go để _____."
-Có nghĩa là nó không bắt đầu bằng chữ hoa, không phải một câu hoàn chỉnh,
+Một quy tắc ngón tay cái là nên viết dòng này để hoàn thành câu
+"Thay đổi này sửa đổi Go để _____."
+Điều đó có nghĩa là dòng này không bắt đầu bằng chữ cái viết hoa, không phải là một câu hoàn chỉnh,
 và thực sự tóm tắt kết quả của thay đổi.
 </p>
 
 <p>
-Theo sau dòng đầu là một dòng trống.
+Theo sau dòng đầu tiên bằng một dòng trống.
 </p>
 
 <h3 id="main_content">Nội dung chính</h3>
 
 <p>
-Phần còn lại của mô tả giải thích chi tiết hơn và cần cung cấp ngữ cảnh cho
-thay đổi, giải thích nó làm gì.
-Viết bằng câu hoàn chỉnh với dấu câu chính xác, giống như
-các bình luận trong Go.
-Không dùng HTML, Markdown, hay bất kỳ ngôn ngữ đánh dấu nào khác.
-Văn bản nên được xuống dòng ở khoảng 72 ký tự.
-Xem <a href="/wiki/CommitMessage">Thông điệp commit</a> để biết thêm chi tiết.
+Phần còn lại của mô tả sẽ giải thích chi tiết hơn và cung cấp ngữ cảnh cho
+thay đổi cũng như giải thích những gì nó thực hiện.
+Hãy viết bằng các câu hoàn chỉnh với dấu câu chính xác, giống như
+các chú thích trong Go của bạn.
+Không sử dụng HTML, Markdown hoặc bất kỳ ngôn ngữ đánh dấu nào khác.
+Văn bản nên được xuống dòng ở khoảng 72 cột.
+Xem <a href="/wiki/CommitMessage">Commit message</a> để biết thêm chi tiết.
 </p>
 
 <p>
-Thêm bất kỳ thông tin liên quan nào, chẳng hạn như dữ liệu benchmark nếu thay đổi
+Thêm mọi thông tin liên quan, chẳng hạn như dữ liệu benchmark nếu thay đổi
 ảnh hưởng đến hiệu năng.
 Công cụ <a href="https://godoc.org/golang.org/x/perf/cmd/benchstat">benchstat</a>
 theo quy ước được dùng để định dạng
-dữ liệu benchmark cho mô tả thay đổi.
+dữ liệu benchmark cho phần mô tả thay đổi.
 </p>
 
 <h3 id="ref_issues">Tham chiếu issue</h3>
@@ -826,21 +828,21 @@ dữ liệu benchmark cho mô tả thay đổi.
 Ký hiệu đặc biệt "Fixes #12345" liên kết thay đổi với issue 12345 trong
 <a href="/issue/12345">trình theo dõi issue của Go</a>.
 Khi thay đổi này cuối cùng được áp dụng, trình theo dõi issue
-sẽ tự động đánh dấu issue là đã sửa.
+sẽ tự động đánh dấu issue là đã được sửa.
 </p>
 
 <p>
-Nếu thay đổi là bước tiến một phần hướng tới giải quyết issue,
-viết "Updates #12345" thay vào đó.
-Điều này sẽ để lại một bình luận trong issue liên kết lại với thay đổi trong
+Nếu thay đổi là một bước một phần hướng tới việc giải quyết issue,
+hãy viết "Updates #12345" thay thế.
+Điều này sẽ để lại một bình luận trong issue liên kết ngược đến thay đổi trong
 Gerrit, nhưng sẽ không đóng issue khi thay đổi được áp dụng.
 </p>
 
 <p>
-Nếu bạn gửi thay đổi cho một kho golang.org/x/..., bạn phải dùng
+Nếu bạn đang gửi một thay đổi đối với một repository golang.org/x/..., bạn phải sử dụng
 cú pháp đầy đủ được GitHub hỗ trợ để đảm bảo thay đổi được
-liên kết với issue trong kho chính, không phải kho x/.
-Hầu hết issue được theo dõi trong trình theo dõi issue của kho chính.
+liên kết với issue trong repository chính, không phải repository x/.
+Hầu hết issue được theo dõi trong trình theo dõi issue của repository chính.
 Dạng đúng là "Fixes golang/go#159".
 </p>
 
@@ -848,240 +850,240 @@ Dạng đúng là "Fixes golang/go#159".
 <h2 id="review">Quy trình review</h2>
 
 <p>
-Mục này giải thích chi tiết quy trình review và cách tiếp cận
-các review sau khi thay đổi đã được gửi.
+Phần này giải thích chi tiết quy trình review và cách tiếp cận các
+bản review sau khi một thay đổi đã được gửi.
 </p>
 
-
-<h3 id="mistakes">Các lỗi phổ biến của người mới</h3>
+<h3 id="mistakes">Những lỗi thường gặp của người mới bắt đầu</h3>
 
 <p>
-Khi một thay đổi được gửi lên Gerrit, nó thường được phân loại trong vài ngày.
-Một maintainer sẽ xem qua và cung cấp một số review ban đầu thường tập trung vào
-các vấn đề thẩm mỹ cơ bản và lỗi phổ biến đối với người đóng góp lần đầu.
-Những điều này bao gồm:
+Khi một thay đổi được gửi lên Gerrit, thay đổi đó thường được phân loại trong vòng vài ngày.
+Một maintainer sẽ xem xét và đưa ra một số review ban đầu, đối với
+contributor lần đầu thường tập trung vào các vấn đề về hình thức cơ bản và những lỗi thường gặp.
+Các vấn đề này bao gồm:
 </p>
 
 <ul>
 <li>
-Thông điệp commit không tuân theo <a href="#commit_messages">định dạng được đề xuất</a>.
+Thông điệp commit không tuân theo <a href="#commit_messages">định dạng
+được đề xuất</a>.
 </li>
 
 <li>
-Thiếu liên kết đến issue GitHub.
-Phần lớn các thay đổi
-yêu cầu một issue được liên kết mô tả lỗi hoặc tính năng mà thay đổi
-sửa hoặc triển khai, và sự đồng thuận phải đạt được trên trình theo dõi
-trước khi tiến hành.
+Thiếu một issue GitHub được liên kết.
+Phần lớn thay đổi
+yêu cầu một issue được liên kết mô tả lỗi hoặc tính năng mà thay đổi đó
+sửa hoặc triển khai, và sự đồng thuận cần đạt được trên tracker
+trước khi tiếp tục thực hiện.
 Các review Gerrit không thảo luận về giá trị của thay đổi,
-chỉ thảo luận về việc triển khai của nó.
+mà chỉ về cách triển khai thay đổi.
 <br>
-Chỉ các thay đổi nhỏ hoặc mang tính thẩm mỹ mới được chấp nhận mà không có issue liên kết.
+Chỉ những thay đổi nhỏ hoặc chỉ liên quan đến hình thức mới được chấp nhận mà không có issue đi kèm.
 </li>
 
 <li>
-Thay đổi được gửi trong giai đoạn đóng băng của chu kỳ phát triển, khi cây mã
-bị đóng cho các thay đổi thông thường.
+Thay đổi được gửi trong giai đoạn đóng băng của chu kỳ phát triển, khi cây mã nguồn
+được đóng đối với các thay đổi chung.
 Trong trường hợp này,
 một maintainer có thể review mã với một dòng như <code>R=go1.12</code>,
-nghĩa là nó sẽ được review sau khi cây mở cho cửa sổ phát triển mới.
-Bạn có thể tự thêm <code>R=go1.XX</code> như một bình luận
-nếu bạn biết rằng đây không phải thời điểm phù hợp cho thay đổi.
+có nghĩa là thay đổi sẽ được review sau khi cây mã nguồn mở cho một
+giai đoạn phát triển mới.
+Bạn có thể tự thêm <code>R=go1.XX</code> dưới dạng một comment
+nếu bạn biết rằng đây không phải là khung thời gian phù hợp cho thay đổi.
 </li>
 </ul>
 
 <h3 id="trybots">Trybots</h3>
 
 <p>
-Sau khi đọc lần đầu thay đổi của bạn, các maintainer sẽ kích hoạt trybots,
-một cụm máy chủ sẽ chạy bộ kiểm thử đầy đủ trên nhiều kiến trúc khác nhau.
-Hầu hết trybots hoàn thành trong vài phút, sau đó một liên kết sẽ
-được đăng trong Gerrit để bạn xem kết quả.
+Sau khi đọc sơ bộ thay đổi của bạn, các maintainer sẽ kích hoạt trybots,
+một cụm máy chủ sẽ chạy toàn bộ bộ kiểm thử trên nhiều kiến trúc
+khác nhau.
+Hầu hết trybot hoàn thành trong vài phút, tại thời điểm đó một liên kết sẽ
+được đăng trong Gerrit để bạn có thể xem kết quả.
 </p>
 
 <p>
-Nếu quá trình chạy trybot thất bại, hãy theo liên kết và kiểm tra nhật ký đầy đủ của
-các nền tảng mà các kiểm thử thất bại.
-Cố gắng hiểu điều gì đã bị hỏng, cập nhật bản vá của bạn để sửa nó, và upload lại.
+Nếu lần chạy trybot thất bại, hãy theo liên kết và kiểm tra toàn bộ log của các
+nền tảng mà trên đó các bài kiểm thử thất bại.
+Hãy cố gắng hiểu điều gì đã hỏng, cập nhật patch để sửa lỗi đó, rồi tải lên lại.
 Các maintainer sẽ kích hoạt một lần chạy trybot mới để xem
-liệu vấn đề có được sửa không.
+vấn đề đã được khắc phục hay chưa.
 </p>
 
 <p>
-Đôi khi, cây có thể bị hỏng trên một số nền tảng trong vài giờ; nếu
-lỗi được trybot báo cáo có vẻ không liên quan đến bản vá của bạn, hãy truy cập
-<a href="https://build.golang.org">Build Dashboard</a> và kiểm tra xem cùng
-lỗi có xuất hiện trong các commit gần đây khác trên cùng nền tảng không.
-Trong trường hợp đó,
-hãy tự nhiên viết một bình luận trong Gerrit để đề cập rằng lỗi
-không liên quan đến thay đổi của bạn, để giúp các maintainer hiểu tình hình.
-Bạn cũng có thể tìm kiếm các issue GitHub cho thông báo lỗi đang xảy ra
-hoặc duyệt qua <a href="https://github.com/golang/go/issues?q=is%3Aissue%20watchflakes%20sort%3Aupdated-desc">các issue <code>watchflakes</code> mới cập nhật</a>.
+Đôi khi, cây mã nguồn có thể bị hỏng trên một số nền tảng trong vài giờ; nếu
+lỗi được trybot báo cáo có vẻ không liên quan đến patch của bạn, hãy truy cập
+<a href="https://build.golang.org">Build Dashboard</a> và kiểm tra xem cùng lỗi đó
+có xuất hiện trong các commit gần đây khác trên cùng nền tảng hay không.
+Trong trường hợp này,
+bạn có thể viết một comment trong Gerrit để đề cập rằng lỗi này
+không liên quan đến thay đổi của bạn, giúp các maintainer hiểu tình huống.
+Bạn cũng có thể tìm kiếm các issue GitHub với thông báo lỗi gây ra lỗi
+hoặc duyệt các <a href="https://github.com/golang/go/issues?q=is%3Aissue%20watchflakes%20sort%3Aupdated-desc">issue <code>watchflakes</code> được cập nhật gần đây</a>.
 Nếu thay đổi của bạn dựa trên một commit cũ hơn
-hoặc có vẻ như ai đó khác đã sửa vấn đề rồi,
-hãy thử rebase lên commit master mới nhất qua <code>git rebase</code>.
+hoặc có vẻ như người khác có thể đã sửa vấn đề,
+hãy thử rebase đến commit master mới nhất bằng <code>git rebase</code>.
 </p>
 
-<h3 id="reviews">Reviews</h3>
+<h3 id="reviews">Đánh giá</h3>
 
 <p>
-Cộng đồng Go coi trọng việc review kỹ lưỡng.
-Hãy coi mỗi bình luận review như một phiếu công việc: bạn được kỳ vọng "đóng" nó
-bằng cách hành động theo, hoặc bằng cách thực hiện gợi ý hoặc thuyết phục
-reviewer rằng có cách làm khác.
-</p>
-
-<p>
-Sau khi bạn cập nhật thay đổi, hãy xem qua các bình luận review và đảm bảo
-trả lời từng bình luận một.
-Bạn có thể nhấn nút "Done" để trả lời
-rằng bạn đã thực hiện gợi ý của reviewer; nếu không,
-nhấn vào "Reply" và giải thích tại sao bạn không thực hiện, hoặc bạn đã làm gì thay thế.
+Cộng đồng Go coi trọng các bài đánh giá rất kỹ lưỡng.
+Hãy nghĩ mỗi nhận xét trong bài đánh giá giống như một ticket: bạn được kỳ vọng sẽ tìm cách "đóng" nó
+bằng cách xử lý nó, either bằng việc triển khai đề xuất hoặc thuyết phục
+người đánh giá theo cách khác.
 </p>
 
 <p>
-Hoàn toàn bình thường khi các thay đổi phải trải qua nhiều vòng review,
-với một hoặc nhiều reviewer đưa ra bình luận mới mỗi lần
-và sau đó chờ thay đổi được cập nhật trước khi review lại.
-Điều này xảy ra ngay cả với những người đóng góp có kinh nghiệm, vì vậy
+Sau khi cập nhật thay đổi, hãy xem lại các nhận xét đánh giá và đảm bảo
+trả lời từng nhận xét.
+Bạn có thể nhấp vào nút "Done" để trả lời,
+cho biết rằng bạn đã triển khai đề xuất của người đánh giá; nếu không,
+hãy nhấp vào "Reply" và giải thích lý do bạn chưa thực hiện, hoặc những gì bạn đã làm thay thế.
+</p>
+
+<p>
+Việc các thay đổi trải qua nhiều vòng đánh giá là hoàn toàn bình thường,
+với một hoặc nhiều người đánh giá đưa ra nhận xét mới mỗi lần
+và sau đó chờ một thay đổi được cập nhật trước khi đánh giá lại.
+Chu kỳ này xảy ra ngay cả với những contributor có kinh nghiệm, vì vậy
 đừng nản lòng vì điều đó.
 </p>
 
-<h3 id="votes">Quy ước bình chọn</h3>
+<h3 id="votes">Quy ước về biểu quyết</h3>
 
 <p>
-Khi tiến gần đến quyết định, các reviewer sẽ áp dụng một "phiếu" Code-Review cho thay đổi của bạn.
-Có hai loại phiếu có thể:
+Khi gần đi đến quyết định, những người đánh giá sẽ áp dụng một “vote” Code-Review cho thay đổi của bạn.
+Có hai vote có thể có:
 </p>
 
 <ul>
 	<li>
-	<b>+2</b> Thay đổi được phê duyệt để merge.
-	Chỉ các maintainer của Go (còn gọi là "approvers") mới có thể bỏ phiếu +2.
+	<b>+2</b> Thay đổi được chấp thuận để merge.
+	Chỉ các maintainer của Go (còn được gọi là “approver”) mới có thể đưa ra vote +2.
 	</li>
 	<li>
-	<b>+1</b> Thay đổi trông ổn, nhưng reviewer đang yêu cầu
-	thay đổi nhỏ trước khi phê duyệt, hoặc họ không phải maintainer và không thể
+	<b>+1</b> Thay đổi có vẻ ổn, nhưng người đánh giá có thể đang yêu cầu
+	một số thay đổi nhỏ trước khi phê duyệt, hoặc họ không phải là maintainer và không thể
 	phê duyệt, nhưng muốn khuyến khích việc phê duyệt.
 	</li>
 </ul>
 
 <p>
-Để được nộp, một thay đổi phải có Code-Review +2 từ một maintainer.
+Để được gửi, một thay đổi phải có Code-Review +2 từ một maintainer.
 </p>
 
 <p>
-Các maintainer cũng có thể áp dụng phiếu Hold +1 cho thay đổi,
-để đánh dấu thay đổi không nên được nộp ngay bây giờ
-(ví dụ, vì <a href="/s/proposal-process">review đề xuất</a>
-cho API mới trong thay đổi chưa hoàn thành).
+Maintainer cũng có thể áp dụng vote Hold +1 cho thay đổi,
+để đánh dấu một thay đổi chưa nên được gửi vào lúc này
+(ví dụ, vì <a href="/s/proposal-process">đánh giá đề xuất</a>
+cho API mới trong thay đổi chưa hoàn tất).
 </p>
 
 <p>
-Để được nộp, một thay đổi không được có bất kỳ phiếu Hold +1 nào từ maintainer.
+Để được gửi, một thay đổi không được có bất kỳ vote Hold +1 nào từ một maintainer.
 </p>
 
 <p>
-Cuối cùng, để được nộp, một thay đổi phải có sự tham gia của hai nhân viên Google,
-hoặc là người tải lên thay đổi hoặc là reviewer bỏ phiếu ít nhất Code-Review +1.
-Yêu cầu này nhằm mục đích tuân thủ và bảo mật chuỗi cung ứng.
+Cuối cùng, để được gửi, một thay đổi phải có sự tham gia của hai nhân viên Google,
+hoặc với vai trò là người tải lên thay đổi hoặc là người đánh giá bỏ vote ít nhất là Code-Review +1.
+Yêu cầu này nhằm đáp ứng các lý do về tuân thủ và bảo mật chuỗi cung ứng.
 </p>
 
-<h3 id="submit">Nộp thay đổi đã được phê duyệt</h3>
+<h3 id="submit">Gửi một thay đổi đã được phê duyệt</h3>
 
 <p>
-Khi thay đổi đã sẵn sàng, một maintainer sẽ nộp thay đổi,
-thêm nó như một commit vào kho lưu trữ Gerrit.
-</p>
-
-<p>
-Hai bước (phê duyệt và nộp) là riêng biệt vì trong một số trường hợp các maintainer
-có thể muốn phê duyệt nhưng không nộp ngay lập tức (ví dụ,
-cây có thể bị đóng băng tạm thời).
+Khi một thay đổi đã sẵn sàng, một maintainer sẽ gửi thay đổi đó,
+thêm nó dưới dạng một commit vào repository Gerrit.
 </p>
 
 <p>
-Nộp một thay đổi đưa nó vào kho lưu trữ.
-Mô tả thay đổi sẽ bao gồm liên kết đến code review,
-sẽ được cập nhật với liên kết đến thay đổi
-trong kho lưu trữ.
-Vì phương pháp dùng để tích hợp thay đổi là "Cherry Pick" của Git,
-các hash commit trong kho lưu trữ sẽ bị thay đổi bởi
-thao tác nộp.
+Hai bước (phê duyệt và gửi) là riêng biệt vì trong một số trường hợp maintainer
+có thể muốn phê duyệt nó nhưng không muốn gửi ngay (ví dụ,
+cây mã có thể tạm thời bị đóng băng).
 </p>
 
 <p>
-Nếu thay đổi của bạn đã được phê duyệt vài ngày mà chưa được
-nộp, hãy tự nhiên viết một bình luận trong Gerrit yêu cầu
-được nộp.
+Gửi một thay đổi sẽ đưa thay đổi đó vào repository.
+Mô tả thay đổi sẽ bao gồm một liên kết đến việc xem xét mã,
+liên kết này sẽ được cập nhật với một liên kết đến thay đổi
+trong repository.
+Vì phương thức được dùng để tích hợp các thay đổi là "Cherry Pick" của Git,
+các mã băm commit trong repository sẽ bị thay đổi bởi
+thao tác gửi.
 </p>
 
-<h3 id="more_information">Thêm thông tin</h3>
+<p>
+Nếu thay đổi của bạn đã được phê duyệt trong vài ngày nhưng chưa được
+gửi, bạn có thể viết một bình luận trong Gerrit yêu cầu
+gửi thay đổi.
+</p>
+
+<h3 id="more_information">Thông tin thêm</h3>
 
 <p>
-Ngoài thông tin ở đây, cộng đồng Go còn duy trì một trang wiki <a
+Ngoài thông tin ở đây, cộng đồng Go duy trì một trang wiki <a
 href="/wiki/CodeReview">CodeReview</a>.
-Hãy đóng góp vào trang này khi bạn tìm hiểu thêm về quy trình review.
+Bạn có thể đóng góp cho trang này khi tìm hiểu thêm về quy trình xem xét.
 </p>
-
-
 
 <h2 id="advanced_topics">Các chủ đề khác</h2>
 
 <p>
-Mục này tập hợp một số bình luận khác nằm ngoài
-chính quy trình issue/chỉnh sửa/review mã/nộp.
+Phần này tập hợp một số nhận xét khác nằm
+ngoài chính quy trình issue/edit/code review/submit.
 </p>
 
 <h3 id="gopls">Gopls</h3>
 
 <p>
-Khi làm việc trên kho lưu trữ Go chính và dùng <code>gopls</code> với trình soạn thảo,
-lệnh <code>go</code> được <code>gopls</code> gọi
-phải tương ứng với phiên bản mã nguồn bạn đang làm việc.
-Lệnh <code>go</code> có thể được build bằng <code>make.bash</code>
+Khi làm việc trên repository Go chính và sử dụng <code>gopls</code> với trình soạn thảo của bạn,
+lệnh <code>go</code> được gọi bởi <code>gopls</code>
+phải tương ứng với phiên bản của mã nguồn mà bạn đang làm việc.
+Lệnh <code>go</code> có thể được xây dựng bằng <code>make.bash</code>
 và thư mục <code>bin</code> nên được thêm vào <code>PATH</code> của bạn.
 Xem <a href="/gopls/advanced">Gopls: Các chủ đề nâng cao</a> để biết thêm chi tiết.
 </p>
 
-<p>Tài liệu đầy đủ cho Gopls có thể tìm thấy tại https://go.dev/gopls.</p>
+<p>Tài liệu đầy đủ về Gopls có thể được tìm thấy tại [https://go.dev/gopls](https://go.dev/gopls).</p>
 
 <h3 id="copyright">Tiêu đề bản quyền</h3>
 
 <p>
-Các tệp trong kho lưu trữ Go không liệt kê tên tác giả, cả để tránh lộn xộn
-và tránh phải cập nhật danh sách liên tục.
-Thay vào đó, tên bạn sẽ xuất hiện trong
+Các tệp trong repository Go không liệt kê tên tác giả, vừa để tránh lộn xộn
+vừa để tránh phải cập nhật các danh sách này thường xuyên.
+Thay vào đó, tên của bạn sẽ xuất hiện trong
 <a href="/change">nhật ký thay đổi</a>.
 </p>
 
 <p>
-Các tệp mới bạn đóng góp nên dùng tiêu đề bản quyền chuẩn:
+Các tệp mới mà bạn đóng góp nên sử dụng tiêu đề bản quyền tiêu chuẩn:
 </p>
 
 <pre>
 // Copyright {{now.UTC.Year}} The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+// Việc sử dụng mã nguồn này được điều chỉnh bởi giấy phép kiểu BSD
+// có thể được tìm thấy trong tệp LICENSE.
 </pre>
 
 <p>
-Các tệp trong kho lưu trữ được ghi bản quyền theo năm chúng được thêm vào.
-Không cập nhật năm bản quyền trên các tệp bạn thay đổi.
+Các tệp trong repository được bảo hộ bản quyền vào năm chúng được thêm vào.
+Không cập nhật năm bản quyền trên các tệp mà bạn thay đổi.
 </p>
 
 
 
 
-<h3 id="troubleshooting_mail">Xử lý sự cố lỗi mail</h3>
+<h3 id="troubleshooting_mail">Khắc phục lỗi mail</h3>
 
 <p>
-Cách phổ biến nhất mà lệnh <code>git</code> <code>codereview</code> <code>mail</code>
-thất bại là do địa chỉ email trong commit không khớp với
-địa chỉ bạn đã dùng trong <a href="#google_account">quá trình đăng ký</a>.
+Cách phổ biến nhất khiến lệnh <code>git</code> <code>codereview</code> <code>mail</code>
+bị lỗi là vì địa chỉ e-mail trong commit không khớp với địa chỉ bạn đã sử dụng trong
+<a href="#google_account">quá trình đăng ký</a>.
 
 <br>
-Nếu bạn thấy thông báo như...
+Nếu bạn thấy nội dung giống như...
 </p>
 
 <pre>
@@ -1093,9 +1095,9 @@ remote: ERROR:  does not match your user account.
 </pre>
 
 <p>
-bạn cần cấu hình Git cho kho lưu trữ này để dùng
-địa chỉ email đã đăng ký.
-Để thay đổi địa chỉ email nhằm đảm bảo điều này không xảy ra nữa, hãy chạy:
+bạn cần cấu hình Git cho repository này để sử dụng
+địa chỉ e-mail mà bạn đã đăng ký.
+Để thay đổi địa chỉ e-mail nhằm đảm bảo điều này không xảy ra lần nữa, hãy chạy:
 </p>
 
 <pre>
@@ -1103,7 +1105,7 @@ $ git config user.email email@address.com
 </pre>
 
 <p>
-Sau đó thay đổi commit để dùng địa chỉ email thay thế này bằng lệnh sau:
+Sau đó thay đổi commit để sử dụng địa chỉ e-mail thay thế này bằng lệnh:
 </p>
 
 <pre>
@@ -1111,43 +1113,43 @@ $ git commit --amend --author="Author Name &lt;email@address.com&gt;"
 </pre>
 
 <p>
-Rồi thử lại bằng cách chạy:
+Sau đó thử lại bằng cách chạy:
 </p>
 
 <pre>
 $ git codereview mail
 </pre>
 
-
-<h3 id="quick_test">Kiểm thử thay đổi của bạn nhanh chóng</h3>
+<h3 id="quick_test">Kiểm thử nhanh các thay đổi</h3>
 
 <p>
-Chạy <code>all.bash</code> cho mỗi thay đổi nhỏ trong cây mã nguồn là khá tốn kém.
-Mặc dù được khuyến nghị mạnh mẽ chạy nó trước khi
-gửi thay đổi, trong chu kỳ phát triển thông thường bạn có thể muốn
-chỉ biên dịch và kiểm thử package bạn đang phát triển.
+Chạy <code>all.bash</code> cho từng thay đổi trong cây mã nguồn
+là việc tốn nhiều công sức.
+Mặc dù bạn được khuyến nghị mạnh mẽ chạy lệnh này trước khi
+gửi một thay đổi, trong chu kỳ phát triển thông thường bạn có thể muốn
+chỉ biên dịch và kiểm thử gói mà bạn đang phát triển.
 </p>
 
 <ul>
 <li>
-Nhìn chung, bạn có thể chạy <code>make.bash</code> thay vì <code>all.bash</code>
-để chỉ rebuild chuỗi công cụ Go mà không chạy toàn bộ bộ kiểm thử.
+Nói chung, bạn có thể chạy <code>make.bash</code> thay vì <code>all.bash</code>
+để chỉ xây dựng lại chuỗi công cụ Go mà không chạy toàn bộ bộ kiểm thử.
 Hoặc bạn
-có thể chạy <code>run.bash</code> để chỉ chạy toàn bộ bộ kiểm thử mà không rebuild
+có thể chạy <code>run.bash</code> để chỉ chạy toàn bộ bộ kiểm thử mà không xây dựng lại
 chuỗi công cụ.
-Bạn có thể hiểu <code>all.bash</code> là <code>make.bash</code>
-tiếp theo là <code>run.bash</code>.
+Bạn có thể xem <code>all.bash</code> là <code>make.bash</code>
+theo sau bởi <code>run.bash</code>.
 </li>
 
 <li>
-Trong mục này, chúng ta sẽ gọi thư mục bạn đã clone kho lưu trữ Go là <code>$GOROOT</code>.
-Công cụ <code>go</code> được build bởi <code>$GOROOT/src/make.bash</code> sẽ được cài đặt
-trong <code>$GOROOT/bin/go</code> và bạn
+Trong phần này, chúng ta sẽ gọi thư mục mà bạn đã clone repository Go vào là <code>$GOROOT</code>.
+Công cụ <code>go</code> được xây dựng bởi <code>$GOROOT/src/make.bash</code> sẽ được cài đặt
+vào <code>$GOROOT/bin/go</code> và bạn
 có thể gọi nó để kiểm thử mã của mình.
 Ví dụ, nếu bạn
-đã chỉnh sửa trình biên dịch và muốn kiểm tra xem nó ảnh hưởng thế nào đến
+đã sửa đổi trình biên dịch và muốn kiểm thử ảnh hưởng của nó đến
 bộ kiểm thử của dự án riêng, chỉ cần chạy <code>go</code> <code>test</code>
-bằng cách dùng nó:
+bằng công cụ đó:
 
 <pre>
 $ cd &lt;MYPROJECTDIR&gt;
@@ -1156,11 +1158,12 @@ $ $GOROOT/bin/go test
 </li>
 
 <li>
-Nếu bạn đang thay đổi thư viện chuẩn, bạn có thể không cần rebuild
-trình biên dịch: bạn chỉ cần chạy kiểm thử cho package bạn đã thay đổi.
-Bạn có thể làm điều đó bằng phiên bản Go bạn thường dùng, hoặc
-bằng trình biên dịch Go được build từ bản clone của bạn (đôi khi bắt buộc vì mã thư viện chuẩn bạn đang chỉnh sửa
-có thể yêu cầu phiên bản mới hơn phiên bản ổn định bạn đang cài đặt).
+Nếu bạn đang thay đổi thư viện chuẩn, có thể bạn không cần xây dựng lại
+trình biên dịch: bạn chỉ cần chạy các bài kiểm thử cho gói mà bạn đã thay đổi.
+Bạn có thể thực hiện việc đó bằng phiên bản Go mà bạn thường dùng, hoặc
+bằng trình biên dịch Go được xây dựng từ bản clone của bạn (điều này
+đôi khi cần thiết vì mã thư viện chuẩn mà bạn đang sửa đổi
+có thể yêu cầu phiên bản mới hơn phiên bản ổn định mà bạn đã cài đặt).
 
 <pre>
 $ cd $GOROOT/src/crypto/sha1
@@ -1170,33 +1173,33 @@ $ $GOROOT/bin/go test .
 </li>
 
 <li>
-Nếu bạn đang chỉnh sửa chính trình biên dịch, bạn chỉ cần biên dịch lại
-công cụ <code>compile</code> (là tệp nhị phân nội bộ được
-<code>go</code> <code>build</code> gọi để biên dịch từng package riêng lẻ).
+Nếu bạn đang sửa đổi chính trình biên dịch, bạn chỉ cần biên dịch lại
+công cụ <code>compile</code> (đây là binary nội bộ được gọi
+bởi <code>go</code> <code>build</code> để biên dịch từng gói riêng lẻ).
 Sau đó, bạn sẽ muốn kiểm thử nó bằng cách biên dịch hoặc chạy một thứ gì đó.
 
 <pre>
 $ cd $GOROOT/src
 $ [make changes...]
 $ $GOROOT/bin/go install cmd/compile
-$ $GOROOT/bin/go build [something...]   # test the new compiler
-$ $GOROOT/bin/go run [something...]     # test the new compiler
-$ $GOROOT/bin/go test [something...]    # test the new compiler
+$ $GOROOT/bin/go build [something...]   # kiểm thử trình biên dịch mới
+$ $GOROOT/bin/go run [something...]     # kiểm thử trình biên dịch mới
+$ $GOROOT/bin/go test [something...]    # kiểm thử trình biên dịch mới
 </pre>
 
-Điều tương tự áp dụng cho các công cụ nội bộ khác của chuỗi công cụ Go,
-như <code>asm</code>, <code>cover</code>, <code>link</code>, v.v.
+Điều tương tự cũng áp dụng cho các công cụ nội bộ khác của chuỗi công cụ Go,
+chẳng hạn như <code>asm</code>, <code>cover</code>, <code>link</code>, v.v.
 Chỉ cần biên dịch lại và cài đặt công cụ bằng <code>go</code>
-<code>install</code> <code>cmd/&lt;TOOL&gt;</code> và sau đó dùng
-tệp nhị phân Go đã build để kiểm thử nó.
+<code>install</code> <code>cmd/&lt;TOOL&gt;</code> rồi sử dụng
+binary Go đã được xây dựng để kiểm thử nó.
 </li>
 
 <li>
-Ngoài các kiểm thử theo từng package thông thường, còn có một
+Ngoài các bài kiểm thử tiêu chuẩn theo từng gói, còn có một
 bộ kiểm thử cấp cao nhất trong <code>$GOROOT/test</code> chứa
-nhiều kiểm thử hộp đen và kiểm thử hồi quy.
-Bộ kiểm thử được chạy
-bởi <code>all.bash</code> nhưng bạn cũng có thể chạy nó thủ công:
+một số bài kiểm thử hộp đen và kiểm thử hồi quy.
+Bộ kiểm thử này được chạy
+bởi <code>all.bash</code> nhưng bạn cũng có thể chạy thủ công:
 
 <pre>
 $ $GOROOT/bin/go test cmd/internal/testdir
@@ -1204,33 +1207,31 @@ $ $GOROOT/bin/go test cmd/internal/testdir
 </ul>
 
 
-<h3 id="cc">Chỉ định reviewer / CC người khác</h3>
+<h3 id="cc">Chỉ định người đánh giá / Thêm CC cho người khác</h3>
 
 <p>
-Trừ khi được chỉ định rõ ràng, chẳng hạn như trong cuộc thảo luận dẫn đến
-việc gửi thay đổi, tốt hơn là không chỉ định reviewer.
-Tất cả thay đổi được tự động CC đến danh sách thư
-<a href="https://groups.google.com/group/golang-codereviews">golang-codereviews@googlegroups.com</a>.
-Nếu đây là thay đổi đầu tiên của bạn, có thể có
-độ trễ kiểm duyệt trước khi nó xuất hiện trên danh sách thư, để ngăn spam.
+Trừ khi được yêu cầu rõ ràng khác đi, chẳng hạn như trong cuộc thảo luận trước khi gửi thay đổi, tốt hơn là không nên chỉ định người đánh giá.
+Tất cả thay đổi được tự động CC đến
+<a href="https://groups.google.com/group/golang-codereviews">golang-codereviews@googlegroups.com</a>
+trong danh sách gửi thư.
+Nếu đây là thay đổi đầu tiên của bạn, có thể có độ trễ kiểm duyệt trước khi nó xuất hiện trong danh sách gửi thư để ngăn thư rác.
 </p>
 
 <p>
-Bạn có thể chỉ định reviewer hoặc CC những người quan tâm
-bằng các tùy chọn <code>-r</code> hoặc <code>-cc</code>.
-Cả hai đều chấp nhận danh sách địa chỉ email phân cách bằng dấu phẩy:
+Bạn có thể chỉ định người đánh giá hoặc CC cho các bên quan tâm
+bằng cách sử dụng các tùy chọn <code>-r</code> hoặc <code>-cc</code>.
+Cả hai đều chấp nhận danh sách địa chỉ e-mail được phân tách bằng dấu phẩy:
 </p>
 
 <pre>
 $ git codereview mail -r joe@golang.org -cc mabel@example.com,math-nuts@swtch.com
 </pre>
 
-
-<h3 id="sync">Đồng bộ hóa client của bạn</h3>
+<h3 id="sync">Đồng bộ hóa máy khách của bạn</h3>
 
 <p>
-Trong khi bạn đang làm việc, người khác có thể đã nộp thay đổi vào kho lưu trữ.
-Để cập nhật branch cục bộ của bạn, hãy chạy
+Trong lúc bạn làm việc, những người khác có thể đã gửi thay đổi vào repository.
+Để cập nhật nhánh cục bộ của bạn, hãy chạy
 </p>
 
 <pre>
@@ -1238,22 +1239,17 @@ $ git codereview sync
 </pre>
 
 <p>
-(Phía sau nó chạy
+(Bên dưới, lệnh này chạy
 <code>git</code> <code>pull</code> <code>-r</code>.)
 </p>
 
-
-<h3 id="download">Review mã của người khác</h3>
+<h3 id="download">Xem xét mã do người khác viết</h3>
 
 <p>
-Là một phần của quy trình review, các reviewer có thể đề xuất thay đổi trực tiếp (trong
-quy trình GitHub, đây sẽ là người khác đính kèm commit vào pull request).
+Trong quy trình xem xét, người đánh giá có thể đề xuất thay đổi trực tiếp (trong quy trình làm việc của GitHub, việc này sẽ là người khác đính kèm các commit vào một pull request).
 
-Gerrit cung cấp các lệnh giúp bạn import thay đổi được đề xuất
-bởi nhà phát triển khác để bạn có thể review/kiểm thử chúng cục bộ. Từ trang Gerrit
-cho CL bạn muốn import, mở menu "⋮", nhấn vào liên kết "Download patch".
-Tùy thuộc vào quy trình git ưa thích của bạn, chọn lệnh phù hợp. Các tùy chọn
-sẽ trông giống như thế này:
+Gerrit cung cấp quyền truy cập vào các lệnh giúp bạn nhập các thay đổi được một nhà phát triển khác đề xuất để bạn có thể xem xét/kiểm thử chúng cục bộ. Từ trang Gerrit của CL mà bạn muốn nhập, mở menu "⋮", nhấp vào liên kết "Download patch".
+Tùy thuộc vào quy trình làm việc git bạn ưa thích, chọn lệnh thích hợp. Các tùy chọn sẽ có dạng như sau:
 </p>
 
 <pre>
@@ -1261,15 +1257,14 @@ $ git fetch https://go.googlesource.com/review refs/changes/21/13245/1 &amp;&amp
 </pre>
 
 <p>
-Để hoàn tác, hãy chuyển lại branch bạn đang làm việc.
+Để hoàn tác, chuyển lại về nhánh mà bạn đang làm việc.
 </p>
 
-
-<h3 id="git-config">Thiết lập alias git</h3>
+<h3 id="git-config">Thiết lập bí danh git</h3>
 
 <p>
 Lệnh <code>git-codereview</code> có thể được chạy trực tiếp từ shell
-bằng cách gõ, ví dụ,
+bằng cách nhập, ví dụ,
 </p>
 
 <pre>
@@ -1277,8 +1272,8 @@ $ git codereview sync
 </pre>
 
 <p>
-nhưng thuận tiện hơn là thiết lập alias cho các lệnh con riêng của <code>git-codereview</code>,
-để lệnh trên trở thành,
+nhưng sẽ thuận tiện hơn khi thiết lập bí danh cho các
+lệnh con riêng của <code>git-codereview</code>, để lệnh ở trên trở thành,
 </p>
 
 <pre>
@@ -1286,10 +1281,10 @@ $ git sync
 </pre>
 
 <p>
-Các lệnh con của <code>git-codereview</code> được chọn để khác biệt với
-các lệnh con của Git gốc, vì vậy an toàn để định nghĩa các alias này.
-Để cài đặt chúng, hãy sao chép nội dung này vào
-tệp cấu hình Git của bạn (thường là <code>.gitconfig</code> trong thư mục home):
+Các lệnh con <code>git-codereview</code> đã được chọn để khác biệt với
+các lệnh riêng của Git, vì vậy an toàn khi định nghĩa các bí danh này.
+Để cài đặt chúng, sao chép văn bản này vào tệp cấu hình
+Git của bạn (thường là <code>.gitconfig</code> trong thư mục chính của bạn):
 </p>
 
 <pre>
@@ -1303,18 +1298,16 @@ tệp cấu hình Git của bạn (thường là <code>.gitconfig</code> trong t
 </pre>
 
 
-<h3 id="multiple_changes">Gửi nhiều thay đổi phụ thuộc nhau</h3>
+<h3 id="multiple_changes">Gửi nhiều thay đổi phụ thuộc</h3>
 
 <p>
-Người dùng nâng cao có thể muốn xếp các commit liên quan vào một branch duy nhất.
-Gerrit cho phép các thay đổi phụ thuộc vào nhau, tạo thành một chuỗi phụ thuộc như vậy.
-Mỗi thay đổi cần được phê duyệt và nộp riêng nhưng sự phụ thuộc
-sẽ hiển thị với reviewer.
+Người dùng nâng cao có thể muốn xếp chồng các commit liên quan trong cùng một nhánh.
+Gerrit cho phép các thay đổi phụ thuộc lẫn nhau, tạo thành một chuỗi dependency như vậy.
+Mỗi thay đổi sẽ cần được phê duyệt và gửi riêng, nhưng dependency sẽ hiển thị với người đánh giá.
 </p>
 
 <p>
-Để gửi một nhóm thay đổi phụ thuộc, giữ mỗi thay đổi là một commit khác nhau dưới
-cùng một branch, rồi chạy:
+Để gửi một nhóm thay đổi phụ thuộc, hãy giữ mỗi thay đổi là một commit khác nhau trong cùng một nhánh, sau đó chạy:
 </p>
 
 <pre>
@@ -1322,12 +1315,11 @@ $ git codereview mail HEAD
 </pre>
 
 <p>
-Hãy chắc chắn chỉ định rõ ràng <code>HEAD</code>, thường không bắt buộc khi gửi
-các thay đổi đơn lẻ. Thêm chi tiết có thể tìm thấy trong <a href="https://pkg.go.dev/golang.org/x/review/git-codereview?tab=doc#hdr-Multiple_Commit_Work_Branches">tài liệu git-codereview</a>.
+Hãy chắc chắn chỉ rõ <code>HEAD</code>, điều này thường không cần thiết khi gửi các thay đổi đơn lẻ. Có thể tìm thêm chi tiết trong <a href="https://pkg.go.dev/golang.org/x/review/git-codereview?tab=doc#hdr-Multiple_Commit_Work_Branches">tài liệu git-codereview</a>.
 </p>
 
-<h3 id="minor_releases">Bản phát hành nhỏ</h3>
+<h3 id="minor_releases">Các bản phát hành nhỏ</h3>
 
 <p>
-Nếu bạn muốn thực hiện thay đổi cho một branch phát hành để backport, xem <a href="/wiki/MinorReleases">Bản phát hành nhỏ</a>.
+Nếu bạn muốn thực hiện thay đổi cho một nhánh bản phát hành để backport, hãy xem <a href="/wiki/MinorReleases">Các bản phát hành nhỏ</a>.
 </p>
