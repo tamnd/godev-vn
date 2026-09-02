@@ -22,7 +22,8 @@ Go 1.23 có nhiều cải tiến so với Go 1.22. Một số điểm nổi bậ
 
 ## Thay đổi ngôn ngữ
 
--	Biểu thức range trong vòng lặp "for-range" giờ có thể là các hàm iterator,
+-	<!-- go.dev/issue/61405, go.dev/issue/61897, go.dev/issue/61899, go.dev/issue/61900 -->
+	Biểu thức range trong vòng lặp "for-range" giờ có thể là các hàm iterator,
 	chẳng hạn như `func(func(K) bool)`.
 	Điều này hỗ trợ các iterator do người dùng định nghĩa trên các chuỗi tùy ý.
 	Có một số bổ sung cho các gói chuẩn `slices` và `maps`
@@ -37,7 +38,8 @@ Go 1.23 có nhiều cải tiến so với Go 1.22. Một số điểm nổi bậ
 
 ## Cải tiến công cụ
 
--	Bắt đầu từ Go 1.23, Go toolchain có thể thu thập thống kê về cách dùng và sự cố
+-	<!-- go.dev/issue/58894 -->
+	Bắt đầu từ Go 1.23, Go toolchain có thể thu thập thống kê về cách dùng và sự cố
 	để hiểu cách Go toolchain được sử dụng và hoạt động tốt như thế nào.
 	Đây là Go telemetry, một hệ thống _tùy chọn bật_. Hãy cân nhắc bật để giúp chúng tôi giữ Go
 	hoạt động tốt và hiểu rõ hơn cách dùng Go.
@@ -66,7 +68,8 @@ Go 1.23 có nhiều cải tiến so với Go 1.22. Một số điểm nổi bậ
 	của ghi chú phát hành.
 	Tài liệu "Go, Backwards Compatibility, and GODEBUG"
 	liệt kê [các cài đặt GODEBUG mới trong Go 1.23](/doc/godebug#go-123).
--	Go 1.23 hỗ trợ chỉ thị `godebug` mới trong các file `go.mod` và `go.work` để
+-	<!-- go.dev/issue/65573 -->
+	Go 1.23 hỗ trợ chỉ thị `godebug` mới trong các file `go.mod` và `go.work` để
 	cho phép kiểm soát riêng biệt GODEBUG mặc định và chỉ thị "go" của `go.mod`,
 	ngoài comment chỉ thị `//go:debug` có từ hai bản phát hành trước (Go 1.21).
 	Xem tài liệu cập nhật về [Giá trị GODEBUG mặc định](/doc/godebug#default).

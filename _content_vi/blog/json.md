@@ -9,6 +9,9 @@ tags:
 summary: Cách tạo và sử dụng dữ liệu định dạng JSON trong Go.
 ---
 
+[_**Lưu ý, tháng 8 năm 2026**: Go 1.27 giới thiệu gói `encoding/json/v2` mới.
+Để có phần giới thiệu cập nhật về cách làm việc với JSON trong Go, xem “[Hướng dẫn: Làm việc với JSON](/doc/tutorial/json).”_]
+
 ## Giới thiệu
 
 JSON (JavaScript Object Notation) là một định dạng trao đổi dữ liệu đơn giản.

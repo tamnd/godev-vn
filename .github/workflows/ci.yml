@@ -56,15 +56,15 @@ jobs:
         run: go test -run 'TestOverlay|TestGODEVCONTENT' -v .
 
   # The quality gates, from tamnd/godev-vn-translator, run against this
-  # checkout. Fourteen deterministic rules over every English and Vietnamese
+  # checkout. Fifteen deterministic rules over every English and Vietnamese
   # pair: dropped links, invented heading anchors, edited code blocks,
   # translated template actions, front matter that moved, and whether each
   # translation still matches the English it was made from.
   #
-  # -max is a ratchet and not a target. The corpus has 81 refusals today, so a
+  # -max is a ratchet and not a target. The corpus has 73 refusals today, so a
   # gate demanding zero would be red on every pull request including the ones
   # fixing it, and a check that is always red is a check somebody turns off.
-  # This one fails at 82. The number comes down in the same diff as the work
+  # This one fails at 74. The number comes down in the same diff as the work
   # that lowers it, which makes it a reviewable claim, and the day it reaches
   # zero the flag comes off.
   #
@@ -82,6 +82,13 @@ jobs:
   # content, and L11 taught that a stylesheet is not untranslated prose, which
   # is a rule that was wrong. L04 changed too and the number did not. It stopped
   # refusing two slides that had lost nothing and started refusing two that had.
+  #
+  # 81 to 73 is six pieces of content and one more rule. The content is three
+  # issue comments put back in blog/go1.23.md, a whole paragraph that blog/json.md
+  # had dropped, and two links that lost their targets in the release notes. The
+  # rule is L04 again: a present section is allowed to have no title, the decks
+  # use that for the slides that are one full bleed image, and the Vietnamese
+  # wrote a bare star where the English wrote a star and two trailing spaces.
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -103,7 +110,7 @@ jobs:
       # exactly when it is worth reading.
       - name: audit
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn audit -max 81 -report audit.md
+        run: go run ./cmd/godev -C ../godev-vn audit -max 73 -report audit.md
 
       - uses: actions/upload-artifact@v7
         if: always()

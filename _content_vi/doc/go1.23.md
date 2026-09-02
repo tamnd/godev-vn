@@ -405,7 +405,7 @@ các header `Cache-Control`, `Content-Encoding`, `Etag`, và `Last-Modified`
 khi phục vụ lỗi. Các header này thường áp dụng cho
 nội dung không có lỗi, nhưng không áp dụng cho văn bản lỗi.
 
-Middleware wrap `ResponseWriter` và áp dụng mã hóa ngay lập tức,
+Middleware wrap [`ResponseWriter`](/pkg/net/http#ResponseWriter) và áp dụng mã hóa ngay lập tức,
 chẳng hạn `Content-Encoding: gzip`, sẽ không hoạt động sau
 thay đổi này. Hành vi cũ của [`ServeContent`](/pkg/net/http#ServeContent), [`ServeFile`](/pkg/net/http#ServeFile),
 và [`ServeFileFS`](/pkg/net/http#ServeFileFS) có thể được khôi phục bằng cách đặt
