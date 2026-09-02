@@ -106,6 +106,7 @@ như thể gopls đang **biên dịch toàn bộ chương trình cùng một lú
 Kết quả là dấu ấn bộ nhớ tỷ lệ và lớn hơn nhiều
 so với mã nguồn đang được chỉnh sửa (ví dụ,
 các cây cú pháp được gõ thường lớn hơn 30 lần so với văn bản nguồn!).
+<!-- deps(gopls) = 18.5MB source, 542MB RAM -->
 
 ## Biên dịch riêng biệt {#separate-compilation}
 

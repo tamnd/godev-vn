@@ -1179,3 +1179,4 @@ Cổng `linux/loong64` giờ hỗ trợ `-buildmode=c-archive`,
 <!-- CL 469115, CL 469135, CL 499981 -->
 <!-- proposals that don't need release notes. -->
 <!-- https://go.dev/issue/10275 -->
+<!-- https://go.dev/issue/59719 -->

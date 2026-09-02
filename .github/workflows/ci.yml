@@ -61,10 +61,10 @@ jobs:
   # translated template actions, front matter that moved, and whether each
   # translation still matches the English it was made from.
   #
-  # -max is a ratchet and not a target. The corpus has 107 refusals today, so a
+  # -max is a ratchet and not a target. The corpus has 83 refusals today, so a
   # gate demanding zero would be red on every pull request including the ones
   # fixing it, and a check that is always red is a check somebody turns off.
-  # This one fails at 108. The number comes down in the same diff as the work
+  # This one fails at 84. The number comes down in the same diff as the work
   # that lowers it, which makes it a reviewable claim, and the day it reaches
   # zero the flag comes off.
   #
@@ -97,7 +97,7 @@ jobs:
       # exactly when it is worth reading.
       - name: audit
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn audit -max 107 -report audit.md
+        run: go run ./cmd/godev -C ../godev-vn audit -max 83 -report audit.md
 
       - uses: actions/upload-artifact@v7
         if: always()

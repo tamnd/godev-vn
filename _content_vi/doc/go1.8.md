@@ -652,7 +652,16 @@ giờ có trường `Cert`, báo cáo chứng chỉ
 không đáng tin cậy.
 
 Xác thực chứng chỉ có nhiều quyền hạn hơn trong một số trường hợp và
-nghiêm ngặt hơn trong một số trường hợp khác.
+nghiêm ngặt hơn trong một số trường hợp khác. <!--
+crypto/x509: allow a leaf certificate to be specified directly as root (CL 27393)
+crypto/x509: check that the issuer name matches the issuer's subject name (CL 23571)
+crypto/x509: don't accept a root that already appears in a chain. (CL 32121)
+crypto/x509: fix name constraints handling (CL 30155)
+crypto/x509: parse all names in an RDN (CL 30810)
+crypto/x509: recognise ISO OID for RSA+SHA1 (CL 27394)
+crypto/x509: require a NULL parameters for RSA public keys (CL 16166, CL 27312)
+crypto/x509: return error for missing SerialNumber (CL 27238)
+-->
 
 <!-- CL 30375 -->
 Chứng chỉ root giờ cũng được tìm kiếm tại

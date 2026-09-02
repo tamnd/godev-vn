@@ -15,12 +15,14 @@ Go 1.24 có nhiều cải tiến so với Go 1.23. Dưới đây là một số 
 
 ## Thay đổi ngôn ngữ
 
+<!-- go.dev/issue/46477 -->
 Go 1.24 nay hỗ trợ đầy đủ [type alias generic](/issue/46477): một type alias
 có thể được tham số hóa như một kiểu được định nghĩa.
 Xem [đặc tả ngôn ngữ](/ref/spec#Alias_declarations) để biết chi tiết.
 
 ## Cải thiện hiệu năng
 
+<!-- go.dev/issue/54766, go.dev/cl/614795, go.dev/issue/68578 -->
 Một số cải tiến hiệu năng trong runtime đã giảm chi phí CPU
 từ 2-3% tính trung bình trên một bộ benchmark đại diện. Các
 cải tiến này bao gồm triển khai `map` built-in mới dựa trên
@@ -29,11 +31,13 @@ cho các object nhỏ, và triển khai mutex nội bộ runtime mới.
 
 ## Cải tiến công cụ
 
-- Lệnh `go` nay cung cấp cơ chế theo dõi dependency tool cho một
+- <!-- go.dev/issue/48429 -->
+  Lệnh `go` nay cung cấp cơ chế theo dõi dependency tool cho một
   module. Dùng `go get -tool` để thêm chỉ thị `tool` vào module hiện tại. Dùng
   `go tool [tên tool]` để chạy các tool được khai báo với chỉ thị `tool`.
   Đọc thêm về [lệnh go](/doc/go1.24#go-command) trong ghi chú phát hành.
-- Trình phân tích `test` mới trong lệnh con `go vet` báo cáo các lỗi phổ biến trong
+- <!-- go.dev/issue/44251 -->
+  Trình phân tích `test` mới trong lệnh con `go vet` báo cáo các lỗi phổ biến trong
   khai báo test, fuzzer, benchmark và example trong các gói kiểm thử.
   Đọc thêm về [vet](/doc/go1.24#vet) trong ghi chú phát hành.
 
@@ -65,6 +69,7 @@ cho các object nhỏ, và triển khai mutex nội bộ runtime mới.
 
 ## Cải thiện hỗ trợ WebAssembly
 
+<!-- go.dev/issue/65199, CL 603055 -->
 Go 1.24 thêm chỉ thị `go:wasmexport` mới cho chương trình Go để export
 hàm tới WebAssembly host, và hỗ trợ build một chương trình Go như một WASI
 [reactor/library](https://github.com/WebAssembly/WASI/blob/63a46f61052a21bfab75a76558485cf097c0dbba/legacy/application-abi.md#current-unstable-abi).

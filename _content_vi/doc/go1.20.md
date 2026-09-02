@@ -1128,3 +1128,4 @@ tương tự như [`utf8.AppendRune`](/pkg/unicode/utf8/#AppendRune).
 <!-- CL 453616 fix deprecation comment in archive/zip -->
 <!-- CL 453617 fix deprecation comment in encoding/csv -->
 <!-- https://go.dev/issue/54661 x/tools/go/analysis -->
+<!-- CL 423359, https://go.dev/issue/51317 arena -->

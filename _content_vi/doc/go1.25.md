@@ -702,5 +702,37 @@ Cổng linux/riscv64 giờ hỗ trợ chế độ build `plugin`.
 Biến môi trường `GORISCV64` giờ chấp nhận giá trị mới `rva23u64`,
 chọn hồ sơ ứng dụng người dùng RVA23U64.
 
+<!--
+Output from relnote todo that was generated and reviewed on 2025-05-23, plus summary info from bug/CL: -->
+
+<!-- Items that don't need to be mentioned in Go 1.25 release notes but are picked up by relnote todo
+Just updating old prposals
+accepted proposal https://go.dev/issue/30999 (from https://go.dev/cl/671795)
+accepted proposal https://go.dev/issue/36532 (from https://go.dev/cl/647555)
+accepted proposal https://go.dev/issue/48429 (from https://go.dev/cl/648577)
+accepted proposal https://go.dev/issue/51572 (from https://go.dev/cl/651996)
+accepted proposal https://go.dev/issue/51430 (from https://go.dev/cl/644997, https://go.dev/cl/646355)
+accepted proposal https://go.dev/issue/60905 (from https://go.dev/cl/645795)
+accepted proposal https://go.dev/issue/61716 (from https://go.dev/cl/644475)
+accepted proposal https://go.dev/issue/64876 (from https://go.dev/cl/649435)
+accepted proposal https://go.dev/issue/70123 (from https://go.dev/cl/657116)
+accepted proposal https://go.dev/issue/61901 (from https://go.dev/cl/647875)
+accepted proposal https://go.dev/issue/64207 (from https://go.dev/cl/647015, https://go.dev/cl/652235)
+accepted proposal https://go.dev/issue/70200 (from https://go.dev/cl/674916)
+
+For subrepos:
+accepted proposal https://go.dev/issue/53757 (from https://go.dev/cl/644575)
+accepted proposal https://go.dev/issue/54743 (from https://go.dev/cl/532415)
+accepted proposal https://go.dev/issue/57792 (from https://go.dev/cl/649716, https://go.dev/cl/651737)
+accepted proposal https://go.dev/issue/58523 (from https://go.dev/cl/538235)
+accepted proposal https://go.dev/issue/61537 (from https://go.dev/cl/531935)
+accepted proposal https://go.dev/issue/61940 (from https://go.dev/cl/650235)
+accepted proposal https://go.dev/issue/67839 (from https://go.dev/cl/646535)
+accepted proposal https://go.dev/issue/68780 (from https://go.dev/cl/659835)
+accepted proposal https://go.dev/issue/69095 (from https://go.dev/cl/649320, https://go.dev/cl/649321, https://go.dev/cl/649337, https://go.dev/cl/649376, https://go.dev/cl/649377, https://go.dev/cl/649378, https://go.dev/cl/649379, https://go.dev/cl/649380, https://go.dev/cl/649397, https://go.dev/cl/649398, https://go.dev/cl/649419, https://go.dev/cl/649497, https://go.dev/cl/649498, https://go.dev/cl/649618, https://go.dev/cl/649675, https://go.dev/cl/649676, https://go.dev/cl/649677, https://go.dev/cl/649695, https://go.dev/cl/649696, https://go.dev/cl/649697, https://go.dev/cl/649698, https://go.dev/cl/649715, https://go.dev/cl/649717, https://go.dev/cl/649718, https://go.dev/cl/649755, https://go.dev/cl/649775, https://go.dev/cl/649795, https://go.dev/cl/649815, https://go.dev/cl/649835, https://go.dev/cl/651336, https://go.dev/cl/651736, https://go.dev/cl/651737, https://go.dev/cl/658018)
+accepted proposal https://go.dev/issue/70859 (from https://go.dev/cl/666056, https://go.dev/cl/670835, https://go.dev/cl/672015, https://go.dev/cl/672016, https://go.dev/cl/672017)
+accepted proposal https://go.dev/issue/32816 (from https://go.dev/cl/645155, https://go.dev/cl/645455, https://go.dev/cl/645955, https://go.dev/cl/646255, https://go.dev/cl/646455, https://go.dev/cl/646495, https://go.dev/cl/646655, https://go.dev/cl/646875, https://go.dev/cl/647298, https://go.dev/cl/647299, https://go.dev/cl/647736, https://go.dev/cl/648581, https://go.dev/cl/648715, https://go.dev/cl/648976, https://go.dev/cl/648995, https://go.dev/cl/649055, https://go.dev/cl/649056, https://go.dev/cl/649057, https://go.dev/cl/649456, https://go.dev/cl/649476, https://go.dev/cl/650755, https://go.dev/cl/651615, https://go.dev/cl/651617, https://go.dev/cl/651655, https://go.dev/cl/653436)
+-->
+
 [cross-site request forgery (csrf)]: https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF
 [sec-fetch-site]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site
