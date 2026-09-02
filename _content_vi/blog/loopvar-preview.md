@@ -142,7 +142,7 @@ Code cũ sẽ tiếp tục có ý nghĩa chính xác như ngày hôm nay:
 sửa chữa chỉ áp dụng cho code mới hoặc được cập nhật.
 Điều này sẽ cho phép các lập trình viên kiểm soát khi nào ngữ nghĩa thay đổi
 trong một package cụ thể.
-Là hệ quả của [công việc tương thích tiến](/toolchain),
+Là hệ quả của [công việc tương thích tiến](toolchain),
 Go 1.21 sẽ không cố gắng biên dịch code khai báo `go 1.22` hoặc cao hơn.
 Chúng tôi đã bao gồm một trường hợp đặc biệt với hiệu quả tương tự trong
 các bản phát hành điểm Go 1.20.8 và Go 1.19.13,

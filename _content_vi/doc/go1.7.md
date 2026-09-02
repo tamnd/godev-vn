@@ -494,7 +494,7 @@ Cũng có một kiểu lỗi liên quan mới
 
 Phương thức mới [`SeekPC`](/pkg/debug/dwarf/#Reader.SeekPC) của kiểu
 [`Reader`](/pkg/debug/dwarf/#Reader) và
-phương thức mới [`Ranges`](/pkg/debug/dwarf/#Data.Ranges) của kiểu
+phương thức mới [`Ranges`](/pkg/debug/dwarf/#Ranges) của kiểu
 [`Data`](/pkg/debug/dwarf/#Data)
 giúp tìm đơn vị biên dịch để truyền cho một
 [`LineReader`](/pkg/debug/dwarf/#LineReader)
@@ -618,7 +618,7 @@ Context được dùng để thay thế các trường `Cancel` và `Deadline` c
 nhưng việc triển khai vẫn tôn trọng chúng,
 để tương thích ngược.
 
-Phương thức `String` của kiểu [`IP`](/pkg/net/#IP) đã thay đổi kết quả của nó cho các địa chỉ `IP` không hợp lệ.
+Phương thức [`String`](/pkg/net/#IP.String) của kiểu [`IP`](/pkg/net/#IP) đã thay đổi kết quả của nó cho các địa chỉ `IP` không hợp lệ.
 Trong các bản phát hành trước, nếu một slice byte `IP` có độ dài khác 0, 4 hoặc 16, `String`
 trả về `"?"`.
 Go 1.7 thêm mã hóa thập lục phân của các byte, như trong `"?12ab"`.

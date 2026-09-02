@@ -987,9 +987,8 @@ Thay đổi Client & Transport:
     về kiểu `Client` để biết chi tiết.
   - <!-- CL 29072 -->
     [`Transport`](/pkg/net/http/#Transport)
-    giờ hỗ trợ thực hiện các yêu cầu qua proxy SOCKS5 khi URL được trả về bởi
-    [`Transport.Proxy`](/pkg/net/http/#Transport.Proxy)
-    có lược đồ `socks5`.
+    giờ hỗ trợ tên miền quốc tế. Do đó,
+    [Get](/pkg/net/http/#Get) và các helper khác cũng vậy.
   - <!-- CL 31733, CL 29852 -->
     `Client` giờ hỗ trợ chuyển hướng 301, 307 và 308.
     Ví dụ, `Client.Post` giờ theo dõi các chuyển hướng 301,

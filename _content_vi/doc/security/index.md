@@ -66,6 +66,8 @@ công bố chúng cho công chúng. Xem
 Theo [chính sách phát hành](/doc/devel/release#policy),
 chúng tôi phát hành bản vá bảo mật cho hai bản phát hành chính mới nhất của Go.
 
+- [Quyết định phân loại về các lỗ hổng bảo mật thường được báo cáo](/doc/security/decisions)
+
 ## Kiểm thử đầu vào không mong đợi với fuzzing
 
 Go native fuzzing cung cấp một loại kiểm thử tự động liên tục
