@@ -74,6 +74,10 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | false positive | dương tính giả | Security and tooling context. |
 | structured logging | structured logging | Keep unchanged for now. |
 | profile-guided optimization | tối ưu hóa dựa trên hồ sơ thực thi | Compiler and performance context. |
+| interface | interface | Keep unchanged when it is the Go type. The corpus writes `kiểu interface` 97 times against 4 for `kiểu giao diện`, and `một interface` 97 times against 15, so this is the settled convention and not a preference. `giao diện` is right for the other sense and stays: `giao diện người dùng` in doc/diagnostics.html and the browser described as an interface in blog/contributors-summit-2019.md are both correct. |
+| map | map | Keep unchanged when it is the Go type. `bản đồ` is a geographic map and is wrong for it. The four `bản đồ` on disk are a stack map, a process memory map and a mark and allocate diagram, all of which are real maps. blog/swisstable.md is the file to look at: its body already says `kiểu map`, and a title reading `Bản đồ Go` disagrees with the page under it. |
+| type parameter | tham số kiểu | Translate it. 359 against 74 across the corpus, including ref/spec.html, so the English is the minority and not the rule. |
+| Contributors Summit | Contributors Summit | Keep unchanged. It is the name of an event, blog/contributors-summit.md already writes it and `Go Contributor Summit` in English, and `Hội nghị thượng đỉnh` is what a diplomatic summit is called. |
 
 ## Quyết định đang áp dụng
 

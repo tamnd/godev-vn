@@ -61,10 +61,10 @@ jobs:
   # translated template actions, front matter that moved, and whether each
   # translation still matches the English it was made from.
   #
-  # -max is a ratchet and not a target. The corpus has 72 refusals today, so a
+  # -max is a ratchet and not a target. The corpus has 54 refusals today, so a
   # gate demanding zero would be red on every pull request including the ones
   # fixing it, and a check that is always red is a check somebody turns off.
-  # This one fails at 73. The number comes down in the same diff as the work
+  # This one fails at 55. The number comes down in the same diff as the work
   # that lowers it, which makes it a reviewable claim, and the day it reaches
   # zero the flag comes off.
   #
@@ -98,6 +98,31 @@ jobs:
   # page being translated again, but that means editing _content and the fork is
   # deliberately two conflictable files wide. This ratchet is what makes the fix
   # durable: if the retranslation breaks the anchor again, the gate says so.
+  #
+  # 72 to 54 is the first eight files coming back from the machine rather than
+  # from somebody editing. Five of the 32 the upstream sync moved, retranslated
+  # against the English on disk now, and three that stopped early partway
+  # through. One diff clears 18: nine dropped links, five stale records, three
+  # truncations and one heading tree.
+  #
+  # Two more files came back and are not here. blog/gofix.md and blog/inliner.md
+  # have five pieces between them that spent all three attempts while every
+  # route was refusing, so they assembled with those five paragraphs still in
+  # English. That is the documented behaviour and it is right for a page that is
+  # otherwise whole, but it is not something to commit while the pieces can
+  # simply be asked for again. They are worth another seven when they land.
+  #
+  # The eight files also came back with three words translated that the rest of
+  # the corpus leaves in English, and no gate caught any of them, because none of
+  # the three was in GLOSSARY.md to catch them with. `interface` became `giao
+  # diện`, `map` became `bản đồ`, and Contributors Summit became a diplomatic
+  # summit. The counts settle all three: the corpus writes `kiểu interface` 97
+  # times against 4 the other way, the four `bản đồ` already on disk are all real
+  # maps, and blog/contributors-summit.md writes the event name in English. So
+  # the eleven occurrences are fixed by hand here and the four rows are in the
+  # glossary, which puts them in the prompt for the next run and under L10 for
+  # the files already written. That found five more, which are notices and are
+  # not in this diff.
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -119,7 +144,7 @@ jobs:
       # exactly when it is worth reading.
       - name: audit
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn audit -max 72 -report audit.md
+        run: go run ./cmd/godev -C ../godev-vn audit -max 54 -report audit.md
 
       - uses: actions/upload-artifact@v7
         if: always()
