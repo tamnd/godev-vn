@@ -806,14 +806,14 @@ của các hằng số không có kiểu.
 Để nhắc lại nhanh, đây là các kiểu mặc định có thể có trong Go:
 
 ```
-Ví dụ    Loại hằng số              Kiểu mặc định  Thứ tự
+Example     Constant kind              Default type    Order
 
-true        hằng số boolean           bool
-42          hằng số nguyên            int             trước trong danh sách
-'x'         hằng số rune              rune               |
-3.1416      hằng số dấu phẩy động     float64            v
--1i         hằng số số phức           complex128      sau trong danh sách
-"gopher"    hằng số chuỗi             string
+true        boolean constant           bool
+42          integer constant           int             earlier in list
+'x'         rune constant              rune               |
+3.1416      floating-point constant    float64            v
+-1i         complex constant           complex128      later in list
+"gopher"    string constant            string
 ```
 
 Với thông tin này, hãy xem xét lời gọi hàm

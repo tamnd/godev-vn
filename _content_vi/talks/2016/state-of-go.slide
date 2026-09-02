@@ -110,7 +110,7 @@ Chúng ta cần cẩn thận với các ký tự xuống dòng.
 
 Bây giờ hoạt động, nhưng... Tôi không thực sự thích code của mình!
 
-* text/template: gặp {{- và -}}
+* text/template: gặp {{- and -}}
 
 Go 1.6 mang đến hai delimiter mới:
 

@@ -482,7 +482,7 @@ xử lý [ký tự kết hợp](https://en.wikipedia.org/wiki/Combining_characte
    fuzz: elapsed: 0s, gathering baseline coverage: 5/37 completed
    --- FAIL: FuzzReverse (0.02s)
        --- FAIL: FuzzReverse (0.00s)
-           reverse_test.go:33: Before: "\x91", after: "&#65533;"
+           reverse_test.go:33: Before: "\x91", after: "�"
 
        Failing input written to testdata/fuzz/FuzzReverse/1ffc28f7538e29d79fce69fef20ce5ea72648529a9ca10bea392bcff28cd015c
        To re-run:
@@ -514,7 +514,7 @@ Hãy xem kỹ chuỗi đã đảo ngược để phát hiện lỗi. Trong Go, [
 một slice byte chỉ đọc](/blog/strings), và có thể chứa các byte
 không phải UTF-8 hợp lệ. Chuỗi gốc là một slice byte với một byte,
 `'\x91'`. Khi chuỗi đầu vào được đặt thành `[]rune`, Go mã hóa slice byte thành
-UTF-8 và thay thế byte bằng ký tự UTF-8 &#65533;. Khi chúng ta so sánh
+UTF-8 và thay thế byte bằng ký tự UTF-8 �. Khi chúng ta so sánh
 ký tự UTF-8 thay thế với slice byte đầu vào, chúng rõ ràng không bằng nhau.
 
 #### Viết code
@@ -550,13 +550,13 @@ nó sẽ khác với hash bên dưới.
 ```
 $ go test -run=FuzzReverse/28f36ef487f23e6c7a81ebdaa9feffe2f2b02b4cddaa6252e87f69863046a5e0
 input: "\x91"
-runes: ['&#65533;']
-input: "&#65533;"
-runes: ['&#65533;']
+runes: ['�']
+input: "�"
+runes: ['�']
 --- FAIL: FuzzReverse (0.00s)
     --- FAIL: FuzzReverse/28f36ef487f23e6c7a81ebdaa9feffe2f2b02b4cddaa6252e87f69863046a5e0 (0.00s)
         reverse_test.go:16: Number of runes: orig=1, rev=1, doubleRev=1
-        reverse_test.go:18: Before: "\x91", after: "&#65533;"
+        reverse_test.go:18: Before: "\x91", after: "�"
 FAIL
 exit status 1
 FAIL    example/fuzz    0.145s
