@@ -58,13 +58,13 @@ Một số gói rõ ràng không có bộ đếm được chèn, vì chúng có 
 Khi worker nhận được một đầu vào mới, nó áp dụng các biến đổi cho đầu vào trước khi thực thi target với đầu vào. Sau mỗi biến đổi, fuzz target được thực thi với đầu vào mới, và nếu độ phủ không được mở rộng, các biến đổi tiếp theo sẽ được áp dụng. Để ngăn đầu vào phân kỳ quá nhiều so với trạng thái ban đầu của chúng, sau khi năm biến đổi được áp dụng cho một đầu vào, nó được đặt lại về trạng thái ban đầu trước khi các biến đổi tiếp theo được áp dụng. Ví dụ với đầu vào `hello world`, chiến lược biến đổi có thể trông như sau:
 
 ```
-0. hello world [trạng thái ban đầu]
-1. kello world [thay thế byte đầu tiên]
-2. world kello [hoán đổi hai đoạn]
-3. world ke    [xóa ba byte cuối]
-4. owrld ke    [xáo trộn ba byte đầu]
-5. owrldx ke   [chèn byte ngẫu nhiên]
-6. ello world  [đặt lại về trạng thái ban đầu, xóa byte đầu tiên]
+0. hello world [initial state]
+1. kello world [replace first byte]
+2. world kello [swap two chunks]
+3. world ke    [delete last three bytes]
+4. owrld ke    [shuffle first three bytes]
+5. owrldx ke   [insert random byte]
+6. ello world  [reset to initial state, delete first byte]
 ...
 ```
 
