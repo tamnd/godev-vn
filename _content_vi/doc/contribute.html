@@ -408,7 +408,7 @@ Hướng dẫn cơ bản về Gerrit — Dành cho người dùng GitHub</a>
 đảm bảo mã nguồn ổn định bằng cách biên dịch và kiểm thử một lần.
 
 <p>Nếu bạn đang thực hiện thay đổi đối với
-<a href="[https://go.googlesource.com/go](https://go.googlesource.com/go)">repository Go chính</a>:</p>
+<a href="https://go.googlesource.com/go">repository Go chính</a>:</p>
 
 <pre>
 $ git clone [https://go.googlesource.com/go](https://go.googlesource.com/go)
@@ -418,7 +418,7 @@ $ ./all.bash                                # biên dịch và kiểm thử
 
 <p>
 Nếu bạn đang thực hiện thay đổi đối với một trong các repository golang.org/x/...
-(<a href="[https://go.googlesource.com/tools](https://go.googlesource.com/tools)">golang.org/x/tools</a>,
+(<a href="https://go.googlesource.com/tools">golang.org/x/tools</a>,
 trong ví dụ này):
 </p>
 
@@ -503,7 +503,7 @@ $ cd go
 </pre>
 
 <p>repository golang.org/x/...</p>
-(<a href="[https://go.googlesource.com/tools](https://go.googlesource.com/tools)">golang.org/x/tools</a> trong ví dụ này):
+(<a href="https://go.googlesource.com/tools">golang.org/x/tools</a> trong ví dụ này):
 <pre>
 $ git clone [https://go.googlesource.com/tools](https://go.googlesource.com/tools)
 $ cd tools
@@ -561,7 +561,7 @@ chạy tiếp theo sẽ cập nhật commit hiện có trong khi vẫn giữ ngu
 Hãy đảm bảo rằng bạn luôn giữ một commit duy nhất trong mỗi nhánh.
 Nếu bạn thêm nhiều
 commit do nhầm lẫn, bạn có thể dùng <code>git</code> <code>rebase</code> để
-<a href="[https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github](https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github)">gộp chúng lại</a>
+<a href="https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github">gộp chúng lại</a>
 thành một commit duy nhất.
 </p>
 
@@ -679,7 +679,7 @@ liên kết thay đổi Gerrit của bạn với vấn đề đó trong các bì
 Các maintainer của Go sẽ xem xét mã của bạn trên Gerrit, và bạn sẽ nhận được thông báo qua e-mail.
 Bạn có thể xem phần xem xét trên Gerrit và bình luận về chúng tại đó.
 Bạn cũng có thể trả lời
-<a href="[https://gerrit-review.googlesource.com/Documentation/intro-user.html#reply-by-email](https://gerrit-review.googlesource.com/Documentation/intro-user.html#reply-by-email)">bằng e-mail</a>
+<a href="https://gerrit-review.googlesource.com/Documentation/intro-user.html#reply-by-email">bằng e-mail</a>
 nếu bạn muốn.
 </p>
 
@@ -705,60 +705,60 @@ Hãy nhớ không chạm vào dòng Change-Id đặc biệt.
 Một lần nữa, hãy đảm bảo rằng bạn luôn giữ một commit duy nhất trong mỗi branch.
 Nếu bạn vô tình thêm nhiều
 commit hơn, bạn có thể dùng <code>git rebase</code> để
-<a href="[https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github](https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github)">gộp chúng lại</a>
+<a href="https://stackoverflow.com/questions/31668794/squash-all-your-commits-in-one-before-a-pull-request-in-github">gộp chúng lại</a>
 thành một commit duy nhất.
 </p>
 
 <h2 id="sending_a_change_github">Gửi một thay đổi qua GitHub</h2>
 
 <p>
-&#x9;Mặc dù quy trình Gerrit được khuyến nghị và được hỗ trợ tốt hơn,
-&#x9;các contributor đã quen thuộc với
-&#x9;<a href="[https://guides.github.com/introduction/flow/](https://guides.github.com/introduction/flow/)">quy trình GitHub</a>
-&#x9;có thể sử dụng cùng quy trình này cho các đóng góp cho Go.
-&#x9;Mặc dù các maintainer của Go sử dụng Gerrit để xem xét mã,
-&#x9;một công cụ có tên <a href="/wiki/GerritBot">GerritBot</a> đã được tạo để đồng bộ
-&#x9;các pull request trên GitHub với Gerrit.
+	Mặc dù quy trình Gerrit được khuyến nghị và được hỗ trợ tốt hơn,
+	các contributor đã quen thuộc với
+	<a href="https://guides.github.com/introduction/flow/">quy trình GitHub</a>
+	có thể sử dụng cùng quy trình này cho các đóng góp cho Go.
+	Mặc dù các maintainer của Go sử dụng Gerrit để xem xét mã,
+	một công cụ có tên <a href="/wiki/GerritBot">GerritBot</a> đã được tạo để đồng bộ
+	các pull request trên GitHub với Gerrit.
 </p>
 
 <p>
-&#x9;Hãy mở một pull request trên GitHub như bạn vẫn thường làm.
-&#x9;GerritBot sẽ tạo một danh sách thay đổi Gerrit tương ứng (một "CL") và đăng liên kết tới
-&#x9;nó trong pull request trên GitHub của bạn; các cập nhật đối với pull request cũng sẽ
-&#x9;được phản ánh trong CL trên Gerrit.
-&#x9;Khi ai đó bình luận về CL, bình luận của họ cũng sẽ được
-&#x9;đăng trong pull request của bạn, vì vậy bạn sẽ nhận được thông báo.
+	Hãy mở một pull request trên GitHub như bạn vẫn thường làm.
+	GerritBot sẽ tạo một danh sách thay đổi Gerrit tương ứng (một "CL") và đăng liên kết tới
+	nó trong pull request trên GitHub của bạn; các cập nhật đối với pull request cũng sẽ
+	được phản ánh trong CL trên Gerrit.
+	Khi ai đó bình luận về CL, bình luận của họ cũng sẽ được
+	đăng trong pull request của bạn, vì vậy bạn sẽ nhận được thông báo.
 </p>
 
 <p>
-&#x9;Một số điều cần lưu ý:
+	Một số điều cần lưu ý:
 </p>
 
 <ul>
-&#x9;<li>
-&#x9;	Bạn sẽ cần một <a href="[https://go-review.googlesource.com/login/](https://go-review.googlesource.com/login/)">tài khoản Gerrit</a>
-&#x9;	để phản hồi người xem xét của bạn, bao gồm cả việc <a href="#reviews">đánh dấu phản hồi là 'Done'</a>
-&#x9;	nếu đã triển khai theo đề xuất.
-&#x9;	Bạn nên làm quen với Gerrit, chẳng hạn bằng cách
-&#x9;	<a href="[https://go-review.googlesource.com/q/status:open+-is:wip](https://go-review.googlesource.com/q/status:open+-is:wip)">xem lướt các CL đang mở</a>,
-&#x9;	đăng ký nhận cập nhật về các CL thú vị (thông qua biểu tượng ngôi sao),
-&#x9;	hoặc <a href="/wiki/Gardening#pending-cls">xem xét hoặc đưa +1</a> cho CL của người khác.
-&#x9;</li>
-&#x9;<li>
-&#x9;	Để cập nhật pull request bằng mã mới, chỉ cần đẩy nó lên branch; bạn có thể
-&#x9;	thêm nhiều commit hơn, hoặc rebase và force-push (cả hai kiểu đều được chấp nhận).
-&#x9;</li>
-&#x9;<li>
-&#x9;	Nếu yêu cầu được chấp nhận, tất cả commit sẽ được squash, và mô tả
-&#x9;	commit cuối cùng sẽ được tạo bằng cách nối tiêu đề và mô tả
-&#x9;	của pull request.
-&#x9;	Mô tả của từng commit riêng lẻ sẽ bị loại bỏ.
-&#x9;	Xem <a href="#commit_messages">Viết các commit message tốt</a> để biết một số
-&#x9;	gợi ý.
-&#x9;</li>
-&#x9;<li>
-&#x9;	Xem <a href="/wiki/GerritBot#frequently-asked-questions">Câu hỏi thường gặp về GerritBot</a> để biết thêm chi tiết.
-&#x9;</li>
+	<li>
+		Bạn sẽ cần một <a href="https://go-review.googlesource.com/login/">tài khoản Gerrit</a>
+		để phản hồi người xem xét của bạn, bao gồm cả việc <a href="#reviews">đánh dấu phản hồi là 'Done'</a>
+		nếu đã triển khai theo đề xuất.
+		Bạn nên làm quen với Gerrit, chẳng hạn bằng cách
+		<a href="https://go-review.googlesource.com/q/status:open+-is:wip">xem lướt các CL đang mở</a>,
+		đăng ký nhận cập nhật về các CL thú vị (thông qua biểu tượng ngôi sao),
+		hoặc <a href="/wiki/Gardening#pending-cls">xem xét hoặc đưa +1</a> cho CL của người khác.
+	</li>
+	<li>
+		Để cập nhật pull request bằng mã mới, chỉ cần đẩy nó lên branch; bạn có thể
+		thêm nhiều commit hơn, hoặc rebase và force-push (cả hai kiểu đều được chấp nhận).
+	</li>
+	<li>
+		Nếu yêu cầu được chấp nhận, tất cả commit sẽ được squash, và mô tả
+		commit cuối cùng sẽ được tạo bằng cách nối tiêu đề và mô tả
+		của pull request.
+		Mô tả của từng commit riêng lẻ sẽ bị loại bỏ.
+		Xem <a href="#commit_messages">Viết các commit message tốt</a> để biết một số
+		gợi ý.
+	</li>
+	<li>
+		Xem <a href="/wiki/GerritBot#frequently-asked-questions">Câu hỏi thường gặp về GerritBot</a> để biết thêm chi tiết.
+	</li>
 </ul>
 
 <h2 id="commit_messages">Các commit message tốt</h2>
