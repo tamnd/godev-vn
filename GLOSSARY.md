@@ -34,9 +34,9 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | AUTHORS | AUTHORS | Filename, do not translate. |
 | CONTRIBUTORS | CONTRIBUTORS | Filename, do not translate. |
 | author | tác giả | Use for people credited for commits or changes. |
-| contributor | contributor | Keep unchanged — do not translate. |
+| contributor | contributor | Keep unchanged, do not translate. |
 | commit | commit | Keep the Git term unchanged. |
-| repository | repository | Keep unchanged — do not translate. |
+| repository | repository | Keep unchanged, do not translate. |
 | source control history | lịch sử quản lý mã nguồn | Prefer this over shorter paraphrases. |
 | authoritative source | nguồn thông tin chính xác nhất | Matches current translation. |
 | Go's Gerrit instance | máy chủ Gerrit của Go | Keep `Gerrit` as a product name. |
@@ -50,7 +50,9 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | cloud software | phần mềm đám mây | Prefer this in infra context. |
 | garbage collector | bộ gom rác | Preferred runtime term. |
 | tooling | hệ thống công cụ | Use for developer-tooling context. |
-| release | bản phát hành | Use for product or language releases. |
+| release | bản phát hành | Use for product or language releases. Not inside the two rows below. |
+| release candidate | release candidate | Keep unchanged. This is what Vietnamese Go writing calls it, and "bản ứng viên phát hành" is nobody's phrase. |
+| pre-release | pre-release | Keep unchanged. Semver vocabulary, and it appears next to `v1.2.3-beta.1` where translating it would be confusing. |
 | vulnerability | lỗ hổng bảo mật | Security context. |
 | dependency | dependency | Keep this term in technical prose when clearer. |
 | generics | generics | Keep the feature name unchanged for now. |
