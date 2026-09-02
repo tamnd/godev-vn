@@ -61,10 +61,10 @@ jobs:
   # translated template actions, front matter that moved, and whether each
   # translation still matches the English it was made from.
   #
-  # -max is a ratchet and not a target. The corpus has 54 refusals today, so a
+  # -max is a ratchet and not a target. The corpus has 63 refusals today, so a
   # gate demanding zero would be red on every pull request including the ones
   # fixing it, and a check that is always red is a check somebody turns off.
-  # This one fails at 55. The number comes down in the same diff as the work
+  # This one fails at 64. The number comes down in the same diff as the work
   # that lowers it, which makes it a reviewable claim, and the day it reaches
   # zero the flag comes off.
   #
@@ -112,6 +112,19 @@ jobs:
   # otherwise whole, but it is not something to commit while the pieces can
   # simply be asked for again. They are worth another seven when they land.
   #
+  # 54 to 63 goes up, and it is the second time and for the same reason as the
+  # first. L07 learns to read an HTML anchor. It has always read Markdown links
+  # only, which meant that on 55 translated .html pages carrying 772 href and
+  # src targets between them it was checking nothing at all, and that is how ten
+  # anchors reading href="[url](url)" reached _content_vi and sat there through
+  # a review. Those ten are fixed. The nine this adds are real dropped links
+  # that were already on disk: three JSON v2 entries missing from doc/index.html,
+  # one from doc/tutorial/index.html, an install link from create-module.html,
+  # and four in doc/manage-install.html, which needs retranslating anyway.
+  #
+  # Raise this before the translator pull request merges, not after. The job
+  # below checks that repository out at its default branch.
+  #
   # The eight files also came back with three words translated that the rest of
   # the corpus leaves in English, and no gate caught any of them, because none of
   # the three was in GLOSSARY.md to catch them with. `interface` became `giao
@@ -144,7 +157,7 @@ jobs:
       # exactly when it is worth reading.
       - name: audit
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn audit -max 54 -report audit.md
+        run: go run ./cmd/godev -C ../godev-vn audit -max 63 -report audit.md
 
       - uses: actions/upload-artifact@v7
         if: always()
