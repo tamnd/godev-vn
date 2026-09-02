@@ -7,7 +7,6 @@ tags:
 - godoc
 - technical
 summary: Cách và lý do để tài liệu hóa các gói Go của bạn.
-template: true
 ---
 
 [_**Lưu ý, tháng 6 năm 2022**: Để biết hướng dẫn cập nhật về tài liệu hóa code Go,

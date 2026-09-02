@@ -4,7 +4,6 @@ date: 2010-05-12
 by:
 - Andrew Gerrand
 summary: Nếu bạn sẽ có mặt tại Google I/O 2010, hãy nhớ gặp gỡ nhóm Go tại những sự kiện này.
-template: true
 ---
 
 

@@ -1,7 +1,6 @@
 ---
 title: "Điều khoản dịch vụ"
 layout: article
-template: true
 date: 2019-11-05T15:47:16-05:00
 ---
 

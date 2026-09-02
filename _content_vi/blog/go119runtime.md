@@ -4,7 +4,6 @@ date: 2022-09-26
 by:
 - Michael Knyszek
 summary: Cập nhật về tình trạng phát triển của Go runtime
-template: true
 ---
 
 Kể từ [bài đăng blog về Go GC năm 2018](/blog/ismmkeynote),

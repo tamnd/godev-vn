@@ -4,7 +4,6 @@ date: 2024-02-13
 by:
 - Jonathan Amsterdam, on behalf of the Go team
 summary: Các bổ sung cho pattern HTTP route trong Go 1.22.
-template: true
 ---
 
 Go 1.22 mang đến hai cải tiến cho router của package `net/http`: khớp method

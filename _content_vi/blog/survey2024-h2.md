@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy giúp định hình tương lai của Go bằng cách chia sẻ suy nghĩ của bạn qua Khảo sát Nhà phát triển Go
-template: true
 ---
 
 Chúng tôi vui mừng thông báo rằng Khảo sát Nhà phát triển Go định kỳ nay đã mở! Từ hôm nay, **ngày 9 tháng 9**, đến **ngày 23 tháng 9**, chúng tôi mời bạn chia sẻ kinh nghiệm, ý kiến, và những suy nghĩ của mình về ngôn ngữ lập trình Go và hệ sinh thái của nó.

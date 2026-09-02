@@ -7,7 +7,6 @@ tags:
 - protobuf
 - community
 summary: Thông báo hỗ trợ Go cho Protocol Buffers, định dạng trao đổi dữ liệu của Google.
-template: true
 ---
 
 

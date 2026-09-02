@@ -8,7 +8,6 @@ tags:
 - versioning
 - modules
 summary: Cách sử dụng Go modules để quản lý các dependency của chương trình.
-template: true
 ---
 
 ## Giới thiệu

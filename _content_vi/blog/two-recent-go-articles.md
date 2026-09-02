@@ -8,7 +8,6 @@ tags:
 - talk
 - ethos
 summary: "Hai bài viết về Go: \"Go at Google: Language Design in the Service of Software Engineering\" và \"Getting Started with Go, App Engine and Google+ API\""
-template: true
 ---
 
 ## Giới thiệu

@@ -4,7 +4,6 @@ date: 2023-08-14T12:00:01Z
 by:
 - Russ Cox
 summary: Go 1.21 quản lý các Go toolchain giống như bất kỳ dependency nào khác; bạn sẽ không bao giờ cần tải về và cài đặt thủ công một Go toolchain nữa.
-template: true
 ---
 
 Ngoài [cam kết mở rộng về tương thích ngược](compat) trong Go 1.21,

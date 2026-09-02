@@ -1,7 +1,6 @@
 ---
 title: Thực hành bảo mật tốt nhất cho lập trình viên Go
 layout: article
-template: true
 ---
 
 [Quay lại Bảo mật Go](/security)

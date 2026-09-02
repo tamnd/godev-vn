@@ -8,7 +8,6 @@ tags:
 - community
 - developer experience research
 summary: Những gì chúng tôi học được từ khảo sát nhà phát triển 2023 H2
-template: true
 ---
 
 <style type="text/css" scoped>

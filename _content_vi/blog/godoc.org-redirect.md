@@ -4,7 +4,6 @@ date: 2020-12-15
 by:
 - Julie Qiu
 summary: Kế hoạch chuyển từ godoc.org sang pkg.go.dev.
-template: true
 ---
 
 

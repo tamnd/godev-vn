@@ -9,7 +9,6 @@ tags:
 - community
 - developer experience research
 summary: Những gì chúng tôi tìm hiểu được từ khảo sát lập trình viên H1 2024
-template: true
 ---
 
 <style type="text/css" scoped>

@@ -4,7 +4,6 @@ date: 2015-08-31
 by:
 - Richard Hudson
 summary: Go 1.5 là bước đầu tiên hướng tới tương lai độ trễ thấp cho bộ thu gom rác của Go.
-template: true
 ---
 
 ## Bối cảnh

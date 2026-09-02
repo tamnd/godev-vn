@@ -2,7 +2,6 @@
 title: "Bản quyền"
 layout: article
 date: 2019-11-05T15:50:08-05:00
-template: true
 ---
 
 Trừ khi có <a href="https://developers.google.com/terms/site-policies#restrictions">ghi chú</a> khác, nội dung của trang web này

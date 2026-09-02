@@ -7,7 +7,6 @@ tags:
 - json
 - technical
 summary: Cách tạo và sử dụng dữ liệu định dạng JSON trong Go.
-template: true
 ---
 
 ## Giới thiệu

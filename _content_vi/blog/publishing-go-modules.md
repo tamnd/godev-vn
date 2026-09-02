@@ -7,7 +7,6 @@ tags:
 - tools
 - versioning
 summary: Cách viết và phát hành module để dùng làm dependency.
-template: true
 ---
 
 ## Giới thiệu

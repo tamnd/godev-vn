@@ -1,7 +1,6 @@
 ---
 path: /doc/go1.20
 title: Ghi chú phát hành Go 1.20
-template: true
 ---
 
 <!--

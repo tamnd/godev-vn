@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy tham gia Bảng câu hỏi Công ty Go 2018.
-template: true
 ---
 
 ## Dự án Go muốn nghe từ bạn!

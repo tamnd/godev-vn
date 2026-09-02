@@ -1,5 +1,4 @@
 ---
-template: true
 title: Ghi chú phát hành Go 1.4
 ---
 

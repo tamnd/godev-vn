@@ -6,7 +6,6 @@ by:
 tags:
 - release
 summary: Chuyển từ các bản phát hành hàng tuần không ổn định sang các bản phát hành ít thường xuyên hơn nhưng ổn định hơn.
-template: true
 ---
 
 

@@ -11,7 +11,6 @@ tags:
 - tools
 - technical
 summary: Cách đặt tên và đóng gói các phần của chương trình Go để phục vụ người dùng tốt nhất.
-template: true
 ---
 
 ## Giới thiệu

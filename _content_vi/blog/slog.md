@@ -4,7 +4,6 @@ date: 2023-08-22
 by:
 - Jonathan Amsterdam
 summary: Thư viện chuẩn Go 1.21 bổ sung gói structured logging mới, log/slog.
-template: true
 ---
 
 Gói `log/slog` mới trong Go 1.21 mang structured logging vào thư viện chuẩn. Structured log sử dụng các cặp khóa-giá trị để có thể phân tích cú pháp, lọc, tìm kiếm và phân tích nhanh chóng, đáng tin cậy.

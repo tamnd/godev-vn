@@ -6,7 +6,6 @@ by:
 tags:
 - guest
 summary: Cách Michael Hoisie dùng Go để xây dựng SmartTwitter và web.go.
-template: true
 ---
 
 

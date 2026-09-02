@@ -8,7 +8,6 @@ tags:
 - tools
 - versioning
 summary: Cách phát hành major version 2 của module.
-template: true
 ---
 
 ## Giới thiệu

@@ -8,7 +8,6 @@ tags:
 - names
 - style
 summary: Cách đặt tên cho các gói của bạn.
-template: true
 ---
 
 ## Giới thiệu

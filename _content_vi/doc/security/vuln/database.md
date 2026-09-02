@@ -1,7 +1,6 @@
 ---
 title: Cơ sở dữ liệu lỗ hổng bảo mật Go
 layout: article
-template: true
 ---
 
 [Quay lại Quản lý lỗ hổng bảo mật Go](/security/vuln)

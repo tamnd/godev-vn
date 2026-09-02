@@ -4,7 +4,6 @@ date: 2022-09-06
 by:
 - Julie Qiu, for the Go security team
 summary: Thông báo về quản lý lỗ hổng bảo mật cho Go, giúp nhà phát triển tìm hiểu về các lỗ hổng bảo mật đã biết trong dependency của họ.
-template: true
 ---
 
 Chúng tôi hào hứng thông báo sự hỗ trợ mới của Go cho quản lý lỗ hổng bảo mật, bước đầu tiên giúp các nhà phát triển Go tìm hiểu về các lỗ hổng bảo mật đã biết có thể ảnh hưởng đến họ.

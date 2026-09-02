@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy tham gia Khảo sát Developer Go 2021. Chúng tôi muốn nghe ý kiến của bạn!
-template: true
 ---
 
 ## Hãy giúp định hình tương lai của Go {#help}

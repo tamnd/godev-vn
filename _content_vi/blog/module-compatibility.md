@@ -8,7 +8,6 @@ tags:
 - tools
 - versioning
 summary: Cách giữ cho các module của bạn tương thích với các phiên bản minor/patch trước đó.
-template: true
 ---
 
 ## Giới thiệu

@@ -7,7 +7,6 @@ tags:
 - gofix
 - technical
 summary: Cách dùng go fix để cập nhật mã nguồn của bạn với mỗi bản phát hành Go mới.
-template: true
 ---
 
 

@@ -7,7 +7,6 @@ tags:
 - community
 - china
 summary: "Trang chủ Go và các file tải xuống binary giờ đã có sẵn tại Trung Quốc, tại https://golang.google.cn."
-template: true
 ---
 
 

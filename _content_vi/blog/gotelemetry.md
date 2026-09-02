@@ -7,7 +7,6 @@ tags:
 - telemetry
 - tools
 summary: Go 1.23 bao gồm telemetry theo kiểu opt-in cho bộ công cụ Go.
-template: true
 ---
 
 <style type="text/css" scoped>

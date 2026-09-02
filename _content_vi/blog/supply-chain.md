@@ -4,7 +4,6 @@ date: 2022-03-31
 by:
 - Filippo Valsorda
 summary: Công cụ và thiết kế của Go giúp giảm thiểu các tấn công chuỗi cung ứng ở nhiều giai đoạn.
-template: true
 ---
 
 Kỹ thuật phần mềm hiện đại mang tính cộng tác và dựa trên việc tái sử dụng phần mềm

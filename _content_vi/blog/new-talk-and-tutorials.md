@@ -4,7 +4,6 @@ date: 2010-05-05
 by:
 - Andrew Gerrand
 summary: "Thêm tài liệu để tìm hiểu về Go: một bài nói, một codelab và một screencast."
-template: true
 ---
 
 

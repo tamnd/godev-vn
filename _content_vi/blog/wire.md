@@ -4,7 +4,6 @@ date: 2018-10-09
 by:
 - Robert van Gent
 summary: Cách sử dụng Wire, một công cụ dependency injection cho Go.
-template: true
 ---
 
 ## Tổng quan

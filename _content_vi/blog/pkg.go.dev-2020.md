@@ -4,7 +4,6 @@ date: 2020-01-31
 by:
 - Julie Qiu
 summary: Những gì nhóm Go đang lên kế hoạch cho pkg.go.dev trong năm 2020.
-template: true
 ---
 
 ## Giới thiệu

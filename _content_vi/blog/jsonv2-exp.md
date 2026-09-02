@@ -12,7 +12,6 @@ tags:
 - json
 - technical
 summary: Go 1.25 giới thiệu hỗ trợ thử nghiệm cho các package encoding/json/jsontext và encoding/json/v2.
-template: true
 ---
 
 ## Giới thiệu

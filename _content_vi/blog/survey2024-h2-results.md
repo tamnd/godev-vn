@@ -8,7 +8,6 @@ tags:
 - community
 - developer experience research
 summary: Những gì chúng tôi học được từ khảo sát nhà phát triển H2 năm 2024
-template: true
 ---
 
 <style type="text/css" scoped>

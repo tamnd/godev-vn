@@ -1,7 +1,6 @@
 ---
 title: "Go Toolchains"
 layout: article
-template: true
 ---
 
 ## Giới thiệu {#intro}

@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy tham gia Khảo sát Người dùng Go 2017. Chúng tôi muốn nghe ý kiến của bạn!
-template: true
 ---
 
 ## Dự án Go muốn nghe từ bạn (một lần nữa)!

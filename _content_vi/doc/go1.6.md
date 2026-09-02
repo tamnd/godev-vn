@@ -1,6 +1,5 @@
 ---
 title: Ghi chú phát hành Go 1.6
-template: true
 ---
 
 <!--

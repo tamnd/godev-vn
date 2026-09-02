@@ -6,7 +6,6 @@ by:
 tags:
 - community
 summary: Tại sao Go là mã nguồn mở, và làm thế nào chúng ta có thể củng cố cộng đồng mã nguồn mở của mình?
-template: true
 ---
 
 ## Chào mừng

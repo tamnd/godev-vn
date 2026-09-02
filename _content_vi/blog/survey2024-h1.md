@@ -7,7 +7,6 @@ tags:
 - survey
 - community
 summary: Hãy giúp định hình tương lai của Go bằng cách chia sẻ suy nghĩ của bạn qua Khảo sát Nhà phát triển Go
-template: true
 ---
 
 Chúc mừng năm mới! [Khảo sát Nhà phát triển Go hiện đã mở](https://google.qualtrics.com/jfe/form/SV_083SVAUCji98YeO?s=b), và chúng tôi muốn nghe từ bạn!

@@ -8,7 +8,6 @@ tags:
 - rpc
 - technical
 summary: Cách sử dụng interface của package net/rpc để xây dựng hệ thống JSON-RPC.
-template: true
 ---
 
 

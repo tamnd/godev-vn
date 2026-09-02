@@ -10,7 +10,6 @@ tags:
 - modernizers
 - static analysis
 summary: "Go 1.26 có triển khai mới của go fix có thể giúp bạn dùng các tính năng hiện đại hơn của Go."
-template: true
 ---
 
 <style>

@@ -6,7 +6,6 @@ by:
 tags:
 - appengine
 summary: Hỏi đáp về Go từ Google I/O 2010.
-template: true
 ---
 
 

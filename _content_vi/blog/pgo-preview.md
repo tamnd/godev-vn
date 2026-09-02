@@ -4,7 +4,6 @@ date: 2023-02-08
 by:
 - Michael Pratt
 summary: Giới thiệu về tối ưu hóa dựa trên profile, có sẵn dưới dạng xem trước trong Go 1.20.
-template: true
 ---
 
 Khi bạn build một binary Go, trình biên dịch Go thực hiện các tối ưu hóa để cố gắng tạo ra binary hoạt động tốt nhất có thể.

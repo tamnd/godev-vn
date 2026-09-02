@@ -4,7 +4,6 @@ date: 2020-12-17
 by:
 - Russ Cox
 summary: Hỗ trợ của Go cho ARM64 và các kiến trúc khác
-template: true
 ---
 
 

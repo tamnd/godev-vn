@@ -1,7 +1,6 @@
 ---
 title: "Hướng dẫn sử dụng thương hiệu và nhãn hiệu"
 layout: article
-template: true
 ---
 
 Nhãn hiệu Go và Logo Go (<img src="/images/go-logo-blue.svg" height="12"></img>) - gọi chung là "Nhãn hiệu Go" -

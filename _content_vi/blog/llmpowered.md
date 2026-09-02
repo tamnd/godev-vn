@@ -8,7 +8,6 @@ tags:
 - ai
 - network
 summary: Ứng dụng LLM trong Go sử dụng Gemini, langchaingo và Genkit
-template: true
 ---
 
 Khi khả năng của các LLM (Large Language Model) và các công cụ liền kề như

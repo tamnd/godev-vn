@@ -1,7 +1,6 @@
 ---
 title: Tuân thủ FIPS 140-3
 layout: article
-template: true
 ---
 
 Bắt đầu từ Go 1.24, các tệp nhị phân Go có thể hoạt động nguyên bản ở chế độ hỗ trợ tuân thủ FIPS 140-3. Hơn nữa, toolchain có thể xây dựng với các phiên bản đóng băng của các gói mật mã tạo thành Module Mật mã Go.

@@ -7,7 +7,6 @@ tags:
 - file
 - os
 summary: API truy cập tệp mới trong Go 1.24.
-template: true
 ---
 
 Một *lỗ hổng path traversal* phát sinh khi kẻ tấn công có thể lừa chương trình

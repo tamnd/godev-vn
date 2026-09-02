@@ -4,7 +4,6 @@ date: 2023-07-13
 by:
 - Julie Qiu, for the Go security team
 summary: Phiên bản v1.0.0 của golang.org/x/vuln đã được phát hành, giới thiệu API mới và các cải tiến khác.
-template: true
 ---
 
 Chúng tôi vui mừng thông báo rằng govulncheck v1.0.0 đã được phát hành,

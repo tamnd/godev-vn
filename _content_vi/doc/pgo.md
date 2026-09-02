@@ -1,7 +1,6 @@
 ---
 title: Tối ưu hóa dựa trên hồ sơ thực thi
 layout: article
-template: true
 ---
 
 Bắt đầu từ Go 1.20, trình biên dịch Go hỗ trợ tối ưu hóa dựa trên hồ sơ thực thi (PGO) để tối ưu hóa hơn nữa quá trình xây dựng.
