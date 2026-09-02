@@ -229,7 +229,7 @@ scanner bảo mật (65%). Công cụ đơn lẻ phổ biến nhất được ng
 của GitHub](https://github.com/dependabot) (38%), làm cho nó được đề cập thường xuyên
 hơn tất cả các scanner lỗ hổng bảo mật khác cộng lại (27%). Sau
 các công cụ quét, phương pháp phổ biến nhất để biết về lỗ hổng bảo mật là
-các báo cáo công khai, chẳng hạn như release notes và CVE (22%).
+các báo cáo công khai, chẳng hạn như ghi chú bản phát hành và CVE (22%).
 
 <img src="survey2022q2/security_found_vuln.svg" alt="Biểu đồ cho thấy rằng hầu hết
 người trả lời không tìm thấy lỗ hổng bảo mật trong năm vừa qua"
