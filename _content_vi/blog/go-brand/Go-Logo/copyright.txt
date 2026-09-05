@@ -1,1 +1,1 @@
-Toàn bộ nội dung trong tệp zip này là bản quyền của The Go Authors năm 2018. Bảo lưu mọi quyền.
+All content within this zip file is Copyright 2018 The Go Authors. All rights reserved.
