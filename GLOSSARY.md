@@ -44,7 +44,8 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | author | tác giả | Use for people credited for commits or changes. |
 | contributor | contributor | Keep unchanged, do not translate. |
 | commit | commit | Keep the Git term unchanged. |
-| repository | repository | Keep unchanged, do not translate. |
+| repository | kho lưu trữ | Translate it. This row used to say keep it unchanged and the corpus disagreed all along: 420 occurrences of `kho lưu trữ` across 85 files against 89 of the English across 27, and doc/contribute.html and talks/2012/go1.slide each use both in the same page. The English is the minority and this row was the thing making it look like the rule. |
+| sub-repository | sub-repository | Keep unchanged. It is what the Go project calls the golang.org/x repositories, it is a name and not a description, and there are 9 on the site. A page writing `sub-repository của kho lưu trữ Go` is doing the right thing with both halves. |
 | source control history | lịch sử quản lý mã nguồn | Prefer this over shorter paraphrases. |
 | authoritative source | nguồn thông tin chính xác nhất | Matches current translation. |
 | Go's Gerrit instance | máy chủ Gerrit của Go | Keep `Gerrit` as a product name. |
