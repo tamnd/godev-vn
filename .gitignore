@@ -4,4 +4,9 @@
 # The audit report, written by `godev audit -report` and uploaded by CI.
 audit.md
 
+# The export, written by `godev publish`. It is a hundred megabytes of HTML
+# rebuilt from the content on every deploy, so it belongs in a deploy artifact
+# and not in history.
+dist/
+
 .DS_Store
