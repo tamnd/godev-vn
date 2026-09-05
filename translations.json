@@ -442,7 +442,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-05",
       "chunks": 4
     },
     "blog/generic-slice-functions.md": {
@@ -782,7 +782,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-05",
       "chunks": 3
     },
     "blog/go1.24.md": {
@@ -802,7 +802,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-05",
       "chunks": 3
     },
     "blog/go1.3.md": {
@@ -1095,7 +1095,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-05",
       "chunks": 5
     },
     "blog/jsonv2-exp.md": {
@@ -1540,7 +1540,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-05",
       "chunks": 8
     },
     "blog/sydney-gtug.md": {
@@ -2152,7 +2152,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-05",
       "chunks": 2
     },
     "doc/security/vuln/cna.md": {
