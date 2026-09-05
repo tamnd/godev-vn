@@ -79,10 +79,30 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | false positive | dương tính giả | Security and tooling context. |
 | structured logging | structured logging | Keep unchanged for now. |
 | profile-guided optimization | tối ưu hóa dựa trên hồ sơ thực thi | Compiler and performance context. |
-| interface | interface | Keep unchanged when it is the Go type. The corpus writes `kiểu interface` 97 times against 4 for `kiểu giao diện`, and `một interface` 97 times against 15, so this is the settled convention and not a preference. `giao diện` is right for the other sense and stays: `giao diện người dùng` in doc/diagnostics.html and the browser described as an interface in blog/contributors-summit-2019.md are both correct. |
-| map | map | Keep unchanged when it is the Go type. `bản đồ` is a geographic map and is wrong for it. The four `bản đồ` on disk are a stack map, a process memory map and a mark and allocate diagram, all of which are real maps. blog/swisstable.md is the file to look at: its body already says `kiểu map`, and a title reading `Bản đồ Go` disagrees with the page under it. |
 | type parameter | tham số kiểu | Translate it. 359 against 74 across the corpus, including ref/spec.html, so the English is the minority and not the rule. |
 | Contributors Summit | Contributors Summit | Keep unchanged. It is the name of an event, blog/contributors-summit.md already writes it and `Go Contributor Summit` in English, and `Hội nghị thượng đỉnh` is what a diplomatic summit is called. |
+
+## Thuật ngữ tùy nghĩa
+
+Những từ dưới đây vừa là từ tiếng Anh thông thường, vừa là tên một khái niệm
+trong Go. Giữ nguyên tiếng Anh khi câu đang nói về khái niệm trong Go, và dịch
+khi câu đang dùng nghĩa thông thường.
+
+`godev audit` không phân biệt được hai nghĩa đó, nên L10 và L16 bỏ qua bảng này.
+Đây không phải là nới lỏng kiểm tra mà là ghi nhận một việc cổng kiểm tra không
+làm được. Trước khi tách bảng, L16 báo 24 lần cho `interface` và 7 lần cho `map`
+trên toàn bộ kho nội dung, và cả 31 lần đều là nghĩa thông thường: a file system
+interface, a user interface, an interface description language, map each
+goroutine to a thread, a fixed color map. Không có lần nào đúng, và 31 thông báo
+sai làm chìm 34 thông báo đúng còn lại. Quyết định thuộc về người dịch.
+
+Chỉ thêm một dòng vào đây khi từ tiếng Anh thật sự có hai nghĩa thông dụng.
+`goroutine` và `slice` chỉ có một nghĩa nên chúng ở bảng trên.
+
+| Thuật ngữ tùy nghĩa | Bản dịch khi là thuật ngữ Go | Ghi chú |
+| --- | --- | --- |
+| interface | interface | Keep unchanged when it is the Go type. The corpus writes `kiểu interface` 97 times against 4 for `kiểu giao diện`, and `một interface` 97 times against 15, so this is the settled convention and not a preference. `giao diện` is right for the other sense and stays: `giao diện người dùng` in doc/diagnostics.html and the browser described as an interface in blog/contributors-summit-2019.md are both correct. |
+| map | map | Keep unchanged when it is the Go type. `bản đồ` is a geographic map and is wrong for it. The four `bản đồ` on disk are a stack map, a process memory map and a mark and allocate diagram, all of which are real maps. blog/swisstable.md is the file to look at: its body already says `kiểu map`, and a title reading `Bản đồ Go` disagrees with the page under it. |
 
 ## Quyết định đang áp dụng
 
