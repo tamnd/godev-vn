@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Tránh nguy cơ SQL injection",
-  "template": true
+  "Title": "Tránh nguy cơ SQL injection"
 }-->
 
 Bạn có thể tránh nguy cơ SQL injection bằng cách cung cấp các giá trị tham số

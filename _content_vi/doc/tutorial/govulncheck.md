@@ -1,8 +1,7 @@
 <!--{
   "Title": "Hướng dẫn: Tìm và sửa các dependency có lỗ hổng bảo mật với govulncheck",
   "HideTOC": true,
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Govulncheck là một công cụ ít gây nhiễu giúp bạn tìm và sửa các dependency có lỗ hổng bảo mật

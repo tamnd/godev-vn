@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Xuất bản một module",
-  "template": true
+  "Title": "Xuất bản một module"
 }-->
 
 Khi bạn muốn đưa module lên để các lập trình viên khác sử dụng, bạn xuất bản nó để công cụ Go có thể nhìn thấy. Sau khi xuất bản module, các lập trình viên import các package từ nó sẽ có thể giải quyết dependency vào module bằng cách chạy các lệnh như `go get`.

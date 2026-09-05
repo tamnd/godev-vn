@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Đánh số phiên bản module",
-  "template": true
+  "Title": "Đánh số phiên bản module"
 }-->
 
 Lập trình viên của module dùng từng phần của số phiên bản module để báo hiệu mức độ ổn định và tính tương thích ngược của phiên bản. Với mỗi bản phát hành mới, số phiên bản của module phản ánh cụ thể bản chất của các thay đổi kể từ bản phát hành trước.

@@ -1,7 +1,6 @@
 <!--{
   "Title": "Hướng dẫn: Truy cập cơ sở dữ liệu quan hệ",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Hướng dẫn này giới thiệu những kiến thức cơ bản về truy cập cơ sở dữ liệu quan hệ

@@ -1,7 +1,6 @@
 <!--{
   "Title": "Hướng dẫn: Phát triển RESTful API với Go và Gin",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Hướng dẫn này giới thiệu những kiến thức cơ bản về việc viết một RESTful web service API với Go
