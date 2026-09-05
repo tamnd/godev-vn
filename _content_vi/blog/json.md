@@ -261,7 +261,7 @@ sẽ chỉ cấp phát các cấu trúc dữ liệu có trong dữ liệu JSON.
 Để biết cần xử lý những thông báo nào, lập trình viên chỉ cần kiểm tra
 rằng `Cmd` hoặc `Msg` không phải là `nil`.
 
-## Bộ mã hóa và giải mã dạng luồng
+## Bộ mã hóa và giải mã luồng
 
 Gói json cung cấp các kiểu `Decoder` và `Encoder` để hỗ trợ thao tác phổ biến là đọc và ghi các luồng dữ liệu JSON.
 Các hàm `NewDecoder` và `NewEncoder` bao bọc các kiểu interface [`io.Reader`](/pkg/io/#Reader)
@@ -270,9 +270,9 @@ và [`io.Writer`](/pkg/io/#Writer).
 	func NewDecoder(r io.Reader) *Decoder
 	func NewEncoder(w io.Writer) *Encoder
 
-Đây là một chương trình ví dụ đọc một chuỗi đối tượng JSON từ đầu vào chuẩn,
+Sau đây là một chương trình ví dụ đọc một chuỗi đối tượng JSON từ đầu vào chuẩn,
 loại bỏ tất cả các trường ngoại trừ trường `Name` khỏi mỗi đối tượng,
-sau đó ghi các đối tượng vào đầu ra chuẩn:
+sau đó ghi các đối tượng ra đầu ra chuẩn:
 
 	package main
 
@@ -302,12 +302,12 @@ sau đó ghi các đối tượng vào đầu ra chuẩn:
 	    }
 	}
 
-Do tính phổ biến của Reader và Writer,
+Do tính phổ biến của các Reader và Writer,
 các kiểu `Encoder` và `Decoder` này có thể được sử dụng trong nhiều tình huống khác nhau,
-chẳng hạn như đọc và ghi vào các kết nối HTTP,
+chẳng hạn như đọc và ghi tới các kết nối HTTP,
 WebSockets hoặc tệp.
 
-## Tham khảo
+## Tài liệu tham khảo
 
 Để biết thêm thông tin, hãy xem [tài liệu về gói json](/pkg/encoding/json/).
-Để xem ví dụ sử dụng json, hãy xem các tệp nguồn của [gói jsonrpc](/pkg/net/rpc/jsonrpc/).
+Để xem ví dụ sử dụng json, hãy xem các tệp mã nguồn của [gói jsonrpc](/pkg/net/rpc/jsonrpc/).

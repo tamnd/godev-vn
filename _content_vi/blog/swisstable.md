@@ -30,84 +30,80 @@ Trong bài đăng blog này, chúng ta sẽ xem cách Swiss Tables cải thiện
 
 ## Bảng băm địa chỉ mở
 
-Swiss Tables là một dạng bảng băm địa chỉ mở, vì vậy hãy cùng xem nhanh cách một bảng băm địa chỉ mở cơ bản hoạt động.
+Swiss Tables là một dạng của bảng băm địa chỉ mở, vì vậy hãy cùng xem nhanh cách hoạt động của một bảng băm địa chỉ mở cơ bản.
 
-Trong bảng băm địa chỉ mở, tất cả mục được lưu trữ trong một mảng nền duy nhất. Chúng ta sẽ gọi mỗi vị trí trong mảng là một *ô*. Ô mà một khóa thuộc về chủ yếu được xác định bởi *hàm băm*, `hash(key)`. Hàm băm ánh xạ mỗi khóa thành một số nguyên, trong đó cùng một khóa luôn ánh xạ đến cùng một số nguyên, còn các khóa khác nhau lý tưởng nhất tuân theo một phân phối ngẫu nhiên đồng đều của các số nguyên. Đặc điểm xác định của bảng băm địa chỉ mở là chúng giải quyết xung đột bằng cách lưu khóa ở nơi khác trong mảng nền. Vì vậy, nếu ô đã đầy (một *xung đột*), thì một *chuỗi dò* được sử dụng để xem xét các ô khác cho đến khi tìm thấy một ô trống. Hãy xem một bảng băm mẫu để hiểu cách hoạt động này.
+Trong một bảng băm địa chỉ mở, tất cả mục được lưu trữ trong một mảng nền duy nhất.
+Chúng ta sẽ gọi mỗi vị trí trong mảng là một *ô*.
+Ô mà một khóa thuộc về chủ yếu được xác định bởi *hàm băm*, `hash(key)`.
+Hàm băm ánh xạ mỗi khóa thành một số nguyên, trong đó cùng một khóa luôn ánh xạ tới cùng một số nguyên, còn các khóa khác nhau lý tưởng nhất sẽ tuân theo phân phối ngẫu nhiên đồng đều của các số nguyên.
+Đặc điểm xác định của bảng băm địa chỉ mở là chúng giải quyết xung đột bằng cách lưu trữ khóa ở nơi khác trong mảng nền.
+Vì vậy, nếu ô đã đầy (một *xung đột*), thì một *chuỗi dò* được sử dụng để xem xét các ô khác cho đến khi tìm thấy một ô trống.
+Hãy xem một bảng băm mẫu để hiểu cách hoạt động này.
 
 ### Ví dụ
 
-Bên dưới bạn có thể thấy một mảng nền 16 ô của một bảng băm và khóa (nếu có) được lưu trong mỗi ô. Các giá trị không được hiển thị vì chúng không liên quan đến ví dụ này.
+Bên dưới, bạn có thể thấy một mảng nền 16 ô cho một bảng băm, cùng với khóa (nếu có) được lưu trong mỗi ô.
+Các giá trị không được hiển thị vì chúng không liên quan đến ví dụ này.
 
 <style>
 /*
-Keep the table within the prose column. overflow-x: auto adds a horizontal
-scrollbar only when the table is wider than the column (e.g. on narrow
-viewports), so the right columns are never clipped.
+Giữ bảng nằm trong cột nội dung. overflow-x: auto thêm thanh cuộn ngang chỉ
+khi bảng rộng hơn cột (ví dụ trên các khung nhìn hẹp), vì vậy các cột bên phải
+không bao giờ bị cắt.
 */
 .swisstable-table-container {
     overflow-x: auto;
 }
 
 .swisstable-table {
-    /*
-    Combine table inner borders (1px total rather than 2px, one for the cell above and one for the cell below).
-    */
+    /* Kết hợp đường viền bên trong của bảng (tổng cộng 1px thay vì 2px, một cho ô phía trên và một cho ô phía dưới). */
     border-collapse: collapse;
-    /*
-    Fixed layout: the data columns share the remaining width equally after the
-    wider first (label) column below.
-    */
+    /* Bố cục cố định: các cột dữ liệu chia đều phần chiều rộng còn lại sau
+       cột đầu tiên rộng hơn (cột nhãn) bên dưới. */
     table-layout: fixed;
-    /*
-    Match the width of the surrounding text column.
-    */
+    /* Khớp với chiều rộng của cột văn bản xung quanh. */
     width: 100%;
     /*
-    Keep columns comfortable on phones (scroll instead of squishing them).
-    Computed as 3em label + 16 data columns at ~2.5em each. Not max-content:
-    with fixed layout that is derived from the first row, so the colspan header
-    rows of the group/control-word tables would shrink the data columns.
+    Giữ các cột dễ sử dụng trên điện thoại (cuộn thay vì ép chúng lại).
+    Được tính là nhãn 3em + 16 cột dữ liệu khoảng 2.5em mỗi cột. Không phải
+    max-content: với bố cục cố định, chiều rộng được suy ra từ hàng đầu tiên,
+    vì vậy các hàng tiêu đề colspan của các bảng nhóm/từ điều khiển sẽ làm
+    các cột dữ liệu bị thu hẹp.
     */
     min-width: 44em;
 }
 
 /*
-The descendant selector raises specificity above the site-wide
-"div.markdown th, div.markdown td" rule, which otherwise overrides the padding
-below with a wide 2em horizontal padding and stretches the cells.
+Bộ chọn phần tử con tăng độ ưu tiên cao hơn quy tắc toàn trang
+"div.markdown th, div.markdown td", quy tắc này nếu không sẽ ghi đè phần đệm
+bên dưới bằng phần đệm ngang rộng 2em và kéo giãn các ô.
 */
 .swisstable-table .swisstable-table-cell {
-    /*
-    Black border between cells.
-    */
+    /* Đường viền đen giữa các ô. */
     border: 1px solid;
-    /*
-    Add visual spacing around contents.
-    */
+    /* Thêm khoảng cách trực quan xung quanh nội dung. */
     padding: 0.5em 0.6em 0.5em 0.6em;
-    /*
-    Center within cell.
-    */
+    /* Căn giữa trong ô. */
     text-align: center;
 }
 
-/* Give the label column ("Slot", "Key", "h2") slightly more room than the data columns. */
+/* Cho cột nhãn ("Slot", "Key", "h2") thêm nhiều không gian hơn một chút so với các cột dữ liệu. */
 .swisstable-table .swisstable-table-cell:first-child {
     width: 3em;
 }
 
 /*
-The SIMD comparison table has long row labels ("Comparison", "Control word"), so
-its rules below override the base .swisstable-table widths above (equal
-specificity, later in source order wins).
+Bảng so sánh SIMD có các nhãn hàng dài ("Comparison", "Control word"), vì vậy
+các quy tắc bên dưới ghi đè chiều rộng cơ sở của .swisstable-table ở trên
+(cùng độ ưu tiên, quy tắc xuất hiện sau trong mã nguồn sẽ thắng).
 
-Same data-column width as the other tables: 8em label + 8 data columns at ~2.5em each.
+Cùng chiều rộng cột dữ liệu như các bảng khác: nhãn 8em + 8 cột dữ liệu khoảng 2.5em mỗi cột.
 */
 .swisstable-table-simd-comparison {
     min-width: 28em;
 }
 
-/* Widen the first column to at least the largest label so it isn't clipped. */
+/* Mở rộng cột đầu tiên ít nhất bằng nhãn lớn nhất để nó không bị cắt. */
 .swisstable-table-simd-comparison .swisstable-table-cell:first-child {
     width: 8em;
 }
@@ -117,7 +113,7 @@ Same data-column width as the other tables: 8em label + 8 data columns at ~2.5em
     <table class="swisstable-table">
         <thead>
             <tr>
-                <th class="swisstable-table-cell">Slot</th>
+                <th class="swisstable-table-cell">Ô</th>
                 <th class="swisstable-table-cell">0</th>
                 <th class="swisstable-table-cell">1</th>
                 <th class="swisstable-table-cell">2</th>
@@ -160,7 +156,13 @@ Same data-column width as the other tables: 8em label + 8 data columns at ~2.5em
     </table>
 </div>
 
-Để chèn một khóa mới, chúng ta sử dụng hàm băm để chọn một ô. Vì chỉ có 16 ô, chúng ta cần giới hạn trong phạm vi này, vì vậy chúng ta sẽ sử dụng `hash(key) % 16` làm ô đích. Giả sử chúng ta muốn chèn khóa `98` và `hash(98) % 16 = 7`. Ô 7 trống, vì vậy chúng ta chỉ cần chèn 98 vào đó. Mặt khác, giả sử chúng ta muốn chèn khóa `25` và `hash(25) % 16 = 3`. Ô 3 là một xung đột vì nó đã chứa khóa 56. Do đó chúng ta không thể chèn vào đây.
+Để chèn một khóa mới, chúng ta sử dụng hàm băm để chọn một ô.
+Vì chỉ có 16 ô, chúng ta cần giới hạn trong phạm vi này, nên sẽ sử dụng `hash(key) % 16` làm ô đích.
+Giả sử chúng ta muốn chèn khóa `98` và `hash(98) % 16 = 7`.
+Ô 7 đang trống, vì vậy chúng ta chỉ cần chèn 98 vào đó.
+Mặt khác, giả sử chúng ta muốn chèn khóa `25` và `hash(25) % 16 = 3`.
+Ô 3 là một xung đột vì nó đã chứa khóa 56.
+Do đó chúng ta không thể chèn vào đây.
 
 Chúng ta sử dụng một chuỗi dò để tìm một vị trí khác.
 Có nhiều chuỗi dò nổi tiếng.

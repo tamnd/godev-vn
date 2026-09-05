@@ -101,8 +101,8 @@ Chỉ thêm một dòng vào đây khi từ tiếng Anh thật sự có hai ngh�
 
 | Thuật ngữ tùy nghĩa | Bản dịch khi là thuật ngữ Go | Ghi chú |
 | --- | --- | --- |
-| interface | interface | Keep unchanged when it is the Go type. The corpus writes `kiểu interface` 97 times against 4 for `kiểu giao diện`, and `một interface` 97 times against 15, so this is the settled convention and not a preference. `giao diện` is right for the other sense and stays: `giao diện người dùng` in doc/diagnostics.html and the browser described as an interface in blog/contributors-summit-2019.md are both correct. |
-| map | map | Keep unchanged when it is the Go type. `bản đồ` is a geographic map and is wrong for it. The four `bản đồ` on disk are a stack map, a process memory map and a mark and allocate diagram, all of which are real maps. blog/swisstable.md is the file to look at: its body already says `kiểu map`, and a title reading `Bản đồ Go` disagrees with the page under it. |
+| interface | interface | Keep unchanged when it is the Go type, and never `giao diện`, which is a user interface. The corpus writes `kiểu interface` 97 times against 4 for `kiểu giao diện`, and `một interface` 97 times against 15, so this is the settled convention and not a preference. `giao diện` is right for the other sense and stays: `giao diện người dùng` in doc/diagnostics.html and the browser described as an interface in blog/contributors-summit-2019.md are both correct. |
+| map | map | Keep unchanged when it is the Go type, and never `bản đồ`, which is a geographic map. The four `bản đồ` on disk are a stack map, a process memory map and a mark and allocate diagram, all of which are real maps. blog/swisstable.md is the file to look at: its body already says `kiểu map`, and a title reading `Bản đồ Go` disagrees with the page under it. |
 
 ## Quyết định đang áp dụng
 
