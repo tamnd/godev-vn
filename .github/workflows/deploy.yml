@@ -1,0 +1,127 @@
+name: deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time, and no cancelling one that is running. A cancelled
+# `wrangler pages deploy` has already uploaded some of the 947 assets and not
+# the rest, and the site it leaves behind is a mix of two builds.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  GO_VERSION: '1.27.0'
+  # The audit pin, which has to match the one in ci.yml.
+  #
+  # It is repeated rather than shared because the alternatives are worse: a
+  # workflow that reads the number out of the other workflow, or a number in a
+  # repository setting that does not show up in a diff. The two are checked
+  # against each other by the ratchet itself, since a pull request that lowers
+  # one and not the other fails here on the next push to master.
+  AUDIT_MAX: '63'
+
+jobs:
+  # The export is one job because the files are 102 MB and moving them between
+  # jobs costs more than building them. Cloudflare Pages is the address readers
+  # use, so it is deployed from the directory that was just written. GitHub
+  # Pages is the mirror and takes the artifact.
+  export:
+    runs-on: ubuntu-latest
+    outputs:
+      mirror: ${{ steps.mirror.outputs.have }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: godev-vn
+      - uses: actions/checkout@v7
+        with:
+          repository: tamnd/godev-vn-translator
+          path: translator
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: |
+            godev-vn/go.sum
+            translator/go.sum
+
+      # The audit runs inside publish and not as a separate job on purpose. A
+      # gate that is a workflow dependency holds only in this workflow, and the
+      # same command run by hand on a laptop is how a deploy actually happens
+      # when something is broken at two in the morning. This one refuses there
+      # too.
+      #
+      # Every hostname comes out of SITE.md in the checkout: which one is
+      # canonical, which redirect to it, which serve the placeholder, and which
+      # mirror. Nothing about an address is written in this file.
+      - name: export
+        working-directory: translator
+        run: go run ./cmd/godev -C ../godev-vn publish -max ${{ env.AUDIT_MAX }} -out dist
+
+      - name: deploy to Cloudflare Pages
+        id: cloudflare
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "No CLOUDFLARE_API_TOKEN is set, so nothing was deployed."
+            echo "Add it in Settings, Secrets and variables, Actions, along with"
+            echo "CLOUDFLARE_ACCOUNT_ID. See DOMAIN.md and SITE.md for the addresses."
+            echo "run=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: cloudflare/wrangler-action@v4
+        if: steps.cloudflare.outputs.run == 'yes'
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy godev-vn/dist --project-name=godev-vn --branch=master
+
+      # publish writes a CNAME only when SITE.md has a mirror row, because
+      # GitHub Pages needs a custom domain: a project page at
+      # tamnd.github.io/godev-vn serves the site under a path, and every
+      # absolute reference in the export starts at the root. So the file being
+      # there is the same question as whether there is a mirror to deploy to.
+      - name: is there a mirror
+        id: mirror
+        run: |
+          if [ -f godev-vn/dist/CNAME ]; then
+            echo "have=yes" >> "$GITHUB_OUTPUT"
+            echo "The mirror is $(cat godev-vn/dist/CNAME)."
+          else
+            echo "have=no" >> "$GITHUB_OUTPUT"
+            echo "No mirror row in SITE.md, so nothing goes to GitHub Pages."
+          fi
+
+      - uses: actions/upload-pages-artifact@v5
+        if: steps.mirror.outputs.have == 'yes'
+        with:
+          path: godev-vn/dist
+
+  pages:
+    needs: export
+    if: needs.export.outputs.mirror == 'yes'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      # enablement: true turns Pages on and sets its source to Actions. Pages is
+      # off on this repository today, and the alternative is a checklist item
+      # that says go and click something, which is the kind of step that is
+      # done once and forgotten when the repository is recreated.
+      - uses: actions/configure-pages@v6
+        with:
+          enablement: true
+      - uses: actions/deploy-pages@v5
+        id: deploy
