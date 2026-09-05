@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Quản lý mã nguồn module",
-  "template": true
+  "Title": "Quản lý mã nguồn module"
 }-->
 
 Khi bạn phát triển các module để xuất bản cho người khác sử dụng, bạn có thể giúp đảm bảo rằng module của mình dễ sử dụng hơn cho các lập trình viên khác bằng cách tuân theo các quy ước kho lưu trữ được mô tả trong chủ đề này.

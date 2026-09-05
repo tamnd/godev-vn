@@ -1,7 +1,6 @@
 <!--{
   "Title": "Mở database handle",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Gói [`database/sql`](https://pkg.go.dev/database/sql) đơn giản hóa việc truy

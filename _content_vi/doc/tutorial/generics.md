@@ -1,7 +1,6 @@
 <!--{
   "Title": "Hướng dẫn: Bắt đầu với generics",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Hướng dẫn này giới thiệu những kiến thức cơ bản về generics trong Go. Với generics, bạn có thể

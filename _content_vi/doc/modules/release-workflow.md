@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Quy trình phát hành và đánh số phiên bản module",
-  "template": true
+  "Title": "Quy trình phát hành và đánh số phiên bản module"
 }-->
 
 Khi bạn phát triển module để các lập trình viên khác sử dụng, bạn có thể tuân theo một quy trình làm việc giúp đảm bảo trải nghiệm đáng tin cậy và nhất quán cho các lập trình viên dùng module. Chủ đề này mô tả các bước cấp cao trong quy trình đó.

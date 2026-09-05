@@ -2,8 +2,7 @@
   "Template": true,
   "Title": "Hướng dẫn: Bắt đầu với fuzzing",
   "HideTOC": true,
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Hướng dẫn này giới thiệu những kiến thức cơ bản về fuzzing trong Go. Với fuzzing, dữ liệu ngẫu nhiên

@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Tổ chức một module Go",
-  "template": true
+  "Title": "Tổ chức một module Go"
 }-->
 
 Một câu hỏi phổ biến của các lập trình viên mới làm quen với Go là "Tôi nên tổ chức dự án Go của mình như thế nào?" về mặt bố cục tệp và thư mục. Mục tiêu của tài liệu này là cung cấp một số hướng dẫn giúp trả lời câu hỏi đó. Để tận dụng tốt nhất tài liệu này, hãy đảm bảo bạn đã quen với những kiến thức cơ bản về module Go bằng cách đọc [hướng dẫn](/doc/tutorial/create-module) và [quản lý mã nguồn module](/doc/modules/managing-source).

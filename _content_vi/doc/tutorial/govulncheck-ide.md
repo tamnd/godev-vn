@@ -1,7 +1,6 @@
 <!--{
   "Title": "Hướng dẫn: Tìm và sửa các dependency có lỗ hổng bảo mật với VS Code Go",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 [Quay lại Go Security](/security)

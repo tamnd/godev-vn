@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Phát triển và xuất bản module",
-  "template": true
+  "Title": "Phát triển và xuất bản module"
 }-->
 
 Bạn có thể tập hợp các package có liên quan vào một module, sau đó xuất bản module đó để các lập trình viên khác sử dụng. Chủ đề này cung cấp tổng quan về việc phát triển và xuất bản module.

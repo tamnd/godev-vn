@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Phát triển bản cập nhật phiên bản chính",
-  "template": true
+  "Title": "Phát triển bản cập nhật phiên bản chính"
 }-->
 
 Bạn phải cập nhật lên phiên bản chính khi những thay đổi bạn đang thực hiện trong phiên bản mới tiềm năng không thể đảm bảo khả năng tương thích ngược cho người dùng module. Ví dụ, bạn sẽ thực hiện thay đổi này nếu bạn thay đổi API công khai của module theo cách phá vỡ code client đang dùng các phiên bản trước của module.

@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Hủy các thao tác đang thực hiện",
-  "template": true
+  "Title": "Hủy các thao tác đang thực hiện"
 }-->
 
 Bạn có thể quản lý các thao tác đang thực hiện bằng cách sử dụng

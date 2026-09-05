@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Tài liệu tham chiếu tệp go.mod",
-  "template": true
+  "Title": "Tài liệu tham chiếu tệp go.mod"
 }-->
 
 Mỗi module Go được định nghĩa bởi một tệp go.mod mô tả các thuộc tính của module, bao gồm các dependency của nó đối với các module khác và đối với các phiên bản Go.

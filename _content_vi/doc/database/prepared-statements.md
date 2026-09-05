@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Sử dụng prepared statement",
-  "template": true
+  "Title": "Sử dụng prepared statement"
 }-->
 
 Bạn có thể định nghĩa một prepared statement để sử dụng lặp lại. Điều này giúp

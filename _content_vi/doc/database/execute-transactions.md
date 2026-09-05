@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Thực thi transaction",
-  "template": true
+  "Title": "Thực thi transaction"
 }-->
 
 Bạn có thể thực thi các transaction cơ sở dữ liệu bằng cách sử dụng

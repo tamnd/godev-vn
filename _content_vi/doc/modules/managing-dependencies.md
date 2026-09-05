@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Quản lý dependency",
-  "template": true
+  "Title": "Quản lý dependency"
 }-->
 
 Khi code của bạn sử dụng các package bên ngoài, những package đó (được phân phối dưới dạng module) trở thành dependency. Theo thời gian, bạn có thể cần nâng cấp hoặc thay thế chúng. Go cung cấp các công cụ quản lý dependency giúp bạn giữ cho các ứng dụng Go an toàn khi tích hợp các dependency bên ngoài.

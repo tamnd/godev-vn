@@ -1,7 +1,6 @@
 <!--{
   "Title": "Hướng dẫn: Bắt đầu với workspace nhiều module",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Hướng dẫn này giới thiệu những kiến thức cơ bản về workspace nhiều module trong Go.

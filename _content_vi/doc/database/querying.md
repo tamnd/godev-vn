@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Truy vấn dữ liệu",
-  "template": true
+  "Title": "Truy vấn dữ liệu"
 }-->
 
 Khi thực thi một câu lệnh SQL trả về dữ liệu, hãy dùng một trong các phương

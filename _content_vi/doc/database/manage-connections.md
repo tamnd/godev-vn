@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Quản lý kết nối",
-  "template": true
+  "Title": "Quản lý kết nối"
 }-->
 
 Với đại đa số chương trình, bạn không cần điều chỉnh các giá trị mặc định của

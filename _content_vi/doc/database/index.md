@@ -1,7 +1,6 @@
 <!--{
   "Title": "Truy cập cơ sở dữ liệu quan hệ",
-  "Breadcrumb": true,
-  "template": true
+  "Breadcrumb": true
 }-->
 
 Sử dụng Go, bạn có thể tích hợp nhiều loại cơ sở dữ liệu và phương thức truy

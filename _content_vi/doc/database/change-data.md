@@ -1,6 +1,5 @@
 <!--{
-  "Title": "Thực thi các câu lệnh SQL không trả về dữ liệu",
-  "template": true
+  "Title": "Thực thi các câu lệnh SQL không trả về dữ liệu"
 }-->
 
 Khi thực hiện các thao tác cơ sở dữ liệu không trả về dữ liệu, hãy sử dụng
