@@ -9,6 +9,10 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 - Ưu tiên một bản dịch thống nhất cho mỗi khái niệm, trừ khi ngữ cảnh đòi hỏi khác đi.
 - Giữ nguyên tên sản phẩm, tên kho lưu trữ, tên tệp và cú pháp truy vấn.
 - Giữ nguyên mã nguồn, URL và các đoạn lệnh.
+- Giữ nguyên tên khóa trong front matter, ví dụ `title:`, `redirect:`, `layout:`.
+  Trình kết xuất đọc những tên đó, chúng không phải là văn bản. Chỉ dịch phần
+  giá trị khi giá trị đó là câu chữ, và `godev audit` refuse ở L09 nếu danh sách
+  khóa khác với bản tiếng Anh.
 - Khi chủ ý giữ nguyên một thuật ngữ không dịch, hãy ghi rõ quyết định đó tại đây.
 - Một thuật ngữ nằm trong tên riêng thì giữ nguyên, kể cả khi bảng dưới đây có
   bản dịch cho nó. Tên bài nói, tên bài viết, tên nhóm làm việc, tên vai trò và
@@ -50,7 +54,7 @@ Cập nhật bảng thuật ngữ này trong quá trình dịch:
 | authoritative source | nguồn thông tin chính xác nhất | Matches current translation. |
 | Go's Gerrit instance | máy chủ Gerrit của Go | Keep `Gerrit` as a product name. |
 | search for changes | tìm kiếm các thay đổi | General action phrase. |
-| redirect | chuyển hướng | For front matter semantics and prose. |
+| redirect | chuyển hướng | Translate it in prose. The note here used to say "for front matter semantics", which read as an instruction to translate the front matter key `redirect:` as well, and that is what kept happening: `about.md` is nothing but `redirect: https://pkg.go.dev/about` between two rule lines, and every attempt at it came back with the key in Vietnamese and was refused by L09. A front matter key is read by the renderer and is not text. |
 | ecosystem | hệ sinh thái | Prefer this in Go platform context. |
 | community | cộng đồng | General community term. |
 | open-source | mã nguồn mở | Use in general prose. |
