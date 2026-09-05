@@ -1,5 +1,5 @@
 ---
-title: "//go:fix inline và trình nội tuyến cấp mã nguồn"
+title: "//go:fix inline và trình nội tuyến ở cấp mã nguồn"
 date: 2026-03-10
 by:
 - Alan Donovan
@@ -10,7 +10,7 @@ tags:
 - modernizers
 - source-level inliner
 - static analysis
-summary: "Cách hoạt động của trình nội tuyến cấp mã nguồn trong Go 1.26 và cách nó hỗ trợ bạn tự phục vụ việc di chuyển API."
+summary: "Cách trình nội tuyến ở cấp mã nguồn của Go 1.26 hoạt động và cách nó có thể giúp bạn thực hiện các quá trình di chuyển API tự phục vụ."
 ---
 
 <style>
@@ -26,7 +26,7 @@ summary: "Cách hoạt động của trình nội tuyến cấp mã nguồn tron
   }
 }
 #content .beforeafter pre {
-  margin: 0em; /* Handled by grid gap */
+  margin: 0em; /* Được xử lý bởi khoảng cách của lưới */
 }
 .beforeafter-context {
   grid-column: 1 / -1;
@@ -35,7 +35,7 @@ summary: "Cách hoạt động của trình nội tuyến cấp mã nguồn tron
 #content .beforeafter > pre:nth-of-type(2) { background: var(--color-diff-new); }
 .beforeafter-arrow {
   place-self: center;
-  /* Undo unnecessary grid gap. */
+  /* Hoàn tác khoảng cách lưới không cần thiết. */
   margin: -0.5em;
 }
 .beforeafter-arrow::before {
@@ -46,18 +46,27 @@ summary: "Cách hoạt động của trình nội tuyến cấp mã nguồn tron
 }
 </style>
 
-Go 1.26 có một triển khai hoàn toàn mới của lệnh con `go fix`, được thiết kế để giúp bạn giữ mã Go luôn hiện đại và cập nhật. Để tìm hiểu giới thiệu, hãy bắt đầu bằng cách đọc [bài viết gần đây](gofix) của chúng tôi về chủ đề này.
-Trong bài viết này, chúng ta sẽ xem xét một tính năng cụ thể: trình nội tuyến cấp mã nguồn.
+Go 1.26 chứa một triển khai hoàn toàn mới của lệnh con `go fix`,
+được thiết kế để giúp bạn giữ mã Go của mình luôn cập nhật và hiện đại. Để
+giới thiệu, trước tiên hãy đọc [bài đăng gần đây](gofix) của chúng tôi về chủ đề này.
+Trong bài đăng này, chúng ta sẽ xem xét một tính năng cụ thể, trình
+inline ở mức mã nguồn.
 
-Trong khi `go fix` có một số công cụ hiện đại hóa chuyên biệt cho các tính năng ngôn ngữ và thư viện mới cụ thể, trình nội tuyến cấp mã nguồn là thành quả đầu tiên trong nỗ lực của chúng tôi nhằm cung cấp các công cụ hiện đại hóa và phân tích "[tự phục vụ](gofix#self-service)".
-Nó cho phép bất kỳ tác giả gói nào có thể diễn đạt các di chuyển và cập nhật API đơn giản theo cách trực tiếp và an toàn.
-Chúng tôi sẽ trình bày trước về trình nội tuyến cấp mã nguồn là gì và cách bạn có thể sử dụng nó, sau đó đi sâu vào một số khía cạnh của vấn đề và công nghệ đằng sau nó.
+Mặc dù `go fix` có một số công cụ hiện đại hóa được xây dựng riêng cho các tính
+năng mới cụ thể của ngôn ngữ và thư viện,
+trình inline ở mức mã nguồn là thành quả đầu tiên trong nỗ lực của chúng tôi nhằm cung cấp
+các công cụ hiện đại hóa và phân tích
+“[tự phục vụ](gofix#self-service)”.
+Nó cho phép mọi tác giả gói thể hiện các quá trình di chuyển và
+cập nhật API đơn giản theo cách trực tiếp và an toàn.
+Trước tiên, chúng tôi sẽ giải thích trình inline ở mức mã nguồn là gì và cách bạn có thể sử dụng nó,
+sau đó chúng ta sẽ đi sâu vào một số khía cạnh của vấn đề và công nghệ đứng sau nó.
 
-## Nội tuyến cấp mã nguồn
+## Inline ở mức mã nguồn
 
-Năm 2023, chúng tôi đã xây dựng một [thuật toán](https://pkg.go.dev/golang.org/x/tools/internal/refactor/inline) để nội tuyến cấp mã nguồn các lời gọi hàm trong Go. "Nội tuyến" một lời gọi có nghĩa là thay thế lời gọi đó bằng một bản sao thân hàm được gọi, thế các đối số vào vị trí các tham số. Chúng tôi gọi nó là nội tuyến "cấp mã nguồn" vì nó thay đổi mã nguồn một cách vĩnh viễn. Ngược lại, thuật toán nội tuyến trong một trình biên dịch điển hình, bao gồm cả trình biên dịch của Go, áp dụng phép biến đổi tương tự nhưng lên [biểu diễn trung gian](https://en.wikipedia.org/wiki/Intermediate_representation) tạm thời của trình biên dịch, nhằm tạo ra mã hiệu quả hơn.
+Vào năm 2023, chúng tôi đã xây dựng một [thuật toán](https://pkg.go.dev/golang.org/x/tools/internal/refactor/inline) để inline ở mức mã nguồn các lời gọi hàm trong Go. “Inline” một lời gọi có nghĩa là thay thế lời gọi đó bằng một bản sao của thân hàm được gọi, thay thế các đối số cho các tham số. Chúng tôi gọi đây là inline “ở mức mã nguồn” vì nó sửa đổi mã nguồn một cách lâu dài. Ngược lại, thuật toán inline được tìm thấy trong một trình biên dịch điển hình, bao gồm cả trình biên dịch của Go, áp dụng một phép biến đổi tương tự, nhưng trên [biểu diễn trung gian](https://en.wikipedia.org/wiki/Intermediate_representation), tạm thời của trình biên dịch, để tạo ra mã hiệu quả hơn.
 
-Nếu bạn đã từng gọi tính năng tái cấu trúc tương tác "[Inline call](/gopls/features/transformation#refactorinlinecall-inline-call-to-function)" của [gopls](/gopls/), bạn đã sử dụng trình nội tuyến cấp mã nguồn. (Trong VS Code, code action này có thể tìm thấy trong menu "Source Action...") Các ảnh chụp màn hình trước và sau dưới đây cho thấy hiệu ứng của việc nội tuyến lời gọi tới `sum` từ hàm tên `six`.
+Nếu bạn đã từng gọi chức năng tái cấu trúc tương tác [gopls](/gopls/) "[Inline call](/gopls/features/transformation#refactorinlinecall-inline-call-to-function)", bạn đã sử dụng trình inline ở mức mã nguồn. (Trong VS Code, hành động mã này có thể được tìm thấy trong menu “Source Action…”.) Các ảnh chụp màn hình trước và sau bên dưới cho thấy hiệu quả của việc inline lời gọi đến `sum` từ hàm có tên `six`.
 
 <center>
 <img src="/gopls/assets/inline-before.png"/>
@@ -65,44 +74,44 @@ Nếu bạn đã từng gọi tính năng tái cấu trúc tương tác "[Inline
 <img src="/gopls/assets/inline-after.png"/>
 </center>
 
-Trình nội tuyến là một thành phần xây dựng quan trọng cho nhiều công cụ chuyển đổi mã nguồn. Ví dụ, gopls dùng nó cho các tái cấu trúc "Change signature" và "Remove unused parameter" vì, như chúng ta sẽ thấy bên dưới, nó xử lý nhiều vấn đề đúng đắn tinh tế phát sinh khi tái cấu trúc các lời gọi hàm.
+Trình inline là một khối xây dựng quan trọng cho một số công cụ biến đổi mã nguồn. Ví dụ, gopls sử dụng nó cho các chức năng tái cấu trúc “Change signature” và “Remove unused parameter” vì, như chúng ta sẽ thấy bên dưới, nó xử lý nhiều vấn đề tinh tế về tính đúng đắn phát sinh khi tái cấu trúc các lời gọi hàm.
 
-Trình nội tuyến này cũng là một trong các bộ phân tích trong lệnh `go fix` hoàn toàn mới.
-Trong `go fix`, nó cho phép di chuyển và nâng cấp API tự phục vụ bằng cách dùng chỉ thị comment mới `//go:fix inline`.
-Hãy cùng xem một số ví dụ về cách hoạt động và cách sử dụng tính năng này.
+Cùng một trình inline này cũng là một trong các trình phân tích trong lệnh `go fix` hoàn toàn mới.
+Trong `go fix`, nó cho phép di chuyển và nâng cấp API theo cơ chế tự phục vụ bằng cách sử dụng một chú thích chỉ thị `//go:fix inline` mới.
+Hãy xem một vài ví dụ về cách thức hoạt động của điều này và những trường hợp có thể sử dụng nó.
 
 ### Ví dụ: đổi tên `ioutil.ReadFile`
 
-Trong Go 1.16, hàm `ioutil.ReadFile`, đọc nội dung của một tệp, đã bị deprecated để nhường chỗ cho hàm mới `os.ReadFile`. Về bản chất, hàm đã được đổi tên, mặc dù tất nhiên [cam kết tương thích](/doc/go1compat) của Go ngăn chúng tôi xóa bỏ tên cũ.
+Trong Go 1.16, hàm `ioutil.ReadFile`, dùng để đọc nội dung của một tệp, đã bị loại bỏ để ưu tiên hàm `os.ReadFile` mới. Về bản chất, hàm này đã được đổi tên, mặc dù tất nhiên [cam kết tương thích](/doc/go1compat) của Go ngăn chúng ta xóa tên cũ.
 
 ```go
 package ioutil
 
 import "os"
 
-// ReadFile reads the file named by filename…
-// Deprecated: As of Go 1.16, this function simply calls [os.ReadFile].
+// ReadFile đọc tệp được chỉ định bởi filename…
+// Deprecated: Kể từ Go 1.16, hàm này chỉ đơn giản gọi [os.ReadFile].
 func ReadFile(filename string) ([]byte, error) {
 	return os.ReadFile(filename)
 }
 ```
 
-Lý tưởng là chúng tôi muốn thay đổi mọi chương trình Go trên thế giới để không còn dùng `ioutil.ReadFile` nữa mà gọi `os.ReadFile`. Trình nội tuyến có thể giúp chúng tôi làm điều đó. Trước tiên, chúng tôi chú thích hàm cũ với `//go:fix inline`. Comment này báo cho công cụ biết rằng bất cứ khi nào thấy một lời gọi tới hàm này, nó nên nội tuyến lời gọi đó.
+Lý tưởng nhất là chúng ta muốn thay đổi mọi chương trình Go trên thế giới để ngừng sử dụng `ioutil.ReadFile` và gọi `os.ReadFile` thay thế. Inliner có thể giúp chúng ta làm điều đó. Đầu tiên, chúng ta chú thích hàm cũ bằng `//go:fix inline`. Chú thích này cho công cụ biết rằng bất cứ khi nào nó thấy lời gọi đến hàm này, nó nên inline lời gọi đó.
 
 ```go
 package ioutil
 
 import "os"
 
-// ReadFile reads the file named by filename…
-// Deprecated: As of Go 1.16, this function simply calls [os.ReadFile].
+// ReadFile đọc tệp được chỉ định bởi filename…
+// Deprecated: Kể từ Go 1.16, hàm này chỉ đơn giản gọi [os.ReadFile].
 //go:fix inline
 func ReadFile(filename string) ([]byte, error) {
 	return os.ReadFile(filename)
 }
 ```
 
-Khi chúng ta chạy `go fix` trên một tệp chứa lời gọi tới `ioutil.ReadFile`, nó áp dụng phép thay thế:
+Khi chạy `go fix` trên một tệp chứa lời gọi đến `ioutil.ReadFile`, nó áp dụng thay thế:
 
 ```
 $ go fix -diff ./...
@@ -113,22 +122,31 @@ $ go fix -diff ./...
 +	data, err := os.ReadFile("hello.txt")
 ```
 
-Lời gọi đã được nội tuyến, thực chất là thay thế lời gọi tới một hàm bằng lời gọi tới hàm khác.
+Lời gọi đã được inline, về bản chất thay thế lời gọi đến một hàm bằng lời gọi đến một hàm khác.
 
-Vì trình nội tuyến thay thế một lời gọi hàm bằng bản sao thân hàm được gọi, chứ không phải bằng một biểu thức tùy ý, về nguyên tắc phép biến đổi không thay đổi hành vi của chương trình (trừ mã kiểm tra call stack, tất nhiên).
-Điều này khác với các công cụ cho phép viết lại tùy ý như `gofmt -r`, vốn rất mạnh mẽ nhưng cần được theo dõi chặt chẽ.
+Vì inliner thay thế một lời gọi hàm bằng bản sao của phần thân
+của hàm được gọi, chứ không phải bằng một biểu thức tùy ý nào đó,
+về nguyên tắc việc biến đổi này không nên thay đổi hành vi của chương trình
+(ngoại trừ mã kiểm tra ngăn xếp lời gọi, tất nhiên).
+Điều này khác với các công cụ khác cho phép viết lại tùy ý,
+chẳng hạn như `gofmt -r`, vốn rất mạnh nhưng cần được theo dõi cẩn thận.
 
-Trong nhiều năm qua, các đồng nghiệp Google của chúng tôi trên các nhóm hỗ trợ Java, Kotlin và C++ đã dùng các công cụ nội tuyến cấp mã nguồn như thế này.
-Cho đến nay, các công cụ này đã loại bỏ hàng triệu lời gọi tới các hàm deprecated trong codebase của Google.
+Trong nhiều năm qua, các đồng nghiệp của chúng ta tại Google thuộc các nhóm hỗ trợ
+Java, Kotlin và C++ đã sử dụng những công cụ inliner ở cấp mã nguồn như thế này.
+Cho đến nay, các công cụ này đã loại bỏ hàng triệu lời gọi đến các hàm
+đã bị loại bỏ trong cơ sở mã của Google.
 Người dùng chỉ cần thêm các chỉ thị và chờ đợi.
-Qua đêm, các robot lặng lẽ chuẩn bị, kiểm thử và gửi các lô thay đổi mã nguồn trên toàn bộ monorepo hàng tỷ dòng code.
-Nếu mọi thứ suôn sẻ, đến sáng hôm sau mã cũ không còn được dùng nữa và có thể xóa an toàn.
-Trình nội tuyến của Go còn khá mới mẻ nhưng đã được dùng để chuẩn bị hơn 18.000 changelist cho monorepo của Google.
+Trong đêm, các robot âm thầm chuẩn bị, kiểm thử và gửi các lô
+thay đổi mã trên một monorepo chứa hàng tỷ dòng mã.
+Nếu mọi việc diễn ra thuận lợi, đến sáng mã cũ không còn được sử dụng nữa và có thể
+được xóa một cách an toàn.
+Inliner của Go là một công cụ tương đối mới, nhưng nó đã được sử dụng để
+chuẩn bị hơn 18.000 changelist cho monorepo của Google.
 
-### Ví dụ: sửa các lỗi thiết kế API
+### Example: fixing API design flaws
 
-Với một chút sáng tạo, nhiều kiểu di chuyển có thể được diễn đạt dưới dạng nội tuyến.
-Hãy xem gói `oldmath` giả định này:
+With a little creativity, a variety of migrations can be expressed as inlinings.
+Consider this hypothetical `oldmath` package:
 
 ```go
 // Package oldmath is the bad old math package.
@@ -144,7 +162,7 @@ func Inf() float64
 func Neg(x int) int
 ```
 
-Nó có một số lỗi thiết kế: hàm `Sub` khai báo các tham số theo thứ tự sai; hàm `Inf` ngầm ưu tiên một trong hai giá trị vô cực; và hàm `Neg` dư thừa so với `Sub`. May mắn thay chúng ta có gói `newmath` tránh được những sai lầm này, và chúng ta muốn người dùng chuyển sang dùng nó. Bước đầu tiên là triển khai API cũ theo gói mới và đánh dấu các hàm cũ là deprecated. Sau đó chúng ta thêm các chỉ thị nội tuyến:
+It has several design flaws: the `Sub` function declares its parameters in the wrong order; the `Inf` function implicitly prefers one of the two infinities; and the `Neg` function is redundant with `Sub`. Fortunately we have a `newmath` package that avoids these mistakes, and we’d like to get users to switch to it. The first step is to implement the old API in terms of the new package and to deprecate the old functions. Then we add inliner directives:
 
 ```
 // Package oldmath is the bad old math package.
@@ -174,23 +192,23 @@ func Neg(x int) int {
 }
 ```
 
-Bây giờ, khi người dùng `oldmath` chạy lệnh `go fix` trên mã của họ, tất cả các lời gọi tới hàm cũ sẽ được thay thế bằng các hàm tương ứng mới. Nhân tiện, gopls đã bao gồm bộ phân tích `inline` trong bộ công cụ của mình một thời gian rồi, vì vậy nếu trình soạn thảo của bạn dùng gopls, ngay sau khi bạn thêm các chỉ thị `//go:fix inline`, bạn sẽ thấy một cảnh báo tại mỗi điểm gọi, chẳng hạn như "call of `oldmath.Sub` should be inlined", cùng với một gợi ý sửa lỗi để nội tuyến lời gọi cụ thể đó.
+Now, when users of `oldmath` run the `go fix` command on their code, it will replace all calls to the old functions by their new counterparts. By the way, gopls has included `inline` in its analyzer suite for some time, so if your editor uses gopls, the moment you add the `//go:fix inline` directives you should start seeing a diagnostic at each call site, such as “call of `oldmath.Sub` should be inlined”, along with a suggested fix that inlines that particular call.
 
-Ví dụ, đoạn mã cũ này:
+For example, this old code:
 ```
 import "oldmath"
 
 var nine = oldmath.Sub(1, 10) // diagnostic: "call to oldmath.Sub should be inlined"
 ```
-sẽ được chuyển đổi thành:
+will be transformed to:
 ```
 import "newmath"
 
 var nine = newmath.Sub(10, 1)
 ```
-Hãy lưu ý rằng sau khi sửa, các đối số của `Sub` theo đúng thứ tự logic. Đây là sự tiến bộ! Nếu may mắn, trình nội tuyến sẽ loại bỏ thành công mọi lời gọi tới các hàm trong `oldmath`, có thể cho phép bạn xóa nó như một dependency.
+Observe that after the fix, the arguments to `Sub` are in the logical order. This is progress! If you’re in luck, the inliner will succeed at removing every call to the functions in `oldmath`, perhaps allowing you to delete it as a dependency.
 
-Bộ phân tích `inline` cũng hoạt động với các kiểu và hằng số. Nếu gói `oldmath` của chúng ta ban đầu đã khai báo một kiểu dữ liệu cho số hữu tỷ và một hằng số cho π, chúng ta có thể dùng các khai báo chuyển tiếp sau để di chuyển chúng sang gói `newmath` trong khi vẫn bảo toàn hành vi của mã hiện có:
+The `inline` analyzer works on types and constants too. If our `oldmath` package had originally declared a data type for rational numbers and a constant for π, we could use the following forwarding declarations to migrate them to the `newmath` package while preserving the behavior of existing code:
 ```
 package oldmath
 
@@ -201,17 +219,21 @@ type Rational = newmath.Rational
 const Pi = newmath.Pi
 ```
 
-Mỗi khi bộ phân tích `inline` gặp một tham chiếu đến `oldmath.Rational` hoặc `oldmath.Pi`, nó sẽ cập nhật chúng để tham chiếu đến `newmath`.
+Each time the `inline` analyzer encounters a reference to `oldmath.Rational` or `oldmath.Pi`, it will update them to refer instead to `newmath`.
 
-## Bên trong trình nội tuyến
+## Bên trong trình inline
 
-Nhìn qua, nội tuyến mã nguồn có vẻ đơn giản: chỉ cần thay thế lời gọi bằng thân của hàm được gọi, giới thiệu các biến cho các tham số hàm, và gắn các đối số gọi vào các biến đó.
-Nhưng việc xử lý đúng đắn tất cả các trường hợp phức tạp và ngoại lệ trong khi vẫn tạo ra kết quả chấp nhận được là một thách thức kỹ thuật không nhỏ: trình nội tuyến có khoảng 7.000 dòng logic dày đặc giống như trình biên dịch.
-Hãy xem sáu khía cạnh của vấn đề khiến nó trở nên phức tạp như vậy.
+Thoạt nhìn, inline mã nguồn có vẻ đơn giản: chỉ cần thay thế
+lời gọi bằng thân của hàm được gọi, tạo biến cho các
+tham số của hàm, và gán các đối số của lời gọi cho những biến đó.
+Nhưng việc xử lý đúng tất cả sự phức tạp và các trường hợp góc
+trong khi vẫn tạo ra kết quả chấp nhận được không phải là một thách thức kỹ thuật nhỏ:
+trình inline chứa khoảng 7.000 dòng logic dày đặc, giống như logic của trình biên dịch.
+Hãy cùng xem xét sáu khía cạnh của vấn đề khiến việc này trở nên khó khăn đến vậy.
 
 ### 1. Loại bỏ tham số
 
-Một trong những nhiệm vụ quan trọng nhất của trình nội tuyến là cố gắng thay thế từng lần xuất hiện của một tham số trong hàm được gọi bằng đối số tương ứng từ lời gọi. Trong trường hợp đơn giản nhất, đối số là một literal tầm thường như `0` hoặc `""`, vì vậy việc thay thế rất đơn giản và tham số có thể được loại bỏ.
+Một trong những nhiệm vụ quan trọng nhất của trình inline là cố gắng thay thế mỗi lần xuất hiện của một tham số trong hàm được gọi bằng đối số tương ứng của nó từ lời gọi. Trong trường hợp đơn giản nhất, đối số là một literal đơn giản như `0` hoặc `""`, vì vậy việc thay thế rất trực tiếp và tham số có thể được loại bỏ.
 
 <div class="beforeafter">
 <div class="beforeafter-context"><pre>
@@ -229,9 +251,9 @@ fmt.Println("", "hello")
 </pre>
 </div>
 
-Với các literal ít tầm thường hơn như `404` hoặc `"go.dev"`, việc thay thế cũng đơn giản, miễn là tham số xuất hiện trong hàm được gọi nhiều nhất một lần. Nhưng nếu nó xuất hiện nhiều lần, sẽ không đẹp về mặt văn phong nếu rải các bản sao của các magic value này trong mã vì điều đó làm mờ mối liên hệ giữa chúng; một thay đổi sau này chỉ vào một trong số chúng có thể tạo ra sự không nhất quán.
+Đối với các literal ít đơn giản hơn như `404` hoặc `"go.dev"`, việc thay thế cũng tương tự, miễn là tham số chỉ xuất hiện trong hàm được gọi nhiều nhất một lần. Nhưng nếu nó xuất hiện nhiều lần, việc rải các bản sao của những giá trị đặc biệt này khắp mã sẽ là một phong cách không tốt vì nó làm mờ mối quan hệ giữa chúng; một thay đổi sau này chỉ đối với một trong số chúng có thể tạo ra sự không nhất quán.
 
-Trong những trường hợp như vậy, trình nội tuyến phải thận trọng và tạo ra kết quả thận trọng hơn. Khi một hoặc nhiều tham số không thể hoàn toàn thay thế vì bất kỳ lý do gì, trình nội tuyến chèn một khai báo "ràng buộc tham số" rõ ràng:
+Trong những trường hợp như vậy, trình inline phải xử lý cẩn thận và tạo ra kết quả thận trọng hơn. Bất cứ khi nào một hoặc nhiều tham số không thể được thay thế hoàn toàn vì bất kỳ lý do nào, trình inline sẽ chèn một khai báo “gán tham số” rõ ràng:
 
 <div class="beforeafter">
 <div class="beforeafter-context"><pre>
@@ -246,16 +268,16 @@ printPair("[", "one", "two", "]")
 </pre>
 <div class="beforeafter-arrow"></div>
 <pre>
-// khai báo "ràng buộc tham số"
+// a “parameter binding” declaration
 var before, after = "[", "]"
 fmt.Println(before, "one", after)
 fmt.Println(before, "two", after)
 </pre>
 </div>
 
-### 2. Hiệu ứng phụ
+### 2. Tác dụng phụ
 
-Trong Go, cũng như trong tất cả các ngôn ngữ lập trình mệnh lệnh, việc gọi một hàm có thể có hiệu ứng phụ là cập nhật các biến, điều này lại có thể ảnh hưởng đến hành vi của các hàm khác. Hãy xét lời gọi tới `add` sau đây:
+Trong Go, cũng như trong mọi ngôn ngữ lập trình mệnh lệnh, việc gọi một hàm có thể có tác dụng phụ là cập nhật các biến, từ đó có thể ảnh hưởng đến hành vi của các hàm khác. Hãy xem lời gọi đến `add` bên dưới:
 
 ```go
 func add(x, y int) int { return y + x }
@@ -263,22 +285,22 @@ func add(x, y int) int { return y + x }
 z = add(f(), g())
 ```
 
-Một phép nội tuyến đơn giản của lời gọi sẽ thay `x` bằng `f()` và `y` bằng `g()`, với kết quả này:
+Một phép nội tuyến hóa đơn giản của lời gọi này sẽ thay thế `x` bằng `f()` và `y` bằng `g()`, cho kết quả sau:
 
 ```
 z = g() + f()
 ```
 
-Nhưng kết quả này không đúng vì việc đánh giá `g()` bây giờ xảy ra trước `f()`; nếu hai hàm có hiệu ứng phụ, các hiệu ứng đó sẽ được quan sát theo thứ tự khác và có thể ảnh hưởng đến kết quả của biểu thức. Tất nhiên, việc viết mã phụ thuộc vào thứ tự hiệu ứng giữa các đối số gọi là không tốt, nhưng điều đó không có nghĩa là người ta không làm vậy, và các công cụ của chúng tôi phải xử lý đúng.
+Nhưng kết quả này không đúng vì việc đánh giá `g()` giờ đây xảy ra trước `f()`; nếu hai hàm này có tác dụng phụ, các tác dụng đó sẽ được quan sát theo một thứ tự khác và có thể ảnh hưởng đến kết quả của biểu thức. Dĩ nhiên, viết mã phụ thuộc vào thứ tự tác dụng giữa các đối số của lời gọi hàm là cách làm không tốt, nhưng điều đó không có nghĩa là mọi người không làm vậy, và các công cụ của chúng ta phải xử lý đúng trường hợp này.
 
-Vì vậy, trình nội tuyến phải cố gắng chứng minh rằng `f()` và `g()` không có hiệu ứng phụ lên nhau. Nếu thành công, nó có thể tiến hành an toàn với kết quả trên. Nếu không, nó phải dùng ràng buộc tham số rõ ràng:
+Vì vậy, trình nội tuyến hóa phải cố gắng chứng minh rằng `f()` và `g()` không có tác dụng phụ lẫn nhau. Nếu thành công, nó có thể tiếp tục một cách an toàn với kết quả ở trên. Nếu không, nó phải quay lại cách liên kết tham số tường minh:
 
 ```
 var x = f()
 z = g() + x
 ```
 
-Khi xét đến hiệu ứng phụ, không chỉ các biểu thức đối số mới quan trọng. Thứ tự mà các tham số được đánh giá so với mã khác trong hàm được gọi cũng quan trọng. Hãy xét lời gọi này tới `add2`:
+Khi xem xét tác dụng phụ, không chỉ các biểu thức đối số là quan trọng. Thứ tự mà các tham số được đánh giá so với mã khác trong hàm được gọi cũng có ý nghĩa. Hãy xem lời gọi đến `add2` sau:
 
 ```go
 //go:fix inline
@@ -289,23 +311,23 @@ func add2(x, y int) int {
 add2(f(), g())
 ```
 
-Lần này, tham số `x` và `y` được dùng theo cùng thứ tự chúng được khai báo, vì vậy phép thay thế `f() + other() + g()` sẽ không thay đổi thứ tự hiệu ứng của `f()` và `g()`, nhưng nó sẽ thay đổi thứ tự của các hiệu ứng của `other()` và `g()`. Hơn nữa, nếu thân hàm dùng một tham số trong vòng lặp, phép thay thế có thể thay đổi số lần hiệu ứng xảy ra.
+Lần này, các tham số `x` và `y` được sử dụng theo cùng thứ tự mà chúng được khai báo, vì vậy phép thay thế `f() + other() + g()` sẽ không thay đổi thứ tự tác dụng của `f()` và `g()`—nhưng nó sẽ thay đổi thứ tự của bất kỳ tác dụng nào của `other()` và `g()`. Hơn nữa, nếu thân hàm sử dụng một tham số bên trong một vòng lặp, phép thay thế có thể thay đổi số lần xuất hiện của các tác dụng.
 
-Trình nội tuyến dùng một [phân tích nguy cơ](https://cs.opensource.google/go/x/tools/+/refs/tags/v0.42.0:internal/refactor/inline/inline.go;l=1978;drc=e3a69ffcdbb984f50100e76ebca6ff53cf88de9c) mới để mô hình hóa thứ tự hiệu ứng trong mỗi hàm được gọi. Tuy nhiên, khả năng của nó trong việc xây dựng các bằng chứng an toàn cần thiết còn khá hạn chế. Ví dụ, nếu các lời gọi `f()` và `g()` là các accessor đơn giản, sẽ hoàn toàn an toàn khi gọi chúng theo bất kỳ thứ tự nào. Thật vậy, một trình biên dịch tối ưu có thể dùng kiến thức về nội bộ của `f` và `g` để sắp xếp lại an toàn hai lời gọi. Nhưng không giống như trình biên dịch tạo ra mã đối tượng phản ánh mã nguồn tại một thời điểm cụ thể, mục đích của trình nội tuyến là thực hiện các thay đổi vĩnh viễn cho mã nguồn, vì vậy nó không thể tận dụng các chi tiết tạm thời. Như một ví dụ cực đoan, hãy xét hàm `start` này:
+Trình nội tuyến hóa sử dụng một [phân tích rủi ro](https://cs.opensource.google/go/x/tools/+/refs/tags/v0.42.0:internal/refactor/inline/inline.go;l=1978;drc=e3a69ffcdbb984f50100e76ebca6ff53cf88de9c) mới để mô hình hóa thứ tự tác dụng trong mỗi hàm được gọi. Tuy nhiên, khả năng xây dựng các chứng minh an toàn cần thiết của nó khá hạn chế. Ví dụ, nếu các lời gọi `f()` và `g()` là các hàm truy cập đơn giản, việc gọi chúng theo thứ tự nào cũng hoàn toàn an toàn. Thực tế, một trình biên dịch tối ưu hóa có thể sử dụng kiến thức về phần triển khai bên trong của `f` và `g` để sắp xếp lại hai lời gọi này một cách an toàn. Nhưng khác với trình biên dịch, vốn tạo ra mã đối tượng phản ánh mã nguồn tại một thời điểm cụ thể, mục đích của trình nội tuyến hóa là thực hiện các thay đổi vĩnh viễn lên mã nguồn, vì vậy nó không thể tận dụng các chi tiết tạm thời. Là một ví dụ cực đoan, hãy xem xét hàm `start` này:
 
 ```
 func start() { /* TODO: implement */ }
 ```
 
-Một trình biên dịch tối ưu được tự do xóa mỗi lời gọi tới `start()` vì nó không có hiệu ứng nào hôm nay, nhưng trình nội tuyến thì không, vì nó có thể trở nên quan trọng vào ngày mai.
+Một trình biên dịch tối ưu hóa được phép xóa mỗi lời gọi đến `start()` vì hiện tại nó không có tác dụng gì, nhưng trình nội tuyến hóa thì không, vì nó có thể trở nên quan trọng vào ngày mai.
 
-<!-- There's a bit of a contradiction here since the hazard analysis uses implementation details du jour. -->
+<!-- Có một chút mâu thuẫn ở đây vì phân tích rủi ro sử dụng các chi tiết triển khai du jour. -->
 
-Tóm lại, trình nội tuyến có thể tạo ra các kết quả mà, theo con mắt của một người bảo trì dự án có kinh nghiệm, rõ ràng là quá thận trọng. Trong những trường hợp như vậy, mã đã sửa sẽ được hưởng lợi về mặt văn phong từ một chút dọn dẹp thủ công.
+Tóm lại, trình nội tuyến hóa có thể tạo ra các kết quả mà—dưới con mắt am hiểu của người duy trì dự án—rõ ràng là quá thận trọng. Trong những trường hợp như vậy, mã đã được sửa sẽ được cải thiện về mặt phong cách nếu thực hiện một chút dọn dẹp thủ công.
 
-### 3. Biểu thức hằng số "có thể thất bại"
+### 3. “Fallible” constant expressions
 
-Bạn có thể tưởng tượng (như tôi đã từng nghĩ) rằng sẽ luôn an toàn khi thay thế một biến tham số bằng một đối số hằng số cùng kiểu. Đáng ngạc nhiên, điều này không phải lúc nào cũng đúng, bởi vì một số kiểm tra trước đây được thực hiện tại thời điểm chạy bây giờ sẽ xảy ra và thất bại tại thời điểm biên dịch. Hãy xét lời gọi tới hàm `index` này:
+You might imagine (as I once did) that it would always be safe to replace a parameter variable by a constant argument of the same type. Surprisingly, this turns out not to be the case, because some checks previously done at run time would now happen—and fail—at compile time. Consider this call to the `index` function:
 
 ```
 //go:fix inline
@@ -316,20 +338,20 @@ func index(s string, i int) byte {
 index("", 0)
 ```
 
-Một trình nội tuyến ngây thơ có thể thay `s` bằng `""` và `i` bằng `0`, kết quả là `""[0]`, nhưng đây thực ra không phải là biểu thức Go hợp lệ vì chỉ số cụ thể này vượt ngoài giới hạn của chuỗi cụ thể này. Vì biểu thức `""[0]` được tạo từ các hằng số, nó được đánh giá tại thời điểm biên dịch, và một chương trình chứa nó sẽ không biên dịch được. Ngược lại, chương trình gốc chỉ thất bại nếu thực thi đến lời gọi `index` này, điều mà trong một chương trình hoạt động bình thường có lẽ không xảy ra.
+A naive inliner might replace `s` with `""` and `i` with `0`, resulting in `""[0]`, but this is not actually a legal Go expression because this particular index is out of bounds for this particular string. Because the expression `""[0]` is composed of constants, it is evaluated at compile time, and a program that contains it will not even build. By contrast, the original program would fail only if execution reaches this call to `index`, which presumably in a working program it does not.
 
-Do đó, trình nội tuyến phải theo dõi tất cả các biểu thức và toán hạng của chúng có thể trở thành hằng số trong quá trình thay thế tham số, kích hoạt các kiểm tra bổ sung tại thời điểm biên dịch. Nó xây dựng một [hệ ràng buộc](https://cs.opensource.google/go/x/tools/+/master:internal/refactor/inline/falcon.go;l=43;drc=1aca71e85510ecc45dddbc335b30b64298c2a31e) và cố gắng giải quyết nó. Mỗi ràng buộc không thỏa mãn được giải quyết bằng cách thêm một ràng buộc rõ ràng cho các tham số bị ràng buộc.
+Consequently, the inliner must keep track of all expressions and their operands that might become constant during parameter substitution, triggering additional compile-time checks. It builds a [constraint system](https://cs.opensource.google/go/x/tools/+/master:internal/refactor/inline/falcon.go;l=43;drc=1aca71e85510ecc45dddbc335b30b64298c2a31e) and attempts to solve it. Each unsatisfied constraint is resolved by adding an explicit binding for the constrained parameters.
 
 <!--
-  The fundamental reason for falcon is that we can't type-check the result
-  since in a "separate analysis" system we don't have type information
+  The fundamental reason for falcon is that we can’t type-check the result
+  since in a “separate analysis” system we don’t have type information
   for all dependencies. See hidden comment within section
   [gofix#synergistic-fixes](gofix#synergistic-fixes).
 -->
 
-### 4. Che khuất
+### 4. Shadowing
 
-Các biểu thức đối số thông thường chứa một hoặc nhiều định danh tham chiếu đến các ký hiệu (biến, hàm, v.v.) trong tệp của caller. Trình nội tuyến phải đảm bảo rằng mỗi tên trong biểu thức đối số vẫn tham chiếu đến cùng ký hiệu sau khi thay thế tham số; nói cách khác, không có tên nào của caller bị *che khuất* trong hàm được gọi. Nếu điều này thất bại, trình nội tuyến phải chèn thêm ràng buộc tham số, như trong ví dụ này:
+Typical argument expressions contain one or more identifiers that refer to symbols (variables, functions, and so on) in the caller’s file. The inliner must make sure that each name in the argument expression would refer to the same symbol after parameter substitution; in other words, none of the caller’s names is *shadowed* in the callee. If this fails, the inliner must again insert parameter bindings, as in this example:
 
 <div class="beforeafter">
 <div class="beforeafter-context"><pre>
@@ -347,8 +369,8 @@ f(x)
 <pre>
 x := "hello"
 {
-	// thêm khai báo "ràng buộc tham số"
-	// để đọc x của caller trước khi nó bị che khuất
+	// another “parameter binding” declaration
+	// to read the caller's x before shadowing it
 	var val string = x
 	x := 123
 	fmt.Println(val, x)
@@ -356,11 +378,11 @@ x := "hello"
 </pre>
 </div>
 
-Ngược lại, trình nội tuyến cũng phải kiểm tra rằng mỗi tên trong thân hàm *được gọi* vẫn tham chiếu đến cùng thứ khi nó được ghép vào điểm gọi. Nói cách khác, không có tên nào của hàm được gọi bị che khuất hoặc thiếu trong caller. Đối với các tên thiếu, trình nội tuyến có thể cần chèn thêm các import.
+Conversely, the inliner must also check that each name in the *callee* function body would refer to the same thing when it is spliced into the call site. In other words, none of the callee’s names is shadowed or missing in the caller. For missing names, the inliner may need to insert additional imports.
 
-### 5. Biến không dùng đến
+### 5. Biến không được sử dụng
 
-Khi một biểu thức đối số không có hiệu ứng và tham số tương ứng của nó không bao giờ được dùng, biểu thức có thể bị loại bỏ. Tuy nhiên, nếu biểu thức chứa tham chiếu cuối cùng tới một biến cục bộ ở caller, điều này có thể gây ra lỗi biên dịch vì biến đó giờ không được dùng đến.
+Khi một biểu thức đối số không có tác động nào và tham số tương ứng của nó không bao giờ được sử dụng, biểu thức đó có thể được loại bỏ. Tuy nhiên, nếu biểu thức chứa tham chiếu cuối cùng đến một biến cục bộ tại phía gọi, điều này có thể gây ra lỗi biên dịch vì biến đó hiện không còn được sử dụng.
 
 <div class="beforeafter">
 <div class="beforeafter-context"><pre>
@@ -373,20 +395,23 @@ f(x)
 </pre>
 <div class="beforeafter-arrow"></div>
 <pre>
-x := 42 // lỗi: biến không được dùng: x
+x := 42 // error: unused variable: x
 print("hello")
 </pre>
 </div>
 
-Vì vậy, trình nội tuyến phải tính đến các tham chiếu đến biến cục bộ và tránh xóa tham chiếu cuối cùng. (Tất nhiên vẫn có thể xảy ra trường hợp hai lần sửa nội tuyến khác nhau mỗi lần xóa tham chiếu *áp chót* đến một biến, vì vậy hai lần sửa đó có giá trị khi xét riêng lẻ nhưng không khi kết hợp; xem thảo luận về [xung đột ngữ nghĩa](gofix#merging-fixes-and-conflicts) trong bài viết trước. Tiếc thay, trong trường hợp này không thể tránh khỏi việc dọn dẹp thủ công.)
+Vì vậy, trình inline phải tính đến các tham chiếu đến biến cục bộ và tránh loại bỏ tham chiếu cuối cùng. (Tất nhiên vẫn có khả năng hai bản sửa inline khác nhau mỗi bản đều loại bỏ tham chiếu *thứ hai tính từ cuối* đến một biến, vì vậy hai bản sửa này hợp lệ khi tách riêng nhưng không hợp lệ khi cùng áp dụng; xem phần thảo luận về [xung đột ngữ nghĩa](gofix#merging-fixes-and-conflicts) trong bài đăng trước. Đáng tiếc là trong trường hợp này việc dọn dẹp thủ công là không thể tránh khỏi.)
 
 ### 6. Defer
 
-Trong một số trường hợp, đơn giản là không thể nội tuyến lời gọi.
-Hãy xét một lời gọi tới hàm dùng câu lệnh `defer`:
-nếu chúng ta loại bỏ lời gọi, hàm bị defer sẽ thực thi khi hàm *caller* trả về, điều này là quá muộn.
-Tất cả những gì chúng ta có thể làm an toàn khi hàm được gọi dùng `defer` là đặt thân hàm được gọi trong một hàm literal và gọi ngay lập tức.
-Hàm literal `func() { ... }()` này phân định vòng đời của câu lệnh `defer`, như trong ví dụ này:
+Trong một số trường hợp, đơn giản là không thể inline để loại bỏ lời gọi.
+Hãy xem xét một lời gọi đến một hàm sử dụng câu lệnh `defer`:
+nếu chúng ta loại bỏ lời gọi, hàm được trì hoãn sẽ thực thi
+khi hàm *gọi* trả về, tức là quá muộn.
+Điều duy nhất chúng ta có thể làm an toàn khi hàm được gọi sử dụng `defer` là
+đặt thân của hàm được gọi vào một function literal và gọi nó ngay lập tức.
+Function literal này, `func() { … }()`, giới hạn thời gian tồn tại của
+câu lệnh `defer`, như trong ví dụ sau:
 
 <div class="beforeafter">
 <div class="beforeafter-context"><pre>
@@ -408,16 +433,16 @@ func() {
 </pre>
 </div>
 
-Nếu bạn gọi trình nội tuyến trong gopls, bạn sẽ thấy nó thực hiện thay đổi như trên và giới thiệu hàm literal. Kết quả này có thể phù hợp trong môi trường tương tác, vì bạn có thể ngay lập tức chỉnh sửa mã (hoặc hoàn tác sửa đổi) tùy ý, nhưng hiếm khi được mong muốn trong một công cụ batch, vì vậy theo chính sách, bộ phân tích trong `go fix` từ chối nội tuyến các lời gọi "được thêm literal" như vậy.
+Nếu bạn gọi trình inline trong gopls, bạn sẽ thấy rằng nó thực hiện thay đổi được hiển thị ở trên và đưa vào function literal. Kết quả này có thể phù hợp trong môi trường tương tác, vì bạn có khả năng sẽ ngay lập tức tinh chỉnh mã (hoặc hoàn tác bản sửa) theo ý muốn, nhưng hiếm khi phù hợp trong một công cụ chạy theo lô, vì vậy theo chính sách, bộ phân tích trong `go fix` từ chối inline các lời gọi “được chuyển thành literal” như vậy.
 
-### Một trình biên dịch tối ưu hóa cho "sự gọn gàng"
+### Một trình biên dịch tối ưu hóa cho “tính gọn gàng”
 
-Chúng ta đã thấy nửa chục ví dụ về cách trình nội tuyến xử lý đúng các trường hợp biên ngữ nghĩa phức tạp.
-(Xin trân trọng cảm ơn Rob Findley, Jonathan Amsterdam, Olena Synenka và Lasse Folger về những hiểu biết sâu sắc, các cuộc thảo luận, đánh giá, tính năng và sửa lỗi.)
-Bằng cách tích hợp tất cả sự thông minh vào trình nội tuyến, người dùng có thể đơn giản áp dụng tái cấu trúc "Inline call" trong IDE hoặc thêm chỉ thị `//go:fix inline` vào các hàm của riêng mình và tự tin rằng các phép biến đổi mã kết quả có thể được áp dụng với chỉ cần xem xét sơ bộ nhất.
+Đến đây, chúng ta đã thấy nửa tá ví dụ về cách trình inliner xử lý đúng các trường hợp biên ngữ nghĩa phức tạp.
+(Xin cảm ơn rất nhiều Rob Findley, Jonathan Amsterdam, Olena Synenka và Lasse Folger vì những hiểu biết, thảo luận, đánh giá, tính năng và bản sửa lỗi.)
+Bằng cách đưa toàn bộ phần thông minh vào trình inliner, người dùng có thể chỉ cần áp dụng thao tác tái cấu trúc “Inline call” trong IDE của họ hoặc thêm chỉ thị `//go:fix inline` vào các hàm của chính mình, đồng thời tin tưởng rằng các phép biến đổi mã thu được có thể được áp dụng chỉ với việc xem xét sơ bộ nhất.
 
-Mặc dù chúng tôi đã đạt được tiến bộ tốt hướng tới mục tiêu đó, chúng tôi chưa hoàn toàn đạt được nó, và có lẽ chúng tôi sẽ không bao giờ hoàn toàn. Hãy xét một trình biên dịch. Một trình biên dịch đúng tạo ra đầu ra chính xác cho bất kỳ đầu vào nào và không bao giờ biên dịch sai mã của bạn; đây là kỳ vọng cơ bản mà mọi người dùng nên có đối với trình biên dịch của mình. Một trình biên dịch *tối ưu hóa* tạo ra mã được lựa chọn cẩn thận cho tốc độ mà không hy sinh sự an toàn. Tương tự, một trình nội tuyến cũng giống như một trình biên dịch tối ưu hóa có mục tiêu không phải là tốc độ mà là *sự gọn gàng*: nội tuyến một lời gọi không bao giờ được thay đổi hành vi của chương trình, và lý tưởng là nó tạo ra mã gọn gàng tối đa. Thật không may, một trình biên dịch tối ưu hóa [được chứng minh](https://en.wikipedia.org/wiki/Rice%27s_theorem) là không bao giờ hoàn tất: chứng minh hai chương trình khác nhau là tương đương là một bài toán không thể giải quyết, và sẽ luôn có những cải tiến mà một chuyên gia biết là an toàn nhưng trình biên dịch không thể chứng minh. Cũng vậy với trình nội tuyến: sẽ luôn có những trường hợp đầu ra của trình nội tuyến quá phức tạp hoặc kém về mặt văn phong so với của một chuyên gia con người, và sẽ luôn có thêm "tối ưu hóa gọn gàng" để thêm vào.
+Mặc dù chúng ta đã đạt được nhiều tiến bộ hướng tới mục tiêu đó, chúng ta vẫn chưa hoàn toàn đạt được nó, và có khả năng chúng ta sẽ không bao giờ đạt được đầy đủ. Hãy xem xét một trình biên dịch. Một trình biên dịch đúng đắn tạo ra đầu ra chính xác với mọi đầu vào và không bao giờ biên dịch sai mã của bạn; đây là kỳ vọng cơ bản mà mọi người dùng nên có đối với trình biên dịch của mình. Một trình biên dịch *tối ưu hóa* tạo ra mã được lựa chọn cẩn thận để có tốc độ cao mà không ảnh hưởng đến tính an toàn. Tương tự, trình inliner giống như một trình biên dịch tối ưu hóa có mục tiêu không phải là tốc độ mà là *tính gọn gàng*: việc inline một lời gọi không bao giờ được thay đổi hành vi của chương trình, và lý tưởng nhất là nó tạo ra mã gọn gàng, ngăn nắp nhất có thể. Đáng tiếc, một trình biên dịch tối ưu hóa được [chứng minh](https://en.wikipedia.org/wiki/Rice%27s_theorem) là không bao giờ hoàn thiện: việc chứng minh hai chương trình khác nhau là tương đương là một bài toán không quyết định được, và sẽ luôn có những cải tiến mà chuyên gia biết là an toàn nhưng trình biên dịch không thể chứng minh. Điều tương tự cũng đúng với trình inliner: sẽ luôn có những trường hợp đầu ra của trình inliner quá cầu kỳ hoặc kém hơn về mặt phong cách so với đầu ra của một chuyên gia con người, và sẽ luôn có thêm các “tối ưu hóa tính gọn gàng” cần được bổ sung.
 
-## Hãy thử xem!
+## Hãy thử!
 
-Chúng tôi hy vọng chuyến tham quan trình nội tuyến này giúp bạn hiểu một số thách thức liên quan, cũng như các ưu tiên và định hướng của chúng tôi trong việc cung cấp các công cụ biến đổi mã nguồn đúng đắn, tự phục vụ. Hãy thử trình nội tuyến, bằng cách tương tác trong IDE, hoặc thông qua các chỉ thị `//go:fix inline` và lệnh `go fix`, và chia sẻ với chúng tôi trải nghiệm của bạn và bất kỳ ý tưởng nào bạn có về các cải tiến thêm hoặc công cụ mới.
+Chúng tôi hy vọng chuyến tham quan này về trình inliner giúp bạn cảm nhận được một số thách thức liên quan, cũng như các ưu tiên và hướng đi của chúng tôi trong việc cung cấp các công cụ biến đổi mã tự phục vụ, đúng đắn. Vui lòng thử trình inliner, dù là tương tác trực tiếp trong IDE của bạn, hoặc thông qua các chỉ thị `//go:fix inline` và lệnh `go fix`, rồi chia sẻ với chúng tôi trải nghiệm của bạn cùng bất kỳ ý tưởng nào bạn có về các cải tiến tiếp theo hoặc công cụ mới.
