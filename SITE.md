@@ -40,6 +40,15 @@ mean editing two cells and remembering both.
 whoever types it. That is not the same as being parked, and it is not the same
 as pretending to be the site.
 
+Those two roles need a redirect rule on the Cloudflare zone that the host
+belongs to. They used to be written into `_redirects` and the rules never fired,
+because Pages matches the source of a rule against the request path and not
+against the URL. `godev publish` writes a comment naming each such host instead,
+and `DOMAIN.md` has the step for `godev.vn`. `godev-vn.pages.dev` is not in a
+zone we own, so it keeps answering; what stops it competing in a search index is
+the canonical link tag in every page it serves, which is where the real work was
+being done anyway.
+
 **mirror** serves the same files with no redirect. That is for the GitHub Pages
 deploy, which exists so that one vendor having a bad day is not the whole site
 being down. A mirror does not compete with the canonical host in a search index,

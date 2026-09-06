@@ -110,10 +110,16 @@ DNS for `godev.vn`, the same as it already does for `tamnd.com`.
 3. Add `godev.vn` as a custom domain on the Cloudflare Pages project, and
    `www.godev.vn` alongside it. Cloudflare creates the records itself once it
    runs the zone.
-4. Leave the row in `SITE.md` as `placeholder`. From this point the name
-   resolves and serves the placeholder page, which says what it is and carries a
-   `noindex`, so nothing gets into a search index under an address that is not
-   ready.
+4. Leave the row in `SITE.md` as `placeholder`, and add a redirect rule on the
+   `godev.vn` zone sending `godev.vn/*` to `/placeholder.html` with a 200. The
+   rule has to be on the zone. A `_redirects` line cannot do it, because Pages
+   matches the source of a rule against the request path and not against the
+   URL, so a rule naming a host never fires. That was measured on a real deploy
+   and it is written up in section 10 of the spec.
+
+   From this point the name resolves and serves the placeholder page, which says
+   what it is and carries a `noindex`, so nothing gets into a search index under
+   an address that is not ready.
 5. When the site is ready to move, change the `Canonical:` line in `SITE.md` to
    `godev.vn` and merge. That is the whole move, and `TestTheMove` in the
    translator keeps it true.
