@@ -78,14 +78,14 @@ là cái nhìn tổng quan ngắn gọn về những gì chúng tôi nghĩ sẽ 
 
    Lệnh `go work use` thêm đường dẫn đến module của bạn vào tệp `go.work`:
 
-   ```
-   go 1.18
+    ```
+    go 1.18
 
-   use (
-          ./path-to-upstream-mod-dir
-          ./path-to-your-module
-   )
-   ```
+    use (
+           ./path-to-upstream-mod-dir
+           ./path-to-your-module
+    )
+    ```
 
 7. Chạy và kiểm thử module của bạn với tính năng mới vừa thêm vào module upstream.
 8. Phát hành module upstream với tính năng mới.

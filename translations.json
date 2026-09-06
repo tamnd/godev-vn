@@ -226,8 +226,12 @@
       "chunks": 1
     },
     "blog/concurrency-timeouts.md": {
-      "english_sha256": "4b80dea59ad33278780717e66cba7380b4dacd2d2df9b0fd0abc45532798f887",
-      "at": "2026-03-29"
+      "english_sha256": "a69cbafa6c67344ebe8504a03fb3f8d0d2bd7d90b67f54d3f1ddd586f00b014d",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 2
     },
     "blog/conduct-2018.md": {
       "english_sha256": "c7e8582e4da8439c4cbb668df928edd870aed1a454212af282fd87e58570d658",
@@ -902,8 +906,12 @@
       "at": "2026-03-30"
     },
     "blog/gofix.md": {
-      "english_sha256": "9057654b1cea3ef94d601358604bf53ce341c1d18ef829d87977a7271a565152",
-      "at": "2026-03-31"
+      "english_sha256": "6e3b579dfbf7a9a9f89c9691b0967029710db807ccd1aad84dbb5d2c9f5f3fb3",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 9
     },
     "blog/gofmt.md": {
       "english_sha256": "0cbf45007244147fb25e571fd9925d37c4ad7cca859bb56e3c175532072b2fcc",
@@ -1859,6 +1867,14 @@
       "english_sha256": "b8dac8aa9f02e71bd0b5dda8f6e26706ff22e19c0a3149aae53946b2b10f864a",
       "at": "2026-03-30"
     },
+    "doc/default.tmpl": {
+      "english_sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 1
+    },
     "doc/devel/pre_go1.html": {
       "english_sha256": "105c69f72a732d934da922d6e1d1d5cf14a36788f02432ece263f760ef87dc9e",
       "at": "2026-03-30"
@@ -1880,8 +1896,12 @@
       "at": "2026-03-30"
     },
     "doc/effective_go.html": {
-      "english_sha256": "4474fe9af52601421a48e6c63df3d393bec74a68a7bd136cb4f9bf1d863d9885",
-      "at": "2026-04-14"
+      "english_sha256": "9c6259ceaec348deabfcef9856955070da5370f3a95cf739b4d9c06b22544e0d",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 35
     },
     "doc/faq.md": {
       "english_sha256": "df2ca902ebe7bd8c547ec47f7d25f5f18f80062e577468ace384e9e74f690419",
@@ -1976,8 +1996,12 @@
       "chunks": 18
     },
     "doc/go1.25.md": {
-      "english_sha256": "4f8b2b97af4e48574d539b0a3036d6828ba0b22216c34dd0058ee4cf55e71db2",
-      "at": "2026-03-30"
+      "english_sha256": "26308dc639197ff2b4170d8a5cf4299b07c49e1d3f60e00176b5d84ae78ac73d",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 15
     },
     "doc/go1.26.md": {
       "english_sha256": "800fc6bbe84ea56e40dd0c1c593caecd7127145175ac8d92f8d242e406a6d1f0",
@@ -2038,12 +2062,21 @@
       "at": "2026-03-30"
     },
     "doc/index.html": {
-      "english_sha256": "8d1d818633be27d876a279105617838b076a46a63352e11956d08301bf435e33",
-      "at": "2026-03-30"
+      "english_sha256": "1e1ec2ae02d56739bc7491c64cc3d1d3e269423f22566d2a822b06c35c9470e3",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 11
     },
     "doc/install.html": {
-      "english_sha256": "e6f4aabf90d56d1d9e74aec3e6595ac00a38dbcae8e3f1d7191c80a5d9a9a317",
-      "at": "2026-03-30"
+      "english_sha256": "bbebc94da105910fb6f002a31a97f859c47202417cba4a0a60d6b1093e731c5c",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 4,
+      "english": 1
     },
     "doc/install/gccgo.html": {
       "english_sha256": "844a9d0ad6c61586e79d61dcac98d0b6a40c76e10c6e74444e41373e3dc2ca4c",
@@ -2063,16 +2096,24 @@
       "english": 2
     },
     "doc/manage-install.html": {
-      "english_sha256": "f3e9d47764bc1f537acdec9510e326ba623a14caaec2f25edb795a23882eb091",
-      "at": "2026-03-30"
+      "english_sha256": "e93352fceb2fef49f3426deb8e1ede9fbc0f328bc06e26b29982a91de89a5e21",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 3
     },
     "doc/modules/developing.md": {
       "english_sha256": "b536e09618906a025e579d4715c3218dd4cc32ba4b1a4554d8dd6e582a7f8ed8",
       "at": "2026-03-30"
     },
     "doc/modules/gomod-ref.md": {
-      "english_sha256": "ab299a0b577e4266c1998859c63be10588825f7897f5a7f8594c52ed3f7bd73d",
-      "at": "2026-03-30"
+      "english_sha256": "f2d3e578640d2a9522a9667b8a203e6a14d60509df1e5c04ad54ca14a6c3d8bd",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 11
     },
     "doc/modules/layout.md": {
       "english_sha256": "3cf064a34e84e48dc66ffdf9277fea2b2c9fdc52d0b5dd7d4de506fb8eeba4a5",
@@ -2128,8 +2169,12 @@
       "english": 1
     },
     "doc/security/fips140.md": {
-      "english_sha256": "9c52a0a8849a429d17f7cbdc96224b208bc2e3640460e298b7571c202082b32f",
-      "at": "2026-03-30"
+      "english_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 5
     },
     "doc/security/fuzz/index.md": {
       "english_sha256": "69bd18d0702cab7d9f3a9a4e1fb20f316cbefc518d0e804c7e753a538bd15bbb",
@@ -2140,12 +2185,20 @@
       "at": "2026-03-30"
     },
     "doc/security/index.md": {
-      "english_sha256": "bcee2d6017b9f4d4921504e0c3753bedcb2b589088aaddde77de4f0ad3029623",
-      "at": "2026-03-30"
+      "english_sha256": "272aa1d0fb5c22f687b747955f1927a78be8ad0f19169096cb0437e9f7fb1b45",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 3
     },
     "doc/security/policy.md": {
-      "english_sha256": "2a4c81061774ac6e75a929835ee4f835785c74143d38eaf1c4db6e29226299b4",
-      "at": "2026-03-30"
+      "english_sha256": "4beb851bf3f8a3dd67821a40493b5bc4b4a0d8eeb7fc710a73a659d2bc324c23",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 5
     },
     "doc/security/threat-model.md": {
       "english_sha256": "c58e1f16eb682643adc1d6a74502920aa1700b02463eca04f26949a0a6fd0b9d",
@@ -2212,20 +2265,33 @@
       "at": "2026-03-30"
     },
     "doc/tutorial/create-module.html": {
-      "english_sha256": "d536737a58d558ae20e3829d4a98d378243e2986a97b3ebed60a39f568856486",
-      "at": "2026-03-30"
+      "english_sha256": "e86bbbcbb07dbd6aa9a5e3e00ddf7525888f8f4298299818b9c7cf7b2407d144",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 3
     },
     "doc/tutorial/database-access.md": {
       "english_sha256": "006b82bedadb9fbf37ab24e3e7e09ae8f86abc8870d0b1df45e67b4d6ea337e1",
       "at": "2026-03-30"
     },
     "doc/tutorial/fuzz.md": {
-      "english_sha256": "850a40a8fdc9dcf8823481eab0efba385e39d96e7451c10b503c9a169abf1907",
-      "at": "2026-03-30"
+      "english_sha256": "91f902e95484e8320b35801d1bb22c12b90f08983a3a269ca373cce96c8cc903",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 10
     },
     "doc/tutorial/generics.md": {
-      "english_sha256": "9a51bf1c956c76ed855374cb98495af41f68cafd1d4cf0f3cdbacd13ad77231d",
-      "at": "2026-03-30"
+      "english_sha256": "c15398a80cb69b1b0d486d14bb35ccb2a807a4fbcac6b7bd5319a997513aa67f",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 8,
+      "english": 2
     },
     "doc/tutorial/getting-started.html": {
       "english_sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd",
@@ -2236,8 +2302,13 @@
       "at": "2026-03-30"
     },
     "doc/tutorial/govulncheck.md": {
-      "english_sha256": "098853e158c8bdd657bead25e999b8cc9a5f1ab07ee7ec7bd6d2a0e0ac7558b0",
-      "at": "2026-03-30"
+      "english_sha256": "6517f5eb2bc73ca2e1befbb643fcc5cd4d381dbbf404acf03bc12395393809f9",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 4,
+      "english": 2
     },
     "doc/tutorial/greetings-multiple-people.html": {
       "english_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
@@ -2248,8 +2319,12 @@
       "at": "2026-03-30"
     },
     "doc/tutorial/index.html": {
-      "english_sha256": "e2a51401106637ed8d6387496174d67a7e14f14c2fec30868defe0ab5bceeac9",
-      "at": "2026-03-30"
+      "english_sha256": "c9ecfeee2bb8e450f8f30e38b997cd663b0d904021299d5cb400796e1b43eb55",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 2
     },
     "doc/tutorial/json.md": {
       "english_sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be",
@@ -2269,12 +2344,37 @@
       "at": "2026-03-30"
     },
     "doc/tutorial/web-service-gin.md": {
-      "english_sha256": "9adb1b6bdb775fd8ab35c4bd370f75e9c6de33b8e4e5208adeecc4d493bfcd2d",
-      "at": "2026-03-30"
+      "english_sha256": "3342ff17a8b087b5d5a2a3c03d3fbcf4197eafd943c65a05c62c43df0cf33cf4",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 8
     },
     "doc/tutorial/workspaces.md": {
-      "english_sha256": "dc5c4bc8bec33089c65f231c14b0c8dba19002308d3d4f8216460a76bf6b05aa",
-      "at": "2026-03-30"
+      "english_sha256": "4991323de780ed74be6286cb07f2b1cfae1c03d27aa80ff864a151782bd293de",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 4
+    },
+    "error.tmpl": {
+      "english_sha256": "133977404583eb45545e282f20c88a9ab4743f537429817aee6db9d05e83b618",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 1,
+      "english": 1
+    },
+    "gopls/doc/default.tmpl": {
+      "english_sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 1
     },
     "gopls/doc/index.md": {
       "english_sha256": "f36df19b317e3216a5c27320f530cd0f8ceb6f5df3a83068592a6e52b71716ff",
@@ -2325,8 +2425,12 @@
       "at": "2026-03-30"
     },
     "menus.yaml": {
-      "english_sha256": "b2a293b1fe73b65982abc4be1d7cb7da9f1f4a76789b7685164a151693a116b3",
-      "at": "2026-03-30"
+      "english_sha256": "1bbfb89bdd575b2bc00a45ccebd1b9fb983339746eae220bdc10f5856da7e8c3",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 1
     },
     "pkg.tmpl": {
       "english_sha256": "1c1c588783df49cb1ec273f1b014a8170e708491790f6972392bcd92ba8603d8",
@@ -2345,8 +2449,21 @@
       "at": "2026-03-30"
     },
     "rebuild.html": {
-      "english_sha256": "b575c158e0904d89299d61dad7ea3d0d8b8d7f34e22e9462efb44f17d16a09c7",
-      "at": "2026-03-30"
+      "english_sha256": "bf78645fb2c3e755ec43f9e9cd2011e220119b9efcb913dbac670ae551cde8f4",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 3,
+      "english": 1
+    },
+    "ref/default.tmpl": {
+      "english_sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-05",
+      "chunks": 1
     },
     "ref/index.md": {
       "english_sha256": "aba1a687ba5dda4a429baf135519c770b27cce6f84a555e54920083265db3936",

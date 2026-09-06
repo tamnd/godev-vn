@@ -1,42 +1,35 @@
-<!--{
-  "Title": "Hướng dẫn: Bắt đầu với generics",
-  "Breadcrumb": true
-}-->
+---
+Title: Hướng dẫn: Bắt đầu với generics
+Breadcrumb: true
+---
 
-Hướng dẫn này giới thiệu những kiến thức cơ bản về generics trong Go. Với generics, bạn có thể
-khai báo và sử dụng các hàm hoặc kiểu dữ liệu được viết để hoạt động với bất kỳ kiểu nào
-trong một tập hợp các kiểu được cung cấp bởi code gọi hàm.
+Hướng dẫn này giới thiệu các khái niệm cơ bản về generics trong Go. Với generics, bạn có thể khai báo và sử dụng các hàm hoặc kiểu được viết để hoạt động với bất kỳ kiểu nào trong một tập hợp các kiểu do mã gọi cung cấp.
 
-Trong hướng dẫn này, bạn sẽ khai báo hai hàm non-generic đơn giản, sau đó
-gói gọn logic tương tự trong một hàm generic duy nhất.
+Trong hướng dẫn này, bạn sẽ khai báo hai hàm đơn giản không dùng generics, sau đó gói gọn cùng một logic trong một hàm generic duy nhất.
 
-Bạn sẽ thực hiện lần lượt các phần sau:
+Bạn sẽ lần lượt thực hiện các phần sau:
 
-1. Tạo thư mục cho code của bạn.
-2. Thêm các hàm non-generic.
+1. Tạo một thư mục cho mã của bạn.
+2. Thêm các hàm không dùng generics.
 3. Thêm một hàm generic để xử lý nhiều kiểu.
-4. Bỏ các type argument khi gọi hàm generic.
-5. Khai báo một type constraint.
+4. Loại bỏ các đối số kiểu khi gọi hàm generic.
+5. Khai báo một ràng buộc kiểu.
 
-**Lưu ý:** Để xem các hướng dẫn khác, truy cập [Hướng dẫn](/doc/tutorial/index.html).
-
-**Lưu ý:** Nếu bạn thích, bạn có thể dùng
-[Go playground ở chế độ "Go dev branch"](/play/?v=gotip)
-để chỉnh sửa và chạy chương trình thay thế.
+**Lưu ý:** Đối với các hướng dẫn khác, xem [Tutorials](/doc/tutorial/index.html).
 
 ## Điều kiện tiên quyết
 
-*   **Đã cài đặt Go 1.18 hoặc mới hơn.** Để biết hướng dẫn cài đặt, xem
-    [Cài đặt Go](/doc/install).
-*   **Một công cụ để chỉnh sửa code.** Bất kỳ trình soạn thảo văn bản nào bạn có đều dùng được.
-*   **Một cửa sổ dòng lệnh.** Go hoạt động tốt trên bất kỳ terminal nào trên Linux và Mac,
-    cũng như trên PowerShell hoặc cmd trong Windows.
+*   **Go.** Chúng tôi khuyên bạn nên sử dụng phiên bản Go mới nhất để làm theo hướng dẫn này.
+    Để biết hướng dẫn cài đặt, xem [Installing Go](/doc/install).
+*   **Một công cụ để chỉnh sửa mã của bạn.** Bất kỳ trình soạn thảo văn bản nào bạn có đều hoạt động tốt.
+*   **Một terminal lệnh.** Go hoạt động tốt khi sử dụng bất kỳ terminal nào trên Linux và Mac,
+    cũng như PowerShell hoặc cmd trên Windows.
 
-## Tạo thư mục cho code của bạn {#create_folder}
+## Tạo một thư mục cho mã của bạn {#create_folder}
 
-Để bắt đầu, hãy tạo một thư mục cho code bạn sẽ viết.
+Để bắt đầu, hãy tạo một thư mục cho mã bạn sẽ viết.
 
-1. Mở dấu nhắc lệnh và chuyển đến thư mục home của bạn.
+1. Mở dấu nhắc lệnh và chuyển đến thư mục nhà của bạn.
 
     Trên Linux hoặc Mac:
 
@@ -50,55 +43,52 @@ Bạn sẽ thực hiện lần lượt các phần sau:
     C:\> cd %HOMEPATH%
     ```
 
-    Phần còn lại của hướng dẫn sẽ dùng $ làm dấu nhắc lệnh. Các lệnh bạn sử dụng
-    cũng hoạt động trên Windows.
+    Phần còn lại của hướng dẫn sẽ hiển thị $ làm dấu nhắc. Các lệnh bạn sử dụng
+    cũng sẽ hoạt động trên Windows.
 
-2. Từ dấu nhắc lệnh, tạo một thư mục có tên generics.
+2. Từ dấu nhắc lệnh, tạo một thư mục cho mã của bạn có tên là generics.
 
     ```
     $ mkdir generics
     $ cd generics
     ```
 
-3. Tạo một module để chứa code của bạn.
+3. Tạo một module để chứa mã của bạn.
 
-    Chạy lệnh `go mod init`, cung cấp đường dẫn module cho code mới của bạn.
+    Chạy lệnh `go mod init`, cung cấp cho nó đường dẫn module của mã mới của bạn.
 
     ```
     $ go mod init example/generics
     go: creating new go.mod: module example/generics
     ```
 
-    **Lưu ý:** Với code production, bạn sẽ chỉ định đường dẫn module cụ thể hơn
-    theo nhu cầu của mình. Để biết thêm, hãy xem
-    [Quản lý dependency](/doc/modules/managing-dependencies).
+    **Lưu ý:** Đối với mã dùng trong sản xuất, bạn nên chỉ định một đường dẫn module cụ thể hơn
+    phù hợp với nhu cầu của riêng bạn. Để biết thêm, hãy xem
+    [Managing dependencies](/doc/modules/managing-dependencies).
 
-Tiếp theo, bạn sẽ thêm một ít code đơn giản để làm việc với map.
+Tiếp theo, bạn sẽ thêm một số mã đơn giản để làm việc với các map.
 
-## Thêm các hàm non-generic {#non_generic_functions}
+## Thêm các hàm không phải generics {#non_generic_functions}
 
-Trong bước này, bạn sẽ thêm hai hàm, mỗi hàm cộng tổng các giá trị của một
-map và trả về tổng.
+Trong bước này, bạn sẽ thêm hai hàm, mỗi hàm cộng các giá trị của một `map` và trả về tổng.
 
-Bạn khai báo hai hàm thay vì một vì bạn đang làm việc với hai
-kiểu map khác nhau: một kiểu lưu trữ giá trị `int64` và một kiểu lưu trữ giá trị `float64`.
+Bạn khai báo hai hàm thay vì một hàm vì bạn đang làm việc với hai kiểu `map` khác nhau: một kiểu lưu các giá trị `int64` và một kiểu lưu các giá trị `float64`.
 
-#### Viết code
+#### Viết mã
 
-1. Dùng trình soạn thảo văn bản của bạn, tạo một file có tên main.go trong thư mục generics.
-    Bạn sẽ viết code Go của mình trong file này.
-2. Vào main.go, ở đầu file, dán phần khai báo package sau.
+1. Sử dụng trình soạn thảo văn bản của bạn, tạo một tệp có tên main.go trong thư mục generics. Bạn sẽ viết mã Go của mình trong tệp này.
+2. Trong main.go, ở đầu tệp, dán khai báo package sau.
 
     ```
     package main
     ```
 
-    Một chương trình độc lập (trái với thư viện) luôn ở trong gói `main`.
+    Một chương trình độc lập (trái với thư viện) luôn nằm trong package `main`.
 
-3. Bên dưới khai báo package, dán hai phần khai báo hàm sau.
+3. Bên dưới khai báo package, dán hai khai báo hàm sau.
 
     ```
-    // SumInts adds together the values of m.
+    // SumInts cộng các giá trị của m.
     func SumInts(m map[string]int64) int64 {
     	var s int64
     	for _, v := range m {
@@ -107,7 +97,7 @@ kiểu map khác nhau: một kiểu lưu trữ giá trị `int64` và một ki�
     	return s
     }
 
-    // SumFloats adds together the values of m.
+    // SumFloats cộng các giá trị của m.
     func SumFloats(m map[string]float64) float64 {
     	var s float64
     	for _, v := range m {
@@ -117,24 +107,23 @@ kiểu map khác nhau: một kiểu lưu trữ giá trị `int64` và một ki�
     }
     ```
 
-    Trong đoạn code này, bạn:
+    Trong mã này, bạn:
 
-    *   Khai báo hai hàm để cộng tổng các giá trị của một map và trả về
-        tổng.
-        *   `SumFloats` nhận một map từ `string` đến giá trị `float64`.
-        *   `SumInts` nhận một map từ `string` đến giá trị `int64`.
+    * Khai báo hai hàm để cộng các giá trị của một `map` và trả về tổng.
+        * `SumFloats` nhận một `map` từ `string` đến các giá trị `float64`.
+        * `SumInts` nhận một `map` từ `string` đến các giá trị `int64`.
 
-4. Ở đầu main.go, bên dưới khai báo package, dán hàm `main` sau để khởi tạo hai map và sử dụng chúng làm đối số khi gọi các hàm đã khai báo ở bước trên.
+4. Ở đầu main.go, bên dưới khai báo package, dán hàm `main` sau để khởi tạo hai `map` và sử dụng chúng làm đối số khi gọi các hàm bạn đã khai báo trong bước trước.
 
     ```
     func main() {
-    	// Initialize a map for the integer values
+    	// Khởi tạo một map cho các giá trị số nguyên
     	ints := map[string]int64{
     		"first":  34,
     		"second": 12,
     	}
 
-    	// Initialize a map for the float values
+    	// Khởi tạo một map cho các giá trị số thực
     	floats := map[string]float64{
     		"first":  35.98,
     		"second": 26.99,
@@ -146,16 +135,15 @@ kiểu map khác nhau: một kiểu lưu trữ giá trị `int64` và một ki�
     }
     ```
 
-    Trong đoạn code này, bạn:
+    Trong mã này, bạn:
 
-    *   Khởi tạo một map giá trị `float64` và một map giá trị `int64`, mỗi map có hai mục.
-    *   Gọi hai hàm đã khai báo trước đó để tìm tổng các giá trị của mỗi map.
-    *   In kết quả.
+    * Khởi tạo một `map` chứa các giá trị `float64` và một `map` chứa các giá trị `int64`, mỗi `map` có hai mục.
+    * Gọi hai hàm bạn đã khai báo trước đó để tìm tổng các giá trị của mỗi `map`.
+    * In kết quả.
 
-5. Gần đầu main.go, ngay bên dưới khai báo package, import
-    gói bạn cần để hỗ trợ code vừa viết.
+5. Gần đầu main.go, ngay bên dưới khai báo package, nhập package bạn cần để hỗ trợ mã vừa viết.
 
-    Các dòng đầu tiên của code nên trông như sau:
+    Các dòng mã đầu tiên sẽ có dạng như sau:
 
     ```
     package main
@@ -165,53 +153,37 @@ kiểu map khác nhau: một kiểu lưu trữ giá trị `int64` và một ki�
 
 6. Lưu main.go.
 
-#### Chạy code
+#### Chạy mã
 
-Từ dòng lệnh trong thư mục chứa main.go, chạy code.
+Từ dòng lệnh trong thư mục chứa main.go, chạy mã.
 
 ```
 $ go run .
 Non-Generic Sums: 46 and 62.97
 ```
 
-Với generics, bạn có thể viết một hàm ở đây thay vì hai. Tiếp theo, bạn sẽ
-thêm một hàm generic duy nhất cho các map chứa giá trị integer hoặc float.
+Với generics, bạn có thể viết một hàm duy nhất ở đây thay vì hai hàm. Tiếp theo, bạn sẽ thêm một hàm generics duy nhất cho các map chứa giá trị kiểu số nguyên hoặc số thực.
 
-## Thêm một hàm generic để xử lý nhiều kiểu {#add_generic_function}
+## Thêm một hàm generics để xử lý nhiều kiểu {#add_generic_function}
 
-Trong phần này, bạn sẽ thêm một hàm generic duy nhất có thể nhận một map
-chứa giá trị integer hoặc float, thực sự thay thế hai
-hàm bạn vừa viết bằng một hàm duy nhất.
+Trong phần này, bạn sẽ thêm một hàm generics duy nhất có thể nhận một map chứa giá trị kiểu số nguyên hoặc số thực, thực chất thay thế hai hàm bạn vừa viết bằng một hàm duy nhất.
 
-Để hỗ trợ giá trị của cả hai kiểu, hàm duy nhất đó sẽ cần một cách
-khai báo những kiểu nó hỗ trợ. Ngược lại, code gọi hàm sẽ cần một cách
-để chỉ định liệu nó đang gọi với map integer hay float.
+Để hỗ trợ các giá trị thuộc một trong hai kiểu, hàm duy nhất đó sẽ cần một cách để khai báo các kiểu mà nó hỗ trợ. Mặt khác, mã gọi hàm sẽ cần một cách để chỉ định liệu nó đang gọi với một map số nguyên hay map số thực.
 
-Để hỗ trợ điều này, bạn sẽ viết một hàm khai báo _type parameter_ bổ sung
-cho các tham số hàm thông thường của nó. Các type parameter này làm cho
-hàm trở nên generic, cho phép nó hoạt động với các đối số kiểu khác nhau. Bạn sẽ
-gọi hàm với _type argument_ và các đối số hàm thông thường.
+Để hỗ trợ điều này, bạn sẽ viết một hàm khai báo _tham số kiểu_ bên cạnh các tham số hàm thông thường. Các tham số kiểu này làm cho hàm trở thành generics, cho phép hàm hoạt động với các đối số thuộc các kiểu khác nhau. Bạn sẽ gọi hàm bằng _đối số kiểu_ và các đối số hàm thông thường.
 
-Mỗi type parameter có một _type constraint_ hoạt động như một loại meta-type
-cho type parameter đó. Mỗi type constraint chỉ định các type argument được phép
-mà code gọi hàm có thể sử dụng cho type parameter tương ứng.
+Mỗi tham số kiểu có một _ràng buộc kiểu_ đóng vai trò như một loại siêu kiểu cho tham số kiểu đó. Mỗi ràng buộc kiểu chỉ định các đối số kiểu được phép mà mã gọi hàm có thể sử dụng cho tham số kiểu tương ứng.
 
-Trong khi một type constraint thường đại diện cho một tập hợp các kiểu, tại
-thời điểm biên dịch, type parameter đại diện cho một kiểu duy nhất, là kiểu được cung cấp
-làm type argument bởi code gọi hàm. Nếu kiểu của type argument không
-được phép bởi type constraint của type parameter, code sẽ không biên dịch được.
+Mặc dù ràng buộc của một tham số kiểu thường biểu diễn một tập hợp các kiểu, tại thời điểm biên dịch, tham số kiểu đại diện cho một kiểu duy nhất – kiểu được cung cấp dưới dạng đối số kiểu bởi mã gọi hàm. Nếu kiểu của đối số kiểu không được ràng buộc của tham số kiểu cho phép, mã sẽ không biên dịch được.
 
-Hãy nhớ rằng một type parameter phải hỗ trợ tất cả các thao tác mà code generic
-đang thực hiện trên nó. Ví dụ, nếu code hàm của bạn cố gắng thực hiện
-các thao tác `string` (chẳng hạn như indexing) trên một type parameter mà
-constraint bao gồm các kiểu số, code sẽ không biên dịch được.
+Hãy nhớ rằng một tham số kiểu phải hỗ trợ tất cả các thao tác mà mã generics thực hiện trên nó. Ví dụ, nếu mã của hàm cố thực hiện các thao tác `string` (chẳng hạn như lập chỉ mục) trên một tham số kiểu có ràng buộc bao gồm các kiểu số, mã sẽ không biên dịch được.
 
-Trong code bạn sắp viết, bạn sẽ sử dụng một constraint cho phép
-kiểu integer hoặc float.
+Trong mã bạn sắp viết, bạn sẽ sử dụng một ràng buộc cho phép các kiểu số nguyên hoặc số thực.
 
-#### Viết code
+#### Write the code
 
-1. Bên dưới hai hàm bạn đã thêm trước đó, dán hàm generic sau.
+1. Beneath the two functions you added previously, paste the following generic
+    function.
 
     ```
     // SumIntsOrFloats sums the values of map m. It supports both int64 and float64
@@ -225,29 +197,30 @@ kiểu integer hoặc float.
     }
     ```
 
-    Trong đoạn code này, bạn:
+    In this code, you:
 
-    *   Khai báo hàm `SumIntsOrFloats` với hai type parameter (bên trong
-        dấu ngoặc vuông), `K` và `V`, và một đối số sử dụng các type
-        parameter, `m` kiểu `map[K]V`. Hàm trả về một giá trị kiểu `V`.
-    *   Chỉ định cho type parameter `K` type constraint `comparable`.
-        Được thiết kế đặc biệt cho các trường hợp như thế này, constraint `comparable`
-        được khai báo sẵn trong Go. Nó cho phép bất kỳ kiểu nào mà các giá trị có thể được dùng làm
-        toán hạng của các toán tử so sánh `==` và `!=`. Go yêu cầu khóa map
-        phải có thể so sánh được. Vì vậy, khai báo `K` là `comparable` là cần thiết để bạn
-        có thể dùng `K` làm khóa trong biến map. Nó cũng đảm bảo rằng code gọi hàm
-        sử dụng kiểu được phép cho khóa map.
-    *   Chỉ định cho type parameter `V` một constraint là hợp của hai
-        kiểu: `int64` và `float64`. Dùng `|` chỉ định hợp của hai
-        kiểu, có nghĩa là constraint này cho phép cả hai kiểu. Cả hai kiểu
-        sẽ được compiler chấp nhận làm đối số trong code gọi hàm.
-    *   Chỉ định rằng đối số `m` kiểu `map[K]V`, trong đó `K` và `V`
-        là các kiểu đã chỉ định cho các type parameter. Lưu ý rằng chúng ta
-        biết `map[K]V` là kiểu map hợp lệ vì `K` là kiểu có thể so sánh được. Nếu
-        chúng ta không khai báo `K` là comparable, compiler sẽ từ chối
-        tham chiếu đến `map[K]V`.
+    *   Declare a `SumIntsOrFloats` function with two type parameters (inside
+        the square brackets), `K` and `V`, and one argument that uses the type
+        parameters, `m` of type `map[K]V`. The function returns a value of
+        type `V`.
+    *   Specify for the `K` type parameter the type constraint `comparable`.
+        Intended specifically for cases like these, the `comparable` constraint
+        is predeclared in Go. It allows any type whose values may be used as an
+        operand of the comparison operators `==` and `!=`. Go requires that map
+        keys be comparable. So declaring `K` as `comparable` is necessary so you
+        can use `K` as the key in the map variable. It also ensures that calling
+        code uses an allowable type for map keys.
+    *   Specify for the `V` type parameter a constraint that is a union of two
+        types: `int64` and `float64`. Using `|` specifies a union of the two
+        types, meaning that this constraint allows either type. Either type
+        will be permitted by the compiler as an argument in the calling code.
+    *   Specify that the `m` argument is of type `map[K]V`, where `K` and `V`
+        are the types already specified for the type parameters. Note that we
+        know `map[K]V` is a valid map type because `K` is a comparable type. If
+        we hadn’t declared `K` comparable, the compiler would reject the
+        reference to `map[K]V`.
 
-2. Trong main.go, bên dưới code bạn đã có, dán đoạn code sau.
+2. In main.go, beneath the code you already have, paste the following code.
 
     ```
     fmt.Printf("Generic Sums: %v and %v\n",
@@ -255,20 +228,21 @@ kiểu integer hoặc float.
     	SumIntsOrFloats[string, float64](floats))
     ```
 
-    Trong đoạn code này, bạn:
+    In this code, you:
 
-    *   Gọi hàm generic vừa khai báo, truyền vào mỗi map bạn đã tạo.
-    *   Chỉ định type argument, là tên kiểu trong dấu ngoặc vuông, để
-        làm rõ các kiểu nên thay thế type parameter trong
-        hàm bạn đang gọi.
+    *   Call the generic function you just declared, passing each of the maps
+        you created.
+    *   Specify type arguments – the type names in square brackets – to be
+        clear about the types that should replace type parameters in the
+        function you're calling.
 
-        Như bạn sẽ thấy trong phần tiếp theo, thường bạn có thể bỏ qua các type
-        argument trong lần gọi hàm. Go thường có thể suy ra chúng từ code của bạn.
-    *   In các tổng được hàm trả về.
+        As you'll see in the next section, you can often omit the type
+        arguments in the function call. Go can often infer them from your code.
+    *   Print the sums returned by the function.
 
-#### Chạy code
+#### Chạy mã
 
-Từ dòng lệnh trong thư mục chứa main.go, chạy code.
+Từ dòng lệnh trong thư mục chứa main.go, chạy mã.
 
 ```
 $ go run .
@@ -276,30 +250,21 @@ Non-Generic Sums: 46 and 62.97
 Generic Sums: 46 and 62.97
 ```
 
-Để chạy code của bạn, trong mỗi lần gọi, compiler thay thế các type parameter bằng
-các kiểu cụ thể được chỉ định trong lần gọi đó.
+Để chạy mã của bạn, trong mỗi lần gọi, trình biên dịch đã thay thế các tham số kiểu bằng các kiểu cụ thể được chỉ định trong lần gọi đó.
 
-Khi gọi hàm generic bạn đã viết, bạn đã chỉ định type argument cho compiler biết
-loại kiểu nào sẽ thay thế các type parameter của hàm.
-Như bạn sẽ thấy trong phần tiếp theo, trong nhiều trường hợp bạn có thể bỏ qua các type
-argument này vì compiler có thể suy ra chúng.
+Khi gọi hàm generic mà bạn đã viết, bạn đã chỉ định các đối số kiểu cho trình biên dịch biết cần dùng kiểu nào thay cho các tham số kiểu của hàm. Như bạn sẽ thấy trong phần tiếp theo, trong nhiều trường hợp bạn có thể bỏ qua các đối số kiểu này vì trình biên dịch có thể suy luận chúng.
 
-## Bỏ type argument khi gọi hàm generic {#remove_type_arguments}
+## Xóa các đối số kiểu khi gọi hàm generic {#remove_type_arguments}
 
-Trong phần này, bạn sẽ thêm một phiên bản sửa đổi của lần gọi hàm generic,
-thực hiện một thay đổi nhỏ để đơn giản hóa code gọi hàm. Bạn sẽ bỏ
-type argument, vốn không cần thiết trong trường hợp này.
+Trong phần này, bạn sẽ thêm một phiên bản đã sửa đổi của lời gọi hàm generic, thực hiện một thay đổi nhỏ để đơn giản hóa mã gọi. Bạn sẽ xóa các đối số kiểu, vì chúng không cần thiết trong trường hợp này.
 
-Bạn có thể bỏ qua type argument trong code gọi hàm khi compiler Go có thể suy ra
-các kiểu bạn muốn sử dụng. Compiler suy ra type argument từ các kiểu của
-đối số hàm.
+Bạn có thể bỏ qua các đối số kiểu trong mã gọi khi trình biên dịch Go có thể suy luận các kiểu bạn muốn dùng. Trình biên dịch suy luận các đối số kiểu từ các kiểu của đối số hàm.
 
-Lưu ý rằng điều này không phải lúc nào cũng có thể. Ví dụ, nếu bạn cần gọi một
-hàm generic không có đối số, bạn sẽ cần bao gồm type argument trong lần gọi hàm.
+Lưu ý rằng điều này không phải lúc nào cũng có thể thực hiện được. Ví dụ: nếu bạn cần gọi một hàm generic không có đối số, bạn sẽ cần đưa các đối số kiểu vào lời gọi hàm.
 
-#### Viết code
+#### Viết mã
 
-*   Trong main.go, bên dưới code bạn đã có, dán đoạn code sau.
+*   Trong main.go, bên dưới mã bạn đã có, dán đoạn mã sau.
 
     ```
     fmt.Printf("Generic Sums, type parameters inferred: %v and %v\n",
@@ -307,13 +272,13 @@ hàm generic không có đối số, bạn sẽ cần bao gồm type argument tr
     	SumIntsOrFloats(floats))
     ```
 
-    Trong đoạn code này, bạn:
+    Trong mã này, bạn:
 
-    *   Gọi hàm generic, bỏ qua type argument.
+    *   Gọi hàm generic, bỏ qua các đối số kiểu.
 
-#### Chạy code
+#### Chạy mã
 
-Từ dòng lệnh trong thư mục chứa main.go, chạy code.
+Từ dòng lệnh trong thư mục chứa main.go, chạy mã.
 
 ```
 $ go run .
@@ -322,28 +287,19 @@ Generic Sums: 46 and 62.97
 Generic Sums, type parameters inferred: 46 and 62.97
 ```
 
-Tiếp theo, bạn sẽ đơn giản hóa hơn nữa hàm bằng cách gói gọn hợp của integer
-và float vào một type constraint có thể tái sử dụng, chẳng hạn từ code khác.
+Tiếp theo, bạn sẽ tiếp tục đơn giản hóa hàm bằng cách gom hợp của các số nguyên và số thực vào một ràng buộc kiểu mà bạn có thể tái sử dụng, chẳng hạn như từ mã khác.
 
-## Khai báo một type constraint {#declare_type_constraint}
+## Khai báo ràng buộc kiểu {#declare_type_constraint}
 
-Trong phần cuối này, bạn sẽ chuyển constraint đã định nghĩa trước đó vào
-interface riêng của nó để có thể tái sử dụng ở nhiều nơi. Việc khai báo
-constraint theo cách này giúp đơn giản hóa code, chẳng hạn khi constraint
-phức tạp hơn.
+Trong phần cuối này, bạn sẽ chuyển ràng buộc đã định nghĩa trước đó vào interface riêng để có thể tái sử dụng ở nhiều nơi. Khai báo các ràng buộc theo cách này giúp đơn giản hóa mã, chẳng hạn khi một ràng buộc phức tạp hơn.
 
-Bạn khai báo _type constraint_ dưới dạng interface. Constraint cho phép bất kỳ
-kiểu nào triển khai interface. Ví dụ, nếu bạn khai báo một interface type constraint
-với ba phương thức, rồi dùng nó với một type parameter trong hàm generic,
-các type argument được dùng để gọi hàm phải có tất cả các phương thức đó.
+Bạn khai báo một _ràng buộc kiểu_ dưới dạng một interface. Ràng buộc cho phép bất kỳ kiểu nào triển khai interface đó. Ví dụ: nếu bạn khai báo một interface ràng buộc kiểu có ba phương thức, sau đó dùng nó với một tham số kiểu trong một hàm generic, các đối số kiểu được dùng để gọi hàm phải có tất cả các phương thức đó.
 
-Constraint interface cũng có thể tham chiếu đến các kiểu cụ thể, như bạn sẽ thấy trong
-phần này.
+Các interface ràng buộc cũng có thể tham chiếu đến các kiểu cụ thể, như bạn sẽ thấy trong phần này.
 
-#### Viết code
+#### Viết mã
 
-1. Ngay phía trên `main`, ngay sau các câu lệnh import, dán
-    đoạn code sau để khai báo một type constraint.
+1. Ngay phía trên `main`, ngay sau các câu lệnh import, dán đoạn mã sau để khai báo một ràng buộc kiểu.
 
     ```
     type Number interface {
@@ -351,21 +307,18 @@ phần này.
     }
     ```
 
-    Trong đoạn code này, bạn:
+Trong đoạn mã này, bạn:
 
-    *   Khai báo kiểu interface `Number` để dùng làm type constraint.
-    *   Khai báo hợp của `int64` và `float64` bên trong interface.
+*   Khai báo kiểu `interface` `Number` để sử dụng làm ràng buộc kiểu.
+*   Khai báo một phép hợp của `int64` và `float64` bên trong interface.
 
-        Về bản chất, bạn đang chuyển hợp từ khai báo hàm
-        vào một type constraint mới. Bằng cách đó, khi bạn muốn giới hạn một type
-        parameter là `int64` hoặc `float64`, bạn có thể dùng type constraint `Number`
-        này thay vì viết ra `int64 | float64`.
+    Về cơ bản, bạn đang di chuyển phép hợp từ khai báo hàm vào một ràng buộc kiểu mới. Bằng cách đó, khi muốn giới hạn một tham số kiểu chỉ có thể là `int64` hoặc `float64`, bạn có thể sử dụng ràng buộc kiểu `Number` này thay vì viết trực tiếp `int64 | float64`.
 
 2. Bên dưới các hàm bạn đã có, dán hàm generic `SumNumbers` sau.
 
     ```
-    // SumNumbers sums the values of map m. It supports both integers
-    // and floats as map values.
+// SumNumbers tính tổng các giá trị của map m. Nó hỗ trợ cả số nguyên
+// và số thực làm giá trị của map.
     func SumNumbers[K comparable, V Number](m map[K]V) V {
         var s V
         for _, v := range m {
@@ -375,14 +328,11 @@ phần này.
     }
     ```
 
-    Trong đoạn code này, bạn:
+Trong đoạn mã này, bạn:
 
-    *   Khai báo một hàm generic với logic giống hàm generic
-        đã khai báo trước đó, nhưng với kiểu interface mới thay vì
-        hợp làm type constraint. Như trước, bạn dùng type parameter
-        cho kiểu đối số và trả về.
+*   Khai báo một hàm generic có cùng logic với hàm generic bạn đã khai báo trước đó, nhưng sử dụng kiểu `interface` mới thay vì phép hợp làm ràng buộc kiểu. Như trước đây, bạn sử dụng các tham số kiểu cho kiểu của đối số và kiểu trả về.
 
-3. Trong main.go, bên dưới code bạn đã có, dán đoạn code sau.
+3. Trong main.go, bên dưới mã bạn đã có, dán đoạn mã sau.
 
     ```
     fmt.Printf("Generic Sums with Constraint: %v and %v\n",
@@ -390,17 +340,15 @@ phần này.
     	SumNumbers(floats))
     ```
 
-    Trong đoạn code này, bạn:
+Trong đoạn mã này, bạn:
 
-    *   Gọi `SumNumbers` với mỗi map, in tổng các giá trị của từng map.
+*   Gọi `SumNumbers` với từng map, in ra tổng từ các giá trị của từng map.
 
-        Như ở phần trước, bạn bỏ qua type argument (tên kiểu trong dấu ngoặc vuông)
-        trong các lần gọi hàm generic. Compiler Go có thể suy ra type argument
-        từ các đối số khác.
+    Giống như trong phần trước, bạn bỏ qua các đối số kiểu (tên kiểu trong dấu ngoặc vuông) trong các lệnh gọi đến hàm generic. Trình biên dịch Go có thể suy ra đối số kiểu từ các đối số khác.
 
-#### Chạy code
+#### Chạy mã
 
-Từ dòng lệnh trong thư mục chứa main.go, chạy code.
+Từ dòng lệnh trong thư mục chứa main.go, chạy mã.
 
 ```
 $ go run .
@@ -410,24 +358,23 @@ Generic Sums, type parameters inferred: 46 and 62.97
 Generic Sums with Constraint: 46 and 62.97
 ```
 
-## Kết luận {#conclusion}
+## Conclusion {#conclusion}
 
-Làm tốt lắm! Bạn vừa làm quen với generics trong Go.
+Nicely done! You've just introduced yourself to generics in Go.
 
-Các chủ đề đề xuất tiếp theo:
+Suggested next topics:
 
-*   [Go Tour](/tour/) là phần giới thiệu từng bước tuyệt vời
-    về các khái niệm cơ bản của Go.
-*   Bạn sẽ tìm thấy các thực hành tốt về Go hữu ích được mô tả trong
-    [Effective Go](/doc/effective_go) và
-    [Cách viết code Go](/doc/code).
+*   The [Go Tour](/tour/) is a great step-by-step
+    introduction to Go fundamentals.
+*   You'll find useful Go best practices described in
+    [Effective Go](/doc/effective_go) and
+    [How to write Go code](/doc/code).
 
-## Code hoàn chỉnh {#completed_code}
+## Completed code {#completed_code}
 
-<!--TODO: Update text and link after release.-->
-Bạn có thể chạy chương trình này trong
-[Go playground](/play/p/apNmfVwogK0?v=gotip). Trên
-playground, đơn giản là nhấn nút **Run**.
+You can run this program in the
+[Go playground](/play/p/apNmfVwogK0). On the
+playground simply click the **Run** button.
 
 ```
 package main
@@ -496,7 +443,7 @@ func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
 	return s
 }
 
-// SumNumbers sums the values of map m. Its supports both integers
+// SumNumbers sums the values of map m. It supports both integers
 // and floats as map values.
 func SumNumbers[K comparable, V Number](m map[K]V) V {
 	var s V
@@ -505,4 +452,3 @@ func SumNumbers[K comparable, V Number](m map[K]V) V {
 	}
 	return s
 }
-```

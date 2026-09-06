@@ -1,5 +1,5 @@
 <!--{
-	"Title": "Báo cáo Build Tái tạo Go",
+	"Title": "Go Reproducible Build Report",
 	"layout": "article",
 	"template": true
 }-->
@@ -11,30 +11,31 @@ pre { margin-left: 2em; }
 </style>
 
 <p>
-Kể từ Go 1.21, bộ công cụ nhị phân của Go được phục vụ tại <a href="/dl/">go.dev/dl/</a> có thể được
-tái tạo và xác minh bởi bất kỳ ai, trên bất kỳ nền tảng nào,
-sử dụng <a href="https://pkg.go.dev/golang.org/x/build/cmd/gorebuild">golang.org/x/build/cmd/gorebuild</a>.
-Để biết thêm chi tiết, xem bài blog
-"<a href="/blog/rebuild">Toolchain Go có thể tái tạo và xác minh hoàn hảo</a>."
+Kể từ Go 1.21, các bản tải xuống bộ công cụ nhị phân của Go được cung cấp bởi <a href="/dl/">go.dev/dl/</a> có thể được tái tạo và xác minh bởi bất kỳ ai, trên bất kỳ nền tảng nào,
+bằng cách sử dụng <a href="https://pkg.go.dev/golang.org/x/build/cmd/gorebuild">golang.org/x/build/cmd/gorebuild</a>.
+Để biết thêm chi tiết, xem bài đăng trên blog
+“<a href="/blog/rebuild">Bộ công cụ Go có thể tái tạo và xác minh hoàn hảo</a>.”
 </p>
 
 <p>
-Trang này được cập nhật hàng ngày với kết quả chạy <code>gorebuild</code> trong máy ảo Ubuntu,
-sử dụng script sau:
+Trang này được cập nhật hằng ngày với kết quả chạy <code>gorebuild</code> trong một máy ảo Ubuntu,
+sử dụng tập lệnh sau:
 </p>
 
 <pre>
 apt-get update &&
 apt-get -y install software-properties-common &&
 add-apt-repository universe &&
-apt-get -y install golang-go msitools &&
+apt-get -y install golang-go git msitools &&
 go run golang.org/x/build/cmd/gorebuild@latest -p=4
 </pre>
 
 <p>
-Cài đặt <code>msitools</code> cho phép <code>gorebuild</code>
-kiểm tra nội dung của tệp cài đặt Windows MSI.
-<code>-p=4</code> có nghĩa là chạy tối đa bốn build song song.
+Việc cài đặt <code>git</code> cho phép <code>gorebuild</code>
+lấy mã nguồn Go từ kho lưu trữ Git chính thức của nó, và
+việc cài đặt <code>msitools</code> cho phép <code>gorebuild</code>
+kiểm tra nội dung của tệp cài đặt MSI của Windows.
+<code>-p=4</code> có nghĩa là chạy tối đa bốn bản dựng song song.
 </p>
 
 {{define "marker"}}<span style="marker">{{template "markersymbol" .}}</span>{{end}}
@@ -58,11 +59,11 @@ kiểm tra nội dung của tệp cài đặt Windows MSI.
 {{with $Report}}
 
 Phiên bản Gorebuild {{.Version}}.<br>
-Build với Go phiên bản {{.GoVersion}}, {{.GOOS}}-{{.GOARCH}}.<br>
+Được xây dựng với phiên bản Go {{.GoVersion}}, {{.GOOS}}-{{.GOARCH}}.<br>
 <br>
-Bắt đầu tái tạo lúc {{(rfc3339 .Start).UTC.Format "2006-01-02 15:04:05"}} UTC.<br>
-Hoàn thành tái tạo lúc {{(rfc3339 .End).UTC.Format "2006-01-02 15:04:05"}} UTC.<br>
-Thời gian trôi qua: {{((rfc3339 .End).Sub (rfc3339 .Start)).Round 1e9}}.
+Tái tạo bắt đầu lúc {{(rfc3339 .Start).UTC.Format "2006-01-02 15:04:05"}} UTC.<br>
+Tái tạo hoàn tất lúc {{(rfc3339 .End).UTC.Format "2006-01-02 15:04:05"}} UTC.<br>
+Thời gian đã trôi qua: {{((rfc3339 .End).Sub (rfc3339 .Start)).Round 1e9}}.
 
 <h2 id="releases">Bản phát hành</h2>
 
@@ -71,7 +72,7 @@ Thời gian trôi qua: {{((rfc3339 .End).Sub (rfc3339 .Start)).Round 1e9}}.
 <summary><b id="{{.Version}}">{{template "marker" .Log.Status}} {{.Version}}</b></summary>
 
 <details>
-<summary>Log</summary>
+<summary>Nhật ký</summary>
 {{template "log" .Log}}
 </details>
 
@@ -85,11 +86,11 @@ Thời gian trôi qua: {{((rfc3339 .End).Sub (rfc3339 .Start)).Round 1e9}}.
 </details>
 {{end}}
 
-<h2 id="bootstraps">Bootstrap</h2>
+<h2 id="bootstraps">Khởi tạo ban đầu</h2>
 
 {{range .Bootstraps}}
 <details>
-<summary><b>Bootstrap {{.Version}}</b></summary>
+<summary><b>Khởi tạo ban đầu {{.Version}}</b></summary>
 {{template "log" .Log}}
 </details>
 {{end}}

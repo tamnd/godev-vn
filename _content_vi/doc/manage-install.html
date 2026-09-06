@@ -1,25 +1,25 @@
-<!--{
-    "Title": "Quản lý cài đặt Go"
-}-->
+---
+Title: Quản lý các bản cài đặt Go
+---
 
 <p>
 Chủ đề này mô tả cách cài đặt nhiều phiên bản Go trên cùng một máy, cũng như cách gỡ cài đặt Go.
 </p>
 
-<p>Để tìm hiểu thêm về cài đặt, bạn có thể quan tâm đến:</p>
+<p>Đối với nội dung khác về việc cài đặt, bạn có thể quan tâm đến:</p>
 <ul>
-<li><a href="/doc/install">Tải xuống và cài đặt</a> -- Cách đơn giản nhất để cài đặt và chạy.</li>
-<li><a href="/doc/install/source">Cài đặt Go từ mã nguồn</a> -- Cách kiểm tra mã nguồn, xây dựng chúng trên máy của bạn và chạy chúng.</li>
+<li><a href="/doc/install">Tải xuống và cài đặt</a> -- Cách đơn giản nhất để cài đặt và bắt đầu chạy.</li>
+<li><a href="/doc/install/source">Cài đặt Go từ mã nguồn</a> -- Cách lấy mã nguồn, tự xây dựng trên máy của bạn và chạy chúng.</li>
 </ul>
 
 <h2 id="installing-multiple">Cài đặt nhiều phiên bản Go</h2>
 
 <p>
-Bạn có thể cài đặt nhiều phiên bản Go trên cùng một máy. Ví dụ, bạn có thể muốn kiểm thử mã trên nhiều phiên bản Go. Để xem danh sách các phiên bản bạn có thể cài đặt theo cách này, hãy xem <a href="/dl/">trang tải xuống</a>.
+Bạn có thể cài đặt nhiều phiên bản Go trên cùng một máy. Ví dụ, bạn có thể muốn kiểm thử mã của mình trên nhiều phiên bản Go. Để xem danh sách các phiên bản có thể cài đặt theo cách này, hãy xem <a href="/dl/">trang tải xuống</a>.
 </p>
 
 <p>
-<strong>Lưu ý:</strong> Để cài đặt bằng phương pháp được mô tả ở đây, bạn cần cài đặt <a href="https://git-scm.com/">git</a>.
+<strong>Lưu ý:</strong> Để cài đặt bằng phương pháp được mô tả ở đây, bạn cần phải cài đặt <a href="https://git-scm.com/">git</a>.
 </p>
 
 <p>
@@ -32,7 +32,7 @@ $ go1.10.7 download
 </pre>
 
 <p>
-Để chạy lệnh <code>go</code> với phiên bản vừa tải xuống, hãy thêm số phiên bản vào sau lệnh <code>go</code>, như sau:
+Để chạy các lệnh <code>go</code> với phiên bản mới được tải xuống, hãy thêm số phiên bản vào lệnh <code>go</code> như sau:
 </p>
 
 <pre>
@@ -41,7 +41,7 @@ go version go1.10.7 linux/amd64
 </pre>
 
 <p>
-Khi bạn có nhiều phiên bản được cài đặt, bạn có thể tìm hiểu nơi mỗi phiên bản được cài đặt bằng cách xem giá trị <code>GOROOT</code> của phiên bản đó. Ví dụ, chạy lệnh như sau:
+Khi bạn đã cài đặt nhiều phiên bản, bạn có thể tìm vị trí cài đặt của từng phiên bản bằng cách xem giá trị <code>GOROOT</code> của phiên bản đó. Ví dụ, hãy chạy một lệnh như sau:
 </p>
 
 <pre>
@@ -49,85 +49,166 @@ $ go1.10.7 env GOROOT
 </pre>
 
 <p>
-Để gỡ cài đặt một phiên bản đã tải xuống, chỉ cần xóa thư mục được chỉ định bởi biến môi trường <code>GOROOT</code> của nó và tệp nhị phân goX.Y.Z.
+Để gỡ cài đặt một phiên bản đã tải xuống, chỉ cần xóa thư mục được chỉ định bởi biến môi trường <code>GOROOT</code> của phiên bản đó và binary goX.Y.Z.
 </p>
 
 <h2 id="uninstalling">Gỡ cài đặt Go</h2>
 
 <p>
-Bạn có thể xóa Go khỏi hệ thống của mình bằng các bước được mô tả trong chủ đề này.
+Bạn có thể xóa Go khỏi hệ thống bằng các bước được mô tả trong chủ đề này.
 </p>
 
-<h3 id="remove-config">Xóa cấu hình và dữ liệu người dùng</h3>
+<h3 id="remove-config">Xóa cấu hình và dữ liệu của người dùng</h3>
 
 <p>
-Go lưu trữ cấu hình người dùng trong thư mục <code>go</code> trong thư mục cấu hình người dùng,
-được trả về bởi <a href="/pkg/os#UserConfigDir"><code>os.UserConfigDir</code></a>.
-Điều này cũng có thể được tìm thấy là thư mục chứa tệp cấu hình được trả về bởi <code>go env GOENV</code>.
-</p>
-
-<p>
-Go lưu trữ các artifact build trung gian trong thư mục được trả về bởi <code>go env GOCACHE</code>.
-Chúng có thể được xóa bằng <code>go clean -cache</code>.
+Go lưu cấu hình người dùng trong thư mục <code>go</code> bên trong thư mục cấu hình người dùng,
+như được trả về bởi <a href="/pkg/os#UserConfigDir"><code>os.UserConfigDir</code></a>.
+Bạn cũng có thể tìm thấy thư mục này là thư mục chứa tệp cấu hình được trả về bởi <code>go env GOENV</code>.
 </p>
 
 <p>
-Go lưu trữ các dependency đã tải xuống trong thư mục được trả về bởi <code>go env GOMODCACHE</code>.
-Chúng có thể được xóa bằng <code>go clean -modcache</code>.
+Go lưu các phần tạo tác xây dựng trung gian trong thư mục được trả về bởi <code>go env GOCACHE</code>.
+Bạn có thể xóa chúng bằng <code>go clean -cache</code>.
 </p>
-
-<h3 id="linux-mac-bsd">Linux / macOS / FreeBSD</h3>
-
-<ol>
-
-<li>Xóa thư mục go.
 
 <p>
-Thường là /usr/local/go.
+Go lưu các dependency đã tải xuống trong thư mục được trả về bởi <code>go env GOMODCACHE</code>.
+Bạn có thể xóa chúng bằng <code>go clean -modcache</code>.
 </p>
-
-</li>
-
-<li>Xóa thư mục bin của Go khỏi biến môi trường <code>PATH</code>.
 
 <p>
-Trên Linux và FreeBSD, chỉnh sửa /etc/profile hoặc $HOME/.profile. Nếu bạn cài đặt Go bằng package macOS, hãy xóa tệp /etc/paths.d/go.
+Go lưu các binary được cài đặt bằng <code>go install</code> trong thư mục bin của Go,
+như được trả về bởi <code>go env GOBIN</code> (mặc định là <code>$HOME/go/bin</code>).
+Bạn có thể xóa chúng bằng cách xóa thư mục đó. Nếu bạn đã thêm thư mục này vào biến môi trường
+<code>PATH</code>, bạn cũng nên xóa nó.
 </p>
 
-</li>
+<div id="os-install-tabs" class="TabSection js-tabSection">
+  <div id="os-install-tablist" class="TabSection-tabList" role="tablist">
+    <button
+      role="tab"
+      aria-selected="true"
+      aria-controls="linux-tab"
+      id="linux"
+      tabindex="0"
+      class="TabSection-tab active"
+    >
+      Linux
+      <img class="TabSection-underline" src="/images/icons/underline.svg" width="51" height="4" aria-hidden="true" />
+    </button>
+    <button
+      role="tab"
+      aria-selected="false"
+      aria-controls="mac-tab"
+      id="mac"
+      tabindex="-1"
+      class="TabSection-tab"
+    >
+      Mac
+      <img class="TabSection-underline" src="/images/icons/underline.svg" width="51" height="4" aria-hidden="true" />
+    </button>
+    <button
+      role="tab"
+      aria-selected="false"
+      aria-controls="windows-tab"
+      id="windows"
+      tabindex="-1"
+      class="TabSection-tab"
+    >
+      Windows
+      <img class="TabSection-underline" src="/images/icons/underline.svg" width="51" height="4" aria-hidden="true" />
+    </button>
+  </div>
 
-</ol>
+  <div
+    role="tabpanel"
+    id="linux-tab"
+    class="TabSection-tabPanel"
+    aria-labelledby="linux"
+  >
+    <ol>
+      <li>Xóa <code>/usr/local/go</code>.
+        <p>Đây là thư mục cài đặt mặc định.</p>
+      </li>
+      <li>Xóa <code>/usr/local/go</code> khỏi biến môi trường <code>PATH</code> của bạn.
+        <p>Trên Linux và FreeBSD, hãy chỉnh sửa <code>/etc/profile</code> hoặc <code>$HOME/.profile</code>.</p>
+      </li>
+      <li>
+        Nếu bạn đã tự thêm thư mục bin của Go (thường là <code>$HOME/go/bin</code>) vào cấu hình shell của mình, ví dụ bằng cách thêm <code>export PATH="$PATH:$(go env GOPATH)/bin"</code>, hãy xóa mục đó.
+        <p><!-- for consistent spacing --></p>
+      </li>
+      <li>
+        Khởi động lại mọi phiên terminal đang mở để các thay đổi có hiệu lực.
+        <p><!-- for consistent spacing --></p>
+      </li>
+    </ol>
+  </div>
 
-<h3 id="windows">Windows</h3>
+  <div
+    role="tabpanel"
+    id="mac-tab"
+    class="TabSection-tabPanel"
+    aria-labelledby="mac"
+    hidden
+  >
+    <ol>
+      <li>Xóa <code>/usr/local/go</code>.
+        <p>Đây là thư mục cài đặt mặc định.</p>
+      </li>
+      <li>Xóa <code>/usr/local/go</code> khỏi biến môi trường <code>PATH</code> của bạn.
+        <p>Nếu bạn cài đặt Go bằng gói macOS, hãy thực hiện việc này bằng cách xóa tệp <code>/etc/paths.d/go</code>.</p>
+      </li>
+      <li>
+        Nếu bạn đã tự thêm thư mục bin của Go (thường là <code>$HOME/go/bin</code>) vào cấu hình shell của mình, ví dụ bằng cách thêm <code>export PATH="$PATH:$(go env GOPATH)/bin"</code>, hãy xóa mục đó.
+        <p><!-- for consistent spacing --></p>
+      </li>
+      <li>
+        Khởi động lại mọi phiên terminal đang mở để các thay đổi có hiệu lực.
+        <p><!-- for consistent spacing --></p>
+      </li>
+    </ol>
+  </div>
 
-<p>
-Cách đơn giản nhất để xóa Go là thông qua Add/Remove Programs trong control panel Windows:
-</p>
+<div
+  role="tabpanel"
+  id="windows-tab"
+  class="TabSection-tabPanel"
+  aria-labelledby="windows"
+  hidden
+>
+  <p>Bạn có thể gỡ Go khỏi Windows bằng một trong các phương pháp sau:</p>
 
-<ol>
+  <div class="windows-uninstall-method">
+    <h4>Phương pháp 1: Control Panel (Đơn giản nhất)</h4>
+    <ol>
+      <li>Mở Control Panel và nhấp đúp vào <strong>Add/Remove Programs</strong>.</li>
+      <li>Chọn <strong>Go Programming Language</strong>, nhấp Uninstall, sau đó làm theo hướng dẫn.</li>
+    </ol>
+  </div>
 
-<li>Trong Control Panel, nhấp đúp vào <strong>Add/Remove Programs</strong>.</li>
-<li>Trong <strong>Add/Remove Programs</strong>, chọn <strong>Go Programming Language,</strong> nhấp Uninstall, sau đó làm theo các hướng dẫn.</li>
+  <div class="windows-uninstall-method">
+    <h4>Phương pháp 2: Dòng lệnh</h4>
+    <p>Gỡ cài đặt bằng dòng lệnh bằng cách chạy lệnh sau:</p>
+    <pre>msiexec /x go{{version}}.windows-{{cpu-arch}}.msi /q</pre>
+    <p>
+      <strong>Lưu ý:</strong> Sử dụng quy trình này sẽ tự động xóa các biến môi trường Windows được tạo bởi lần cài đặt ban đầu.
+    </p>
+  </div>
+</div>
+</div>
 
-</ol>
+<style>
+  #windows-tab {
+    padding: 1rem 1.5rem;
+  }
+  .windows-uninstall-method {
+    margin-bottom: 1.5rem;
+  }
+  .windows-uninstall-method h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+</style>
 
-<p>
-Để xóa Go bằng công cụ, bạn cũng có thể sử dụng command line:
-</p>
+<script src="/doc/manage-install.js"></script>
 
-<ul>
-
-<li>Gỡ cài đặt bằng command line bằng cách chạy lệnh sau:
-
-<pre>
-msiexec /x go{{version}}.windows-{{cpu-arch}}.msi /q
-</pre>
-
-<p>
-
-<strong>Lưu ý:</strong> Sử dụng quy trình gỡ cài đặt này cho Windows sẽ tự động xóa các biến môi trường Windows được tạo bởi quá trình cài đặt ban đầu.
-</p>
-
-</li>
-
-</ul>
