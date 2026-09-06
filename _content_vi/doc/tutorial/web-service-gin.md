@@ -1,7 +1,7 @@
----
-Title: Hướng dẫn: Phát triển API RESTful với Go và Gin
-Breadcrumb: true
----
+<!--{
+  "Title": "Hướng dẫn: Phát triển API RESTful với Go và Gin",
+  "Breadcrumb": true
+}-->
 
 This tutorial giới thiệu những kiến thức cơ bản về cách viết API dịch vụ web RESTful bằng Go và [Gin Web Framework](https://gin-gonic.com/en/docs/) (Gin).
 

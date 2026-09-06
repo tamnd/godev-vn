@@ -1,68 +1,68 @@
-Packages, biến và hàm.
+Gói, biến và hàm.
 Tìm hiểu các thành phần cơ bản của mọi chương trình Go.
 
 The Go Authors
 https://golang.org
 
-* Packages
+* Gói
 
-Mọi chương trình Go đều được tạo thành từ các package.
+Mọi chương trình Go đều được tạo thành từ các gói.
 
-Chương trình bắt đầu chạy từ package `main`.
+Các chương trình bắt đầu chạy trong gói `main`.
 
-Chương trình này đang sử dụng các package với đường dẫn import là `"fmt"` và `"math/rand"`.
+Chương trình này đang sử dụng các gói với đường dẫn import `"fmt"` và `"math/rand"`.
 
-Theo quy ước, tên package trùng với phần cuối cùng của đường dẫn import. Ví dụ, package `"math/rand"` bao gồm các tệp bắt đầu bằng câu lệnh `package`rand`.
+Theo quy ước, tên gói giống với phần tử cuối cùng của đường dẫn import. Ví dụ, gói `"math/rand"` bao gồm các tệp bắt đầu bằng câu lệnh `package`rand`.
 
 .play basics/packages.go
 
-* Imports
+* Import
 
-Đoạn mã này nhóm các import vào một câu lệnh import dạng "factored" có dấu ngoặc đơn.
+Đoạn mã này nhóm các import vào một câu lệnh import "được gom" có dấu ngoặc đơn.
 
-Bạn cũng có thể viết nhiều câu lệnh import riêng lẻ, như:
+Bạn cũng có thể viết nhiều câu lệnh import, như:
 
 	import "fmt"
 	import "math"
 
-Nhưng sử dụng câu lệnh import dạng factored là phong cách tốt hơn.
+Nhưng nên sử dụng câu lệnh import được gom.
 
 .play basics/imports.go
 
-* Tên được xuất (exported names)
+* Tên được xuất
 
-Trong Go, một tên được xuất nếu nó bắt đầu bằng chữ hoa.
-Ví dụ, `Pizza` là tên được xuất, cũng như `Pi`, được xuất từ
-package `math`.
+Trong Go, một tên được xuất nếu nó bắt đầu bằng một chữ cái viết hoa.
+Ví dụ, `Pizza` là một tên được xuất, cũng như `Pi`, được xuất từ gói
+`math`.
 
-`pizza` và `pi` không bắt đầu bằng chữ hoa, nên chúng không được xuất.
+`pizza` và `pi` không bắt đầu bằng chữ cái viết hoa, vì vậy chúng không được xuất.
 
-Khi import một package, bạn chỉ có thể tham chiếu đến các tên được xuất.
-Bất kỳ tên "chưa được xuất" nào đều không thể truy cập từ bên ngoài package.
+Khi import một gói, bạn chỉ có thể tham chiếu đến các tên được xuất của gói đó.
+Bất kỳ tên "không được xuất" nào cũng không thể truy cập từ bên ngoài gói.
 
-Chạy đoạn mã. Chú ý thông báo lỗi.
+Chạy đoạn mã. Lưu ý thông báo lỗi.
 
-Để sửa lỗi, hãy đổi tên `math.pi` thành `math.Pi` và thử lại.
+Để sửa lỗi, đổi tên `math.pi` thành `math.Pi` và thử lại.
 
 .play basics/exported-names.go
 
 * Hàm
 
-Một hàm có thể nhận không hoặc nhiều tham số.
+Một hàm có thể nhận không hoặc nhiều đối số.
 
-Trong ví dụ này, `add` nhận hai tham số kiểu `int`.
+Trong ví dụ này, `add` nhận hai tham số có kiểu `int`.
 
-Lưu ý rằng kiểu dữ liệu đứng _sau_ tên biến.
+Lưu ý rằng kiểu nằm _sau_ tên biến.
 
-(Để biết thêm về lý do kiểu dữ liệu trông như vậy, xem [[/blog/gos-declaration-syntax][bài viết về cú pháp khai báo trong Go]].)
+(Để biết thêm về lý do các kiểu có dạng như vậy, xem [[/blog/gos-declaration-syntax][bài viết về cú pháp khai báo của Go]].)
 
 .play basics/functions.go
 
-* Hàm (tiếp theo)
+* Hàm tiếp theo
 
-Khi hai hoặc nhiều tham số hàm liên tiếp có cùng kiểu, bạn có thể bỏ qua kiểu ở tất cả các tham số trừ tham số cuối cùng.
+Khi hai hoặc nhiều tham số hàm được đặt tên liên tiếp có cùng một kiểu, bạn có thể bỏ kiểu ở tất cả tham số ngoại trừ tham số cuối cùng.
 
-Trong ví dụ này, chúng ta đã rút gọn
+Trong ví dụ này, chúng ta rút gọn
 
 	x int, y int
 
@@ -72,7 +72,7 @@ thành
 
 .play basics/functions-continued.go
 
-* Nhiều kết quả trả về
+* Nhiều kết quả
 
 Một hàm có thể trả về bất kỳ số lượng kết quả nào.
 
@@ -80,45 +80,45 @@ Hàm `swap` trả về hai chuỗi.
 
 .play basics/multiple-results.go
 
-* Tên kết quả trả về
+* Giá trị trả về có tên
 
-Các giá trị trả về của Go có thể được đặt tên. Nếu có, chúng được xử lý như các biến được khai báo ở đầu hàm.
+Các giá trị trả về của Go có thể được đặt tên. Nếu vậy, chúng được xem như các biến được định nghĩa ở đầu hàm.
 
-Các tên này nên được dùng để ghi lại ý nghĩa của các giá trị trả về.
+Các tên này nên được dùng để ghi chú ý nghĩa của các giá trị trả về.
 
-Câu lệnh `return` không có tham số sẽ trả về các giá trị trả về có tên. Đây được gọi là return "trần" (naked return).
+Một câu lệnh `return` không có đối số sẽ trả về các giá trị trả về đã đặt tên. Điều này được gọi là `return` "trần".
 
-Câu lệnh return trần chỉ nên dùng trong các hàm ngắn, như ví dụ được hiển thị ở đây. Chúng có thể làm giảm khả năng đọc hiểu trong các hàm dài hơn.
+Các câu lệnh `return` trần chỉ nên được dùng trong các hàm ngắn, như trong ví dụ được hiển thị ở đây. Chúng có thể làm giảm khả năng đọc trong các hàm dài hơn.
 
 .play basics/named-results.go
 
 * Biến
 
-Câu lệnh `var` khai báo một danh sách biến; cũng như trong danh sách tham số hàm, kiểu dữ liệu đứng sau cùng.
+Câu lệnh `var` khai báo một danh sách biến; giống như danh sách đối số của hàm, kiểu được đặt ở cuối.
 
-Câu lệnh `var` có thể đặt ở cấp package hoặc cấp hàm. Chúng ta thấy cả hai trong ví dụ này.
+Một câu lệnh `var` có thể ở cấp gói hoặc cấp hàm. Ví dụ này có cả hai trường hợp.
 
 .play basics/variables.go
 
-* Biến với giá trị khởi tạo
+* Biến có giá trị khởi tạo
 
-Khai báo var có thể bao gồm giá trị khởi tạo, một giá trị cho mỗi biến.
+Một khai báo `var` có thể bao gồm các giá trị khởi tạo, mỗi biến một giá trị.
 
-Nếu có giá trị khởi tạo, kiểu dữ liệu có thể được bỏ qua; biến sẽ lấy kiểu của giá trị khởi tạo.
+Nếu có giá trị khởi tạo, có thể bỏ qua kiểu; biến sẽ nhận kiểu của giá trị khởi tạo.
 
 .play basics/variables-with-initializers.go
 
 * Khai báo biến ngắn
 
-Bên trong một hàm, câu lệnh gán ngắn `:=` có thể được dùng thay thế cho khai báo `var` với kiểu ngầm định.
+Bên trong một hàm, câu lệnh gán ngắn `:=` có thể được dùng thay cho khai báo `var` với kiểu được suy ra ngầm.
 
-Bên ngoài hàm, mọi câu lệnh đều bắt đầu bằng một từ khóa (`var`, `func`, v.v.) nên cú pháp `:=` không có sẵn.
+Bên ngoài một hàm, mọi câu lệnh đều bắt đầu bằng một từ khóa (`var`, `func`, v.v.) và vì vậy cấu trúc `:=` không khả dụng.
 
 .play basics/short-variable-declarations.go
 
-* Các kiểu dữ liệu cơ bản
+* Các kiểu cơ bản
 
-Các kiểu dữ liệu cơ bản của Go là
+Các kiểu cơ bản của Go là
 
 	bool
 
@@ -136,25 +136,25 @@ Các kiểu dữ liệu cơ bản của Go là
 
 	complex64 complex128
 
-Ví dụ này hiển thị các biến của nhiều kiểu khác nhau,
-và cũng cho thấy rằng khai báo biến có thể được "nhóm" thành các khối,
-giống như câu lệnh import.
+Ví dụ cho thấy các biến thuộc nhiều kiểu khác nhau,
+và cũng cho thấy các khai báo biến có thể được "gom" thành các khối,
+giống như các câu lệnh import.
 
-Các kiểu `int`, `uint` và `uintptr` thường có độ rộng 32 bit trên hệ thống 32-bit và 64 bit trên hệ thống 64-bit.
-Khi bạn cần một giá trị số nguyên, hãy sử dụng `int` trừ khi bạn có lý do cụ thể để sử dụng kiểu số nguyên có kích thước cố định hoặc số nguyên không dấu.
+Các kiểu `int`, `uint`, và `uintptr` thường có độ rộng 32 bit trên các hệ thống 32 bit và 64 bit trên các hệ thống 64 bit.
+Khi bạn cần một giá trị số nguyên, bạn nên dùng `int` trừ khi có lý do cụ thể để dùng kiểu số nguyên có kích thước xác định hoặc không dấu.
 
 .play basics/basic-types.go
 
-* Giá trị không (zero values)
+* Giá trị không
 
-Các biến được khai báo mà không có giá trị khởi tạo tường minh sẽ được gán
-_giá_trị_không_ (_zero value_).
+Các biến được khai báo mà không có giá trị khởi tạo tường minh sẽ nhận
+_zero_value_ của chúng.
 
 Giá trị không là:
 
-- `0` cho các kiểu số,
-- `false` cho kiểu boolean, và
-- `""` (chuỗi rỗng) cho chuỗi.
+- `0` đối với các kiểu số,
+- `false` đối với kiểu boolean, và
+- `""` (chuỗi rỗng) đối với các chuỗi.
 
 .play basics/zero.go
 
@@ -174,50 +174,49 @@ Hoặc đơn giản hơn:
 	f := float64(i)
 	u := uint(f)
 
-Khác với C, trong Go việc gán giữa các mục có kiểu khác nhau yêu cầu
-chuyển đổi tường minh.
+Không giống như trong C, trong Go việc gán giữa các mục có kiểu khác nhau yêu cầu một chuyển đổi tường minh.
 Hãy thử xóa các chuyển đổi `float64` hoặc `uint` trong ví dụ và xem điều gì xảy ra.
 
 .play basics/type-conversions.go
 
 * Suy luận kiểu
 
-Khi khai báo biến mà không chỉ định kiểu tường minh (bằng cú pháp `:=` hoặc `var`=`), kiểu của biến được suy luận từ giá trị ở phía bên phải.
+Khi khai báo một biến mà không chỉ định kiểu rõ ràng (bằng cách sử dụng cú pháp `:=` hoặc cú pháp biểu thức `var`=`), kiểu của biến được suy luận từ giá trị ở phía bên phải.
 
-Khi phía bên phải của khai báo đã có kiểu, biến mới sẽ cùng kiểu đó:
+Khi phía bên phải của khai báo có kiểu, biến mới sẽ có cùng kiểu đó:
 
 	var i int
-	j := i // j là int
+	j := i // j là một int
 
-Nhưng khi phía bên phải chứa hằng số không có kiểu, biến mới có thể là `int`, `float64` hoặc `complex128` tùy thuộc vào độ chính xác của hằng số:
+Nhưng khi phía bên phải chứa một hằng số số không có kiểu, biến mới có thể là `int`, `float64` hoặc `complex128` tùy thuộc vào độ chính xác của hằng số:
 
 	i := 42           // int
 	f := 3.142        // float64
 	g := 0.867 + 0.5i // complex128
 
-Hãy thử thay đổi giá trị khởi tạo của `v` trong mã ví dụ và quan sát kiểu của nó bị ảnh hưởng như thế nào.
+Hãy thử thay đổi giá trị ban đầu của `v` trong mã ví dụ và quan sát cách kiểu của nó bị ảnh hưởng.
 
 .play basics/type-inference.go
 
 * Hằng số
 
-Hằng số được khai báo như biến, nhưng dùng từ khóa `const`.
+Hằng số được khai báo giống như biến, nhưng với từ khóa `const`.
 
-Hằng số có thể là ký tự, chuỗi, boolean hoặc giá trị số.
+Hằng số có thể là giá trị ký tự, chuỗi, boolean hoặc số.
 
-Hằng số không thể được khai báo bằng cú pháp `:=`.
+Không thể khai báo hằng số bằng cú pháp `:=`.
 
 .play basics/constants.go
 
-* Hằng số dạng số
+* Hằng số số
 
-Hằng số dạng số là các _giá trị_ có độ chính xác cao.
+Hằng số số là các _giá trị_ có độ chính xác cao.
 
-Một hằng số không có kiểu sẽ lấy kiểu theo ngữ cảnh cần dùng.
+Một hằng số không có kiểu sẽ nhận kiểu cần thiết trong ngữ cảnh sử dụng của nó.
 
-Hãy thử in `needInt(Big)` nữa.
+Hãy thử in cả `needInt(Big)`.
 
-(Một `int` có thể lưu tối đa số nguyên 64-bit, và đôi khi ít hơn.)
+(`int` có thể lưu trữ tối đa một số nguyên 64 bit, và đôi khi ít hơn.)
 
 .play basics/numeric-constants.go
 
@@ -225,4 +224,4 @@ Hãy thử in `needInt(Big)` nữa.
 
 Bạn đã hoàn thành bài học này!
 
-Bạn có thể quay lại danh sách các [[/tour/list][module]] để tìm hiểu tiếp theo, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].
+Bạn có thể quay lại danh sách [[/tour/list][mô-đun]] để tìm nội dung tiếp theo cần học, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].

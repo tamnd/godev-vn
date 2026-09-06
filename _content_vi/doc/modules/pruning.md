@@ -1,3 +1,3 @@
 <!--{
-  "Redirect": "/doc/modules/managing-dependencies"
+	"Redirect": "/doc/modules/managing-dependencies"
 }-->

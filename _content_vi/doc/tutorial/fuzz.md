@@ -5,46 +5,37 @@
   "Breadcrumb": true
 }-->
 
-Hướng dẫn này giới thiệu những kiến thức cơ bản về fuzzing trong Go. Với fuzzing, dữ liệu ngẫu nhiên
-được chạy với test của bạn nhằm tìm ra các lỗ hổng bảo mật hoặc các đầu vào gây ra crash.
-Một số ví dụ về lỗ hổng bảo mật có thể được phát hiện qua fuzzing là SQL
-injection, tràn bộ đệm, tấn công từ chối dịch vụ và cross-site scripting.
+Hướng dẫn này giới thiệu những kiến thức cơ bản về fuzzing trong Go. Với fuzzing, dữ liệu ngẫu nhiên được chạy qua bài kiểm thử của bạn nhằm cố gắng tìm ra các lỗ hổng hoặc đầu vào gây lỗi crash. Một số ví dụ về lỗ hổng có thể được tìm thấy bằng fuzzing là SQL injection, tràn bộ đệm, từ chối dịch vụ và các cuộc tấn công cross-site scripting.
 
-Trong hướng dẫn này, bạn sẽ viết một fuzz test cho một hàm đơn giản, chạy lệnh go
-và debug, sửa các vấn đề trong code.
+Trong hướng dẫn này, bạn sẽ viết một fuzz test cho một hàm đơn giản, chạy lệnh go, đồng thời gỡ lỗi và sửa các vấn đề trong mã.
 
-Để tham khảo thuật ngữ trong suốt hướng dẫn này, xem [Bảng thuật ngữ Go Fuzzing
-](/security/fuzz/#glossary).
+Để được trợ giúp về thuật ngữ trong suốt hướng dẫn này, hãy xem [bảng thuật ngữ Go Fuzzing](/security/fuzz/#glossary).
 
-Bạn sẽ thực hiện lần lượt các phần sau:
+Bạn sẽ lần lượt thực hiện các phần sau:
 
-1. [Tạo thư mục cho code của bạn.](#create_folder)
-2. [Thêm code để test.](#code_to_test)
-3. [Thêm unit test.](#unit_test)
-4. [Thêm fuzz test.](#fuzz_test)
+1. [Tạo thư mục cho mã của bạn.](#create_folder)
+2. [Thêm mã để kiểm thử.](#code_to_test)
+3. [Thêm một unit test.](#unit_test)
+4. [Thêm một fuzz test.](#fuzz_test)
 5. [Sửa hai lỗi.](#fix_invalid_string_error)
-6. [Khám phá thêm tài liệu tham khảo.](#conclusion)
+6. [Khám phá các tài nguyên bổ sung.](#conclusion)
 
-**Lưu ý:** Để xem các hướng dẫn khác, truy cập [Hướng dẫn](/doc/tutorial/index.html).
+**Lưu ý:** Đối với các hướng dẫn khác, hãy xem [Hướng dẫn](/doc/tutorial/index.html).
 
-**Lưu ý:** Fuzzing trong Go hiện hỗ trợ một tập con các kiểu dữ liệu có sẵn, được liệt kê trong
-[tài liệu Go Fuzzing](/security/fuzz/#requirements), với sự hỗ trợ cho nhiều kiểu dữ liệu có sẵn hơn sẽ được thêm vào trong tương lai.
+**Lưu ý:** Fuzzing của Go hiện hỗ trợ một tập hợp con các kiểu dựng sẵn, được liệt kê trong [tài liệu Go Fuzzing](/security/fuzz/#requirements), với hỗ trợ thêm nhiều kiểu dựng sẵn sẽ được bổ sung trong tương lai.
 
 ## Điều kiện tiên quyết
 
-- **Đã cài đặt Go 1.18 hoặc mới hơn.** Để biết hướng dẫn cài đặt, xem
-  [Cài đặt Go](/doc/install).
-- **Một công cụ để chỉnh sửa code.** Bất kỳ trình soạn thảo văn bản nào bạn có đều dùng được.
-- **Một cửa sổ dòng lệnh.** Go hoạt động tốt trên bất kỳ terminal nào trên Linux và Mac, cũng như
-  trên PowerShell hoặc cmd trong Windows.
-- **Môi trường hỗ trợ fuzzing.** Fuzzing trong Go với công cụ đo phạm vi phủ hiện chỉ
-  có sẵn trên kiến trúc AMD64 và ARM64.
+- **Go.** Chúng tôi khuyến nghị sử dụng phiên bản Go mới nhất để thực hiện theo hướng dẫn này. Để biết hướng dẫn cài đặt, hãy xem [Cài đặt Go](/doc/install).
+- **Một công cụ để chỉnh sửa mã của bạn.** Bất kỳ trình soạn thảo văn bản nào bạn có đều hoạt động tốt.
+- **Một terminal lệnh.** Go hoạt động tốt với bất kỳ terminal nào trên Linux và Mac, cũng như PowerShell hoặc cmd trên Windows.
+- **Một môi trường hỗ trợ fuzzing.** Fuzzing của Go với công cụ đo độ phủ hiện chỉ khả dụng trên các kiến trúc AMD64 và ARM64.
 
-## Tạo thư mục cho code của bạn {#create_folder}
+## Tạo thư mục cho mã của bạn {#create_folder}
 
-Để bắt đầu, hãy tạo một thư mục cho code bạn sẽ viết.
+Để bắt đầu, hãy tạo một thư mục cho mã mà bạn sẽ viết.
 
-1. Mở dấu nhắc lệnh và chuyển đến thư mục home của bạn.
+1. Mở lời nhắc lệnh và chuyển đến thư mục chính của bạn.
 
    Trên Linux hoặc Mac:
 
@@ -58,47 +49,44 @@ Bạn sẽ thực hiện lần lượt các phần sau:
    C:\> cd %HOMEPATH%
    ```
 
-   Phần còn lại của hướng dẫn sẽ dùng $ làm dấu nhắc lệnh. Các lệnh bạn sử dụng
-   cũng hoạt động trên Windows.
+   Phần còn lại của hướng dẫn sẽ hiển thị dấu $ làm lời nhắc. Các lệnh bạn sử dụng cũng sẽ hoạt động trên Windows.
 
-2. Từ dấu nhắc lệnh, tạo một thư mục có tên fuzz.
+2. Từ lời nhắc lệnh, tạo một thư mục cho mã của bạn có tên là fuzz.
 
    ```
    $ mkdir fuzz
    $ cd fuzz
    ```
 
-3. Tạo một module để chứa code của bạn.
+3. Tạo một module để chứa mã của bạn.
 
-   Chạy lệnh `go mod init`, cung cấp đường dẫn module cho code mới của bạn.
+   Chạy lệnh `go mod init`, cung cấp cho nó đường dẫn module của mã mới của bạn.
 
    ```
    $ go mod init example/fuzz
    go: creating new go.mod: module example/fuzz
    ```
 
-   **Lưu ý:** Với code production, bạn sẽ chỉ định đường dẫn module cụ thể hơn
-   theo nhu cầu của mình. Để biết thêm, hãy xem [Quản lý
-   dependency](/doc/modules/managing-dependencies).
+   **Lưu ý:** Đối với mã dùng trong môi trường sản xuất, bạn nên chỉ định một đường dẫn module cụ thể hơn phù hợp với nhu cầu của riêng mình. Để biết thêm, hãy xem [Quản lý dependency](/doc/modules/managing-dependencies).
 
-Tiếp theo, bạn sẽ thêm một ít code đơn giản để đảo ngược chuỗi, mà chúng ta sẽ fuzz sau.
+Tiếp theo, bạn sẽ thêm một số mã đơn giản để đảo ngược một chuỗi, sau đó chúng ta sẽ fuzz mã này.
 
-## Thêm code để test {#code_to_test}
+## Thêm mã để kiểm thử {#code_to_test}
 
 Trong bước này, bạn sẽ thêm một hàm để đảo ngược một chuỗi.
 
-### Viết code
+### Viết mã
 
-1.  Dùng trình soạn thảo văn bản của bạn, tạo một file có tên main.go trong thư mục fuzz.
-2.  Vào main.go, ở đầu file, dán phần khai báo package sau.
+1.  Sử dụng trình soạn thảo văn bản của bạn, tạo một tệp có tên main.go trong thư mục fuzz.
+2.  Trong main.go, ở đầu tệp, dán khai báo package sau.
 
     ```
     package main
     ```
 
-    Một chương trình độc lập (trái với thư viện) luôn ở trong gói `main`.
+    Một chương trình độc lập (trái với một thư viện) luôn nằm trong package `main`.
 
-3.  Bên dưới khai báo package, dán phần khai báo hàm sau.
+3.  Bên dưới khai báo package, dán khai báo hàm sau.
 
     ```
     func Reverse(s string) string {
@@ -110,13 +98,12 @@ Trong bước này, bạn sẽ thêm một hàm để đảo ngược một chu�
     }
     ```
 
-    Hàm này sẽ nhận một `string`, duyệt qua nó từng `byte` một và
-    trả về chuỗi đã đảo ngược ở cuối.
+    Hàm này sẽ nhận một `string`, lặp qua nó từng `byte` một, rồi trả về chuỗi đã được đảo ngược ở cuối.
 
-    _Lưu ý:_ Code này dựa trên hàm `stringutil.Reverse` trong
+    _Lưu ý:_ Mã này dựa trên hàm `stringutil.Reverse` trong
     golang.org/x/example.
 
-4.  Ở đầu main.go, bên dưới khai báo package, dán hàm `main` sau để khởi tạo một chuỗi, đảo ngược nó, in kết quả và lặp lại.
+4.  Ở đầu main.go, bên dưới khai báo package, dán hàm `main` sau để khởi tạo một chuỗi, đảo ngược chuỗi đó, in kết quả và lặp lại.
 
     ```
     func main() {
@@ -129,13 +116,11 @@ Trong bước này, bạn sẽ thêm một hàm để đảo ngược một chu�
     }
     ```
 
-    Hàm này sẽ thực hiện một vài thao tác `Reverse`, rồi in kết quả ra
-    dòng lệnh. Điều này có thể giúp xem code đang hoạt động như thế nào và
-    hỗ trợ việc debug.
+    Hàm này sẽ chạy một vài thao tác `Reverse`, sau đó in kết quả ra dòng lệnh. Điều này có thể hữu ích để xem mã hoạt động như thế nào và có khả năng hỗ trợ việc gỡ lỗi.
 
-5.  Hàm `main` dùng gói fmt, vì vậy bạn cần import nó.
+5.  Hàm `main` sử dụng package fmt, vì vậy bạn sẽ cần nhập package đó.
 
-    Các dòng đầu tiên của code nên trông như sau:
+    Những dòng mã đầu tiên sẽ có dạng như sau:
 
     ```
     package main
@@ -143,9 +128,9 @@ Trong bước này, bạn sẽ thêm một hàm để đảo ngược một chu�
     import "fmt"
     ```
 
-### Chạy code
+### Chạy mã
 
-Từ dòng lệnh trong thư mục chứa main.go, chạy code.
+Từ dòng lệnh trong thư mục chứa main.go, chạy mã.
 
 ```
 $ go run .
@@ -154,19 +139,18 @@ reversed: "god yzal eht revo depmuj xof nworb kciuq ehT"
 reversed again: "The quick brown fox jumped over the lazy dog"
 ```
 
-Bạn có thể thấy chuỗi gốc, kết quả của việc đảo ngược nó, rồi kết quả của
-việc đảo ngược lần nữa, tương đương với chuỗi gốc.
+Bạn có thể thấy chuỗi ban đầu, kết quả của việc đảo ngược chuỗi đó, sau đó là kết quả của việc đảo ngược lại lần nữa, tương đương với chuỗi ban đầu.
 
-Bây giờ code đang chạy, đã đến lúc test nó.
+Bây giờ mã đã chạy được, đã đến lúc kiểm thử nó.
 
-## Thêm unit test {#unit_test}
+## Thêm một bài kiểm thử đơn vị {#unit_test}
 
-Trong bước này, bạn sẽ viết một unit test cơ bản cho hàm `Reverse`.
+Trong bước này, bạn sẽ viết một bài kiểm thử đơn vị cơ bản cho hàm `Reverse`.
 
-### Viết code
+### Viết mã
 
-1. Dùng trình soạn thảo văn bản của bạn, tạo một file có tên reverse_test.go trong thư mục fuzz.
-2. Dán đoạn code sau vào reverse_test.go.
+1. Sử dụng trình soạn thảo văn bản của bạn, tạo một tệp có tên reverse_test.go trong thư mục fuzz.
+2. Dán đoạn mã sau vào reverse_test.go.
 
    ```
    package main
@@ -192,12 +176,11 @@ Trong bước này, bạn sẽ viết một unit test cơ bản cho hàm `Revers
    }
    ```
 
-   Unit test đơn giản này sẽ kiểm tra rằng các chuỗi đầu vào được liệt kê sẽ được
-   đảo ngược đúng cách.
+Bài kiểm thử đơn giản này sẽ xác nhận rằng các chuỗi đầu vào được liệt kê sẽ được đảo ngược đúng cách.
 
-### Chạy code
+### Chạy mã
 
-Chạy unit test bằng `go test`
+Chạy bài kiểm thử đơn vị bằng `go test`
 
 ```
 $ go test
@@ -205,31 +188,25 @@ PASS
 ok      example/fuzz  0.013s
 ```
 
-Tiếp theo, bạn sẽ chuyển đổi unit test thành fuzz test.
+Tiếp theo, bạn sẽ thay đổi bài kiểm thử đơn vị thành một bài fuzz test.
 
-## Thêm fuzz test {#fuzz_test}
+## Thêm một fuzz test {#fuzz_test}
 
-Unit test có những hạn chế, cụ thể là mỗi đầu vào phải được thêm vào test
-bởi lập trình viên. Một lợi ích của fuzzing là nó tạo ra các đầu vào cho
-code của bạn và có thể xác định các trường hợp biên mà các test case bạn nghĩ ra
-không đạt tới.
+Bài kiểm thử đơn vị có những giới hạn, cụ thể là mỗi đầu vào phải được nhà phát triển thêm vào bài kiểm thử. Một lợi ích của fuzzing là nó tự tạo ra các đầu vào cho mã của bạn và có thể xác định các trường hợp biên mà những trường hợp kiểm thử bạn tạo ra chưa chạm tới.
 
-Trong phần này, bạn sẽ chuyển đổi unit test thành fuzz test để có thể
-tạo thêm nhiều đầu vào với ít công sức hơn!
+Trong phần này, bạn sẽ chuyển đổi bài kiểm thử đơn vị thành một fuzz test để bạn có thể tạo thêm nhiều đầu vào với ít công sức hơn!
 
-Lưu ý rằng bạn có thể giữ unit test, benchmark và fuzz test trong cùng
-file *_test.go, nhưng trong ví dụ này bạn sẽ chuyển đổi unit test thành fuzz test.
+Lưu ý rằng bạn có thể giữ các bài kiểm thử đơn vị, benchmark và fuzz test trong cùng một tệp `*_test.go`, nhưng trong ví dụ này bạn sẽ chuyển đổi bài kiểm thử đơn vị thành một fuzz test.
 
-### Viết code
+### Viết mã
 
-Trong trình soạn thảo văn bản của bạn, thay thế unit test trong reverse_test.go bằng
-fuzz test sau.
+Trong trình soạn thảo văn bản của bạn, thay thế bài kiểm thử đơn vị trong reverse_test.go bằng fuzz test sau.
 
 ```
 func FuzzReverse(f *testing.F) {
     testcases := []string{"Hello, world", " ", "!12345"}
     for _, tc := range testcases {
-        f.Add(tc)  // Use f.Add to provide a seed corpus
+        f.Add(tc)  // Sử dụng f.Add để cung cấp seed corpus
     }
     f.Fuzz(func(t *testing.T, orig string) {
         rev := Reverse(orig)
@@ -244,30 +221,21 @@ func FuzzReverse(f *testing.F) {
 }
 ```
 
-Fuzzing cũng có một số hạn chế. Trong unit test của bạn, bạn có thể dự đoán
-kết quả mong đợi của hàm `Reverse` và xác minh rằng kết quả thực tế đáp ứng
-những kỳ vọng đó.
+Fuzzing cũng có một số giới hạn. Trong bài kiểm thử đơn vị, bạn có thể dự đoán đầu ra mong đợi của hàm `Reverse` và xác minh rằng đầu ra thực tế đáp ứng những mong đợi đó.
 
-Ví dụ, trong test case `Reverse("Hello, world")`, unit test chỉ định
-giá trị trả về là `"dlrow ,olleH"`.
+Ví dụ, trong trường hợp kiểm thử `Reverse("Hello, world")`, bài kiểm thử đơn vị chỉ định giá trị trả về là `"dlrow ,olleH"`.
 
-Khi fuzzing, bạn không thể dự đoán kết quả mong đợi vì bạn không
-kiểm soát được các đầu vào.
+Khi fuzzing, bạn không thể dự đoán đầu ra mong đợi, vì bạn không kiểm soát các đầu vào.
 
-Tuy nhiên, có một vài thuộc tính của hàm `Reverse` mà bạn có thể
-kiểm tra trong fuzz test. Hai thuộc tính được kiểm tra trong fuzz test này là:
+Tuy nhiên, có một số thuộc tính của hàm `Reverse` mà bạn có thể xác minh trong fuzz test. Hai thuộc tính được kiểm tra trong fuzz test này là:
 
-1.  Đảo ngược một chuỗi hai lần giữ nguyên giá trị ban đầu
-2.  Chuỗi đã đảo ngược giữ nguyên trạng thái là UTF-8 hợp lệ.
+1. Đảo ngược một chuỗi hai lần sẽ giữ nguyên giá trị ban đầu
+2. Chuỗi đã đảo ngược giữ nguyên trạng thái là UTF-8 hợp lệ.
 
-Lưu ý sự khác biệt về cú pháp giữa unit test và fuzz test:
+Lưu ý sự khác biệt về cú pháp giữa bài kiểm thử đơn vị và fuzz test:
 
-- Hàm bắt đầu bằng FuzzXxx thay vì TestXxx, và nhận `*testing.F`
-  thay vì `*testing.T`
-- Thay vì thấy một lần thực thi `t.Run`, bạn thấy `f.Fuzz`
-  nhận một hàm fuzz target với các tham số là `*testing.T` và các
-  kiểu cần fuzz. Các đầu vào từ unit test của bạn được cung cấp như các đầu vào seed corpus
-  bằng `f.Add`.
+- Hàm bắt đầu bằng FuzzXxx thay vì TestXxx và nhận `*testing.F` thay vì `*testing.T`
+- Ở nơi bạn mong đợi thấy một lần thực thi `t.Run`, bạn lại thấy `f.Fuzz`, hàm này nhận một hàm mục tiêu fuzz có các tham số là `*testing.T` và các kiểu dữ liệu cần fuzz. Các đầu vào từ bài kiểm thử đơn vị của bạn được cung cấp làm đầu vào seed corpus bằng `f.Add`.
 
 Đảm bảo gói mới, `unicode/utf8` đã được import.
 
@@ -280,11 +248,11 @@ import (
 )
 ```
 
-Sau khi đã chuyển đổi unit test thành fuzz test, đã đến lúc chạy lại test.
+Sau khi chuyển đổi bài kiểm thử đơn vị thành fuzz test, đã đến lúc chạy lại bài kiểm thử.
 
-### Chạy code
+### Chạy mã
 
-1. Chạy fuzz test mà không bật fuzzing để đảm bảo các đầu vào seed pass.
+1. Chạy bài kiểm thử fuzz mà không fuzz để đảm bảo các đầu vào hạt giống vượt qua.
 
    ```
    $ go test
@@ -292,23 +260,15 @@ Sau khi đã chuyển đổi unit test thành fuzz test, đã đến lúc chạy
    ok      example/fuzz  0.013s
    ```
 
-   Bạn cũng có thể chạy `go test -run=FuzzReverse` nếu bạn có các test khác trong
-   file đó và chỉ muốn chạy fuzz test.
+   Bạn cũng có thể chạy `go test -run=FuzzReverse` nếu bạn có các bài kiểm thử khác trong tệp đó và chỉ muốn chạy bài kiểm thử fuzz.
 
-2. Chạy `FuzzReverse` với fuzzing để xem liệu có chuỗi đầu vào được tạo ngẫu nhiên nào
-   gây ra lỗi không. Điều này được thực thi bằng `go test` với cờ mới
-   `-fuzz`, đặt thành tham số `Fuzz`. Sao chép lệnh dưới đây.
+2. Chạy `FuzzReverse` với fuzzing để xem liệu bất kỳ đầu vào chuỗi nào được tạo ngẫu nhiên có gây ra lỗi hay không. Thao tác này được thực thi bằng cách sử dụng `go test` với một cờ mới, `-fuzz`, được đặt thành tham số `Fuzz`. Sao chép lệnh bên dưới.
 
     ```
     $ go test -fuzz=Fuzz
     ```
 
-    Một cờ hữu ích khác là `-fuzztime`, giới hạn thời gian fuzzing chạy.
-    Ví dụ, chỉ định `-fuzztime 10s` trong test dưới đây có nghĩa là,
-    miễn là không có lỗi xảy ra trước đó, test sẽ thoát theo mặc định
-    sau khi 10 giây đã trôi qua. Xem [phần
-    này](https://pkg.go.dev/cmd/go#hdr-Testing_flags) của tài liệu cmd/go
-    để xem các cờ test khác.
+    Một cờ hữu ích khác là `-fuzztime`, cờ này giới hạn thời gian fuzzing diễn ra. Ví dụ, chỉ định `-fuzztime 10s` trong bài kiểm thử bên dưới có nghĩa là, miễn là không có lỗi nào xảy ra trước đó, bài kiểm thử sẽ thoát theo mặc định sau khi đã trôi qua 10 giây. Xem [phần này](https://pkg.go.dev/cmd/go#hdr-Testing_flags) trong tài liệu cmd/go để xem các cờ kiểm thử khác.
 
    Bây giờ, chạy lệnh bạn vừa sao chép.
 
@@ -329,25 +289,16 @@ Sau khi đã chuyển đổi unit test thành fuzz test, đã đến lúc chạy
    FAIL    example/fuzz  0.030s
    ```
 
-   Đã xảy ra lỗi trong khi fuzzing, và đầu vào gây ra vấn đề được
-   ghi vào file seed corpus, file này sẽ được chạy vào lần tiếp theo `go test` được
-   gọi, ngay cả khi không có cờ `-fuzz`. Để xem đầu vào gây ra
-   lỗi, hãy mở file corpus được ghi vào thư mục testdata/fuzz/FuzzReverse
-   trong trình soạn thảo văn bản. File seed corpus của bạn có thể chứa một chuỗi khác,
-   nhưng định dạng sẽ giống nhau.
+   Một lỗi đã xảy ra trong quá trình fuzzing và đầu vào gây ra vấn đề được ghi vào một tệp seed corpus sẽ được chạy vào lần tiếp theo khi `go test` được gọi, ngay cả khi không có cờ `-fuzz`. Để xem đầu vào gây ra lỗi, hãy mở tệp corpus được ghi vào thư mục testdata/fuzz/FuzzReverse bằng trình soạn thảo văn bản. Tệp seed corpus của bạn có thể chứa một chuỗi khác, nhưng định dạng sẽ giống nhau.
 
    ```
    go test fuzz v1
    string("泃")
    ```
 
-   Dòng đầu tiên của file corpus cho biết phiên bản mã hóa. Mỗi
-   dòng tiếp theo đại diện cho giá trị của mỗi kiểu tạo nên mục corpus.
-   Vì fuzz target chỉ nhận 1 đầu vào, chỉ có 1 giá trị sau
-   phiên bản.
+   Dòng đầu tiên của tệp corpus cho biết phiên bản mã hóa. Mỗi dòng tiếp theo biểu thị giá trị của từng kiểu tạo nên mục corpus. Vì mục tiêu fuzz chỉ nhận 1 đầu vào, nên chỉ có 1 giá trị sau phiên bản.
 
-3. Chạy lại `go test` mà không có cờ `-fuzz`; mục seed corpus thất bại mới
-   sẽ được sử dụng:
+3. Chạy lại `go test` mà không có cờ `-fuzz`; mục seed corpus lỗi mới sẽ được sử dụng:
 
    ```
    $ go test
@@ -359,42 +310,37 @@ Sau khi đã chuyển đổi unit test thành fuzz test, đã đến lúc chạy
    FAIL    example/fuzz  0.016s
    ```
 
-   Vì test đã thất bại, đã đến lúc debug.
+   Vì bài kiểm thử của chúng ta đã thất bại, đã đến lúc gỡ lỗi.
 
 ## Sửa lỗi chuỗi không hợp lệ {#fix_invalid_string_error}
 
-Trong phần này, bạn sẽ debug lỗi và sửa bug.
+Trong phần này, bạn sẽ gỡ lỗi nguyên nhân thất bại và sửa lỗi.
 
-Hãy dành chút thời gian suy nghĩ về vấn đề này và thử tự sửa trước khi tiếp tục.
+Bạn có thể dành thời gian suy nghĩ về vấn đề này và thử tự sửa lỗi trước khi tiếp tục.
 
 ### Chẩn đoán lỗi
 
-Có một vài cách khác nhau để debug lỗi này. Nếu bạn đang dùng VS
-Code làm trình soạn thảo văn bản, bạn có thể [thiết lập
-debugger](https://github.com/golang/vscode-go/blob/master/docs/debugging.md) để
+Có một vài cách khác nhau để bạn có thể gỡ lỗi này. Nếu bạn đang sử dụng VS
+Code làm trình soạn thảo văn bản, bạn có thể [thiết lập trình
+gỡ lỗi](https://github.com/golang/vscode-go/blob/master/docs/debugging.md) để
 điều tra.
 
-Trong hướng dẫn này, chúng ta sẽ ghi thông tin debug hữu ích ra terminal.
+Trong hướng dẫn này, chúng ta sẽ ghi lại thông tin gỡ lỗi hữu ích vào terminal của bạn.
 
-Trước tiên, hãy xem tài liệu của
+Trước tiên, hãy xem xét tài liệu cho
 [`utf8.ValidString`](https://pkg.go.dev/unicode/utf8).
 
 ```
 ValidString reports whether s consists entirely of valid UTF-8-encoded runes.
 ```
 
-Hàm `Reverse` hiện tại đảo ngược chuỗi theo từng byte, và đó chính là vấn đề của chúng ta.
-Để bảo toàn các rune được mã hóa UTF-8 của chuỗi gốc,
-chúng ta phải đảo ngược chuỗi theo từng rune.
+Hàm `Reverse` hiện tại đảo ngược chuỗi theo từng byte, và đó chính là vấn đề của chúng ta. Để bảo toàn các rune được mã hóa UTF-8 của chuỗi ban đầu, thay vào đó chúng ta phải đảo ngược chuỗi theo từng rune.
 
-Để kiểm tra tại sao đầu vào (trong trường hợp này là ký tự Trung Quốc `泃`) khiến
-`Reverse` tạo ra một chuỗi không hợp lệ khi đảo ngược, bạn có thể kiểm tra số
-lượng rune trong chuỗi đã đảo ngược.
+Để kiểm tra lý do đầu vào (trong trường hợp này là ký tự tiếng Trung `泃`) khiến `Reverse` tạo ra một chuỗi không hợp lệ khi đảo ngược, bạn có thể kiểm tra số lượng rune trong chuỗi đã đảo ngược.
 
-#### Viết code
+#### Viết mã
 
-Trong trình soạn thảo văn bản của bạn, thay thế fuzz target trong `FuzzReverse` bằng
-đoạn code sau.
+Trong trình soạn thảo văn bản của bạn, thay thế fuzz target bên trong `FuzzReverse` bằng đoạn sau.
 
 ```
 f.Fuzz(func(t *testing.T, orig string) {
@@ -410,12 +356,11 @@ f.Fuzz(func(t *testing.T, orig string) {
 })
 ```
 
-Dòng `t.Logf` này sẽ in ra dòng lệnh nếu có lỗi xảy ra, hoặc nếu
-chạy test với `-v`, điều này có thể giúp bạn debug vấn đề cụ thể này.
+Dòng `t.Logf` này sẽ in ra dòng lệnh nếu xảy ra lỗi hoặc nếu thực thi bài kiểm tra với `-v`, điều này có thể giúp bạn gỡ lỗi vấn đề cụ thể này.
 
-#### Chạy code
+#### Chạy mã
 
-Chạy test bằng go test
+Chạy bài kiểm tra bằng go test
 
 ```
 $ go test
@@ -428,23 +373,22 @@ exit status 1
 FAIL    example/fuzz    0.598s
 ```
 
-Toàn bộ seed corpus sử dụng các chuỗi trong đó mỗi ký tự là một byte duy nhất.
-Tuy nhiên, các ký tự như 泃 có thể yêu cầu nhiều byte. Do đó, việc đảo ngược
-chuỗi theo từng byte sẽ làm hỏng các ký tự đa byte.
+Toàn bộ seed corpus được sử dụng đều chứa các chuỗi trong đó mỗi ký tự chỉ là một byte.
+Tuy nhiên, các ký tự như 泃 có thể yêu cầu nhiều byte. Vì vậy, đảo ngược chuỗi theo từng byte sẽ làm mất hiệu lực các ký tự nhiều byte.
 
-**Lưu ý:** Nếu bạn tò mò về cách Go xử lý chuỗi, hãy đọc bài viết blog
-[Strings, bytes, runes and characters in Go](/blog/strings) để
-hiểu sâu hơn.
+**Lưu ý:** Nếu bạn tò mò về cách Go xử lý chuỗi, hãy đọc bài viết trên blog
+[Strings, bytes, runes and characters in Go](/blog/strings) để hiểu
+sâu hơn.
 
-Với hiểu biết tốt hơn về bug, hãy sửa lỗi trong hàm `Reverse`.
+Với hiểu biết tốt hơn về lỗi, hãy sửa lỗi trong hàm `Reverse`.
 
 ### Sửa lỗi
 
-Để sửa hàm `Reverse`, hãy duyệt qua chuỗi theo rune thay vì theo byte.
+Để sửa hàm `Reverse`, hãy duyệt qua chuỗi theo các rune thay vì theo byte.
 
-#### Viết code
+#### Viết mã
 
-Trong trình soạn thảo văn bản của bạn, thay thế hàm Reverse() hiện có bằng đoạn sau.
+Trong trình soạn thảo văn bản của bạn, hãy thay thế hàm Reverse() hiện có bằng đoạn sau.
 
 ```
 func Reverse(s string) string {
@@ -456,13 +400,11 @@ func Reverse(s string) string {
 }
 ```
 
-Điểm khác biệt chính là `Reverse` bây giờ duyệt qua từng `rune` trong
-chuỗi, thay vì từng `byte`. Lưu ý đây chỉ là ví dụ và không
-xử lý [ký tự kết hợp](https://en.wikipedia.org/wiki/Combining_character) đúng cách.
+Điểm khác biệt chính là giờ đây `Reverse` lặp qua từng `rune` trong chuỗi, thay vì từng `byte`. Lưu ý rằng đây chỉ là một ví dụ và không xử lý đúng [các ký tự kết hợp](https://en.wikipedia.org/wiki/Combining_character).
 
-#### Chạy code
+#### Chạy mã
 
-1. Chạy test bằng `go test`
+1. Chạy bài kiểm tra bằng `go test`
 
    ```
    $ go test
@@ -470,9 +412,9 @@ xử lý [ký tự kết hợp](https://en.wikipedia.org/wiki/Combining_characte
    ok      example/fuzz  0.016s
    ```
 
-   Test đã pass!
+   Bây giờ bài kiểm tra đã vượt qua!
 
-2. Fuzz lại với `go test -fuzz`, để xem còn bug nào mới không.
+2. Chạy fuzz lại bằng `go test -fuzz` để xem có lỗi mới nào không.
 
    ```
    $ go test -fuzz=Fuzz
@@ -491,32 +433,27 @@ xử lý [ký tự kết hợp](https://en.wikipedia.org/wiki/Combining_characte
    FAIL    example/fuzz  0.032s
    ```
 
-   Chúng ta thấy rằng chuỗi khác với chuỗi gốc sau khi đảo ngược hai lần. Lần này chính đầu vào là unicode không hợp lệ. Điều này có thể xảy ra như thế nào nếu chúng ta đang fuzzing với chuỗi?
+   Có thể thấy rằng chuỗi khác với chuỗi ban đầu sau khi được đảo ngược hai lần. Lần này, chính đầu vào là unicode không hợp lệ. Điều này có thể xảy ra thế nào nếu chúng ta đang fuzz với các chuỗi?
 
-   Hãy debug lại.
+   Hãy gỡ lỗi lần nữa.
 
-## Sửa lỗi đảo ngược kép {#fix_double_reverse_error}
+## Sửa lỗi đảo ngược hai lần {#fix_double_reverse_error}
 
-Trong phần này, bạn sẽ debug lỗi đảo ngược kép và sửa bug.
+Trong phần này, bạn sẽ gỡ lỗi lỗi đảo ngược hai lần và sửa lỗi.
 
-Hãy dành chút thời gian suy nghĩ về vấn đề này và thử tự sửa trước khi tiếp tục.
+Hãy dành thời gian suy nghĩ về vấn đề này và thử tự sửa lỗi trước khi tiếp tục.
 
 ### Chẩn đoán lỗi
 
-Giống như trước, có nhiều cách để debug lỗi này. Trong trường hợp này, dùng
-[debugger](https://github.com/golang/vscode-go/blob/master/docs/debugging.md)
-là một cách tiếp cận tốt.
+Giống như trước, có một số cách bạn có thể gỡ lỗi lỗi này. Trong trường hợp này, sử dụng một
+[trình gỡ lỗi](https://github.com/golang/vscode-go/blob/master/docs/debugging.md)
+sẽ là một cách tiếp cận tuyệt vời.
 
-Trong hướng dẫn này, chúng ta sẽ ghi thông tin debug hữu ích trong hàm `Reverse`.
+Trong hướng dẫn này, chúng ta sẽ ghi lại thông tin gỡ lỗi hữu ích trong hàm `Reverse`.
 
-Hãy xem kỹ chuỗi đã đảo ngược để phát hiện lỗi. Trong Go, [một chuỗi là
-một slice byte chỉ đọc](/blog/strings), và có thể chứa các byte
-không phải UTF-8 hợp lệ. Chuỗi gốc là một slice byte với một byte,
-`'\x91'`. Khi chuỗi đầu vào được đặt thành `[]rune`, Go mã hóa slice byte thành
-UTF-8 và thay thế byte bằng ký tự UTF-8 �. Khi chúng ta so sánh
-ký tự UTF-8 thay thế với slice byte đầu vào, chúng rõ ràng không bằng nhau.
+Hãy xem kỹ chuỗi sau khi đảo ngược để phát hiện lỗi. Trong Go, [một chuỗi là một lát chỉ đọc của các byte](/blog/strings), và có thể chứa các byte không phải UTF-8 hợp lệ. Chuỗi ban đầu là một lát byte với một byte duy nhất, `'\x91'`. Khi chuỗi đầu vào được chuyển thành `[]rune`, Go mã hóa lát byte thành UTF-8 và thay thế byte bằng ký tự UTF-8 �. Khi chúng ta so sánh ký tự UTF-8 thay thế với lát byte đầu vào, rõ ràng chúng không bằng nhau.
 
-#### Viết code
+#### Viết mã
 
 1. Trong trình soạn thảo văn bản của bạn, thay thế hàm `Reverse` bằng đoạn sau.
 
@@ -532,19 +469,13 @@ ký tự UTF-8 thay thế với slice byte đầu vào, chúng rõ ràng không 
    }
    ```
 
-   Điều này sẽ giúp chúng ta hiểu điều gì đang xảy ra sai khi chuyển đổi chuỗi
-   thành một slice rune.
+   Điều này sẽ giúp chúng ta hiểu vấn đề xảy ra khi chuyển đổi chuỗi thành một lát cắt các rune.
 
-#### Chạy code
+#### Chạy mã
 
-Lần này, chúng ta chỉ muốn chạy test thất bại để kiểm tra logs. Để
-làm điều này, chúng ta sẽ dùng `go test -run`.
+Lần này, chúng ta chỉ muốn chạy bài kiểm thử thất bại để kiểm tra các nhật ký. Để thực hiện việc này, chúng ta sẽ sử dụng `go test -run`.
 
-Để chạy một mục corpus cụ thể trong FuzzXxx/testdata, bạn có thể cung cấp
-{FuzzTestName}/{filename} cho `-run`. Điều này có thể hữu ích khi debug.
-Trong trường hợp này, đặt cờ `-run` bằng với hash chính xác của test thất bại.
-Sao chép và dán hash duy nhất từ terminal của bạn;
-nó sẽ khác với hash bên dưới.
+Để chạy một mục cụ thể trong corpus bên trong FuzzXxx/testdata, bạn có thể cung cấp {FuzzTestName}/{filename} cho `-run`. Điều này có thể hữu ích khi gỡ lỗi. Trong trường hợp này, hãy đặt cờ `-run` bằng chính xác mã băm của bài kiểm thử thất bại. Sao chép và dán mã băm duy nhất từ terminal của bạn; nó sẽ khác với mã bên dưới.
 
 ```
 $ go test -run=FuzzReverse/28f36ef487f23e6c7a81ebdaa9feffe2f2b02b4cddaa6252e87f69863046a5e0
@@ -561,17 +492,15 @@ exit status 1
 FAIL    example/fuzz    0.145s
 ```
 
-Biết rằng đầu vào là unicode không hợp lệ, hãy sửa lỗi trong hàm `Reverse` của chúng ta.
+Biết rằng dữ liệu đầu vào là unicode không hợp lệ, hãy sửa lỗi trong hàm `Reverse` của chúng ta.
 
 ### Sửa lỗi
 
-Để sửa vấn đề này, hãy trả về lỗi nếu đầu vào của `Reverse` không phải là
-UTF-8 hợp lệ.
+Để khắc phục vấn đề này, hãy trả về một lỗi nếu dữ liệu đầu vào của `Reverse` không phải UTF-8 hợp lệ.
 
-#### Viết code
+#### Viết mã
 
-1. Trong trình soạn thảo văn bản của bạn, thay thế hàm `Reverse` hiện có bằng
-   đoạn sau.
+1. Trong trình soạn thảo văn bản của bạn, thay thế hàm `Reverse` hiện có bằng đoạn sau.
 
    ```
    func Reverse(s string) (string, error) {
@@ -586,11 +515,9 @@ UTF-8 hợp lệ.
    }
    ```
 
-   Thay đổi này sẽ trả về lỗi nếu chuỗi đầu vào chứa các ký tự
-   không phải UTF-8 hợp lệ.
+   Thay đổi này sẽ trả về một lỗi nếu chuỗi đầu vào chứa các ký tự không phải UTF-8 hợp lệ.
 
-1. Vì hàm Reverse bây giờ trả về lỗi, hãy sửa đổi hàm `main` để
-   bỏ qua giá trị lỗi thêm vào. Thay thế hàm `main` hiện có bằng đoạn sau.
+1. Vì hàm `Reverse` hiện trả về một lỗi, hãy sửa đổi hàm `main` để loại bỏ giá trị lỗi bổ sung. Thay thế hàm `main` hiện có bằng đoạn sau.
 
    ```
    func main() {
@@ -603,11 +530,9 @@ UTF-8 hợp lệ.
    }
    ```
 
-    Các lần gọi `Reverse` này nên trả về lỗi nil, vì chuỗi đầu vào
-    là UTF-8 hợp lệ.
+   Những lệnh gọi `Reverse` này sẽ trả về lỗi nil, vì chuỗi đầu vào là UTF-8 hợp lệ.
 
-1. Bạn sẽ cần import các gói errors và unicode/utf8.
-   Câu lệnh import trong main.go nên trông như sau.
+1. Bạn sẽ cần nhập các gói `errors` và `unicode/utf8`. Câu lệnh import trong main.go sẽ có dạng như sau.
 
    ```
    import (
@@ -617,14 +542,13 @@ UTF-8 hợp lệ.
    )
    ```
 
-1. Sửa đổi file reverse_test.go để kiểm tra lỗi và bỏ qua test nếu
-   có lỗi được tạo ra bằng cách return.
+1. Sửa đổi tệp reverse_test.go để kiểm tra lỗi và bỏ qua bài kiểm thử nếu lỗi được tạo ra bằng cách trả về.
 
    ```
    func FuzzReverse(f *testing.F) {
        testcases := []string {"Hello, world", " ", "!12345"}
        for _, tc := range testcases {
-           f.Add(tc)  // Use f.Add to provide a seed corpus
+           f.Add(tc)  // Sử dụng f.Add để cung cấp một seed corpus
        }
        f.Fuzz(func(t *testing.T, orig string) {
            rev, err1 := Reverse(orig)
@@ -645,12 +569,11 @@ UTF-8 hợp lệ.
    }
    ```
 
-   Thay vì return, bạn cũng có thể gọi `t.Skip()` để dừng thực thi
-   đầu vào fuzz đó.
+   Thay vì trả về, bạn cũng có thể gọi `t.Skip()` để dừng việc thực thi đầu vào fuzz đó.
 
-#### Chạy code
+#### Chạy mã
 
-1. Chạy test bằng go test
+1. Chạy bài kiểm thử bằng go test
 
    ```
    $ go test
@@ -658,10 +581,10 @@ UTF-8 hợp lệ.
    ok      example/fuzz  0.019s
    ```
 
-2.  Fuzz với `go test -fuzz=Fuzz`, sau đó khi vài giây đã trôi qua, dừng
-    fuzzing bằng `ctrl-C`. Fuzz test sẽ chạy cho đến khi gặp đầu vào thất bại
-    trừ khi bạn truyền cờ `-fuzztime`. Mặc định là chạy mãi nếu không
-    có lỗi xảy ra, và có thể ngắt bằng `ctrl-C`.
+2.  Chạy fuzz bằng `go test -fuzz=Fuzz`, sau đó sau khi đã trôi qua vài giây, dừng
+    fuzz bằng `ctrl-C`. Bài kiểm thử fuzz sẽ chạy cho đến khi gặp một đầu vào
+    gây lỗi, trừ khi bạn truyền cờ `-fuzztime`. Mặc định là chạy vô hạn nếu không
+    xảy ra lỗi, và quá trình có thể bị ngắt bằng `ctrl-C`.
 
    ```
    $ go test -fuzz=Fuzz
@@ -677,8 +600,8 @@ UTF-8 hợp lệ.
    ok      example/fuzz  228.000s
    ```
 
-3. Fuzz với `go test -fuzz=Fuzz -fuzztime 30s`, sẽ fuzz trong 30
-   giây trước khi thoát nếu không tìm thấy lỗi nào.
+3. Chạy fuzz bằng `go test -fuzz=Fuzz -fuzztime 30s`, thao tác này sẽ fuzz trong
+   30 giây trước khi thoát nếu không tìm thấy lỗi.
 
    ```
    $ go test -fuzz=Fuzz -fuzztime 30s
@@ -699,36 +622,31 @@ UTF-8 hợp lệ.
    ok      example/fuzz  31.025s
    ```
 
-   Fuzzing đã pass!
+   Fuzz đã thành công!
 
    Ngoài cờ `-fuzz`, một số cờ mới đã được thêm vào `go
    test` và có thể xem trong [tài liệu](/security/fuzz/#custom-settings).
 
    Xem [Go Fuzzing](/security/fuzz/#command-line-output) để biết thêm
-   thông tin về các thuật ngữ được sử dụng trong đầu ra fuzzing. Ví dụ, "new interesting"
-   đề cập đến các đầu vào mở rộng phạm vi phủ code của fuzz test corpus hiện có.
-   Số lượng đầu vào "new interesting" có thể tăng mạnh khi fuzzing bắt đầu, tăng đột biến
-   nhiều lần khi các đường code mới được phát hiện, sau đó giảm dần theo thời gian.
+   thông tin về các thuật ngữ được sử dụng trong đầu ra fuzz. Ví dụ, "new interesting"
+   đề cập đến các đầu vào mở rộng độ phủ mã của corpus bài kiểm thử fuzz hiện có.
+   Số lượng đầu vào "new interesting" có thể được dự kiến sẽ tăng mạnh khi fuzz
+   bắt đầu, tăng vọt vài lần khi các đường dẫn mã mới được phát hiện, sau đó
+   giảm dần theo thời gian.
 
 ## Kết luận {#conclusion}
 
 Làm tốt lắm! Bạn vừa làm quen với fuzzing trong Go.
 
-Bước tiếp theo là chọn một hàm trong code của bạn mà bạn muốn fuzz và
-thử xem! Nếu fuzzing tìm thấy bug trong code của bạn, hãy cân nhắc thêm nó vào
-[danh sách thành tích](/wiki/Fuzzing-trophy-case).
+Bước tiếp theo là chọn một hàm trong mã của bạn mà bạn muốn fuzz, và thử chạy nó! Nếu fuzzing phát hiện một lỗi trong mã của bạn, hãy cân nhắc thêm nó vào [tủ thành tích](/wiki/Fuzzing-trophy-case).
 
-Nếu bạn gặp vấn đề hoặc có ý tưởng về tính năng, hãy [tạo
-issue](/issue/new/?&labels=fuzz).
+Nếu bạn gặp bất kỳ vấn đề nào hoặc có ý tưởng về một tính năng, [tạo một issue](/issue/new/?&labels=fuzz).
 
-Để thảo luận và phản hồi chung về tính năng này, bạn cũng có thể tham gia
-vào [kênh #fuzzing](https://gophers.slack.com/archives/CH5KV1AKE) trong
-Gophers Slack.
+Để thảo luận và gửi phản hồi chung về tính năng này, bạn cũng có thể tham gia [kênh #fuzzing](https://gophers.slack.com/archives/CH5KV1AKE) trong Gophers Slack.
 
-Xem tài liệu tại [go.dev/security/fuzz](/security/fuzz/#requirements) để
-đọc thêm.
+Xem tài liệu tại [go.dev/security/fuzz](/security/fuzz/#requirements) để đọc thêm.
 
-## Code hoàn chỉnh
+## Mã đã hoàn thành
 
 --- main.go ---
 
@@ -775,7 +693,7 @@ import (
 func FuzzReverse(f *testing.F) {
     testcases := []string{"Hello, world", " ", "!12345"}
     for _, tc := range testcases {
-        f.Add(tc) // Use f.Add to provide a seed corpus
+        f.Add(tc) // Sử dụng f.Add để cung cấp corpus hạt giống
     }
     f.Fuzz(func(t *testing.T, orig string) {
         rev, err1 := Reverse(orig)
@@ -796,4 +714,4 @@ func FuzzReverse(f *testing.F) {
 }
 ```
 
-[Trở về đầu trang](#top)
+[Quay lại đầu trang](#top)

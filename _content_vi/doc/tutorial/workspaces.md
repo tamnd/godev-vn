@@ -1,7 +1,7 @@
----
-Title: Hướng dẫn: Bắt đầu với workspace đa-mô-đun
-Breadcrumb: true
----
+<!--{
+  "Title": "Hướng dẫn: Bắt đầu với workspace đa-mô-đun",
+  "Breadcrumb": true
+}-->
 
 Hướng dẫn này giới thiệu các kiến thức cơ bản về workspace đa module trong Go.
 Với workspace đa module, bạn có thể cho lệnh Go biết rằng bạn đang

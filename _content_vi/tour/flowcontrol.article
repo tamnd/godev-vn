@@ -1,52 +1,53 @@
 Câu lệnh điều khiển luồng: for, if, else, switch và defer
-Tìm hiểu cách điều khiển luồng mã của bạn bằng các câu lệnh điều kiện, vòng lặp, switch và defer.
+Tìm hiểu cách điều khiển luồng thực thi của mã bằng điều kiện, vòng lặp, switch và defer.
 
 The Go Authors
 https://golang.org
 
 * For
 
-Go chỉ có một cấu trúc vòng lặp duy nhất, vòng lặp `for`.
+Go chỉ có một cấu trúc lặp duy nhất, đó là vòng lặp `for`.
 
-Vòng lặp `for` cơ bản có ba thành phần được phân tách bằng dấu chấm phẩy:
+Vòng lặp `for` cơ bản có ba thành phần được phân cách bằng dấu chấm phẩy:
 
-- câu lệnh khởi tạo: được thực thi trước lần lặp đầu tiên
+- câu lệnh init: được thực thi trước lần lặp đầu tiên
 - biểu thức điều kiện: được đánh giá trước mỗi lần lặp
-- câu lệnh hậu: được thực thi ở cuối mỗi lần lặp
+- câu lệnh post: được thực thi ở cuối mỗi lần lặp
 
-Câu lệnh khởi tạo thường là một khai báo biến ngắn, và
-các biến được khai báo ở đó chỉ tồn tại trong phạm vi của câu lệnh `for`.
+Câu lệnh init thường sẽ là một khai báo biến, và các biến
+được khai báo ở đó chỉ hiển thị trong phạm vi của câu lệnh
+`for`.
 
-Vòng lặp sẽ dừng lặp khi biểu thức boolean có giá trị là `false`.
+Vòng lặp sẽ dừng lặp khi điều kiện kiểu boolean được đánh giá là `false`.
 
-*Lưu ý:* Khác với các ngôn ngữ như C, Java hoặc JavaScript, không có dấu ngoặc đơn
-bao quanh ba thành phần của câu lệnh `for` và dấu ngoặc nhọn `{`}` luôn
+*Lưu ý:* Không giống như các ngôn ngữ khác như C, Java hoặc JavaScript, không có dấu ngoặc đơn
+bao quanh ba thành phần của câu lệnh `for` và các dấu ngoặc nhọn `{}` luôn
 bắt buộc phải có.
 
 .play flowcontrol/for.go
 
-* For (tiếp theo)
+* For tiếp tục
 
-Câu lệnh khởi tạo và câu lệnh hậu là tùy chọn.
+Các câu lệnh init và post là tùy chọn.
 
 .play flowcontrol/for-continued.go
 
 * For là "while" của Go
 
-Lúc này bạn có thể bỏ dấu chấm phẩy: `while` trong C được viết là `for` trong Go.
+Tại thời điểm này, bạn có thể bỏ các dấu chấm phẩy: `while` của C được viết là `for` trong Go.
 
 .play flowcontrol/for-is-gos-while.go
 
-* Vòng lặp vô tận
+* Vô hạn
 
-Nếu bạn bỏ điều kiện của vòng lặp, nó sẽ lặp mãi mãi, tạo ra một vòng lặp vô tận được biểu diễn gọn gàng.
+Nếu bạn bỏ qua điều kiện vòng lặp, nó sẽ lặp vô hạn, vì vậy một vòng lặp vô hạn có thể được biểu diễn một cách ngắn gọn.
 
 .play flowcontrol/forever.go
 
 * If
 
-Câu lệnh `if` trong Go giống như vòng lặp `for`; biểu thức không cần được
-bao bởi dấu ngoặc đơn `(`)` nhưng dấu ngoặc nhọn `{`}` là bắt buộc.
+Các câu lệnh `if` của Go giống như các vòng lặp `for`; biểu thức không cần
+được bao quanh bởi dấu ngoặc đơn `()` nhưng các dấu ngoặc nhọn `{}` là bắt buộc.
 
 .play flowcontrol/if.go
 
@@ -54,78 +55,78 @@ bao bởi dấu ngoặc đơn `(`)` nhưng dấu ngoặc nhọn `{`}` là bắt 
 
 Giống như `for`, câu lệnh `if` có thể bắt đầu bằng một câu lệnh ngắn để thực thi trước điều kiện.
 
-Các biến được khai báo bởi câu lệnh đó chỉ tồn tại đến hết khối `if`.
+Các biến được khai báo bởi câu lệnh này chỉ nằm trong phạm vi cho đến cuối câu lệnh `if`.
 
-(Hãy thử dùng `v` trong câu lệnh `return` cuối cùng.)
+(Hãy thử sử dụng `v` trong câu lệnh `return` cuối cùng.)
 
 .play flowcontrol/if-with-a-short-statement.go
 
 * If và else
 
-Các biến được khai báo bên trong câu lệnh ngắn của `if` cũng có thể dùng
-trong bất kỳ khối `else` nào.
+Các biến được khai báo bên trong câu lệnh ngắn của `if` cũng khả dụng bên trong bất kỳ
+khối `else` nào.
 
-(Cả hai lần gọi `pow` đều trả về kết quả trước khi lời gọi `fmt.Println`
+(Cả hai lời gọi tới `pow` đều trả về kết quả của chúng trước khi lời gọi tới `fmt.Println`
 trong `main` bắt đầu.)
 
 .play flowcontrol/if-and-else.go
 
-* Bài tập: Vòng lặp và hàm
+* Bài tập: Vòng lặp và Hàm
 
-Để thực hành với hàm và vòng lặp, hãy cài đặt hàm căn bậc hai: cho một số x, chúng ta muốn tìm số z sao cho z² gần bằng x nhất.
+Để thực hành với các hàm và vòng lặp, hãy triển khai một hàm căn bậc hai: với một số x đã cho, chúng ta muốn tìm số z sao cho z² gần x nhất.
 
-Máy tính thường tính căn bậc hai của x bằng một vòng lặp.
-Bắt đầu với một giá trị đoán z nào đó, ta có thể điều chỉnh z dựa trên mức z² gần với x,
-tạo ra một giá trị đoán tốt hơn:
+Máy tính thường tính căn bậc hai của x bằng cách sử dụng một vòng lặp.
+Bắt đầu với một giá trị phỏng đoán z, chúng ta có thể điều chỉnh z dựa trên mức độ gần của z² với x,
+tạo ra một phỏng đoán tốt hơn:
 
-	z -= (z*z - x) / (2*z)
+ z -= (z*z - x) / (2*z)
 
-Lặp lại việc điều chỉnh này sẽ làm cho giá trị đoán ngày càng tốt hơn
-cho đến khi chúng ta đạt được kết quả gần với căn bậc hai thực tế nhất có thể.
+Lặp lại việc điều chỉnh này sẽ làm cho phỏng đoán ngày càng tốt hơn
+cho đến khi chúng ta đạt được một đáp án gần với căn bậc hai thực tế nhất có thể.
 
-Cài đặt hàm này trong `func`Sqrt` được cung cấp.
-Giá trị đoán ban đầu tốt cho z là 1, bất kể giá trị đầu vào là gì.
-Để bắt đầu, hãy lặp lại phép tính 10 lần và in từng giá trị z trong quá trình đó.
-Xem bạn đạt được kết quả gần với đáp án như thế nào với các giá trị x khác nhau (1, 2, 3, ...)
-và giá trị đoán cải thiện nhanh như thế nào.
+Hãy triển khai điều này trong `func`Sqrt` được cung cấp.
+Một giá trị phỏng đoán ban đầu hợp lý cho z là 1, bất kể đầu vào là gì.
+Ban đầu, hãy lặp lại phép tính 10 lần và in từng giá trị z trong quá trình đó.
+Xem bạn đạt được đáp án gần đến mức nào với các giá trị khác nhau của x (1, 2, 3, ...)
+và tốc độ cải thiện của phỏng đoán.
 
 Gợi ý: Để khai báo và khởi tạo một giá trị số thực,
-hãy dùng cú pháp số thực hoặc dùng chuyển đổi:
+hãy cung cấp cú pháp số thực hoặc sử dụng phép chuyển đổi:
 
-	z := 1.0
-	z := float64(1)
+ z := 1.0
+ z := float64(1)
 
-Tiếp theo, hãy thay đổi điều kiện vòng lặp để dừng khi giá trị không còn
-thay đổi (hoặc chỉ thay đổi một lượng rất nhỏ).
-Xem đó là nhiều hơn hay ít hơn 10 lần lặp.
-Hãy thử các giá trị đoán ban đầu khác cho z, như x hoặc x/2.
-Kết quả của hàm bạn gần với [[/pkg/math/#Sqrt][math.Sqrt]] trong thư viện chuẩn đến mức nào?
+Tiếp theo, thay đổi điều kiện vòng lặp để dừng khi giá trị không còn thay đổi
+(hoặc chỉ thay đổi một lượng rất nhỏ).
+Xem số lần lặp này nhiều hơn hay ít hơn 10 lần.
+Thử các giá trị phỏng đoán ban đầu khác cho z, như x hoặc x/2.
+Kết quả của hàm của bạn gần với [[/pkg/math/#Sqrt][math.Sqrt]] trong thư viện chuẩn đến mức nào?
 
 (*Lưu ý:* Nếu bạn quan tâm đến chi tiết của thuật toán, z² − x ở trên
-là khoảng cách z² còn cách x (giá trị mục tiêu), và phép chia cho 2z là đạo hàm
-của z², để điều chỉnh mức độ thay đổi của z theo tốc độ thay đổi của z².
-Cách tiếp cận tổng quát này được gọi là [[https://en.wikipedia.org/wiki/Newton%27s_method][phương pháp Newton]].
-Nó hoạt động tốt với nhiều hàm số nhưng đặc biệt hiệu quả với căn bậc hai.)
+là khoảng cách của z² so với vị trí mà nó cần đạt tới (x), và phép chia cho 2z là đạo hàm
+của z², dùng để điều chỉnh mức độ thay đổi của z dựa trên tốc độ thay đổi của z².
+Cách tiếp cận tổng quát này được gọi là [[[https://en.wikipedia.org/wiki/Newton%27s_method][Newton](https://en.wikipedia.org/wiki/Newton%27s_method][Newton)'s method]].
+Nó hoạt động tốt với nhiều hàm nhưng đặc biệt hiệu quả với căn bậc hai.)
 
 .play flowcontrol/exercise-loops-and-functions.go
 
 * Switch
 
-Câu lệnh `switch` là cách viết ngắn gọn hơn cho một chuỗi câu lệnh `if`-`else`.
-Nó chạy trường hợp đầu tiên có giá trị bằng biểu thức điều kiện.
+Một câu lệnh `switch` là cách viết ngắn gọn hơn cho một chuỗi các câu lệnh `if`-`else`.
+Nó chạy trường hợp đầu tiên có giá trị bằng với biểu thức điều kiện.
 
-Switch trong Go giống như trong C, C++, Java, JavaScript và PHP,
-ngoại trừ Go chỉ chạy trường hợp được chọn, không chạy tất cả các trường hợp tiếp theo.
-Thực tế, câu lệnh `break` cần thiết ở cuối mỗi trường hợp trong các
-ngôn ngữ đó được cung cấp tự động trong Go.
-Một điểm khác biệt quan trọng là các trường hợp switch trong Go không cần
-là hằng số, và các giá trị liên quan không cần là số nguyên.
+switch của Go giống với switch trong C, C++, Java, JavaScript và PHP,
+ngoại trừ việc Go chỉ chạy trường hợp được chọn, không phải tất cả các trường hợp theo sau.
+Về bản chất, câu lệnh `break` cần thiết ở cuối mỗi trường hợp trong các
+ngôn ngữ đó được Go tự động cung cấp.
+Một điểm khác biệt quan trọng khác là các trường hợp của switch trong Go không nhất thiết
+phải là hằng số, và các giá trị liên quan không nhất thiết phải là số nguyên.
 
 .play flowcontrol/switch.go
 
-* Thứ tự đánh giá switch
+* Thứ tự đánh giá của Switch
 
-Switch đánh giá các trường hợp từ trên xuống dưới, dừng lại khi một trường hợp khớp.
+Các case của Switch đánh giá các trường hợp từ trên xuống dưới, dừng lại khi một trường hợp thành công.
 
 (Ví dụ,
 
@@ -136,37 +137,34 @@ Switch đánh giá các trường hợp từ trên xuống dưới, dừng lại
 
 sẽ không gọi `f` nếu `i==0`.)
 
-#appengine: *Lưu ý:* Thời gian trong Go playground luôn bắt đầu từ
-#appengine: 2009-11-10 23:00:00 UTC, ý nghĩa của giá trị này là bài tập dành cho
-#appengine: người đọc.
+#appengine: *Lưu ý:* Thời gian trong Go playground luôn xuất hiện bắt đầu từ
+#appengine: 2009-11-10 23:00:00 UTC, một giá trị có ý nghĩa được để lại như một
+#appengine: bài tập cho người đọc.
 
 .play flowcontrol/switch-evaluation-order.go
 
 * Switch không có điều kiện
 
-Switch không có điều kiện tương đương với `switch`true`.
+Switch không có điều kiện giống với `switch`true`.
 
-Cấu trúc này có thể là cách viết gọn gàng cho các chuỗi if-then-else dài.
+Cấu trúc này có thể là một cách gọn gàng để viết các chuỗi if-then-else dài.
 
 .play flowcontrol/switch-with-no-condition.go
 
 * Defer
 
-Câu lệnh defer trì hoãn việc thực thi một hàm cho đến khi
-hàm bao quanh trả về.
+Một câu lệnh defer trì hoãn việc thực thi một hàm cho đến khi hàm bao quanh trả về.
 
-Các tham số của lời gọi bị trì hoãn được đánh giá ngay lập tức, nhưng lời gọi hàm
-sẽ không được thực thi cho đến khi hàm bao quanh trả về.
+Các đối số của lời gọi bị trì hoãn được đánh giá ngay lập tức, nhưng lời gọi hàm không được thực thi cho đến khi hàm bao quanh trả về.
 
 .play flowcontrol/defer.go
 
 * Xếp chồng defer
 
-Các lời gọi hàm bị trì hoãn được đẩy vào một ngăn xếp. Khi một hàm trả về,
-các lời gọi bị trì hoãn được thực thi theo thứ tự vào sau ra trước (LIFO).
+Các lời gọi hàm bị trì hoãn được đưa vào một stack. Khi một hàm trả về, các lời gọi bị trì hoãn của nó được thực thi theo thứ tự vào sau ra trước.
 
-Để tìm hiểu thêm về câu lệnh defer, hãy đọc
-[[/blog/defer-panic-and-recover][bài viết blog này]].
+Để tìm hiểu thêm về các câu lệnh defer, hãy đọc
+[[/blog/defer-panic-and-recover][bài đăng trên blog này]].
 
 .play flowcontrol/defer-multi.go
 
@@ -174,4 +172,4 @@ các lời gọi bị trì hoãn được thực thi theo thứ tự vào sau ra
 
 Bạn đã hoàn thành bài học này!
 
-Bạn có thể quay lại danh sách các [[/tour/list][module]] để tìm hiểu tiếp theo, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].
+Bạn có thể quay lại danh sách [[/tour/list][module]] để tìm nội dung tiếp theo cần học, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].

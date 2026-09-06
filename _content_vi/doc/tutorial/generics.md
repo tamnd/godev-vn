@@ -1,7 +1,7 @@
----
-Title: Hướng dẫn: Bắt đầu với generics
-Breadcrumb: true
----
+<!--{
+  "Title": "Hướng dẫn: Bắt đầu với generics",
+  "Breadcrumb": true
+}-->
 
 Hướng dẫn này giới thiệu các khái niệm cơ bản về generics trong Go. Với generics, bạn có thể khai báo và sử dụng các hàm hoặc kiểu được viết để hoạt động với bất kỳ kiểu nào trong một tập hợp các kiểu do mã gọi cung cấp.
 
@@ -180,14 +180,13 @@ Hãy nhớ rằng một tham số kiểu phải hỗ trợ tất cả các thao 
 
 Trong mã bạn sắp viết, bạn sẽ sử dụng một ràng buộc cho phép các kiểu số nguyên hoặc số thực.
 
-#### Write the code
+#### Viết mã
 
-1. Beneath the two functions you added previously, paste the following generic
-    function.
+1. Bên dưới hai hàm bạn đã thêm trước đó, dán hàm generic sau.
 
     ```
-    // SumIntsOrFloats sums the values of map m. It supports both int64 and float64
-    // as types for map values.
+ // SumIntsOrFloats tính tổng các giá trị của map m. Nó hỗ trợ cả int64 và float64
+ // làm các kiểu cho giá trị của map.
     func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
         var s V
         for _, v := range m {
@@ -197,30 +196,29 @@ Trong mã bạn sắp viết, bạn sẽ sử dụng một ràng buộc cho phé
     }
     ```
 
-    In this code, you:
+Trong mã này, bạn:
 
-    *   Declare a `SumIntsOrFloats` function with two type parameters (inside
-        the square brackets), `K` and `V`, and one argument that uses the type
-        parameters, `m` of type `map[K]V`. The function returns a value of
-        type `V`.
-    *   Specify for the `K` type parameter the type constraint `comparable`.
-        Intended specifically for cases like these, the `comparable` constraint
-        is predeclared in Go. It allows any type whose values may be used as an
-        operand of the comparison operators `==` and `!=`. Go requires that map
-        keys be comparable. So declaring `K` as `comparable` is necessary so you
-        can use `K` as the key in the map variable. It also ensures that calling
-        code uses an allowable type for map keys.
-    *   Specify for the `V` type parameter a constraint that is a union of two
-        types: `int64` and `float64`. Using `|` specifies a union of the two
-        types, meaning that this constraint allows either type. Either type
-        will be permitted by the compiler as an argument in the calling code.
-    *   Specify that the `m` argument is of type `map[K]V`, where `K` and `V`
-        are the types already specified for the type parameters. Note that we
-        know `map[K]V` is a valid map type because `K` is a comparable type. If
-        we hadn’t declared `K` comparable, the compiler would reject the
-        reference to `map[K]V`.
+*   Khai báo hàm `SumIntsOrFloats` với hai tham số kiểu (bên trong
+    dấu ngoặc vuông), `K` và `V`, cùng một đối số sử dụng các tham số kiểu,
+    `m` có kiểu `map[K]V`. Hàm trả về một giá trị có kiểu `V`.
+*   Chỉ định ràng buộc kiểu `comparable` cho tham số kiểu `K`.
+    Được thiết kế riêng cho các trường hợp như thế này, ràng buộc
+    `comparable` được khai báo sẵn trong Go. Nó cho phép mọi kiểu có giá trị
+    có thể được dùng làm toán hạng của các toán tử so sánh `==` và `!=`. Go
+    yêu cầu khóa của map phải có thể so sánh được. Vì vậy, khai báo `K` là
+    `comparable` là cần thiết để bạn có thể dùng `K` làm khóa trong biến map.
+    Nó cũng đảm bảo mã gọi sử dụng một kiểu hợp lệ cho khóa map.
+*   Chỉ định cho tham số kiểu `V` một ràng buộc là hợp của hai kiểu:
+    `int64` và `float64`. Việc dùng `|` chỉ định một hợp của hai kiểu,
+    nghĩa là ràng buộc này cho phép một trong hai kiểu. Cả hai kiểu đều
+    sẽ được trình biên dịch cho phép làm đối số trong mã gọi.
+*   Chỉ định rằng đối số `m` có kiểu `map[K]V`, trong đó `K` và `V`
+    là các kiểu đã được chỉ định cho các tham số kiểu. Lưu ý rằng chúng ta
+    biết `map[K]V` là một kiểu map hợp lệ vì `K` là một kiểu có thể so sánh.
+    Nếu chúng ta không khai báo `K` là `comparable`, trình biên dịch sẽ từ chối
+    tham chiếu đến `map[K]V`.
 
-2. In main.go, beneath the code you already have, paste the following code.
+2. Trong main.go, bên dưới mã bạn đã có, dán đoạn mã sau.
 
     ```
     fmt.Printf("Generic Sums: %v and %v\n",
@@ -228,17 +226,15 @@ Trong mã bạn sắp viết, bạn sẽ sử dụng một ràng buộc cho phé
     	SumIntsOrFloats[string, float64](floats))
     ```
 
-    In this code, you:
+Trong mã này, bạn:
 
-    *   Call the generic function you just declared, passing each of the maps
-        you created.
-    *   Specify type arguments – the type names in square brackets – to be
-        clear about the types that should replace type parameters in the
-        function you're calling.
+*   Gọi hàm generic vừa khai báo, truyền vào từng map bạn đã tạo.
+*   Chỉ định các đối số kiểu – tên các kiểu trong dấu ngoặc vuông – để
+    làm rõ các kiểu nào sẽ thay thế các tham số kiểu trong hàm bạn đang gọi.
 
-        As you'll see in the next section, you can often omit the type
-        arguments in the function call. Go can often infer them from your code.
-    *   Print the sums returned by the function.
+    Như bạn sẽ thấy trong phần tiếp theo, bạn thường có thể bỏ qua các đối số
+    kiểu trong lời gọi hàm. Go thường có thể suy ra chúng từ mã của bạn.
+*   In các tổng được hàm trả về.
 
 #### Chạy mã
 
@@ -358,23 +354,18 @@ Generic Sums, type parameters inferred: 46 and 62.97
 Generic Sums with Constraint: 46 and 62.97
 ```
 
-## Conclusion {#conclusion}
+## Kết luận {#conclusion}
 
-Nicely done! You've just introduced yourself to generics in Go.
+Làm tốt lắm! Bạn vừa làm quen với generics trong Go.
 
-Suggested next topics:
+Các chủ đề tiếp theo được đề xuất:
 
-*   The [Go Tour](/tour/) is a great step-by-step
-    introduction to Go fundamentals.
-*   You'll find useful Go best practices described in
-    [Effective Go](/doc/effective_go) and
-    [How to write Go code](/doc/code).
+* [Go Tour](/tour/) là một bước tiếp theo tuyệt vời để giới thiệu từng bước về các khái niệm cơ bản của Go.
+* Bạn sẽ tìm thấy các phương pháp hay hữu ích của Go được mô tả trong [Effective Go](/doc/effective_go) và [Cách viết mã Go](/doc/code).
 
-## Completed code {#completed_code}
+## Mã đã hoàn thành {#completed_code}
 
-You can run this program in the
-[Go playground](/play/p/apNmfVwogK0). On the
-playground simply click the **Run** button.
+Bạn có thể chạy chương trình này trong [Go playground](/play/p/apNmfVwogK0). Trên playground, chỉ cần nhấp vào nút **Run**.
 
 ```
 package main
@@ -386,13 +377,13 @@ type Number interface {
 }
 
 func main() {
-	// Initialize a map for the integer values
+	// Khởi tạo một map cho các giá trị số nguyên
 	ints := map[string]int64{
 		"first": 34,
 		"second": 12,
 	}
 
-	// Initialize a map for the float values
+	// Khởi tạo một map cho các giá trị số thực
 	floats := map[string]float64{
 		"first": 35.98,
 		"second": 26.99,
@@ -415,7 +406,7 @@ func main() {
 		SumNumbers(floats))
 }
 
-// SumInts adds together the values of m.
+// SumInts cộng các giá trị của m với nhau.
 func SumInts(m map[string]int64) int64 {
 	var s int64
 	for _, v := range m {
@@ -424,7 +415,7 @@ func SumInts(m map[string]int64) int64 {
 	return s
 }
 
-// SumFloats adds together the values of m.
+// SumFloats cộng các giá trị của m với nhau.
 func SumFloats(m map[string]float64) float64 {
 	var s float64
 	for _, v := range m {
@@ -433,8 +424,8 @@ func SumFloats(m map[string]float64) float64 {
 	return s
 }
 
-// SumIntsOrFloats sums the values of map m. It supports both floats and integers
-// as map values.
+// SumIntsOrFloats tính tổng các giá trị của map m. Nó hỗ trợ cả số thực và số nguyên
+// làm giá trị của map.
 func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
 	var s V
 	for _, v := range m {
@@ -443,8 +434,8 @@ func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
 	return s
 }
 
-// SumNumbers sums the values of map m. It supports both integers
-// and floats as map values.
+// SumNumbers tính tổng các giá trị của map m. Nó hỗ trợ cả số nguyên
+// và số thực làm giá trị của map.
 func SumNumbers[K comparable, V Number](m map[K]V) V {
 	var s V
 	for _, v := range m {
@@ -452,3 +443,5 @@ func SumNumbers[K comparable, V Number](m map[K]V) V {
 	}
 	return s
 }
+
+```

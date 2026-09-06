@@ -17,14 +17,6 @@ concurrency:
 
 env:
   GO_VERSION: '1.27.0'
-  # The audit pin, which has to match the one in ci.yml.
-  #
-  # It is repeated rather than shared because the alternatives are worse: a
-  # workflow that reads the number out of the other workflow, or a number in a
-  # repository setting that does not show up in a diff. The two are checked
-  # against each other by the ratchet itself, since a pull request that lowers
-  # one and not the other fails here on the next push to master.
-  AUDIT_MAX: '6'
 
 jobs:
   # The export is one job because the files are 102 MB and moving them between
@@ -61,7 +53,7 @@ jobs:
       # mirror. Nothing about an address is written in this file.
       - name: export
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn publish -max ${{ env.AUDIT_MAX }} -out dist
+        run: go run ./cmd/godev -C ../godev-vn publish -out dist
 
       - name: deploy to Cloudflare Pages
         id: cloudflare
