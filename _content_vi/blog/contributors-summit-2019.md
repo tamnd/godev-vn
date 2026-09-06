@@ -1,11 +1,11 @@
 ---
-title: Contributors Summit 2019
+title: Hội nghị thượng đỉnh Contributors 2019
 date: 2019-08-15
 by:
 - Carmen Andoh and contributors
 tags:
 - community
-summary: Báo cáo từ Go Contributor Summit tại GopherCon 2019.
+summary: Báo cáo từ Hội nghị thượng đỉnh contributor của Go tại GopherCon 2019.
 template: true
 ---
 
@@ -26,7 +26,7 @@ _(Ảnh của Steve Francia.)_
 
 ## Trình biên dịch và Runtime (báo cáo của Lynn Boger)
 
-Go Contributor Summit là một cơ hội tuyệt vời
+Hội nghị thượng đỉnh contributor Go là một cơ hội tuyệt vời
 để gặp gỡ và thảo luận về các chủ đề cũng như ý tưởng với những người khác cũng đóng góp cho Go.
 
 Ngày bắt đầu bằng khoảng thời gian để gặp gỡ mọi người trong phòng.
@@ -258,29 +258,29 @@ nhưng không được sử dụng cho những tác vụ khác, tại sao nó kh
 
 ## Giáo dục (báo cáo của Andy Walker)
 
-Một trong những buổi thảo luận bàn tròn mà tôi tham gia tại Contributors Summit năm nay có chủ đề về giáo dục Go, cụ thể là những loại tài nguyên nào chúng ta cung cấp cho lập trình viên Go mới, và cách chúng ta có thể cải thiện chúng. Tham dự có một số nhà tổ chức, kỹ sư và nhà giáo dục rất tâm huyết, mỗi người đều có góc nhìn riêng về chủ đề này, thông qua các công cụ họ đã thiết kế, tài liệu họ đã viết hoặc các hội thảo họ đã tổ chức cho những nhà phát triển với đủ mọi nền tảng.
+Một trong những buổi thảo luận bàn tròn mà tôi tham gia tại Contributors Summit năm nay có chủ đề về giáo dục Go, cụ thể là những loại tài nguyên nào chúng ta cung cấp cho lập trình viên Go mới, và cách chúng ta có thể cải thiện chúng. Có mặt là một số nhà tổ chức, kỹ sư và nhà giáo dục đầy nhiệt huyết, mỗi người đều có một góc nhìn riêng về chủ đề này, thông qua các công cụ họ đã thiết kế, tài liệu họ đã viết hoặc các hội thảo họ đã tổ chức cho những nhà phát triển với đủ mọi nền tảng.
 
-Ngay từ đầu, cuộc trò chuyện chuyển sang việc liệu Go có phải là một ngôn ngữ lập trình đầu tiên tốt hay không. Tôi không chắc, và đã lên tiếng phản đối ý kiến đó. Tôi lập luận rằng Go không phải là một ngôn ngữ đầu tiên tốt vì nó không được tạo ra với mục đích đó. Như Rob Pike [đã viết vào năm 2012](/talks/2012/splash.article), “ngôn ngữ này được thiết kế bởi và dành cho những người viết—cũng như đọc, gỡ lỗi và bảo trì—các hệ thống phần mềm lớn”. Với tôi, định hướng cốt lõi này rất rõ ràng: Go là một phản hồi có chủ đích đối với những khiếm khuyết được nhận thấy trong các quy trình mà những kỹ sư giàu kinh nghiệm sử dụng, chứ không phải một nỗ lực tạo ra ngôn ngữ lập trình lý tưởng, và do đó giả định rằng người dùng đã có một mức độ quen thuộc cơ bản nhất định với các khái niệm lập trình.
+Ngay từ đầu, cuộc thảo luận chuyển sang việc liệu Go có phải là một ngôn ngữ lập trình đầu tiên tốt hay không. Tôi không chắc, và đã đưa ra quan điểm phản đối. Tôi lập luận rằng Go không phải là một ngôn ngữ đầu tiên tốt vì nó không được tạo ra với mục đích đó. Như Rob Pike [đã viết vào năm 2012](/talks/2012/splash.article), “ngôn ngữ này được thiết kế bởi và dành cho những người viết—cũng như đọc, gỡ lỗi và duy trì—các hệ thống phần mềm lớn”. Với tôi, định hướng cốt lõi này rất rõ ràng: Go là một phản hồi có chủ đích đối với những khiếm khuyết được nhận thấy trong các quy trình mà những kỹ sư giàu kinh nghiệm sử dụng, chứ không phải là một nỗ lực tạo ra một ngôn ngữ lập trình lý tưởng, và vì vậy nó giả định người dùng đã có một mức độ quen thuộc cơ bản với các khái niệm lập trình.
 
-Điều này thể hiện rõ trong tài liệu chính thức tại [golang.org/doc](/doc/). Tài liệu đi thẳng vào cách cài đặt ngôn ngữ trước khi chuyển người dùng đến [tour](/tour/), vốn hướng đến các lập trình viên đã quen thuộc với một ngôn ngữ dạng C. Từ đó, họ được đưa đến [How to Write Go Code](/doc/code.html), nơi cung cấp phần giới thiệu rất cơ bản về workspace Go cổ điển không dùng module, trước khi chuyển ngay sang việc viết thư viện và kiểm thử. Cuối cùng, chúng ta có [Effective Go](/doc/effective_go.html), cùng một loạt tài liệu tham khảo bao gồm [spec](/ref/spec), được bổ sung bằng một số ví dụ. Đây đều là những tài nguyên khá tốt nếu bạn đã quen thuộc với một ngôn ngữ dạng C, nhưng chúng vẫn còn nhiều điểm cần cải thiện, và không có gì dành cho người mới hoàn toàn hoặc thậm chí người chuyển trực tiếp từ một ngôn ngữ như Python.
+Điều này thể hiện rõ trong tài liệu chính thức tại [golang.org/doc](/doc/). Tài liệu đi thẳng vào cách cài đặt ngôn ngữ trước khi chuyển người dùng đến [tour](/tour/), vốn hướng đến các lập trình viên đã quen thuộc với một ngôn ngữ giống C. Từ đó, họ được đưa đến [How to Write Go Code](/doc/code.html), nơi cung cấp phần giới thiệu rất cơ bản về workspace Go cổ điển không dùng module, trước khi chuyển ngay sang việc viết thư viện và kiểm thử. Cuối cùng, chúng ta có [Effective Go](/doc/effective_go.html), cùng một loạt tài liệu tham khảo bao gồm [spec](/ref/spec), được bổ sung bằng một số ví dụ. Đây đều là những tài nguyên khá tốt nếu bạn đã quen thuộc với một ngôn ngữ giống C, nhưng chúng vẫn còn nhiều điểm cần cải thiện, và không có gì dành cho người mới hoàn toàn hoặc thậm chí người chuyển trực tiếp từ một ngôn ngữ như Python.
 
-Là một điểm khởi đầu dễ tiếp cận và có tính tương tác, tour là mục tiêu đầu tiên tự nhiên để giúp ngôn ngữ trở nên thân thiện hơn với người mới, và tôi nghĩ có thể đạt được nhiều tiến bộ chỉ bằng cách tập trung vào đó. Trước tiên, nó nên là liên kết đầu tiên trong tài liệu, nếu không thì cũng nên là liên kết đầu tiên trên thanh điều hướng ở đầu golang.org, được đặt ở vị trí nổi bật. Chúng ta nên khuyến khích người dùng tò mò bắt đầu ngay và thử nghiệm với ngôn ngữ. Chúng ta cũng nên cân nhắc đưa vào các phần giới thiệu tùy chọn dành cho những người đến từ các ngôn ngữ phổ biến khác, cùng với những khác biệt mà họ có thể gặp phải trong Go, kèm theo các bài tập tương tác. Điều này sẽ giúp ích rất nhiều cho các lập trình viên Go mới trong việc ánh xạ những khái niệm họ đã quen thuộc sang Go.
+Là một điểm khởi đầu dễ tiếp cận và có tính tương tác, tour là mục tiêu đầu tiên tự nhiên để làm cho ngôn ngữ thân thiện hơn với người mới, và tôi nghĩ có thể đạt được nhiều tiến bộ chỉ bằng cách tập trung vào đó. Trước hết, nó nên là liên kết đầu tiên trong tài liệu, nếu không thì cũng nên là liên kết đầu tiên trong thanh ở đầu golang.org, ở vị trí nổi bật. Chúng ta nên khuyến khích người dùng tò mò bắt tay ngay vào việc khám phá và sử dụng ngôn ngữ. Chúng ta cũng nên cân nhắc đưa vào các phần giới thiệu tùy chọn dành cho những người đến từ các ngôn ngữ phổ biến khác, cùng những khác biệt mà họ có khả năng gặp phải trong Go, với các bài tập tương tác. Điều này sẽ giúp rất nhiều trong việc hỗ trợ các lập trình viên Go mới ánh xạ những khái niệm mà họ đã quen thuộc sang Go.
 
-Đối với các lập trình viên có kinh nghiệm, nên có phần trình bày sâu hơn dưới dạng tùy chọn cho hầu hết các phần trong tour, cho phép họ đào sâu vào tài liệu chi tiết hơn hoặc các bài tập tương tác liệt kê những quyết định thiết kế và nguyên tắc kiến trúc tốt trong Go. Họ nên tìm được câu trả lời cho những câu hỏi như:
+Đối với các lập trình viên có kinh nghiệm, nên có phần trình bày sâu hơn tùy chọn cho hầu hết các mục trong tour, cho phép họ đi sâu vào tài liệu chi tiết hơn hoặc các bài tập tương tác liệt kê những quyết định thiết kế và nguyên tắc kiến trúc tốt trong Go. Họ nên tìm thấy câu trả lời cho những câu hỏi như:
 
-- Tại sao có nhiều kiểu số nguyên đến vậy khi tôi được khuyến khích dùng `int` trong phần lớn thời gian?
-- Có bao giờ có lý do hợp lý để chọn value receiver không?
-- Tại sao có `int` thông thường nhưng lại không có `float` thông thường?
-- Kênh chỉ gửi và chỉ nhận là gì, và khi nào tôi sẽ dùng chúng?
-- Làm thế nào để kết hợp hiệu quả các primitive đồng thời, và khi nào tôi _không_ muốn dùng channel?
-- `uint` hữu ích cho việc gì? Tôi có nên dùng nó để giới hạn người dùng của mình chỉ nhập các giá trị dương không? Tại sao không?
+  - Tại sao có nhiều kiểu số nguyên đến vậy khi tôi được khuyến khích sử dụng `int` trong phần lớn thời gian?
+  - Có bao giờ có lý do hợp lý để chọn value receiver không?
+  - Tại sao có `int` thông thường nhưng lại không có `float` thông thường?
+  - Channel chỉ gửi và chỉ nhận là gì, và khi nào tôi sẽ sử dụng chúng?
+  - Làm thế nào để kết hợp hiệu quả các primitive đồng thời, và khi nào tôi _không_ muốn sử dụng channel?
+  - `uint` hữu ích cho việc gì? Tôi có nên dùng nó để giới hạn người dùng của mình chỉ nhập các giá trị dương không? Tại sao không?
 
-Tour nên là nơi mà họ có thể quay lại sau khi hoàn thành lượt tìm hiểu đầu tiên để đào sâu hơn vào một số lựa chọn thú vị hơn trong thiết kế ngôn ngữ.
+Tour nên là nơi họ có thể quay lại sau khi hoàn thành lượt xem đầu tiên để tìm hiểu sâu hơn về một số lựa chọn thú vị hơn trong thiết kế ngôn ngữ.
 
-Nhưng chúng ta có thể làm nhiều hơn. Nhiều người tìm đến lập trình như một cách để thiết kế ứng dụng hoặc giải quyết một nhu cầu cụ thể, và họ thường muốn nhắm đến giao diện mà họ quen thuộc nhất: trình duyệt. Go hiện vẫn chưa có câu chuyện tốt về front-end. JavaScript vẫn là ngôn ngữ duy nhất thực sự cung cấp cả môi trường front-end lẫn back-end, nhưng WASM đang nhanh chóng trở thành một nền tảng cấp một, và có rất nhiều hướng chúng ta có thể phát triển với nó. Chúng ta có thể cung cấp thứ gì đó giống như [vecty](https://github.com/gopherjs/vecty) trong [The Go Play Space](https://goplay.space/), hoặc có thể là [Gio](https://gioui.org/), nhắm đến WASM, để mọi người có thể bắt đầu lập trình trong trình duyệt ngay lập tức, khơi gợi trí tưởng tượng của họ, đồng thời cung cấp cho họ con đường chuyển đổi từ playground của chúng ta sang terminal và GitHub.
+Nhưng chúng ta có thể làm nhiều hơn. Nhiều người tìm đến lập trình như một cách để thiết kế ứng dụng hoặc giải quyết một nhu cầu cụ thể, và họ nhiều khả năng sẽ muốn nhắm đến interface mà họ quen thuộc nhất: trình duyệt. Go hiện vẫn chưa có câu chuyện tốt về front-end. JavaScript vẫn là ngôn ngữ duy nhất thực sự cung cấp cả môi trường front-end lẫn back-end, nhưng WASM đang nhanh chóng trở thành một nền tảng cấp một, và có rất nhiều hướng chúng ta có thể phát triển với nó. Chúng ta có thể cung cấp thứ gì đó như [vecty](https://github.com/gopherjs/vecty) trong [The Go Play Space](https://goplay.space/), hoặc có thể là [Gio](https://gioui.org/), nhắm đến WASM, để mọi người có thể bắt đầu lập trình trong trình duyệt ngay lập tức, khơi gợi trí tưởng tượng của họ, và cung cấp cho họ con đường chuyển đổi từ playground của chúng ta sang terminal và GitHub.
 
-Vậy Go có phải là một ngôn ngữ đầu tiên tốt không?
-Tôi thực sự không biết, nhưng chắc chắn có một số lượng đáng kể người bước vào nghề lập trình với Go là điểm khởi đầu, và tôi rất quan tâm đến việc trò chuyện với họ, tìm hiểu hành trình và quy trình của họ, cũng như định hình tương lai của giáo dục Go với những đóng góp từ họ.
+Vậy, Go có phải là một ngôn ngữ đầu tiên tốt không?  
+Tôi thực sự không biết, nhưng chắc chắn có một số lượng đáng kể người bước vào nghề lập trình với Go là điểm bắt đầu, và tôi rất quan tâm đến việc trò chuyện với họ, tìm hiểu hành trình và quy trình của họ, cũng như định hình tương lai của giáo dục Go với sự đóng góp từ họ.
 
 ## Nền tảng học tập (báo cáo của Ronna Steinberg)
 

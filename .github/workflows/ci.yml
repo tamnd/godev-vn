@@ -56,17 +56,24 @@ jobs:
         run: go test -run 'TestOverlay|TestGODEVCONTENT' -v .
 
   # The quality gates, from tamnd/godev-vn-translator, run against this
-  # checkout. Nineteen deterministic rules over every English and Vietnamese
+  # checkout. Twenty deterministic rules over every English and Vietnamese
   # pair: dropped links, invented links, invented heading anchors, edited code
-  # blocks, translated template actions, front matter that moved, and whether
-  # each translation still matches the English it was made from.
+  # blocks, translated template actions, front matter that moved or changed
+  # bracket, and whether each translation still matches the English it was made
+  # from.
   #
-  # -max is a ratchet and not a target. The corpus has 6 refusals today, so a
-  # gate demanding zero would be red on every pull request including the ones
-  # fixing it, and a check that is always red is a check somebody turns off.
-  # This one fails at 7. The number comes down in the same diff as the work
-  # that lowers it, which makes it a reviewable claim, and the day it reaches
-  # zero the flag comes off.
+  # There is no -max any more and that is the news. It was a ratchet and not a
+  # target: the corpus had 227 refusals when the gates were first run over it, a
+  # gate demanding zero would have been red on every pull request including the
+  # ones fixing it, and a check that is always red is a check somebody turns
+  # off. So the number came down in the same diff as the work that lowered it,
+  # which made it a reviewable claim about what each change did, and the day it
+  # reached zero the flag came off. This is that day. The gate below is the
+  # plain one and a single refusal fails it.
+  #
+  # The walk was 227, 88, 84, 75, 107, 83, 81, 73, 72, 54, 63, 6, 0. It is kept
+  # here because two of those steps go up, and a ratchet that only ever goes
+  # down is one that stops new rules from landing.
   #
   # It went up once, from 75 to 107, and that is the one direction a ratchet is
   # not supposed to move. It moved because a new gate landed and not because the
@@ -160,6 +167,31 @@ jobs:
   # definitions when their target is a link, so every reference to them on the
   # page stopped being a link too. L19 refuses that shape from now on and lands
   # in the translator after this merges, for the reason two paragraphs up.
+  #
+  # 6 to 0, and the last six were not fixed by asking for anything again. Four
+  # of them were ref/mod.md, whose chunk 52 had died three times on a single
+  # character 3800 lines away: the file writes %USERPROFILE%\_netrc once, in a
+  # code span, and that one occurrence exempted the mark _ for the whole file,
+  # so every escape the transport added to it survived the repair. The escape
+  # proof is positional now, in the translator's #52 and #54, and asks each half
+  # of a page about its own kind of evidence.
+  #
+  # Twelve more refusals arrived on the way to zero and none of them was new
+  # damage. They were L20, which is the gate for the bracket the front matter is
+  # written in, and it found twelve pages whose `<!--{ "Title": ... }-->` had
+  # come back as `---` / `Title: ...` / `---`. internal/web/page.go reads the two
+  # forms differently and lowercases the keys of only the first, so those pages
+  # had quietly lost their titles and their template flag, and four of them kept
+  # the object and wrapped fences round the outside, which stops the page
+  # rendering at all. L09 passed every one, because it compares the key names
+  # and the key names had not changed. `godev repair` put the English's bracket
+  # back on all twelve.
+  #
+  # A read of the diff then found three more that no gate was looking for: a
+  # testdata fixture translated, the third line of the Go license header
+  # translated where L18 checks only the first two, and every leading tab in
+  # three files flattened to a single space outside any fence. Those are the
+  # translator's #56.
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -181,7 +213,7 @@ jobs:
       # exactly when it is worth reading.
       - name: audit
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn audit -max 6 -report audit.md
+        run: go run ./cmd/godev -C ../godev-vn audit -report audit.md
 
       - uses: actions/upload-artifact@v7
         if: always()

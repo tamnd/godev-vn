@@ -396,68 +396,71 @@ Các thao tác khóa công khai và riêng tư hiện nhanh hơn tới hai lần
 
 #### [`crypto/sha1`](/pkg/crypto/sha1/)
 
-Giá trị được trả về bởi [`sha1.New`](/pkg/sha1#New) hiện cũng triển khai interface [`encoding.BinaryAppender`](/pkg/encoding#BinaryAppender).
+Giá trị được trả về bởi [`sha1.New`](/pkg/sha1#New) hiện cũng triển khai
+interface [`encoding.BinaryAppender`](/pkg/encoding#BinaryAppender).
 
 #### [`crypto/sha256`](/pkg/crypto/sha256/)
 
 Các giá trị được trả về bởi [`sha256.New`](/pkg/sha256#New) và
-[`sha256.New224`](/pkg/sha256#New224) hiện cũng triển khai interface
-[`encoding.BinaryAppender`](/pkg/encoding#BinaryAppender).
+[`sha256.New224`](/pkg/sha256#New224) hiện cũng triển khai
+interface [`encoding.BinaryAppender`](/pkg/encoding#BinaryAppender).
 
 #### [`crypto/sha512`](/pkg/crypto/sha512/)
 
 Các giá trị được trả về bởi [`sha512.New`](/pkg/sha512#New),
 [`sha512.New384`](/pkg/sha512#New384),
 [`sha512.New512_224`](/pkg/sha512#New512_224) và
-[`sha512.New512_256`](/pkg/sha512#New512_256) hiện cũng triển khai interface
-[`encoding.BinaryAppender`](/pkg/encoding#BinaryAppender).
+[`sha512.New512_256`](/pkg/sha512#New512_256) hiện cũng triển khai
+interface [`encoding.BinaryAppender`](/pkg/encoding#BinaryAppender).
 
 #### [`crypto/subtle`](/pkg/crypto/subtle/)
 
 Hàm mới [`WithDataIndependentTiming`](/pkg/crypto/subtle#WithDataIndependentTiming)
-cho phép người dùng chạy một hàm với các tính năng cụ thể của kiến trúc được
-bật, nhằm đảm bảo các lệnh cụ thể có thời gian thực thi không phụ thuộc vào giá trị dữ liệu.
-Điều này có thể được dùng để đảm bảo mã được thiết kế để chạy trong thời gian hằng
-không bị các tính năng ở mức CPU tối ưu hóa theo cách khiến nó hoạt động với thời
-gian thay đổi.
-Hiện tại, `WithDataIndependentTiming` sử dụng bit PSTATE.DIT trên arm64 và
-không thực hiện thao tác nào trên tất cả kiến trúc khác. [Thiết lập GODEBUG](/doc/godebug)
+cho phép bạn chạy một hàm với các tính năng cụ thể của kiến trúc được bật, đảm bảo
+các chỉ thị cụ thể có thời gian thực thi không phụ thuộc vào giá trị dữ liệu.
+Điều này có thể được dùng để đảm bảo mã được thiết kế để chạy trong thời gian
+hằng số không bị tối ưu hóa bởi các tính năng ở mức CPU khiến nó hoạt động với
+thời gian thay đổi.
+Hiện tại, `WithDataIndependentTiming` sử dụng bit PSTATE.DIT trên arm64 và là
+một thao tác không làm gì trên tất cả kiến trúc khác. [Thiết lập GODEBUG](/doc/godebug)
 `dataindependenttiming=1` bật chế độ DIT cho toàn bộ chương trình Go.
 
 <!-- CL 622276 -->
-Đầu ra của [`XORBytes`](/pkg/crypto/subtle#XORBytes) phải chồng lấp chính xác
-hoặc hoàn toàn không chồng lấp với các đầu vào. Trước đây, hành vi này không được
-xác định, còn hiện tại `XORBytes` sẽ panic.
+Đầu ra của [`XORBytes`](/pkg/crypto/subtle#XORBytes) phải chồng lấp chính xác hoặc
+hoàn toàn không chồng lấp với các đầu vào. Trước đây, hành vi này không được xác
+định, còn hiện tại `XORBytes` sẽ panic.
 
 #### [`crypto/tls`](/pkg/crypto/tls/)
 
 Máy chủ TLS hiện hỗ trợ Encrypted Client Hello (ECH). Tính năng này có thể được
-bật bằng cách điền trường [`Config.EncryptedClientHelloKeys`](/pkg/crypto/tls#Config.EncryptedClientHelloKeys).
+bật bằng cách điền trường
+[`Config.EncryptedClientHelloKeys`](/pkg/crypto/tls#Config.EncryptedClientHelloKeys).
 
 Cơ chế trao đổi khóa hậu lượng tử mới [`X25519MLKEM768`](/pkg/crypto/tls#X25519MLKEM768)
-hiện được hỗ trợ và được bật theo mặc định khi
+hiện được hỗ trợ và được bật mặc định khi
 [`Config.CurvePreferences`](/pkg/crypto/tls#Config.CurvePreferences) là nil.
 [Thiết lập GODEBUG](/doc/godebug) `tlsmlkem=0` khôi phục mặc định.
-Điều này có thể hữu ích khi xử lý các máy chủ TLS bị lỗi không xử lý đúng các bản ghi lớn,
-gây ra hết thời gian chờ trong quá trình bắt tay (xem [TLS post-quantum TL;DR fail](https://tldr.fail/)).
+Điều này có thể hữu ích khi làm việc với các máy chủ TLS bị lỗi không xử lý đúng
+các bản ghi lớn, gây ra hết thời gian chờ trong quá trình bắt tay (xem
+[TLS post-quantum TL;DR fail](https://tldr.fail/)).
 
-Hỗ trợ cho cơ chế trao đổi khóa thử nghiệm `X25519Kyber768Draft00` đã bị xóa.
+Hỗ trợ cho cơ chế trao đổi khóa thử nghiệm `X25519Kyber768Draft00` đã bị loại bỏ.
 
 <!-- go.dev/issue/69393, CL 630775 -->
-Thứ tự trao đổi khóa hiện được xử lý hoàn toàn bởi gói `crypto/tls`. Thứ tự của
-[`Config.CurvePreferences`](/pkg/crypto/tls#Config.CurvePreferences) hiện bị bỏ qua,
-và nội dung của trường này chỉ được dùng để xác định những cơ chế trao đổi khóa nào
-sẽ được bật khi trường được điền.
+Việc sắp xếp thứ tự trao đổi khóa hiện được xử lý hoàn toàn bởi gói
+`crypto/tls`. Thứ tự của [`Config.CurvePreferences`](/pkg/crypto/tls#Config.CurvePreferences)
+hiện bị bỏ qua, và nội dung của nó chỉ được dùng để xác định những cơ chế trao đổi
+khóa nào cần bật khi trường này được điền.
 
 <!-- go.dev/issue/32936 -->
 Trường mới [`ClientHelloInfo.Extensions`](/pkg/crypto/tls#ClientHelloInfo.Extensions)
-liệt kê ID của các phần mở rộng nhận được trong thông báo Client Hello.
-Điều này có thể hữu ích cho việc nhận dạng dấu vân tay của máy khách TLS.
+liệt kê các ID của những phần mở rộng nhận được trong thông điệp Client Hello.
+Điều này có thể hữu ích cho việc tạo dấu vân tay của các máy khách TLS.
 
 <!-- go.dev/issue/72111, documented retro-actively after Go 1.27 release -->
 
-Thiết lập `tlskyber` `GODEBUG` (được thêm trong [Go 1.23](/doc/godebug#go-123))
-đã bị xóa.
+Thiết lập `tlskyber` `GODEBUG` (được thêm vào trong [Go 1.23](/doc/godebug#go-123))
+đã bị loại bỏ.
 
 #### [`crypto/x509`](/pkg/crypto/x509/)
 
@@ -530,7 +533,7 @@ Nếu cả `omitempty` và `omitzero` được chỉ định, trường sẽ b�
 
 #### [`go/types`](/pkg/go/types/)
 
-Tất cả cấu trúc dữ liệu `go/types` cung cấp các chuỗi thông qua một cặp phương thức như `Len() int` và `At(int) T` giờ đây cũng có các phương thức trả về iterator, cho phép bạn đơn giản hóa mã như sau:
+Tất cả cấu trúc dữ liệu `go/types` cung cấp các chuỗi thông qua cặp phương thức như `Len() int` và `At(int) T` giờ đây cũng có các phương thức trả về iterator, cho phép bạn đơn giản hóa mã như sau:
 
 ```
 params := fn.Type.(*types.Signature).Params()

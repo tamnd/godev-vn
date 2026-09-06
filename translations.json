@@ -2,7 +2,11 @@
   "records": {
     "AUTHORS.md": {
       "english_sha256": "4294c210e26fd688c11dd588ed7c49468ea74a2cebee8904414c213adab894b9",
-      "at": "2026-03-29"
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 2
     },
     "CONTRIBUTORS.md": {
       "english_sha256": "6cf1e7d095d8d1a8633884234f17b03dfae83a092718ea1f2bce6da491bb86a2",
@@ -26,12 +30,16 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "blog/10years.md": {
       "english_sha256": "e6ea6fdbe9cce7d17f5b93d41f08e81f688431611a8f7508dba961accf3c6e6f",
-      "at": "2026-03-29"
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 2
     },
     "blog/11years.md": {
       "english_sha256": "c848dad00bd3a3075b3aa732ab146acf3acff2212c558871c0a366791fe7182e",
@@ -230,7 +238,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 2
     },
     "blog/conduct-2018.md": {
@@ -266,7 +274,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-06",
       "chunks": 7
     },
     "blog/contributors-summit.md": {
@@ -438,7 +446,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-06",
       "chunks": 7
     },
     "blog/generic-methods.md": {
@@ -446,7 +454,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 4
     },
     "blog/generic-slice-functions.md": {
@@ -786,7 +794,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 3
     },
     "blog/go1.24.md": {
@@ -806,7 +814,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 3
     },
     "blog/go1.3.md": {
@@ -1014,9 +1022,8 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
-      "chunks": 9,
-      "english": 2
+      "at": "2026-09-06",
+      "chunks": 9
     },
     "blog/integration-test-coverage.md": {
       "english_sha256": "c704094b3319b07e9fe39996d27590cb059e98531a8647803c3ec1e57b1ff993",
@@ -1103,7 +1110,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 5
     },
     "blog/jsonv2-exp.md": {
@@ -1400,7 +1407,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 6
     },
     "blog/survey2016/dev.html": {
@@ -1408,7 +1415,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 5
     },
     "blog/survey2016/quotes.html": {
@@ -1416,7 +1423,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "blog/survey2016/usage.html": {
@@ -1424,7 +1431,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 8
     },
     "blog/survey2017-results.md": {
@@ -1440,7 +1447,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 7
     },
     "blog/survey2017/community.html": {
@@ -1448,7 +1455,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 6
     },
     "blog/survey2017/usage.html": {
@@ -1456,7 +1463,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 8
     },
     "blog/survey2018-company.md": {
@@ -1548,7 +1555,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 8
     },
     "blog/sydney-gtug.md": {
@@ -1724,7 +1731,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "brand.md": {
@@ -1740,7 +1747,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "conduct.html": {
@@ -1872,7 +1879,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "doc/devel/pre_go1.html": {
@@ -1900,7 +1907,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 35
     },
     "doc/faq.md": {
@@ -1992,7 +1999,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-02",
+      "at": "2026-09-06",
       "chunks": 18
     },
     "doc/go1.25.md": {
@@ -2066,7 +2073,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 11
     },
     "doc/install.html": {
@@ -2100,7 +2107,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 3
     },
     "doc/modules/developing.md": {
@@ -2112,7 +2119,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 11
     },
     "doc/modules/layout.md": {
@@ -2173,7 +2180,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 5
     },
     "doc/security/fuzz/index.md": {
@@ -2189,7 +2196,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 3
     },
     "doc/security/policy.md": {
@@ -2197,7 +2204,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 5
     },
     "doc/security/threat-model.md": {
@@ -2205,7 +2212,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 2
     },
     "doc/security/vuln/cna.md": {
@@ -2269,7 +2276,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 3
     },
     "doc/tutorial/database-access.md": {
@@ -2281,7 +2288,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 10
     },
     "doc/tutorial/generics.md": {
@@ -2289,9 +2296,8 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
-      "chunks": 8,
-      "english": 2
+      "at": "2026-09-06",
+      "chunks": 8
     },
     "doc/tutorial/getting-started.html": {
       "english_sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd",
@@ -2306,9 +2312,8 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
-      "chunks": 4,
-      "english": 2
+      "at": "2026-09-06",
+      "chunks": 4
     },
     "doc/tutorial/greetings-multiple-people.html": {
       "english_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
@@ -2323,7 +2328,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 2
     },
     "doc/tutorial/json.md": {
@@ -2364,16 +2369,15 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
-      "chunks": 1,
-      "english": 1
+      "at": "2026-09-06",
+      "chunks": 1
     },
     "gopls/doc/default.tmpl": {
       "english_sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a",
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server2",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "gopls/doc/index.md": {
@@ -2429,7 +2433,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "pkg.tmpl": {
@@ -2462,7 +2466,7 @@
       "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
       "route": "server3",
       "model": "gpt-5",
-      "at": "2026-09-05",
+      "at": "2026-09-06",
       "chunks": 1
     },
     "ref/index.md": {
@@ -2470,8 +2474,12 @@
       "at": "2026-03-30"
     },
     "ref/mod.md": {
-      "english_sha256": "3ebb719ef9c7bfad51379749633abbb820994fe116c32f391c0039cdd5da0f4a",
-      "at": "2026-03-31"
+      "english_sha256": "b3176abbe34fca9ab499843e378b5c5f04b2ea3e46e2071d1195495995f08e37",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 61
     },
     "resources.yaml": {
       "english_sha256": "03bf7818f86cc4b873badc61b3b993642e1cb5daf80b38366865ecabed0b2a53",
@@ -2637,6 +2645,14 @@
       "english_sha256": "6cb9e134e93f5e217fbc6436e88c5f88d0934028dbe150f327e6595904a2437d",
       "at": "2026-03-30"
     },
+    "src/default.tmpl": {
+      "english_sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
     "talks/2010/go_talk-20100112.html": {
       "english_sha256": "8379fbae352857c4feab263ad1b95dd6c9c2a524b80fd5ba34c7c5568f0be501",
       "at": "2026-03-30"
@@ -2681,9 +2697,25 @@
       "english_sha256": "05f57c59663057403c1ce1f87fa60c4e04797c9890666ed71717692747fe51db",
       "at": "2026-03-30"
     },
+    "talks/2012/insidepresent/wire.html": {
+      "english_sha256": "5d75be37761bfcce70d4e2e95d26bff7ffe4137c8427abc62bfadfe7350278f6",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
     "talks/2012/simple.slide": {
       "english_sha256": "0f3f623e99bc9de28bb9dc6f0e2f862f5a0da865dee17fd5e260a6821e783233",
       "at": "2026-03-30"
+    },
+    "talks/2012/simple/webfront/testdata/index.html": {
+      "english_sha256": "fa2d3e8c5a36d7598ad542890bd2b641b7b7572e079e7d111ddd7f95c2a45dfe",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
     },
     "talks/2012/splash.article": {
       "english_sha256": "3b04689be31dfdd472ed1612a9b261c9323730d94be712894581c47c1e7e64b6",
@@ -2736,6 +2768,30 @@
     "talks/2013/highperf/cachingembed.html": {
       "english_sha256": "502287972b22aac577377a80ff581b9fea9543d114f41b3930ed72b420f550c2",
       "at": "2026-03-30"
+    },
+    "talks/2013/highperf/mart/1/app.yaml": {
+      "english_sha256": "853111916620e341a66425c043a7cd63ff9c1584312be8ac1305027e90c8ec82",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
+    "talks/2013/highperf/mart/3/app.yaml": {
+      "english_sha256": "e4a3fba56a1b56ba2cf8f9830c52cd32488c460612517c321d81e9c30ac038fc",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
+    "talks/2013/highperf/santaembed.html": {
+      "english_sha256": "c492a95d4a66995cefe6de46cc87d69821f5d2542147b7828a20ac8175d6f83d",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
     },
     "talks/2013/oscon-dl.slide": {
       "english_sha256": "37dc39cc844ee1580fabe0dce4154aaacef1d2abd50ebb2af868f1aa36f67637",
@@ -2885,6 +2941,14 @@
       "english_sha256": "6f4dcc4c1aae1cf3d204772358cb68cfb4df5ffdc7200d76756bcd429062280e",
       "at": "2026-03-30"
     },
+    "talks/2015/keeping-up/gource_explosion.html": {
+      "english_sha256": "b9d5c7d729cd5dfd4a3e81b9228944edbd25b6c508f4b21f58ea8633df7085e9",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
     "talks/2015/simplicity-is-complicated.slide": {
       "english_sha256": "b47478af1955b594112789763d2ddfc40b4f4d53fddca919ac7c5e1d808d5c40",
       "at": "2026-03-30"
@@ -2900,6 +2964,14 @@
     "talks/2015/tricks.slide": {
       "english_sha256": "d442397ad2c0edc6dc8a78e88bcfe2da7674803934279cf9ac5f03242423b328",
       "at": "2026-03-30"
+    },
+    "talks/2015/using-go-types-for-tools.html": {
+      "english_sha256": "a66dd4e8c12cebcf891ac38c991c31caa9e1c076b99d4ad8345ca96bb1e33743",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
     },
     "talks/2016/applicative.slide": {
       "english_sha256": "686b930b48ee86ad37b843df48308dd0df6de72b1cb733f0986a6622872a0d50",
@@ -2961,6 +3033,15 @@
       "english_sha256": "d2451434eb734b040de6fd1cff9a398c2b0e696637d50bd5e1443988c0e7169b",
       "at": "2026-03-30"
     },
+    "talks/article.tmpl": {
+      "english_sha256": "82fd743dc3382138449ea1127b6862a57ca88d003a8b4d1709514f7ed9009820",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1,
+      "english": 1
+    },
     "talks/dir.tmpl": {
       "english_sha256": "e7b84799fba8aa656d05c46f77b7877388cd30b8b46ad3e247eeb21b433688f6",
       "at": "2026-03-30"
@@ -2982,28 +3063,44 @@
       "at": "2026-03-30"
     },
     "tour/basics.article": {
-      "english_sha256": "16fdded44f3c3acd8fdea03eef9913333a2850396e119dd0d464ae01abf9837c",
-      "at": "2026-03-30"
+      "english_sha256": "1bed8a29ace157da2620d465ff65ff1dd6a0ae8b425dd6440b733aa6bfb1ce4d",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 3
     },
     "tour/concurrency.article": {
       "english_sha256": "83e3871d1591d90c14ac6538d9a737fa17c85f63077b18d3cb50d958df63a515",
       "at": "2026-03-30"
     },
     "tour/flowcontrol.article": {
-      "english_sha256": "4b3fb3f99df5f7231fba86f1646c58ff4e6b8a391c106301de604b215cb5766e",
-      "at": "2026-03-30"
+      "english_sha256": "024a07db02f6476bbd686a8a8370120f5ea031a4ca8121d18e8e2e3b18710e6c",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 3
     },
     "tour/generics.article": {
       "english_sha256": "8182e3b9d553bc1cb3757104a2efb50adaa50d2edf6bc5071beee810f11186df",
       "at": "2026-03-30"
     },
     "tour/methods.article": {
-      "english_sha256": "c080bf24bc92086aceeffe07332116bb39010e1e8a518237c0420b50c04ae68f",
-      "at": "2026-03-30"
+      "english_sha256": "c2323c8c35db26bd14cc374c9ac889ebc071e0236054cfb62c331867aa450d87",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 7
     },
     "tour/moretypes.article": {
-      "english_sha256": "6dd6157e7da29fdc33cce521daf0e57594ca43e90693ec7f5f1be5a3011c85ce",
-      "at": "2026-03-30"
+      "english_sha256": "12cbd01c6ee3ecfc3ed1b91d51478eed0c7153e8f5f8abebe1da58920144e205",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 5
     },
     "tour/static/partials/editor.html": {
       "english_sha256": "a4c198ff7bb24bd02aeb5e682e9fe2198742d47ddd3de291554c1c178c4a9308",
@@ -3013,6 +3110,14 @@
       "english_sha256": "13c33a8869b9afeb14f7d6b6ca769d023e84343886e13a5e0c9504e23b449ed7",
       "at": "2026-03-30"
     },
+    "tour/static/partials/lesson.html": {
+      "english_sha256": "a0a398aa091b075465a00c565bb9960180a278aee3343f6fd50deedf0cf94864",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
     "tour/static/partials/list.html": {
       "english_sha256": "7b977137723d2be9b8dc3023f9c9817f6319057c086291dca52eb0e5fa103370",
       "at": "2026-03-30"
@@ -3021,17 +3126,46 @@
       "english_sha256": "58966d1f04de1bd90a8489efdec9232cb6f212a5ef6e1c260b4b1028bd95e604",
       "at": "2026-03-30"
     },
+    "tour/static/partials/toc.html": {
+      "english_sha256": "960edb464cc8c2b40b94c3c2db7bef777b69eba421bbdd08a922f3bf1deefaaf",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
+    },
+    "tour/template/action.tmpl": {
+      "english_sha256": "db4cb2b06a009d226e7bc42388a4a1e61a31143a388daa36594e7c21314315e0",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1,
+      "english": 1
+    },
     "tour/template/index.tmpl": {
       "english_sha256": "9df52fbb399bba7cb10ca739a0c6dc703c8f8011c41e8399ea283299243382a2",
       "at": "2026-03-30"
     },
     "tour/welcome.article": {
-      "english_sha256": "c58a8032c5be523406e25925a930eb44dabc96e57b14c344beedf61347707d23",
-      "at": "2026-03-30"
+      "english_sha256": "44d8a077267849286bbb38b150c1349ca1b13162eeec7abac0a5ba821a8281af",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server2",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 2
     },
     "wiki/Comments.md": {
       "english_sha256": "878f32cf21a94b12708da76e40a1dc4b96ded5fb7a90946d037f7b452675f104",
       "at": "2026-03-30"
+    },
+    "wiki/default.tmpl": {
+      "english_sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a",
+      "prompt_sha256": "146e73c2257244304a9faab2f1ddb89499f7ea5685607078e111de70e36944fc",
+      "route": "server3",
+      "model": "gpt-5",
+      "at": "2026-09-06",
+      "chunks": 1
     },
     "wiki/index.md": {
       "english_sha256": "ed54513c18dfa01c959bce60bccbb865e8d4b31aa542e24267abaf769576879a",

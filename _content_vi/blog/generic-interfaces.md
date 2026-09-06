@@ -1,5 +1,5 @@
 ---
-title: Interface generic
+title: Các interface generic
 date: 2025-07-07
 by:
 - Axel Wagner
@@ -7,7 +7,7 @@ tags:
 - type parameters
 - generics
 - interfaces
-summary: Thêm tham số kiểu vào các kiểu interface mang lại sức mạnh đáng ngạc nhiên
+summary: Việc thêm tham số kiểu vào các kiểu interface có sức mạnh đáng ngạc nhiên
 template: true
 ---
 

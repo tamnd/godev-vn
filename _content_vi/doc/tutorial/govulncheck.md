@@ -1,8 +1,8 @@
----
-Title: Hướng dẫn: Tìm và khắc phục các phần phụ thuộc có lỗ hổng bằng govulncheck
-HideTOC: true
-Breadcrumb: true
----
+<!--{
+  "Title": "Hướng dẫn: Tìm và khắc phục các phần phụ thuộc có lỗ hổng bằng govulncheck",
+  "HideTOC": true,
+  "Breadcrumb": true
+}-->
 
 Govulncheck là một công cụ có ít nhiễu giúp bạn tìm và sửa các dependency dễ bị lỗ hổng bảo mật trong các dự án Go của mình. Công cụ này thực hiện bằng cách quét các dependency của dự án để tìm các lỗ hổng bảo mật đã biết, sau đó xác định mọi lệnh gọi trực tiếp hoặc gián tiếp đến các lỗ hổng đó trong mã của bạn.
 
@@ -124,21 +124,21 @@ require golang.org/x/text v0.3.5
 Bây giờ, hãy xem govulncheck hoạt động như thế nào.
 
 
-## Install and run govulncheck
+## Cài đặt và chạy govulncheck
 
-**Step 6.** Install govulncheck with the `go install` command:
+**Bước 6.** Cài đặt govulncheck bằng lệnh `go install`:
 
 ```
 $ go install golang.org/x/vuln/cmd/govulncheck@latest
 ```
 
-**Step 7.** From the folder you want to analyze (in this case, `vuln-tutorial`). Run:
+**Bước 7.** Từ thư mục bạn muốn phân tích (trong trường hợp này là `vuln-tutorial`). Chạy:
 
 ```
 $ govulncheck ./...
 ```
 
-You should see this output:
+Bạn sẽ thấy đầu ra sau:
 
 ```
 govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
@@ -181,80 +181,69 @@ Vulnerability #1: GO-2022-1059
 
 ```
 
-### Interpreting the output
+### Diễn giải đầu ra
 
-<font size="2">  *Note: If you are not using the latest version of Go,
-you may see additional vulnerabilities from the standard library. </font>
+<font size="2">  *Lưu ý: Nếu bạn không sử dụng phiên bản Go mới nhất,
+bạn có thể thấy thêm các lỗ hổng bảo mật từ thư viện chuẩn. </font>
 
-Our code is affected by one vulnerability,
-[GO-2021-0113](https://pkg.go.dev/vuln/GO-2021-0113), because it directly calls
-the `Parse` function of `golang.org/x/text/language` at a vulnerable version
+Mã của chúng ta bị ảnh hưởng bởi một lỗ hổng bảo mật,
+[GO-2021-0113](https://pkg.go.dev/vuln/GO-2021-0113), vì nó gọi trực tiếp
+hàm `Parse` của `golang.org/x/text/language` ở một phiên bản có lỗ hổng
 (v0.3.5).
 
-Another vulnerability, [GO-2022-1059](https://pkg.go.dev/vuln/GO-2022-1059),
-exists in the `golang.org/x/text` module at v0.3.5.  However, it is reported as
-"Informational" because our code never (directly or indirectly) calls any of
-its vulnerable functions.
+Một lỗ hổng bảo mật khác, [GO-2022-1059](https://pkg.go.dev/vuln/GO-2022-1059),
+tồn tại trong module `golang.org/x/text` ở v0.3.5. Tuy nhiên, nó được báo cáo là
+"Informational" vì mã của chúng ta không bao giờ gọi (trực tiếp hoặc gián tiếp)
+bất kỳ hàm nào có lỗ hổng bảo mật của module này.
 
-Now, let's evaluate the vulnerabilities and determine an action to take.
+Bây giờ, hãy đánh giá các lỗ hổng bảo mật và xác định hành động cần thực hiện.
 
-### Evaluate vulnerabilities
+### Đánh giá các lỗ hổng bảo mật
 
-a. Evaluate vulnerabilities.
+a. Đánh giá các lỗ hổng bảo mật.
 
-First, read the description of the vulnerability and determine if it actually
-applies to your code and your use case. If you need more information, visit
-the "More info" link.
+Trước tiên, hãy đọc mô tả của lỗ hổng bảo mật và xác định liệu lỗ hổng đó có thực sự áp dụng cho mã của bạn và trường hợp sử dụng của bạn hay không. Nếu cần thêm thông tin, hãy truy cập liên kết "Thông tin thêm".
 
-Based on the description, vulnerability GO-2021-0113 can cause a panic when
-`Parse` is used to process untrusted user inputs. Let's suppose that we intend
-our program to withstand untrusted inputs, and we are concerned about denial of
-service, so the vulnerability likely applies.
+Dựa trên mô tả, lỗ hổng bảo mật GO-2021-0113 có thể gây ra panic khi `Parse` được sử dụng để xử lý các đầu vào không đáng tin cậy từ người dùng. Giả sử rằng chúng ta muốn chương trình của mình có thể chịu được các đầu vào không đáng tin cậy và chúng ta quan tâm đến việc bị từ chối dịch vụ, do đó lỗ hổng này có khả năng áp dụng.
 
-GO-2022-1059 likely does not affect our code, because our code does not call
-any vulnerable functions from that report.
+GO-2022-1059 có khả năng không ảnh hưởng đến mã của chúng ta, vì mã của chúng ta không gọi bất kỳ hàm dễ bị tổn thương nào từ báo cáo đó.
 
-b. Decide on an action.
+b. Quyết định hành động.
 
-To mitigate GO-2021-0113, we have a few options:
-- **Option 1: Upgrade to a fixed version.** If there is a fix available,
-  we can remove a vulnerable dependency by upgrading to a fixed version of the module.
-- **Option 2: Stop using the vulnerable symbol(s).** We could choose to
-  remove all calls to the vulnerable function in our code.
-  We would need to find an alternative or implement it ourselves.
+Để giảm thiểu GO-2021-0113, chúng ta có một số tùy chọn:
+- **Tùy chọn 1: Nâng cấp lên phiên bản đã được sửa lỗi.** Nếu có bản sửa lỗi, chúng ta có thể loại bỏ một dependency dễ bị tổn thương bằng cách nâng cấp lên phiên bản đã được sửa lỗi của module.
+- **Tùy chọn 2: Ngừng sử dụng các ký hiệu dễ bị tổn thương.** Chúng ta có thể chọn loại bỏ tất cả các lệnh gọi đến hàm dễ bị tổn thương trong mã của mình.
+  Chúng ta sẽ cần tìm một giải pháp thay thế hoặc tự triển khai nó.
 
-In this case, a fix is available, and the `Parse` function is integral to our
-program. Let's upgrade our dependency to the "fixed in" version, v0.3.7.
+Trong trường hợp này, đã có bản sửa lỗi và hàm `Parse` là phần không thể thiếu trong chương trình của chúng ta. Hãy nâng cấp dependency của chúng ta lên phiên bản "fixed in", v0.3.7.
 
-We decided to deprioritize fixing the informational vulnerability,
-GO-2022-1059, but because it is in the same module as GO-2021-0113, and because the fixed in version for it is v0.3.8, we can
-easily remove both at the same time by upgrading to v0.3.8.
+Chúng ta đã quyết định ưu tiên thấp hơn việc sửa lỗ hổng bảo mật chỉ mang tính thông tin, GO-2022-1059, nhưng vì nó nằm trong cùng module với GO-2021-0113, và vì phiên bản fixed in của nó là v0.3.8, chúng ta có thể dễ dàng loại bỏ cả hai cùng lúc bằng cách nâng cấp lên v0.3.8.
 
-## Upgrade vulnerable dependencies
+## Nâng cấp các dependency dễ bị tổn thương
 
-Luckily, upgrading vulnerable dependencies is quite simple.
+May mắn là việc nâng cấp các dependency dễ bị tổn thương khá đơn giản.
 
-**Step 8.** Upgrade `golang.org/x/text` to v0.3.8:
+**Bước 8.** Nâng cấp `golang.org/x/text` lên v0.3.8:
 
 ```
 $ go get golang.org/x/text@v0.3.8
 ```
 
-You should see this output:
+Bạn sẽ thấy kết quả sau:
 
 ```
 go: upgraded golang.org/x/text v0.3.5 => v0.3.8
 ```
 
-(Note that we could have also chosen to upgrade to `latest`, or any other version after v0.3.8).
+(Lưu ý rằng chúng ta cũng có thể chọn nâng cấp lên `latest` hoặc bất kỳ phiên bản nào khác sau v0.3.8).
 
-**Step 9.** Now run govulncheck again:
+**Bước 9.** Bây giờ hãy chạy govulncheck lần nữa:
 
 ```
 $ govulncheck ./...
 ```
 
-You will now see this output:
+Bây giờ bạn sẽ thấy kết quả sau:
 
 ```
 govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
@@ -266,8 +255,6 @@ Scanning your code and 46 packages across 1 dependent module for known vulnerabi
 No vulnerabilities found.
 ```
 
-Finally, govulncheck confirms that there are no vulnerabilities found.
+Cuối cùng, govulncheck xác nhận rằng không tìm thấy lỗ hổng bảo mật nào.
 
-By regularly scanning your dependencies with command govulncheck, you can
-safeguard your codebase by identifying, prioritizing, and addressing
-vulnerabilities.
+Bằng cách thường xuyên quét các dependency của bạn bằng lệnh govulncheck, bạn có thể bảo vệ codebase của mình bằng cách xác định, ưu tiên và xử lý các lỗ hổng bảo mật.

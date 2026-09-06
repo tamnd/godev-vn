@@ -1,200 +1,205 @@
 Phương thức và interface
-Bài học này đề cập đến phương thức và interface, các cấu trúc xác định đối tượng và hành vi của chúng.
+Bài học này trình bày về các phương thức và interface, các cấu trúc định nghĩa đối tượng và hành vi của chúng.
 
-The Go Authors
+Các tác giả Go
 https://golang.org
 
 * Phương thức
 
-Go không có lớp (class).
-Tuy nhiên, bạn có thể định nghĩa phương thức trên các kiểu.
+Go không có lớp.
+Tuy nhiên, bạn có thể định nghĩa các phương thức trên kiểu.
 
-Một phương thức là một hàm với đối số _receiver_ đặc biệt.
+Một phương thức là một hàm có một đối số _receiver_ đặc biệt.
 
-Receiver xuất hiện trong danh sách đối số của nó giữa từ khóa `func` và
+Receiver xuất hiện trong danh sách đối số riêng của nó giữa từ khóa `func` và
 tên phương thức.
 
-Trong ví dụ này, phương thức `Abs` có receiver kiểu `Vertex` tên là `v`.
+Trong ví dụ này, phương thức `Abs` có một receiver thuộc kiểu `Vertex` với tên
+`v`.
 
 .play methods/methods.go
 
-* Phương thức là hàm
+* Phương thức là các hàm
 
-Nhớ lại: một phương thức chỉ là một hàm có đối số receiver.
+Hãy nhớ: một phương thức chỉ là một hàm với một đối số receiver.
 
-Đây là `Abs` được viết như một hàm thông thường mà không thay đổi chức năng.
+Đây là `Abs` được viết như một hàm thông thường mà không có thay đổi về chức
+năng.
 
 .play methods/methods-funcs.go
 
-* Phương thức (tiếp theo)
+* Tiếp tục về phương thức
 
-Bạn cũng có thể khai báo phương thức trên các kiểu không phải struct.
+Bạn cũng có thể khai báo một phương thức trên các kiểu không phải struct.
 
-Trong ví dụ này ta thấy một kiểu số `MyFloat` với phương thức `Abs`.
+Trong ví dụ này, chúng ta thấy một kiểu số `MyFloat` với một phương thức `Abs`.
 
-Bạn chỉ có thể khai báo phương thức với receiver có kiểu được định nghĩa trong cùng
-package với phương thức.
-Bạn không thể khai báo phương thức với receiver có kiểu được định nghĩa ở package khác
-(điều này bao gồm các kiểu built-in như `int`).
+Bạn chỉ có thể khai báo một phương thức với receiver có kiểu được định nghĩa
+trong cùng package với phương thức đó.
+Bạn không thể khai báo một phương thức với receiver có kiểu được định nghĩa
+trong package khác (bao gồm các kiểu dựng sẵn như `int`).
 
 .play methods/methods-continued.go
 
-* Receiver con trỏ
+* Pointer receiver
 
-Bạn có thể khai báo phương thức với receiver con trỏ.
+Bạn có thể khai báo các phương thức với pointer receiver.
 
-Điều này có nghĩa là kiểu receiver có cú pháp literal là `*T` với kiểu `T` nào đó.
-(Ngoài ra, `T` bản thân không thể là con trỏ như `*int`.)
+Điều này có nghĩa là kiểu receiver có cú pháp trực tiếp là `*T` với một kiểu
+`T` nào đó.
+(Ngoài ra, `T` không thể tự nó là một pointer như `*int`.)
 
 Ví dụ, phương thức `Scale` ở đây được định nghĩa trên `*Vertex`.
 
-Các phương thức với receiver con trỏ có thể thay đổi giá trị mà receiver
-trỏ đến (như `Scale` làm ở đây).
-Vì phương thức thường cần thay đổi receiver, receiver con trỏ phổ biến
-hơn receiver giá trị.
+Các phương thức với pointer receiver có thể thay đổi giá trị mà receiver trỏ
+tới (như `Scale` thực hiện ở đây).
+Vì các phương thức thường cần thay đổi receiver của chúng, pointer receiver
+phổ biến hơn value receiver.
 
-Hãy thử xóa `*` khỏi khai báo hàm `Scale` ở dòng 16
-và quan sát hành vi của chương trình thay đổi như thế nào.
+Hãy thử xóa `*` khỏi khai báo của hàm `Scale` ở dòng 16
+và quan sát cách hành vi của chương trình thay đổi.
 
-Với receiver giá trị, phương thức `Scale` hoạt động trên bản sao của giá trị
-`Vertex` gốc.
-(Đây là hành vi giống như với bất kỳ đối số hàm nào khác.)
-Phương thức `Scale` phải có receiver con trỏ để thay đổi giá trị `Vertex`
+Với value receiver, phương thức `Scale` hoạt động trên một bản sao của giá trị
+`Vertex` ban đầu.
+(Đây là cùng hành vi như với bất kỳ đối số hàm nào khác.)
+Phương thức `Scale` phải có một pointer receiver để thay đổi giá trị `Vertex`
 được khai báo trong hàm `main`.
 
 .play methods/methods-pointers.go
 
 * Con trỏ và hàm
 
-Ở đây ta thấy các phương thức `Abs` và `Scale` được viết lại thành hàm.
+Ở đây chúng ta thấy các phương thức `Abs` và `Scale` được viết lại dưới dạng hàm.
 
-Một lần nữa, hãy thử xóa `*` ở dòng 16.
-Bạn có thấy tại sao hành vi thay đổi không?
-Bạn cần thay đổi gì khác để ví dụ có thể biên dịch?
+Một lần nữa, hãy thử xóa `*` khỏi dòng 16.
+Bạn có thể thấy tại sao hành vi thay đổi không?
+Bạn còn cần thay đổi điều gì khác để ví dụ biên dịch được?
 
-(Nếu bạn chưa chắc chắn, hãy tiếp tục đến trang tiếp theo.)
+(Nếu bạn không chắc chắn, hãy tiếp tục sang trang tiếp theo.)
 
 .play methods/methods-pointers-explained.go
 
-* Phương thức và gián tiếp con trỏ
+* Phương thức và phép gián tiếp con trỏ
 
-So sánh hai chương trình trước, bạn có thể nhận thấy rằng
-các hàm với đối số con trỏ phải nhận một con trỏ:
+Khi so sánh hai chương trình trước đó, bạn có thể nhận thấy rằng
+các hàm có đối số là con trỏ phải nhận một con trỏ:
 
 	var v Vertex
-	ScaleFunc(v, 5)  // Compile error!
+	ScaleFunc(v, 5)  // Lỗi biên dịch!
 	ScaleFunc(&v, 5) // OK
 
-trong khi các phương thức với receiver con trỏ có thể nhận giá trị hoặc con trỏ làm
-receiver khi được gọi:
+trong khi các phương thức có receiver là con trỏ nhận cả giá trị hoặc con trỏ làm
+receiver khi chúng được gọi:
 
 	var v Vertex
 	v.Scale(5)  // OK
 	p := &v
 	p.Scale(10) // OK
 
-Với câu lệnh `v.Scale(5)`, mặc dù `v` là một giá trị chứ không phải con trỏ,
-phương thức với receiver con trỏ được gọi tự động.
-Tức là, để tiện lợi, Go diễn giải câu lệnh `v.Scale(5)` là
-`(&v).Scale(5)` vì phương thức `Scale` có receiver con trỏ.
+Đối với câu lệnh `v.Scale(5)`, mặc dù `v` là một giá trị chứ không phải con trỏ,
+phương thức có receiver là con trỏ vẫn được gọi tự động.
+Nghĩa là, để thuận tiện, Go diễn giải câu lệnh `v.Scale(5)` thành
+`(&v).Scale(5)` vì phương thức `Scale` có receiver là con trỏ.
 
 .play methods/indirection.go
 
-* Phương thức và gián tiếp con trỏ (2)
+* Phương thức và phép gián tiếp con trỏ (2)
 
-Điều tương đương xảy ra theo chiều ngược lại.
+Điều tương tự xảy ra theo hướng ngược lại.
 
-Các hàm nhận đối số giá trị phải nhận một giá trị của kiểu cụ thể đó:
+Các hàm nhận đối số là giá trị phải nhận một giá trị thuộc đúng kiểu đó:
 
 	var v Vertex
 	fmt.Println(AbsFunc(v))  // OK
-	fmt.Println(AbsFunc(&v)) // Compile error!
+	fmt.Println(AbsFunc(&v)) // Lỗi biên dịch!
 
-trong khi các phương thức với receiver giá trị có thể nhận giá trị hoặc con trỏ làm
-receiver khi được gọi:
+trong khi các phương thức có receiver là giá trị nhận cả giá trị hoặc con trỏ làm
+receiver khi chúng được gọi:
 
 	var v Vertex
 	fmt.Println(v.Abs()) // OK
 	p := &v
 	fmt.Println(p.Abs()) // OK
 
-Trong trường hợp này, lời gọi phương thức `p.Abs()` được hiểu là `(*p).Abs()`.
+Trong trường hợp này, lời gọi phương thức `p.Abs()` được diễn giải thành `(*p).Abs()`.
 
 .play methods/indirection-values.go
 
-* Chọn receiver giá trị hay con trỏ
+* Chọn receiver là giá trị hoặc con trỏ
 
-Có hai lý do để dùng receiver con trỏ.
+Có hai lý do để sử dụng receiver là con trỏ.
 
-Lý do đầu tiên là để phương thức có thể thay đổi giá trị mà receiver trỏ đến.
+Thứ nhất là để phương thức có thể thay đổi giá trị mà receiver của nó trỏ tới.
 
-Lý do thứ hai là để tránh sao chép giá trị trong mỗi lần gọi phương thức.
+Thứ hai là để tránh sao chép giá trị trong mỗi lần gọi phương thức.
 Điều này có thể hiệu quả hơn nếu receiver là một struct lớn, chẳng hạn.
 
-Trong ví dụ này, cả `Scale` và `Abs` đều là phương thức với receiver kiểu `*Vertex`,
-mặc dù phương thức `Abs` không cần thay đổi receiver.
+Trong ví dụ này, cả `Scale` và `Abs` đều là các phương thức có kiểu receiver là `*Vertex`,
+mặc dù phương thức `Abs` không cần thay đổi receiver của nó.
 
-Nhìn chung, tất cả các phương thức trên một kiểu nhất định nên có receiver giá trị hoặc
-receiver con trỏ, không nên kết hợp cả hai.
-(Chúng ta sẽ thấy lý do qua các trang tiếp theo.)
+Nói chung, tất cả các phương thức trên một kiểu nhất định nên có receiver là giá trị
+hoặc receiver là con trỏ, nhưng không nên trộn lẫn cả hai.
+(Chúng ta sẽ thấy lý do trong vài trang tiếp theo.)
 
 .play methods/methods-with-pointer-receivers.go
 
 * Interface
 
-Một _kiểu_interface_ được định nghĩa là một tập hợp các chữ ký phương thức.
+Một _kiểu interface_ được định nghĩa là một tập hợp các chữ ký của phương thức.
 
-Một giá trị của kiểu interface có thể chứa bất kỳ giá trị nào cài đặt các phương thức đó.
+Một giá trị thuộc kiểu interface có thể chứa bất kỳ giá trị nào triển khai các phương thức đó.
 
 *Lưu ý:* Có một lỗi trong mã ví dụ ở dòng 22.
-`Vertex` (kiểu giá trị) không cài đặt `Abser` vì
+`Vertex` (kiểu giá trị) không triển khai `Abser` vì
 phương thức `Abs` chỉ được định nghĩa trên `*Vertex` (kiểu con trỏ).
 
 .play methods/interfaces.go
 
-* Interface được cài đặt ngầm định
+* Interface được triển khai ngầm định
 
-Một kiểu cài đặt một interface bằng cách cài đặt các phương thức của nó.
-Không có khai báo ý định tường minh, không có từ khóa "implements".
+Một kiểu triển khai một interface bằng cách triển khai các phương thức của nó.
+Không có khai báo ý định rõ ràng nào, cũng không có từ khóa "implements".
 
-Interface ngầm định tách rời định nghĩa của interface khỏi
-cài đặt của nó, điều này có thể xuất hiện ở bất kỳ package nào mà không cần sắp xếp trước.
+Các interface ngầm định tách rời việc định nghĩa một interface khỏi phần
+triển khai của nó, phần triển khai này sau đó có thể xuất hiện trong bất kỳ
+package nào mà không cần sắp xếp trước.
 
 .play methods/interfaces-are-satisfied-implicitly.go
 
 * Giá trị interface
 
-Bên trong, giá trị interface có thể được coi là một tuple gồm một giá trị và một
-kiểu cụ thể:
+Bên dưới lớp trừu tượng, các giá trị interface có thể được xem như một bộ gồm
+một giá trị và một kiểu cụ thể:
 
 	(value, type)
 
-Một giá trị interface chứa một giá trị của một kiểu cụ thể bên dưới.
+Một giá trị interface chứa một giá trị thuộc một kiểu cụ thể nền tảng xác định.
 
-Gọi một phương thức trên một giá trị interface sẽ thực thi phương thức cùng tên trên
-kiểu bên dưới của nó.
+Việc gọi một phương thức trên một giá trị interface sẽ thực thi phương thức có
+cùng tên trên kiểu nền tảng của nó.
 
 .play methods/interface-values.go
 
-* Giá trị interface với giá trị bên dưới là nil
+* Giá trị interface với giá trị nền tảng nil
 
-Nếu giá trị cụ thể bên trong interface là nil,
-phương thức sẽ được gọi với receiver là nil.
+Nếu giá trị cụ thể bên trong chính interface đó là nil,
+phương thức sẽ được gọi với receiver nil.
 
-Trong một số ngôn ngữ điều này sẽ gây ra lỗi null pointer,
-nhưng trong Go, việc viết các phương thức xử lý khéo léo khi được gọi
-với receiver nil là khá phổ biến (như phương thức `M` trong ví dụ này).
+Trong một số ngôn ngữ, điều này sẽ kích hoạt ngoại lệ con trỏ null,
+nhưng trong Go, việc viết các phương thức xử lý ổn thỏa khi được gọi
+với receiver nil là điều phổ biến (như phương thức `M` trong ví dụ này.)
 
-Lưu ý rằng một giá trị interface chứa giá trị cụ thể nil bản thân không phải nil.
+Lưu ý rằng một giá trị interface chứa một giá trị cụ thể nil thì bản thân nó
+không phải là nil.
 
 .play methods/interface-values-with-nil.go
 
 * Giá trị interface nil
 
-Một giá trị interface nil không chứa giá trị lẫn kiểu cụ thể.
+Một giá trị interface nil không chứa giá trị cũng như kiểu cụ thể.
 
-Gọi một phương thức trên interface nil là lỗi thời gian chạy vì không có
-kiểu nào trong tuple interface để chỉ ra phương thức _cụ thể_ nào cần gọi.
+Gọi một phương thức trên một interface nil là lỗi thời gian chạy vì không có
+kiểu nào bên trong bộ interface để chỉ ra cần gọi phương thức _cụ thể_ nào.
 
 .play methods/nil-interface-values.go
 
@@ -204,66 +209,68 @@ Kiểu interface không chỉ định phương thức nào được gọi là _i
 
 	interface{}
 
-Một interface rỗng có thể chứa giá trị của bất kỳ kiểu nào.
-(Mọi kiểu đều cài đặt ít nhất 0 phương thức.)
+Một interface rỗng có thể chứa các giá trị thuộc bất kỳ kiểu nào.
+(Mọi kiểu đều triển khai ít nhất không phương thức nào.)
 
-Interface rỗng được dùng bởi mã xử lý các giá trị kiểu không xác định.
-Ví dụ, `fmt.Print` nhận bất kỳ số lượng đối số nào kiểu `interface{}`.
+`any` là bí danh của `interface{}`, và hai kiểu này hoàn toàn
+tương đương.
+
+Các interface rỗng được sử dụng bởi mã xử lý các giá trị có kiểu không xác
+định. Ví dụ, `fmt.Print` nhận bất kỳ số lượng đối số nào có kiểu `any`.
 
 .play methods/empty-interface.go
 
-* Type assertion
+* Khẳng định kiểu
 
-Một _type_assertion_ cung cấp quyền truy cập vào giá trị cụ thể bên dưới của giá trị interface.
+Một _khẳng định_kiểu_ cung cấp quyền truy cập vào giá trị cụ thể bên dưới của một giá trị interface.
 
 	t := i.(T)
 
-Câu lệnh này xác nhận rằng giá trị interface `i` chứa kiểu cụ thể `T`
-và gán giá trị `T` bên dưới cho biến `t`.
+Câu lệnh này khẳng định rằng giá trị interface `i` chứa kiểu cụ thể `T` và gán giá trị `T` bên dưới cho biến `t`.
 
-Nếu `i` không chứa `T`, câu lệnh sẽ kích hoạt panic.
+Nếu `i` không chứa một `T`, câu lệnh sẽ kích hoạt panic.
 
 Để _kiểm tra_ xem một giá trị interface có chứa một kiểu cụ thể hay không,
-một type assertion có thể trả về hai giá trị: giá trị bên dưới
-và một giá trị boolean báo cáo xem assertion có thành công không.
+một khẳng định kiểu có thể trả về hai giá trị: giá trị bên dưới
+và một giá trị boolean cho biết khẳng định có thành công hay không.
 
 	t, ok := i.(T)
 
-Nếu `i` chứa `T`, thì `t` sẽ là giá trị bên dưới và `ok` sẽ là true.
+Nếu `i` chứa một `T`, thì `t` sẽ là giá trị bên dưới và `ok` sẽ là true.
 
-Nếu không, `ok` sẽ là false và `t` sẽ là giá trị không của kiểu `T`,
-và không có panic xảy ra.
+Nếu không, `ok` sẽ là false và `t` sẽ là giá trị zero của kiểu `T`,
+và không xảy ra panic.
 
-Lưu ý sự tương đồng giữa cú pháp này và cú pháp đọc từ map.
+Lưu ý sự tương đồng giữa cú pháp này và cú pháp đọc từ một map.
 
 .play methods/type-assertions.go
 
-* Type switch
+* Chuyển đổi kiểu
 
-Một _type_switch_ là cấu trúc cho phép nhiều type assertion theo chuỗi.
+Một _chuyển_đổi_kiểu_ là một cấu trúc cho phép thực hiện nhiều khẳng định kiểu liên tiếp.
 
-Một type switch giống như câu lệnh switch thông thường, nhưng các trường hợp trong type
-switch chỉ định kiểu (không phải giá trị), và các giá trị đó được so sánh với
-kiểu của giá trị được chứa bởi giá trị interface đã cho.
+Một chuyển đổi kiểu giống như một câu lệnh switch thông thường, nhưng các
+case trong chuyển đổi kiểu chỉ định các kiểu (không phải giá trị), và các giá trị
+đó được so sánh với kiểu của giá trị được giữ bởi giá trị interface đã cho.
 
 	switch v := i.(type) {
 	case T:
-		// here v has type T
+		// ở đây v có kiểu T
 	case S:
-		// here v has type S
+		// ở đây v có kiểu S
 	default:
-		// no match; here v has the same type as i
+		// không khớp; ở đây v có cùng kiểu với i
 	}
 
-Khai báo trong type switch có cú pháp giống như type assertion `i.(T)`,
+Khai báo trong một chuyển đổi kiểu có cùng cú pháp với một khẳng định kiểu `i.(T)`,
 nhưng kiểu cụ thể `T` được thay thế bằng từ khóa `type`.
 
 Câu lệnh switch này kiểm tra xem giá trị interface `i`
-có chứa giá trị kiểu `T` hay `S` không.
-Trong mỗi trường hợp `T` và `S`, biến `v` sẽ có kiểu
-`T` hoặc `S` tương ứng và chứa giá trị được giữ bởi `i`.
-Trong trường hợp mặc định (không khớp), biến `v` có
-cùng kiểu interface và giá trị như `i`.
+có chứa một giá trị thuộc kiểu `T` hoặc `S` hay không.
+Trong mỗi case `T` và `S`, biến `v` sẽ lần lượt có kiểu
+`T` hoặc `S` và chứa giá trị mà `i` đang giữ.
+Trong case mặc định (khi không có kết quả khớp), biến `v` có
+cùng kiểu interface và giá trị với `i`.
 
 .play methods/type-switches.go
 
@@ -275,35 +282,34 @@ Một trong những interface phổ biến nhất là [[/pkg/fmt/#Stringer][`Str
 		String() string
 	}
 
-Một `Stringer` là kiểu có thể tự mô tả bản thân như một chuỗi. Package `fmt`
+Một `Stringer` là một kiểu có thể mô tả chính nó dưới dạng chuỗi. Package `fmt`
 (và nhiều package khác) tìm kiếm interface này để in các giá trị.
 
 .play methods/stringer.go
 
-* Bài tập: Stringer
+* Bài tập: Stringers
 
-Hãy làm cho kiểu `IPAddr` cài đặt `fmt.Stringer` để in địa chỉ dưới dạng
-dấu chấm quad.
+Làm cho kiểu `IPAddr` triển khai `fmt.Stringer` để in địa chỉ dưới dạng
+bốn phần được ngăn cách bằng dấu chấm.
 
-Ví dụ, `IPAddr{1,`2,`3,`4}` nên in là `"1.2.3.4"`.
+Ví dụ, `IPAddr{1,`2,`3,`4}` sẽ được in là `"1.2.3.4"`.
 
 .play methods/exercise-stringer.go
 
 * Lỗi
 
-Chương trình Go biểu diễn trạng thái lỗi bằng các giá trị `error`.
+Các chương trình Go biểu diễn trạng thái lỗi bằng các giá trị `error`.
 
-Kiểu `error` là một interface built-in tương tự `fmt.Stringer`:
+Kiểu `error` là một interface tích hợp sẵn tương tự như `fmt.Stringer`:
 
 	type error interface {
 		Error() string
 	}
 
-(Cũng như `fmt.Stringer`, package `fmt` tìm kiếm interface `error` khi
-in các giá trị.)
+(Giống như `fmt.Stringer`, gói `fmt` tìm interface `error` khi in các giá trị.)
 
-Các hàm thường trả về giá trị `error`, và mã gọi nên xử lý lỗi
-bằng cách kiểm tra xem lỗi có bằng `nil` không.
+Các hàm thường trả về một giá trị `error`, và mã gọi nên xử lý lỗi bằng cách
+kiểm tra xem lỗi có bằng `nil` hay không.
 
 	i, err := strconv.Atoi("42")
 	if err != nil {
@@ -318,68 +324,66 @@ Một `error` nil biểu thị thành công; một `error` không nil biểu th�
 
 * Bài tập: Lỗi
 
-Sao chép hàm `Sqrt` từ [[/tour/flowcontrol/8][bài tập trước]] và chỉnh sửa nó để trả về giá trị `error`.
+Sao chép hàm `Sqrt` của bạn từ [[/tour/flowcontrol/8][bài tập trước]] và sửa đổi nó để trả về một giá trị `error`.
 
-`Sqrt` nên trả về giá trị error không nil khi nhận số âm, vì nó không hỗ trợ số phức.
+`Sqrt` nên trả về một giá trị lỗi không nil khi được cung cấp một số âm, vì nó không hỗ trợ số phức.
 
-Tạo kiểu mới
+Tạo một kiểu mới
 
 	type ErrNegativeSqrt float64
 
-và biến nó thành `error` bằng cách cung cấp
+và biến nó thành một `error` bằng cách cung cấp cho nó một
 
 	func (e ErrNegativeSqrt) Error() string
 
-sao cho `ErrNegativeSqrt(-2).Error()` trả về `"cannot`Sqrt`negative`number:`-2"`.
+phương thức sao cho `ErrNegativeSqrt(-2).Error()` trả về `"cannot`Sqrt`negative`number:`-2"`.
 
-*Lưu ý:* Lời gọi `fmt.Sprint(e)` bên trong phương thức `Error` sẽ khiến chương trình rơi vào vòng lặp vô tận. Bạn có thể tránh điều này bằng cách chuyển đổi `e` trước: `fmt.Sprint(float64(e))`. Tại sao vậy?
+*Lưu ý:* Một lời gọi đến `fmt.Sprint(e)` bên trong phương thức `Error` sẽ khiến chương trình rơi vào vòng lặp vô hạn. Bạn có thể tránh điều này bằng cách chuyển đổi `e` trước: `fmt.Sprint(float64(e))`. Tại sao?
 
-Thay đổi hàm `Sqrt` để trả về giá trị `ErrNegativeSqrt` khi nhận số âm.
+Thay đổi hàm `Sqrt` của bạn để trả về giá trị `ErrNegativeSqrt` khi được cung cấp một số âm.
 
 .play methods/exercise-errors.go
 
-* Reader
+* Readers
 
-Package `io` chỉ định interface `io.Reader`,
-biểu thị đầu đọc của một luồng dữ liệu.
+Gói `io` chỉ định interface `io.Reader`,
+đại diện cho đầu đọc của một luồng dữ liệu.
 
-Thư viện chuẩn Go chứa [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][nhiều cài đặt]] của interface này, bao gồm tệp, kết nối mạng, bộ nén, mã hóa và nhiều thứ khác.
+Thư viện chuẩn Go chứa [[[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][nhiều](https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][nhiều) triển khai]] của interface này, bao gồm tệp, kết nối mạng, bộ nén, bộ mã hóa và các loại khác.
 
-Interface `io.Reader` có phương thức `Read`:
+Interface `io.Reader` có một phương thức `Read`:
 
 	func (T) Read(b []byte) (n int, err error)
 
-`Read` điền dữ liệu vào byte slice đã cho và trả về số byte
-được điền và một giá trị lỗi. Nó trả về lỗi `io.EOF` khi luồng
-kết thúc.
+`Read` điền dữ liệu vào lát byte đã cho và trả về số byte đã được điền cùng một giá trị lỗi. Nó trả về lỗi `io.EOF` khi luồng kết thúc.
 
 Mã ví dụ tạo một
 [[/pkg/strings/#Reader][`strings.Reader`]]
-và tiêu thụ đầu ra của nó 8 byte mỗi lần.
+và đọc đầu ra của nó 8 byte mỗi lần.
 
 .play methods/reader.go
 
-* Bài tập: Reader
+* Bài tập: Readers
 
-Cài đặt kiểu `Reader` phát ra luồng vô tận của ký tự ASCII
+Triển khai một kiểu `Reader` phát ra một luồng vô hạn các ký tự ASCII
 `'A'`.
 
 .play methods/exercise-reader.go
 
 * Bài tập: rot13Reader
 
-Một pattern phổ biến là [[/pkg/io/#Reader][io.Reader]] bao gọc một `io.Reader` khác, thay đổi luồng theo một cách nào đó.
+Một mẫu phổ biến là [[/pkg/io/#Reader][io.Reader]] bao bọc một `io.Reader` khác, sửa đổi luồng theo một cách nào đó.
 
-Ví dụ, hàm [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] nhận một `io.Reader` (luồng dữ liệu nén) và trả về một `*gzip.Reader` cũng cài đặt `io.Reader` (luồng dữ liệu đã giải nén).
+Ví dụ, hàm [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] nhận một `io.Reader` (một luồng dữ liệu đã nén) và trả về một `*gzip.Reader` cũng triển khai `io.Reader` (một luồng dữ liệu đã giải nén).
 
-Cài đặt một `rot13Reader` cài đặt `io.Reader` và đọc từ một `io.Reader`, thay đổi luồng bằng cách áp dụng mã hóa thay thế [[https://en.wikipedia.org/wiki/ROT13][rot13]] cho tất cả các ký tự chữ cái.
+Triển khai một `rot13Reader` triển khai `io.Reader` và đọc từ một `io.Reader`, sửa đổi luồng bằng cách áp dụng mật mã thay thế [[[https://en.wikipedia.org/wiki/ROT13][rot13](https://en.wikipedia.org/wiki/ROT13][rot13)]] cho tất cả các ký tự chữ cái.
 
 Kiểu `rot13Reader` được cung cấp cho bạn.
-Hãy làm cho nó trở thành `io.Reader` bằng cách cài đặt phương thức `Read` của nó.
+Hãy biến nó thành một `io.Reader` bằng cách triển khai phương thức `Read`.
 
 .play methods/exercise-rot-reader.go
 
-* Hình ảnh
+* Images
 
 [[/pkg/image/#Image][Package image]] định nghĩa interface `Image`:
 
@@ -391,27 +395,26 @@ Hãy làm cho nó trở thành `io.Reader` bằng cách cài đặt phương th�
 		At(x, y int) color.Color
 	}
 
-*Lưu ý*: giá trị trả về `Rectangle` của phương thức `Bounds` thực chất là một
-[[/pkg/image/#Rectangle][`image.Rectangle`]], vì
-khai báo nằm bên trong package `image`.
+*Lưu ý*: giá trị trả về `Rectangle` của phương thức `Bounds` thực sự là một
+[[/pkg/image/#Rectangle][`image.Rectangle`]], vì phần khai báo nằm bên trong gói `image`.
 
 (Xem [[/pkg/image/#Image][tài liệu]] để biết tất cả chi tiết.)
 
-Các kiểu `color.Color` và `color.Model` cũng là interface, nhưng ta sẽ bỏ qua điều đó bằng cách dùng các cài đặt được định nghĩa sẵn `color.RGBA` và `color.RGBAModel`. Các interface và kiểu này được chỉ định bởi [[/pkg/image/color/][package image/color]].
+Các kiểu `color.Color` và `color.Model` cũng là interface, nhưng chúng ta sẽ bỏ qua điều đó bằng cách sử dụng các triển khai được định nghĩa sẵn `color.RGBA` và `color.RGBAModel`. Các interface và kiểu này được đặc tả bởi [[/pkg/image/color/][gói image/color]].
 
 .play methods/images.go
 
-* Bài tập: Hình ảnh
+* Bài tập: Images
 
-Bạn có nhớ [[/tour/moretypes/18][bộ tạo hình ảnh]] bạn đã viết trước đó không? Hãy viết một cái khác, nhưng lần này nó sẽ trả về một cài đặt của `image.Image` thay vì một slice dữ liệu.
+Nhớ [[/tour/moretypes/18][trình tạo ảnh]] mà bạn đã viết trước đó chứ? Hãy viết thêm một trình tạo nữa, nhưng lần này nó sẽ trả về một triển khai của `image.Image` thay vì một lát dữ liệu.
 
-Định nghĩa kiểu `Image` của riêng bạn, cài đặt [[/pkg/image/#Image][các phương thức cần thiết]], và gọi `pic.ShowImage`.
+Tự định nghĩa kiểu `Image` của bạn, triển khai [[/pkg/image/#Image][các phương thức cần thiết]], và gọi `pic.ShowImage`.
 
-`Bounds` nên trả về một `image.Rectangle`, như `image.Rect(0,`0,`w,`h)`.
+`Bounds` nên trả về một `image.Rectangle`, giống như `image.Rect(0,`0,`w,`h)`.
 
 `ColorModel` nên trả về `color.RGBAModel`.
 
-`At` nên trả về một màu; giá trị `v` trong bộ tạo hình ảnh trước tương ứng với `color.RGBA{v,`v,`255,`255}` trong cái này.
+`At` nên trả về một màu; giá trị `v` trong trình tạo ảnh cuối cùng tương ứng với `color.RGBA{v,`v,`255,`255}` trong trình tạo này.
 
 .play methods/exercise-images.go
 
@@ -419,4 +422,4 @@ Bạn có nhớ [[/tour/moretypes/18][bộ tạo hình ảnh]] bạn đã viết
 
 Bạn đã hoàn thành bài học này!
 
-Bạn có thể quay lại danh sách các [[/tour/list][module]] để tìm hiểu tiếp theo, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].
+Bạn có thể quay lại danh sách [[/tour/list][mô-đun]] để tìm nội dung tiếp theo cần học, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].

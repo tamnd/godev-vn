@@ -1,104 +1,104 @@
 Chào mừng!
-Tìm hiểu cách sử dụng tour này: bao gồm cách điều hướng giữa các bài học và cách chạy mã.
+Tìm hiểu cách sử dụng chuyến tham quan này: bao gồm cách điều hướng qua các bài học khác nhau và cách chạy mã.
 
 The Go Authors
 https://golang.org
 
 * Xin chào, 世界
 
-Chào mừng bạn đến với tour về [[/][ngôn ngữ lập trình Go]].
+Chào mừng bạn đến với chuyến tham quan [[/][ngôn ngữ lập trình Go]].
 
-Tour được chia thành danh sách các module mà bạn có thể
+Chuyến tham quan được chia thành một danh sách các mô-đun mà bạn có thể
 truy cập bằng cách nhấp vào
 [[javascript:highlight(".logo")][A Tour of Go]] ở góc trên bên trái của trang.
 
-Bạn cũng có thể xem mục lục bất cứ lúc nào bằng cách nhấp vào [[javascript:highlightAndClick(".nav")][menu]] ở góc trên bên phải của trang.
+Bạn cũng có thể xem mục lục bất kỳ lúc nào bằng cách nhấp vào [[javascript:highlightAndClick(".nav")][menu]] ở góc trên bên phải của trang.
 
-Xuyên suốt tour, bạn sẽ gặp một loạt các slide và bài tập để hoàn thành.
+Trong suốt chuyến tham quan, bạn sẽ thấy một loạt trang trình bày và bài tập để bạn
+hoàn thành.
 
-Bạn có thể điều hướng qua các trang đó bằng cách
+Bạn có thể điều hướng qua chúng bằng cách sử dụng
 
-- [[javascript:highlight(".prev-page")]["previous"]] hoặc `PageUp` để quay lại trang trước,
+- [[javascript:highlight(".prev-page")]["trước"]] hoặc `PageUp` để chuyển đến trang trước,
 
-- [[javascript:highlight(".next-page")]["next"]] hoặc `PageDown` để đến trang tiếp theo.
+- [[javascript:highlight(".next-page")]["tiếp theo"]] hoặc `PageDown` để chuyển đến trang tiếp theo.
 
-Tour có tính tương tác. Nhấp vào nút
-[[javascript:highlightAndClick("#run")][Run]] ngay bây giờ
+Chuyến tham quan có tính tương tác. Nhấp vào nút
+[[javascript:highlightAndClick("#run")][Chạy]] ngay bây giờ
 (hoặc nhấn `Shift` + `Enter`) để biên dịch và chạy chương trình trên
 #appengine: một máy chủ từ xa.
 máy tính của bạn.
 Kết quả được hiển thị bên dưới mã.
 
-Các chương trình ví dụ này minh họa các khía cạnh khác nhau của Go. Các chương trình trong tour được thiết kế làm điểm khởi đầu để bạn tự thực hành.
+Các chương trình ví dụ này minh họa những khía cạnh khác nhau của Go. Các chương trình trong chuyến tham quan được dùng làm điểm bắt đầu cho việc thử nghiệm của riêng bạn.
 
 Chỉnh sửa chương trình và chạy lại.
 
-Khi bạn nhấp vào [[javascript:highlightAndClick("#format")][Format]]
-(phím tắt: `Ctrl` + `Enter`), văn bản trong trình soạn thảo sẽ được định dạng bằng công cụ
-[[/cmd/gofmt/][gofmt]]. Bạn có thể bật hoặc tắt tô sáng cú pháp
-bằng cách nhấp vào nút [[javascript:highlightAndClick(".syntax-checkbox")][syntax]].
+Khi bạn nhấp vào [[javascript:highlightAndClick("#format")][Định dạng]]
+(phím tắt: `Ctrl` + `Enter`), văn bản trong trình soạn thảo được định dạng bằng công cụ
+[[/cmd/gofmt/][gofmt]]. Bạn có thể bật và tắt tô sáng cú pháp
+bằng cách nhấp vào nút [[javascript:highlightAndClick(".syntax-checkbox")][cú pháp]].
 
-Khi bạn sẵn sàng tiếp tục, hãy nhấp vào [[javascript:highlightAndClick(".next-page")][mũi tên phải]] bên dưới hoặc nhấn phím `PageDown`.
+Khi bạn sẵn sàng chuyển tiếp, nhấp vào [[javascript:highlightAndClick(".next-page")][mũi tên phải]] bên dưới hoặc nhấn phím `PageDown`.
 
 .play welcome/hello.go
 
-* Go theo ngôn ngữ địa phương
+* Go cục bộ
 
-Tour cũng có sẵn bằng các ngôn ngữ khác:
+Chuyến tham quan có sẵn bằng các ngôn ngữ khác:
 
-- [[https://go-tour-br.appspot.com/][Tiếng Bồ Đào Nha (Brazil) — Português do Brasil]]
-- [[https://go-tour-ca.appspot.com/][Tiếng Catalan — Català]]
-- [[https://tour.go-zh.org/][Tiếng Trung giản thể — 中文（简体）]]
-- [[https://go-tour-cz.appspot.com/][Tiếng Séc — Česky]]
-- [[https://go-tour-id2.appspot.com/][Tiếng Indonesia — Bahasa Indonesia]]
-- [[https://go-tour-jp.appspot.com/][Tiếng Nhật — 日本語]]
-- [[https://go-tour-pl1.appspot.com/][Tiếng Ba Lan — Polski]]
-- [[https://go-tour-lat.appspot.com/][Tiếng Tây Ban Nha — Español]]
-- [[https://go-tour-th.appspot.com/][Tiếng Thái — ภาษาไทย]]
-- [[https://go-tour-ua-translation.lm.r.appspot.com/][Tiếng Ukraina — Українською]]
+- [[[https://go-tour-br.appspot.com/][Brazilian](https://go-tour-br.appspot.com/][Brazilian) Portuguese — Português do Brasil]]
+- [[[https://go-tour-ca.appspot.com/][Catalan](https://go-tour-ca.appspot.com/][Catalan) — Català]]
+- [[[https://go-tour-cz.appspot.com/][Czech](https://go-tour-cz.appspot.com/][Czech) — Česky]]
+- [[[https://go-tour-id2.appspot.com/][Indonesian](https://go-tour-id2.appspot.com/][Indonesian) — Bahasa Indonesia]]
+- [[[https://go-tour-jp.appspot.com/][Japanese](https://go-tour-jp.appspot.com/][Japanese) — 日本語]]
+- [[[https://go-tour-pl1.appspot.com/][Polish](https://go-tour-pl1.appspot.com/][Polish) — Polski]]
+- [[[https://go-tour-lat.appspot.com/][Spanish](https://go-tour-lat.appspot.com/][Spanish) — Español]]
+- [[[https://go-tour-th.appspot.com/][Thai](https://go-tour-th.appspot.com/][Thai) — ภาษาไทย]]
+- [[[https://go-tour-ua-translation.lm.r.appspot.com/][Ukrainian](https://go-tour-ua-translation.lm.r.appspot.com/][Ukrainian) — Українською]]
 
-Nhấp vào nút [[javascript:highlightAndClick(".next-page")]["next"]] hoặc nhấn `PageDown` để tiếp tục.
+Nhấp vào nút [[javascript:highlightAndClick(".next-page")]["tiếp theo"]] hoặc nhấn `PageDown` để tiếp tục.
 
 #appengine: * Go ngoại tuyến (tùy chọn)
 #appengine:
-#appengine: Tour này cũng có sẵn dưới dạng chương trình độc lập mà bạn có thể sử dụng
-#appengine: mà không cần kết nối internet. Nó biên dịch và chạy các ví dụ mã trên
-#appengine: máy tính của bạn.
+#appengine: Chuyến tham quan này cũng có sẵn dưới dạng một chương trình độc lập mà bạn có thể sử dụng
+#appengine: mà không cần truy cập Internet. Chương trình này xây dựng và chạy các mẫu mã trên
+#appengine: chính máy của bạn.
 #appengine:
-#appengine: Để chạy tour cục bộ, trước tiên bạn cần
+#appengine: Để chạy chuyến tham quan cục bộ, trước tiên bạn cần
 #appengine: [[/doc/install][cài đặt Go]] rồi chạy:
 #appengine:
 #appengine:   go install golang.org/x/website/tour@latest
 #appengine:
-#appengine: Lệnh này sẽ đặt một tệp nhị phân `tour` vào thư mục `bin` trong
-#appengine: [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] của bạn.
-#appengine: Khi bạn chạy chương trình tour, nó sẽ mở trình duyệt web hiển thị
-#appengine: phiên bản cục bộ của tour.
+#appengine: Lệnh này sẽ đặt một binary `tour` vào thư mục
+#appengine: [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]]'s `bin` của bạn.
+#appengine: Khi bạn chạy chương trình tour, chương trình sẽ mở một trình duyệt web hiển thị
+#appengine: phiên bản cục bộ của chuyến tham quan.
 #appengine:
-#appengine: Tất nhiên, bạn vẫn có thể tiếp tục theo dõi tour qua trang web này.
+#appengine: Tất nhiên, bạn vẫn có thể tiếp tục chuyến tham quan thông qua trang web này.
 
-#appengine: * The Go Playground
+#appengine: * Go Playground
 #appengine:
-#appengine: Tour này được xây dựng trên [[https://play.golang.org/][Go Playground]], một
-#appengine: dịch vụ web chạy trên máy chủ của [[/][golang.org]].
+#appengine: Chuyến tham quan này được xây dựng dựa trên [[[https://play.golang.org/][Go](https://play.golang.org/][Go) Playground]], một
+#appengine: dịch vụ web chạy trên các máy chủ của [[/][golang.org]].
 #appengine:
-#appengine: Dịch vụ nhận một chương trình Go, biên dịch, liên kết và chạy chương trình trong
-#appengine: một sandbox, sau đó trả về kết quả đầu ra.
+#appengine: Dịch vụ nhận một chương trình Go, biên dịch, liên kết và chạy chương trình bên trong
+#appengine: một sandbox, sau đó trả về kết quả.
 #appengine:
-#appengine: Có một số giới hạn đối với các chương trình có thể chạy trong playground:
+#appengine: Có những giới hạn đối với các chương trình có thể chạy trong playground:
 #appengine:
-#appengine: - Trong playground, thời gian bắt đầu từ 2009-11-10 23:00:00 UTC (ý nghĩa của ngày này là bài tập dành cho người đọc). Điều này giúp dễ dàng lưu cache chương trình bằng cách cho chúng đầu ra xác định.
+#appengine: - Trong playground, thời gian bắt đầu từ 2009-11-10 23:00:00 UTC (việc xác định ý nghĩa của ngày này là một bài tập dành cho người đọc). Điều này giúp việc lưu vào bộ nhớ đệm các chương trình dễ dàng hơn bằng cách cung cấp cho chúng đầu ra xác định.
 #appengine:
-#appengine: - Cũng có giới hạn về thời gian thực thi, sử dụng CPU và bộ nhớ, và chương trình không thể truy cập các máy chủ mạng bên ngoài.
+#appengine: - Ngoài ra còn có các giới hạn về thời gian thực thi, mức sử dụng CPU và bộ nhớ, và chương trình không thể truy cập các máy chủ mạng bên ngoài.
 #appengine:
 #appengine: Playground sử dụng bản phát hành ổn định mới nhất của Go.
 #appengine:
-#appengine: Đọc "[[/blog/playground][Inside the Go Playground]]" để tìm hiểu thêm.
+#appengine: Đọc "[[/blog/playground][Bên trong Go Playground]]" để tìm hiểu thêm.
 #appengine:
 #appengine: .play welcome/sandbox.go
 
 * Chúc mừng
 
-Bạn đã hoàn thành module đầu tiên của tour!
+Bạn đã hoàn thành mô-đun đầu tiên của chuyến tham quan!
 
-Bây giờ hãy nhấp vào [[javascript:highlightAndClick(".logo")][A Tour of Go]] để khám phá những gì khác bạn có thể tìm hiểu về Go, hoặc đến thẳng [[javascript:click('.next-page')][bài học tiếp theo]].
+Bây giờ hãy nhấp vào [[javascript:highlightAndClick(".logo")][Chuyến tham quan Go]] để tìm hiểu thêm những gì bạn có thể học về Go, hoặc đi thẳng đến [[javascript:click('.next-page')][bài học tiếp theo]].

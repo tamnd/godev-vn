@@ -143,72 +143,71 @@ Nếu mọi việc diễn ra thuận lợi, đến sáng mã cũ không còn đ�
 Inliner của Go là một công cụ tương đối mới, nhưng nó đã được sử dụng để
 chuẩn bị hơn 18.000 changelist cho monorepo của Google.
 
-### Example: fixing API design flaws
+### Ví dụ: khắc phục các lỗi thiết kế API
 
-With a little creativity, a variety of migrations can be expressed as inlinings.
-Consider this hypothetical `oldmath` package:
+Với một chút sáng tạo, nhiều kiểu di chuyển có thể được biểu diễn dưới dạng các phép inlining. Hãy xem xét gói `oldmath` giả định sau:
 
 ```go
-// Package oldmath is the bad old math package.
+// Package oldmath là gói toán học cũ tệ hại.
 package oldmath
 
-// Sub returns x - y.
+// Sub trả về x - y.
 func Sub(y, x int) int
 
-// Inf returns positive infinity.
+// Inf trả về vô cực dương.
 func Inf() float64
 
-// Neg returns -x.
+// Neg trả về -x.
 func Neg(x int) int
 ```
 
-It has several design flaws: the `Sub` function declares its parameters in the wrong order; the `Inf` function implicitly prefers one of the two infinities; and the `Neg` function is redundant with `Sub`. Fortunately we have a `newmath` package that avoids these mistakes, and we’d like to get users to switch to it. The first step is to implement the old API in terms of the new package and to deprecate the old functions. Then we add inliner directives:
+Gói này có một số lỗi thiết kế: hàm `Sub` khai báo các tham số theo thứ tự sai; hàm `Inf` ngầm ưu tiên một trong hai giá trị vô cực; và hàm `Neg` bị trùng lặp với `Sub`. May mắn là chúng ta có gói `newmath` tránh được những sai lầm này, và muốn người dùng chuyển sang sử dụng nó. Bước đầu tiên là triển khai API cũ dựa trên gói mới và đánh dấu các hàm cũ là lỗi thời. Sau đó, chúng ta thêm các chỉ thị inliner:
 
 ```
-// Package oldmath is the bad old math package.
+// Package oldmath là gói toán học cũ tệ hại.
 package oldmath
 
 import "newmath"
 
-// Sub returns x - y.
-// Deprecated: the parameter order is confusing.
+// Sub trả về x - y.
+// Deprecated: thứ tự tham số gây nhầm lẫn.
 //go:fix inline
 func Sub(y, x int) int {
 	return newmath.Sub(x, y)
 }
 
-// Inf returns positive infinity.
-// Deprecated: there are two infinite values; be explicit.
+// Inf trả về vô cực dương.
+// Deprecated: có hai giá trị vô cực; hãy chỉ rõ.
 //go:fix inline
 func Inf() float64 {
 	return newmath.Inf(+1)
 }
 
-// Neg returns -x.
-// Deprecated: this function is unnecessary.
+// Neg trả về -x.
+// Deprecated: hàm này không cần thiết.
 //go:fix inline
 func Neg(x int) int {
 	return newmath.Sub(0, x)
 }
 ```
 
-Now, when users of `oldmath` run the `go fix` command on their code, it will replace all calls to the old functions by their new counterparts. By the way, gopls has included `inline` in its analyzer suite for some time, so if your editor uses gopls, the moment you add the `//go:fix inline` directives you should start seeing a diagnostic at each call site, such as “call of `oldmath.Sub` should be inlined”, along with a suggested fix that inlines that particular call.
+Bây giờ, khi người dùng của `oldmath` chạy lệnh `go fix` trên mã của họ, lệnh này sẽ thay thế tất cả các lời gọi đến các hàm cũ bằng các hàm tương ứng mới. Nhân tiện, gopls đã đưa `inline` vào bộ phân tích của nó từ một thời gian, vì vậy nếu trình soạn thảo của bạn sử dụng gopls, ngay khi bạn thêm các chỉ thị `//go:fix inline`, bạn sẽ bắt đầu thấy chẩn đoán tại mỗi vị trí gọi, chẳng hạn như “lời gọi `oldmath.Sub` nên được inlined”, cùng với bản sửa được đề xuất để inlining lời gọi cụ thể đó.
 
-For example, this old code:
+Ví dụ, mã cũ này:
 ```
 import "oldmath"
 
 var nine = oldmath.Sub(1, 10) // diagnostic: "call to oldmath.Sub should be inlined"
 ```
-will be transformed to:
+sẽ được chuyển đổi thành:
 ```
 import "newmath"
 
 var nine = newmath.Sub(10, 1)
 ```
-Observe that after the fix, the arguments to `Sub` are in the logical order. This is progress! If you’re in luck, the inliner will succeed at removing every call to the functions in `oldmath`, perhaps allowing you to delete it as a dependency.
+Lưu ý rằng sau khi sửa, các đối số của `Sub` đã ở đúng thứ tự logic. Đây là một bước tiến! Nếu may mắn, inliner sẽ loại bỏ thành công mọi lời gọi đến các hàm trong `oldmath`, có thể cho phép bạn xóa nó như một dependency.
 
-The `inline` analyzer works on types and constants too. If our `oldmath` package had originally declared a data type for rational numbers and a constant for π, we could use the following forwarding declarations to migrate them to the `newmath` package while preserving the behavior of existing code:
+Bộ phân tích `inline` cũng hoạt động với các kiểu và hằng số. Nếu gói `oldmath` của chúng ta ban đầu đã khai báo một kiểu dữ liệu cho các số hữu tỉ và một hằng số cho π, chúng ta có thể sử dụng các khai báo chuyển tiếp sau để di chuyển chúng sang gói `newmath` trong khi vẫn giữ nguyên hành vi của mã hiện có:
 ```
 package oldmath
 
@@ -219,7 +218,7 @@ type Rational = newmath.Rational
 const Pi = newmath.Pi
 ```
 
-Each time the `inline` analyzer encounters a reference to `oldmath.Rational` or `oldmath.Pi`, it will update them to refer instead to `newmath`.
+Mỗi khi bộ phân tích `inline` gặp một tham chiếu đến `oldmath.Rational` hoặc `oldmath.Pi`, nó sẽ cập nhật chúng để thay vào đó tham chiếu đến `newmath`.
 
 ## Bên trong trình inline
 
@@ -325,9 +324,9 @@ Một trình biên dịch tối ưu hóa được phép xóa mỗi lời gọi �
 
 Tóm lại, trình nội tuyến hóa có thể tạo ra các kết quả mà—dưới con mắt am hiểu của người duy trì dự án—rõ ràng là quá thận trọng. Trong những trường hợp như vậy, mã đã được sửa sẽ được cải thiện về mặt phong cách nếu thực hiện một chút dọn dẹp thủ công.
 
-### 3. “Fallible” constant expressions
+### 3. Biểu thức hằng “có thể thất bại”
 
-You might imagine (as I once did) that it would always be safe to replace a parameter variable by a constant argument of the same type. Surprisingly, this turns out not to be the case, because some checks previously done at run time would now happen—and fail—at compile time. Consider this call to the `index` function:
+Bạn có thể tưởng tượng (như tôi từng làm) rằng việc luôn thay thế một biến tham số bằng một đối số hằng có cùng kiểu sẽ an toàn. Thật bất ngờ, điều này hóa ra không đúng, vì một số kiểm tra trước đây được thực hiện tại thời điểm chạy giờ sẽ diễn ra—và thất bại—tại thời điểm biên dịch. Hãy xem lời gọi này tới hàm `index`:
 
 ```
 //go:fix inline
@@ -338,20 +337,20 @@ func index(s string, i int) byte {
 index("", 0)
 ```
 
-A naive inliner might replace `s` with `""` and `i` with `0`, resulting in `""[0]`, but this is not actually a legal Go expression because this particular index is out of bounds for this particular string. Because the expression `""[0]` is composed of constants, it is evaluated at compile time, and a program that contains it will not even build. By contrast, the original program would fail only if execution reaches this call to `index`, which presumably in a working program it does not.
+Một trình inline ngây thơ có thể thay thế `s` bằng `""` và `i` bằng `0`, tạo ra `""[0]`, nhưng đây thực sự không phải là một biểu thức Go hợp lệ vì chỉ mục cụ thể này nằm ngoài phạm vi của chuỗi cụ thể này. Vì biểu thức `""[0]` được tạo thành từ các hằng, nó được đánh giá tại thời điểm biên dịch, và một chương trình chứa biểu thức này thậm chí sẽ không thể xây dựng. Ngược lại, chương trình ban đầu chỉ thất bại nếu quá trình thực thi đi tới lời gọi `index` này, điều mà trong một chương trình hoạt động bình thường có lẽ không xảy ra.
 
-Consequently, the inliner must keep track of all expressions and their operands that might become constant during parameter substitution, triggering additional compile-time checks. It builds a [constraint system](https://cs.opensource.google/go/x/tools/+/master:internal/refactor/inline/falcon.go;l=43;drc=1aca71e85510ecc45dddbc335b30b64298c2a31e) and attempts to solve it. Each unsatisfied constraint is resolved by adding an explicit binding for the constrained parameters.
+Do đó, trình inline phải theo dõi tất cả biểu thức và toán hạng của chúng có thể trở thành hằng trong quá trình thay thế tham số, từ đó kích hoạt các kiểm tra bổ sung tại thời điểm biên dịch. Nó xây dựng một [hệ thống ràng buộc](https://cs.opensource.google/go/x/tools/+/master:internal/refactor/inline/falcon.go;l=43;drc=1aca71e85510ecc45dddbc335b30b64298c2a31e) và cố gắng giải quyết nó. Mỗi ràng buộc chưa được thỏa mãn được giải quyết bằng cách thêm một liên kết tường minh cho các tham số bị ràng buộc.
 
 <!--
-  The fundamental reason for falcon is that we can’t type-check the result
-  since in a “separate analysis” system we don’t have type information
-  for all dependencies. See hidden comment within section
+  Lý do cơ bản của falcon là chúng ta không thể kiểm tra kiểu của kết quả
+  vì trong một hệ thống “phân tích riêng biệt”, chúng ta không có thông tin kiểu
+  cho tất cả dependency. Xem chú thích ẩn trong phần
   [gofix#synergistic-fixes](gofix#synergistic-fixes).
 -->
 
-### 4. Shadowing
+### 4. Che khuất tên
 
-Typical argument expressions contain one or more identifiers that refer to symbols (variables, functions, and so on) in the caller’s file. The inliner must make sure that each name in the argument expression would refer to the same symbol after parameter substitution; in other words, none of the caller’s names is *shadowed* in the callee. If this fails, the inliner must again insert parameter bindings, as in this example:
+Các biểu thức đối số thông thường chứa một hoặc nhiều định danh tham chiếu đến các ký hiệu (biến, hàm, v.v.) trong tệp của bên gọi. Trình inline phải đảm bảo rằng mỗi tên trong biểu thức đối số sẽ tham chiếu đến cùng một ký hiệu sau khi thay thế tham số; nói cách khác, không tên nào của bên gọi bị *che khuất* trong bên được gọi. Nếu điều này thất bại, trình inline một lần nữa phải chèn các liên kết tham số, như trong ví dụ này:
 
 <div class="beforeafter">
 <div class="beforeafter-context"><pre>
@@ -369,8 +368,8 @@ f(x)
 <pre>
 x := "hello"
 {
-	// another “parameter binding” declaration
-	// to read the caller's x before shadowing it
+	// một khai báo “liên kết tham số” khác
+	// để đọc x của bên gọi trước khi che khuất nó
 	var val string = x
 	x := 123
 	fmt.Println(val, x)
@@ -378,7 +377,7 @@ x := "hello"
 </pre>
 </div>
 
-Conversely, the inliner must also check that each name in the *callee* function body would refer to the same thing when it is spliced into the call site. In other words, none of the callee’s names is shadowed or missing in the caller. For missing names, the inliner may need to insert additional imports.
+Ngược lại, trình inline cũng phải kiểm tra rằng mỗi tên trong thân hàm *bên được gọi* sẽ tham chiếu đến cùng một thứ khi nó được ghép vào vị trí gọi. Nói cách khác, không tên nào của bên được gọi bị che khuất hoặc thiếu trong bên gọi. Đối với các tên bị thiếu, trình inline có thể cần chèn thêm các import.
 
 ### 5. Biến không được sử dụng
 

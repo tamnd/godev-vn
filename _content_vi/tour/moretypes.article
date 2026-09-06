@@ -1,5 +1,5 @@
-Các kiểu mở rộng: struct, slice và map.
-Tìm hiểu cách định nghĩa kiểu dựa trên các kiểu hiện có: bài học này đề cập đến struct, mảng, slice và map.
+Các kiểu khác: struct, slice và map.
+Tìm hiểu cách định nghĩa kiểu dựa trên các kiểu hiện có: bài học này bao gồm struct, mảng, slice và map.
 
 The Go Authors
 https://golang.org
@@ -7,9 +7,9 @@ https://golang.org
 * Con trỏ
 
 Go có con trỏ.
-Một con trỏ lưu giữ địa chỉ bộ nhớ của một giá trị.
+Một con trỏ lưu địa chỉ bộ nhớ của một giá trị.
 
-Kiểu `*T` là con trỏ đến một giá trị `T`. Giá trị không của nó là `nil`.
+Kiểu `*T` là con trỏ đến một giá trị `T`. Giá trị zero của nó là `nil`.
 
 	var p *int
 
@@ -20,52 +20,51 @@ Toán tử `&` tạo ra một con trỏ đến toán hạng của nó.
 
 Toán tử `*` biểu thị giá trị bên dưới của con trỏ.
 
-	fmt.Println(*p) // read i through the pointer p
-	*p = 21         // set i through the pointer p
+	fmt.Println(*p) // đọc i thông qua con trỏ p
+	*p = 21         // đặt i thông qua con trỏ p
 
-Đây được gọi là "dereference" hoặc "indirection" (gián tiếp).
+Điều này được gọi là "giải tham chiếu" hoặc "truy cập gián tiếp".
 
-Khác với C, Go không có phép tính số học con trỏ.
+Khác với C, Go không có phép toán số học trên con trỏ.
 
 .play moretypes/pointers.go
 
 * Struct
 
-Một `struct` là một tập hợp các trường (field).
+Một `struct` là tập hợp các trường.
 
 .play moretypes/structs.go
 
-* Các trường Struct
+* Các trường của Struct
 
-Các trường struct được truy cập bằng dấu chấm.
+Các trường của struct được truy cập bằng dấu chấm.
 
 .play moretypes/struct-fields.go
 
 * Con trỏ đến struct
 
-Các trường struct có thể được truy cập thông qua một con trỏ struct.
+Các trường của struct có thể được truy cập thông qua một con trỏ struct.
 
-Để truy cập trường `X` của một struct khi ta có con trỏ struct `p`, ta có thể
+Để truy cập trường `X` của một struct khi có con trỏ struct `p`, ta có thể
 viết `(*p).X`.
-Tuy nhiên, cú pháp đó khá cồng kềnh, nên ngôn ngữ cho phép ta viết
-`p.X` mà không cần dereference tường minh.
+Tuy nhiên, cách viết đó khá rườm rà, nên ngôn ngữ cho phép chúng ta thay vào đó
+chỉ viết `p.X`, mà không cần giải tham chiếu rõ ràng.
 
 .play moretypes/struct-pointers.go
 
-* Struct literals
+* Literal của Struct
 
-Một struct literal biểu thị một giá trị struct được cấp phát mới bằng cách liệt kê các giá trị của các trường.
+Một literal struct biểu thị một giá trị struct mới được cấp phát bằng cách liệt kê các giá trị của các trường của nó.
 
-Bạn có thể chỉ liệt kê một tập con các trường bằng cú pháp `Name:`. (Thứ tự của các trường có tên là không quan trọng.)
+Bạn có thể chỉ liệt kê một tập con các trường bằng cú pháp `Name:`. (Và thứ tự của các trường có tên không quan trọng.)
 
 Tiền tố đặc biệt `&` trả về một con trỏ đến giá trị struct.
 
 .play moretypes/struct-literals.go
 
-
 * Mảng
 
-Kiểu `[n]T` là một mảng gồm `n` giá trị kiểu `T`.
+Kiểu `[n]T` là một mảng gồm `n` giá trị có kiểu `T`.
 
 Biểu thức
 
@@ -73,32 +72,31 @@ Biểu thức
 
 khai báo biến `a` là một mảng gồm mười số nguyên.
 
-Độ dài của mảng là một phần của kiểu, nên mảng không thể thay đổi kích thước.
-Điều này có vẻ hạn chế, nhưng đừng lo lắng;
-Go cung cấp một cách tiện lợi để làm việc với mảng.
+Độ dài của một mảng là một phần của kiểu của nó, vì vậy mảng không thể thay đổi kích thước.
+Điều này có vẻ hạn chế, nhưng đừng lo;
+Go cung cấp một cách thuận tiện để làm việc với mảng.
 
 .play moretypes/array.go
-
 
 * Slice
 
 Một mảng có kích thước cố định.
-Một slice, mặt khác, là một khung nhìn có kích thước động,
-linh hoạt vào các phần tử của một mảng.
-Trong thực tế, slice phổ biến hơn mảng nhiều.
+Ngược lại, một slice là một cách nhìn linh hoạt,
+có kích thước động vào các phần tử của một mảng.
+Trong thực tế, slice phổ biến hơn nhiều so với mảng.
 
-Kiểu `[]T` là một slice với các phần tử kiểu `T`.
+Kiểu `[]T` là một slice có các phần tử thuộc kiểu `T`.
 
-Một slice được tạo bằng cách chỉ định hai chỉ số, giới hạn thấp và
-giới hạn cao, phân tách bằng dấu hai chấm:
+Một slice được tạo bằng cách chỉ định hai chỉ số, cận dưới và
+cận trên, được phân cách bởi dấu hai chấm:
 
 	a[low : high]
 
-Điều này chọn một phạm vi nửa mở bao gồm phần tử đầu tiên
+Thao tác này chọn một phạm vi nửa mở, bao gồm phần tử đầu tiên,
 nhưng loại trừ phần tử cuối cùng.
 
 Biểu thức sau tạo một slice bao gồm
-các phần tử 1 đến 3 của `a`:
+các phần tử từ 1 đến 3 của `a`:
 
 	a[1:4]
 
@@ -107,44 +105,42 @@ các phần tử 1 đến 3 của `a`:
 
 * Slice giống như tham chiếu đến mảng
 
-Một slice không lưu trữ dữ liệu,
+Một slice không lưu trữ dữ liệu nào,
 nó chỉ mô tả một phần của mảng bên dưới.
 
-Thay đổi các phần tử của một slice sẽ thay đổi
-các phần tử tương ứng trong mảng bên dưới.
+Việc thay đổi các phần tử của một slice sẽ sửa đổi
+các phần tử tương ứng của mảng bên dưới nó.
 
-Các slice khác chia sẻ cùng mảng bên dưới sẽ thấy những thay đổi đó.
+Các slice khác chia sẻ cùng một mảng bên dưới cũng sẽ thấy những thay đổi đó.
 
 .play moretypes/slices-pointers.go
 
+* Literal của slice
 
-* Slice literals
+Một literal của slice giống như một literal của mảng nhưng không có độ dài.
 
-Một slice literal giống như một array literal nhưng không có độ dài.
-
-Đây là một array literal:
+Đây là một literal của mảng:
 
 	[3]bool{true, true, false}
 
-Và đây tạo ra cùng mảng như trên,
-sau đó tạo một slice tham chiếu đến nó:
+Và đoạn này tạo ra cùng một mảng như trên,
+sau đó xây dựng một slice tham chiếu đến mảng đó:
 
 	[]bool{true, true, false}
 
 .play moretypes/slice-literals.go
 
+* Giá trị mặc định của slice
 
-* Giá trị mặc định của Slice
+Khi cắt slice, bạn có thể bỏ qua giới hạn trên hoặc dưới để sử dụng giá trị mặc định của chúng thay thế.
 
-Khi cắt slice, bạn có thể bỏ qua giới hạn cao hoặc thấp để dùng giá trị mặc định.
-
-Giá trị mặc định là 0 cho giới hạn thấp và độ dài của slice cho giới hạn cao.
+Giá trị mặc định là 0 cho giới hạn dưới và là độ dài của slice hoặc mảng bên dưới cho giới hạn trên.
 
 Với mảng
 
 	var a [10]int
 
-các biểu thức slice sau là tương đương:
+các biểu thức slice này tương đương nhau:
 
 	a[0:10]
 	a[:10]
@@ -153,48 +149,45 @@ các biểu thức slice sau là tương đương:
 
 .play moretypes/slice-bounds.go
 
+* Độ dài và sức chứa của slice
 
-* Độ dài và dung lượng của Slice
+Một slice có cả _độ dài_ và _sức chứa_.
 
-Một slice có cả _độ dài_ (_length_) và _dung lượng_ (_capacity_).
+Độ dài của một slice là số lượng phần tử mà nó chứa.
 
-Độ dài của một slice là số phần tử nó chứa.
-
-Dung lượng của một slice là số phần tử trong mảng bên dưới,
+Sức chứa của một slice là số lượng phần tử trong mảng bên dưới,
 tính từ phần tử đầu tiên trong slice.
 
-Độ dài và dung lượng của slice `s` có thể lấy bằng biểu thức
+Có thể lấy độ dài và sức chứa của một slice `s` bằng các biểu thức
 `len(s)` và `cap(s)`.
 
-Bạn có thể mở rộng độ dài của slice bằng cách re-slice,
-miễn là nó có đủ dung lượng.
-Hãy thử thay đổi một trong các phép tính slice trong chương trình ví dụ để mở rộng
-vượt quá dung lượng và xem điều gì xảy ra.
+Bạn có thể mở rộng độ dài của một slice bằng cách cắt lại slice đó,
+với điều kiện nó có đủ sức chứa.
+Hãy thử thay đổi một trong các thao tác slice trong chương trình ví dụ để mở rộng nó
+vượt quá sức chứa và xem điều gì xảy ra.
 
 .play moretypes/slice-len-cap.go
 
+* Slice nil
 
-* Nil slice
+Giá trị zero của một slice là `nil`.
 
-Giá trị không của một slice là `nil`.
-
-Một nil slice có độ dài và dung lượng bằng 0
+Một slice nil có độ dài và sức chứa bằng 0
 và không có mảng bên dưới.
 
 .play moretypes/nil-slices.go
 
+* Tạo slice bằng make
 
-* Tạo slice với make
+Slice có thể được tạo bằng hàm tích hợp sẵn `make`;
+đây là cách bạn tạo các mảng có kích thước động.
 
-Slice có thể được tạo bằng hàm built-in `make`;
-đây là cách tạo mảng có kích thước động.
-
-Hàm `make` cấp phát một mảng được đặt về 0
+Hàm `make` cấp phát một mảng được khởi tạo bằng giá trị zero
 và trả về một slice tham chiếu đến mảng đó:
 
 	a := make([]int, 5)  // len(a)=5
 
-Để chỉ định dung lượng, hãy truyền đối số thứ ba vào `make`:
+Để chỉ định sức chứa, truyền đối số thứ ba cho `make`:
 
 	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
 
@@ -204,47 +197,40 @@ và trả về một slice tham chiếu đến mảng đó:
 .play moretypes/making-slices.go
 
 
-* Slice của slice
+* Các slice của slice
 
-Slice có thể chứa bất kỳ kiểu nào, kể cả các slice khác.
+Slice có thể chứa bất kỳ kiểu nào, bao gồm cả các slice khác.
 
 .play moretypes/slices-of-slice.go
 
+* Thêm phần tử vào slice
 
-* Thêm vào slice
-
-Việc thêm các phần tử mới vào slice là thao tác phổ biến, nên Go cung cấp
-hàm built-in `append`. [[/pkg/builtin/#append][Tài liệu]]
-của package built-in mô tả `append`.
+Việc thêm các phần tử mới vào một slice là rất phổ biến, vì vậy Go cung cấp hàm dựng sẵn `append`. [[/pkg/builtin/#append][Tài liệu]] của gói dựng sẵn mô tả `append`.
 
 	func append(s []T, vs ...T) []T
 
-Tham số đầu tiên `s` của `append` là một slice kiểu `T`, và phần còn lại là
-các giá trị `T` cần thêm vào slice.
+Tham số đầu tiên `s` của `append` là một slice có kiểu `T`, còn các tham số còn lại là các giá trị `T` được thêm vào slice.
 
-Giá trị kết quả của `append` là một slice chứa tất cả các phần tử của
-slice gốc cộng với các giá trị được cung cấp.
+Giá trị kết quả của `append` là một slice chứa tất cả các phần tử của slice ban đầu cùng với các giá trị được cung cấp.
 
-Nếu mảng nền của `s` quá nhỏ để chứa tất cả các giá trị được cung cấp, một mảng
-lớn hơn sẽ được cấp phát. Slice được trả về sẽ trỏ đến mảng được cấp phát mới.
+Nếu mảng nền của `s` quá nhỏ để chứa tất cả các giá trị đã cho, một mảng lớn hơn sẽ được cấp phát. Slice được trả về sẽ trỏ tới mảng mới được cấp phát.
 
-(Để tìm hiểu thêm về slice, hãy đọc bài viết [[/blog/go-slices-usage-and-internals][Slices: usage and internals]].)
+(Để tìm hiểu thêm về slice, hãy đọc bài viết [[/blog/go-slices-usage-and-internals][Slice: cách sử dụng và phần bên trong]].)
 
 .play moretypes/append.go
-
 
 * Range
 
 Dạng `range` của vòng lặp `for` lặp qua một slice hoặc map.
 
-Khi lặp qua một slice, hai giá trị được trả về cho mỗi lần lặp.
+Khi dùng range trên một slice, hai giá trị được trả về trong mỗi lần lặp.
 Giá trị đầu tiên là chỉ số, và giá trị thứ hai là bản sao của phần tử tại chỉ số đó.
 
 .play moretypes/range.go
 
-* Range (tiếp theo)
+* Range tiếp tục
 
-Bạn có thể bỏ qua chỉ số hoặc giá trị bằng cách gán vào `_`.
+Bạn có thể bỏ qua chỉ số hoặc giá trị bằng cách gán cho `_`.
 
     for i, _ := range pow
     for _, value := range pow
@@ -257,71 +243,71 @@ Nếu bạn chỉ muốn chỉ số, bạn có thể bỏ qua biến thứ hai.
 
 * Bài tập: Slice
 
-Cài đặt `Pic`. Hàm này nên trả về một slice có độ dài `dy`, mỗi phần tử là một slice gồm `dx` số nguyên không dấu 8-bit. Khi bạn chạy chương trình, nó sẽ hiển thị hình ảnh của bạn, diễn giải các số nguyên như giá trị thang xám (chính xác hơn là thang xanh lam).
+Triển khai `Pic`. Hàm này phải trả về một slice có độ dài `dy`, trong đó mỗi phần tử là một slice gồm các số nguyên không dấu 8 bit có độ dài `dx`. Khi bạn chạy chương trình, nó sẽ hiển thị hình ảnh của bạn, diễn giải các số nguyên này thành các giá trị thang độ xám (thực ra là thang độ xanh).
 
 Việc chọn hình ảnh là tùy bạn. Các hàm thú vị bao gồm `(x+y)/2`, `x*y` và `x^y`.
 
-(Bạn cần dùng vòng lặp để cấp phát từng `[]uint8` bên trong `[][]uint8`.)
+(Bạn cần sử dụng một vòng lặp để cấp phát từng `[]uint8` bên trong `[][]uint8`.)
 
-(Dùng `uint8(intValue)` để chuyển đổi giữa các kiểu.)
+(Sử dụng `uint8(intValue)` để chuyển đổi giữa các kiểu.)
 
 .play moretypes/exercise-slices.go
 
-* Map
+* Maps
 
-Một map ánh xạ các khóa đến các giá trị.
+Một map ánh xạ các khóa tới các giá trị.
 
-Giá trị không của một map là `nil`.
-Một `nil` map không có khóa nào, cũng không thể thêm khóa.
+Giá trị zero của một map là `nil`.
+Một map `nil` không có khóa nào, và cũng không thể thêm khóa.
 
-Hàm `make` trả về một map của kiểu đã cho,
-đã được khởi tạo và sẵn sàng sử dụng.
+Hàm `make` trả về một map có kiểu đã cho,
+được khởi tạo và sẵn sàng sử dụng.
 
 .play moretypes/maps.go
 
-* Map literals
+* Các literal của map
 
-Map literal giống như struct literal, nhưng các khóa là bắt buộc.
+Các literal của map giống như các literal của struct, nhưng các khóa là bắt buộc.
 
 .play moretypes/map-literals.go
 
-* Map literals (tiếp theo)
+* Tiếp tục về các literal của map
 
-Nếu kiểu cấp cao nhất chỉ là tên kiểu, bạn có thể bỏ qua nó trong các phần tử của literal.
+Nếu kiểu ở cấp cao nhất chỉ là một tên kiểu, bạn có thể bỏ qua nó trong các phần tử của literal.
 
 .play moretypes/map-literals-continued.go
 
-* Thao tác với Map
+* Thay đổi map
 
 Chèn hoặc cập nhật một phần tử trong map `m`:
 
-	m[key] = elem
+    m[key] = elem
 
 Lấy một phần tử:
 
-	elem = m[key]
+    elem = m[key]
 
 Xóa một phần tử:
 
-	delete(m, key)
+    delete(m, key)
 
-Kiểm tra xem một khóa có tồn tại không bằng phép gán hai giá trị:
+Kiểm tra một khóa có tồn tại bằng phép gán hai giá trị:
 
-	elem, ok = m[key]
+    elem, ok = m[key]
 
 Nếu `key` có trong `m`, `ok` là `true`. Nếu không, `ok` là `false`.
 
-Nếu `key` không có trong map, thì `elem` là giá trị không cho kiểu phần tử của map.
+Nếu `key` không có trong map, thì `elem` là giá trị zero của kiểu phần tử của map.
 
 *Lưu ý:* Nếu `elem` hoặc `ok` chưa được khai báo, bạn có thể dùng dạng khai báo ngắn:
 
-	elem, ok := m[key]
+    elem, ok := m[key]
 
 .play moretypes/mutating-maps.go
 
-* Bài tập: Map
+* Bài tập: Maps
 
-Cài đặt `WordCount`. Hàm này nên trả về một map đếm số lần xuất hiện của mỗi "từ" trong chuỗi `s`. Hàm `wc.Test` chạy một bộ kiểm tra đối với hàm được cung cấp và in kết quả thành công hoặc thất bại.
+Triển khai `WordCount`. Hàm này sẽ trả về một map chứa số lần xuất hiện của mỗi “từ” trong chuỗi `s`. Hàm `wc.Test` chạy một bộ kiểm thử đối với hàm được cung cấp và in ra thành công hoặc thất bại.
 
 Bạn có thể thấy [[/pkg/strings/#Fields][strings.Fields]] hữu ích.
 
@@ -329,26 +315,25 @@ Bạn có thể thấy [[/pkg/strings/#Fields][strings.Fields]] hữu ích.
 
 * Giá trị hàm
 
-Hàm cũng là giá trị. Chúng có thể được truyền đi như các giá trị khác.
+Hàm cũng là giá trị. Chúng có thể được truyền đi giống như các giá trị khác.
 
 Giá trị hàm có thể được dùng làm đối số hàm và giá trị trả về.
 
 .play moretypes/function-values.go
 
-* Closure hàm
+* Closure của hàm
 
-Các hàm Go có thể là closure. Một closure là một giá trị hàm tham chiếu đến các biến từ bên ngoài thân hàm. Hàm có thể truy cập và gán giá trị cho các biến được tham chiếu; theo nghĩa này hàm được "ràng buộc" với các biến.
+Các hàm Go có thể là closure. Một closure là một giá trị hàm tham chiếu đến các biến bên ngoài thân của nó. Hàm có thể truy cập và gán cho các biến được tham chiếu; theo nghĩa này, hàm được "ràng buộc" với các biến đó.
 
-Ví dụ, hàm `adder` trả về một closure. Mỗi closure được ràng buộc với biến `sum` của riêng nó.
+Ví dụ, hàm `adder` trả về một closure. Mỗi closure được ràng buộc với biến `sum` riêng của nó.
 
 .play moretypes/function-closures.go
 
-* Bài tập: Fibonacci closure
+* Bài tập: Closure Fibonacci
 
-Hãy vui vẻ với các hàm.
+Hãy cùng vui vẻ với các hàm.
 
-Cài đặt một hàm `fibonacci` trả về một hàm (một closure) mà
-trả về các [[https://en.wikipedia.org/wiki/Fibonacci_number][số Fibonacci]] liên tiếp
+Triển khai một hàm `fibonacci` trả về một hàm (một closure) trả về liên tiếp các [[https://en.wikipedia.org/wiki/Fibonacci_number][số Fibonacci]]
 (0, 1, 1, 2, 3, 5, ...).
 
 .play moretypes/exercise-fibonacci-closure.go
@@ -357,4 +342,4 @@ trả về các [[https://en.wikipedia.org/wiki/Fibonacci_number][số Fibonacci
 
 Bạn đã hoàn thành bài học này!
 
-Bạn có thể quay lại danh sách các [[/tour/list][module]] để tìm hiểu tiếp theo, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].
+Bạn có thể quay lại danh sách [[/tour/list][mô-đun]] để tìm nội dung tiếp theo cần học, hoặc tiếp tục với [[javascript:click('.next-page')][bài học tiếp theo]].

@@ -1,6 +1,6 @@
----
-Title: Tham chiếu tệp go.mod
----
+<!--{
+  "Title": "Tham chiếu tệp go.mod"
+}-->
 
 Mỗi mô-đun Go được xác định bởi một tệp go.mod mô tả các thuộc tính của mô-đun, bao gồm các dependency của mô-đun đó với các mô-đun khác và với các phiên bản Go.
 
