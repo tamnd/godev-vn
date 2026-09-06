@@ -23,6 +23,7 @@ changing that one line and nothing else.
 | ---- | ---- | ---- |
 | godev-vn.tamnd.com | canonical | The address today. `tamnd.com` is already on Cloudflare nameservers, so this is one CNAME to the Pages project and no delegation change. |
 | godev-vn.pages.dev | redirect | The name Cloudflare gives the Pages project. It answers whether we want it to or not, so it sends readers to the canonical host rather than putting a second copy of the site in a search result. |
+| godev-vn-mirror.tamnd.com | mirror | GitHub Pages, so that one vendor having a bad day is not the whole site being down. A `CNAME` to `tamnd.github.io`, not proxied, which is the same shape `linux.tamnd.com` already uses. |
 | godev.vn | placeholder | The official Vietnamese address, not bought yet. See `DOMAIN.md` for what buying it involves. Listed here from now so that the day it resolves it serves a page explaining itself instead of sitting parked. |
 
 Three roles, and a host whose role is not one of them is treated as a redirect,
