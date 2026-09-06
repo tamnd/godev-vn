@@ -1,22 +1,22 @@
-<!--{
-	"Title": "Tải xuống và cài đặt",
-  "HideTOC": true,
-  "Sidebar": "bug",
-  "Breadcrumb": true
-}-->
+---
+Title: Tải xuống và cài đặt
+HideTOC: true
+Sidebar: bug
+Breadcrumb: true
+---
 
 <p>
-  Tải xuống và cài đặt Go nhanh chóng với các bước được mô tả ở đây.
+  Tải xuống và cài đặt Go nhanh chóng theo các bước được mô tả tại đây.
 </p>
-<p>Để tìm hiểu thêm về cài đặt, bạn có thể quan tâm đến:</p>
+<p>Đối với nội dung khác về việc cài đặt, bạn có thể quan tâm đến:</p>
 <ul>
   <li>
-    <a href="/doc/manage-install">Quản lý cài đặt Go</a> -- Cách
+    <a href="/doc/manage-install">Quản lý các bản cài đặt Go</a> -- Cách
     cài đặt nhiều phiên bản và gỡ cài đặt.
   </li>
   <li>
     <a href="/doc/install/source">Cài đặt Go từ mã nguồn</a> -- Cách
-    kiểm tra mã nguồn, xây dựng chúng trên máy của bạn và chạy chúng.
+    lấy mã nguồn, xây dựng chúng trên máy của bạn và chạy chúng.
   </li>
 </ul>
 <p class="DownloadBtn">
@@ -27,10 +27,10 @@
   </a>
 </p>
 
-<h2 id="install">Cài đặt Go</h2>
+<h2 id="install">Go installation</h2>
 <p>
-  Chọn tab hệ điều hành của máy tính bên dưới, sau đó làm theo
-  hướng dẫn cài đặt của nó.
+  Select the tab for your computer's operating system below, then follow its
+  installation instructions.
 </p>
 <div id="os-install-tabs" class="TabSection js-tabSection">
   <div id="os-install-tablist" class="TabSection-tabList" role="tablist">
@@ -76,9 +76,9 @@
   >
     <ol>
       <li>
-        <strong>Xóa bất kỳ cài đặt Go trước đó</strong> bằng cách xóa thư mục <code>/usr/local/go</code>
-		(nếu có), sau đó giải nén file lưu trữ bạn vừa tải xuống vào <code>/usr/local</code>, tạo
-		cây Go mới trong <code>/usr/local/go</code>:
+        <strong>Remove any previous Go installation</strong> by deleting the <code>/usr/local/go</code> folder
+		(if it exists), then extract the archive you just downloaded into <code>/usr/local</code>, creating a fresh
+		Go tree in <code>/usr/local/go</code>:
 		<pre class="CopyPaste">
       <span>$ rm -rf /usr/local/go &amp;&amp; tar -C /usr/local -xzf <span id="linux-filename">go1.14.3.linux-amd64.tar.gz</span></span>
       <button aria-label="Copy and paste the code.">
@@ -87,18 +87,18 @@
       </button>
     </pre>
 		<p>
-          (Bạn có thể cần chạy từng lệnh riêng lẻ với các quyền cần thiết, với tư cách root hoặc qua <code>sudo</code>.)
+          (You may need to run each command separately with the necessary permissions, as root or through <code>sudo</code>.)
         </p>
 		<p>
-		  <strong>Không</strong> giải nén file lưu trữ vào một cây <code>/usr/local/go</code> hiện có. Điều này được biết đến là
-		  gây ra các cài đặt Go bị hỏng.
+		  <strong>Do not</strong> untar the archive into an existing <code>/usr/local/go</code> tree. This is known to
+		  produce broken Go installations.
 		 </p>
       </li>
       <li>
-        Thêm <code>/usr/local/go/bin</code> vào biến môi trường <code>PATH</code>.
+        Add <code>/usr/local/go/bin</code> to the <code>PATH</code> environment variable.
         <p>
-          Bạn có thể làm điều này bằng cách thêm dòng sau vào <code>$HOME/.profile</code> hoặc
-          <code>/etc/profile</code> (để cài đặt toàn hệ thống):
+          You can do this by adding the following line to your <code>$HOME/.profile</code> or
+          <code>/etc/profile</code> (for a system-wide installation):
         </p>
         <pre class="CopyPaste">
           <span>export PATH=$PATH:/usr/local/go/bin</span>
@@ -108,20 +108,20 @@
           </button>
         </pre>
         <p>
-          <strong>Lưu ý:</strong> Các thay đổi đối với tệp profile có thể không được áp dụng
-          cho đến lần đăng nhập tiếp theo vào máy tính của bạn. Để áp dụng các thay đổi
-          ngay lập tức, hãy chạy các lệnh shell trực tiếp hoặc thực thi chúng từ
-          profile bằng một lệnh như
+          <strong>Note:</strong> Changes made to a profile file may not apply
+          until the next time you log into your computer. To apply the changes
+          immediately, just run the shell commands directly or execute them from
+          the profile using a command such as
           <code>source $HOME/.profile</code>.
         </p>
       </li>
       <li>
         <!-- TODO: Update to GOBIN once go.dev/issue/23439 is addressed. -->
-        Thêm <code>$HOME/go/bin</code> (đường dẫn bin mặc định của Go) vào biến
-        môi trường <code>PATH</code> để dùng các công cụ được cài qua
+        Add <code>$HOME/go/bin</code> (the default Go bin path) to your
+        <code>PATH</code> environment variable to use tools installed via
         <code>go install</code>.
         <p>
-          Bạn có thể làm điều này bằng cách thêm dòng sau vào tệp <code>$HOME/.profile</code> hoặc <code>$HOME/.bashrc</code>:
+          You can do this by adding the following line to your <code>$HOME/.profile</code> or <code>$HOME/.bashrc</code> file:
         </p>
         <pre class="CopyPaste">
           <span>export PATH="$PATH:$(go env GOPATH)/bin"</span>
@@ -132,12 +132,12 @@
         </pre>
       </li>
       <li>
-        Khởi động lại các phiên terminal đang mở để thay đổi có hiệu lực.
+        Restart any open terminal sessions for the changes to take effect.
         <p><!-- for consistent spacing --></p>
       </li>
       <li>
-        Xác minh rằng bạn đã cài đặt Go bằng cách mở command prompt và gõ
-        lệnh sau:
+        Verify that you've installed Go by opening a command prompt and typing
+        the following command:
         <pre class="CopyPaste">
           <span>$ go version</span>
           <button aria-label="Copy and paste the code.">
@@ -146,7 +146,7 @@
           </button>
         </pre>
       </li>
-      <li>Xác nhận rằng lệnh in ra phiên bản Go đã cài đặt.</li>
+      <li>Confirm that the command prints the installed version of Go.</li>
     </ol>
   </div>
   <div
@@ -158,21 +158,21 @@
   >
     <ol>
       <li>
-        Mở tệp package bạn đã tải xuống và làm theo các hướng dẫn để cài đặt
+        Open the package file you downloaded and follow the prompts to install
         Go.
         <p>
-          Package cài đặt bản phân phối Go vào <code>/usr/local/go</code>. Package
-          thêm thư mục <code>/usr/local/go/bin</code> vào biến môi trường
-          <code>PATH</code> của bạn bằng cách tạo tệp <code>/etc/paths.d/go</code>.
+          The package installs the Go distribution to <code>/usr/local/go</code>. The package
+          adds the <code>/usr/local/go/bin</code> directory to your
+          <code>PATH</code> environment variable by creating a <code>/etc/paths.d/go</code> file.
         </p>
       </li>
       <li>
         <!-- TODO: Update to GOBIN once go.dev/issue/23439 is addressed. -->
-        Thêm <code>$HOME/go/bin</code> (đường dẫn bin mặc định của Go) vào biến
-        môi trường <code>PATH</code> để dùng các công cụ được cài qua
+        Add <code>$HOME/go/bin</code> (the default Go bin path) to your
+        <code>PATH</code> environment variable to use tools installed via
         <code>go install</code>.
         <p>
-          Bạn có thể làm điều này bằng cách thêm dòng sau vào tệp <code>~/.zshrc</code> hoặc <code>~/.bash_profile</code>:
+          You can do this by adding the following line to your <code>~/.zshrc</code> or <code>~/.bash_profile</code> file:
         </p>
         <pre class="CopyPaste">
           <span>export PATH="$PATH:$(go env GOPATH)/bin"</span>
@@ -183,12 +183,12 @@
         </pre>
       </li>
       <li>
-        Khởi động lại các phiên terminal đang mở để thay đổi có hiệu lực.
+        Restart any open terminal sessions for the changes to take effect.
         <p><!-- for consistent spacing --></p>
       </li>
       <li>
-        Xác minh rằng bạn đã cài đặt Go bằng cách mở phiên terminal
-        <strong>mới</strong> và gõ lệnh sau:
+        Verify that you've installed Go by opening a <strong>new</strong> terminal session and typing
+        the following command:
         <pre class="CopyPaste">
           <span>$ go version</span>
           <button aria-label="Copy and paste the code.">
@@ -197,7 +197,7 @@
           </button>
         </pre>
       </li>
-      <li>Xác nhận rằng lệnh in ra phiên bản Go đã cài đặt.</li>
+      <li>Confirm that the command prints the installed version of Go.</li>
     </ol>
   </div>
   <div
@@ -209,27 +209,28 @@
   >
     <ol>
       <li>
-        Mở tệp MSI bạn đã tải xuống và làm theo các hướng dẫn để cài đặt Go.
+        Open the MSI file you downloaded and follow the prompts to install Go.
         <p>
-          Theo mặc định, trình cài đặt sẽ cài đặt Go vào <code>Program Files</code>
-          hoặc <code>Program Files (x86)</code>. Bạn có thể thay đổi
-          vị trí nếu cần. Sau khi cài đặt, bạn cần đóng và
-          mở lại bất kỳ command prompt đang mở nào để các thay đổi môi trường
-          do trình cài đặt thực hiện được phản ánh trong command prompt.
+          By default, the installer will install Go to <code>Program Files</code>
+          or <code>Program Files (x86)</code>. You can change the
+          location as needed. After installing, you will need to close and
+          reopen any open command prompts so that changes to the environment
+          made by the installer are reflected at the command prompt.
         </p>
       </li>
       <li>
-        Xác minh rằng bạn đã cài đặt Go.
+        Verify that you've installed Go.
         <ol>
           <li>
-            Trong <strong>Windows</strong>, nhấp vào menu <strong>Start</strong>.
+            In <strong>Windows</strong>, click the <strong>Start</strong> menu.
           </li>
           <li>
-            Trong hộp tìm kiếm của menu, gõ <code>cmd</code>, sau đó nhấn phím
-            <strong>Enter</strong>.
+            In the menu's search box, type <code>cmd</code>, then press the
+            <strong>Enter</strong> key.
           </li>
           <li>
-            Trong cửa sổ Command Prompt xuất hiện, gõ lệnh sau:
+            In the Command Prompt window that appears, type the following
+            command:
             <pre class="CopyPaste">
               <span>$ go version</span>
               <button aria-label="Copy and paste the code.">
@@ -238,17 +239,17 @@
               </button>
             </pre>
           </li>
-          <li>Xác nhận rằng lệnh in ra phiên bản Go đã cài đặt.</li>
+          <li>Confirm that the command prints the installed version of Go.</li>
         </ol>
       </li>
     </ol>
   </div>
 </div>
-<h2 id="code">Đã sẵn sàng!</h2>
+<h2 id="code">You're all set!</h2>
 <p class="DocInstall-footer">
-  Truy cập
-  <a href="tutorial/getting-started.html">hướng dẫn Bắt đầu</a> để viết
-  một số mã Go đơn giản. Mất khoảng 10 phút để hoàn thành.
+  Visit the
+  <a href="tutorial/getting-started.html">Getting Started tutorial</a> to write
+  some simple Go code. It takes about 10 minutes to complete.
 </p>
 
 <script async src="/doc/download.js"></script>

@@ -9,4 +9,9 @@ audit.md
 # and not in history.
 dist/
 
+# The queue and the stored answers, written by `godev translate` when it is run
+# with this checkout as its working directory. Job state is local and
+# disposable and the translated files are the durable thing.
+work/
+
 .DS_Store

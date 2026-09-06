@@ -1,89 +1,102 @@
+---
 <!--{
-	"Title": "Effective Go",
+	"Title": "Go hiệu quả",
 	"Template": true,
 	"Breadcrumb": true
 }-->
+---
 
 <div class="Note">
-<strong>Lưu ý:</strong> Tài liệu này được viết vào thời điểm Go ra mắt năm 2009 và
-không được cập nhật thường xuyên. Mặc dù đây vẫn là hướng dẫn tốt về cách sử dụng cốt lõi ngôn ngữ,
-tài liệu này không đề cập đến những thay đổi quan trọng của ngôn ngữ (generics), hệ sinh thái (modules),
-hay các thư viện được bổ sung kể từ đó. Xem <a href="/issue/28782">issue 28782</a> để biết thêm bối cảnh.
+<strong>Lưu ý:</strong> Tài liệu này được viết cho bản phát hành Go năm 2009 và không được cập nhật tích cực. Mặc dù vẫn là một hướng dẫn hữu ích để sử dụng ngôn ngữ cốt lõi, tài liệu không bao gồm những thay đổi đáng kể đối với ngôn ngữ (generics), hệ sinh thái (modules), hoặc các thư viện được thêm vào kể từ đó. Xem <a href="/issue/28782">vấn đề 28782</a> để biết ngữ cảnh.
 Để xem danh sách đầy đủ các thay đổi,
-hãy tham khảo <a href="/doc/devel/release">ghi chú bản phát hành</a>.
+xem <a href="/doc/devel/release">ghi chú bản phát hành</a>.
 </div>
 
 <h2 id="introduction">Giới thiệu</h2>
 
 <p>
 Go là một ngôn ngữ lập trình mã nguồn mở tập trung vào sự đơn giản, độ tin cậy
-và hiệu quả, được thiết kế đặc biệt để giúp việc xây dựng phần mềm quy mô lớn trở nên dễ dàng.
-Mặc dù nó vay mượn ý tưởng từ các ngôn ngữ hiện có,
-Go có những đặc điểm khác biệt khiến các chương trình Go hiệu quả mang
-bản sắc riêng, khác hẳn với các chương trình viết bằng những ngôn ngữ họ hàng.
-Việc dịch thẳng một chương trình C++ hay Java sang Go khó có thể cho kết quả tốt&mdash;chương trình Java
+và hiệu quả, được thiết kế đặc biệt để giúp việc xây dựng phần mềm ở quy mô lớn trở nên dễ dàng.
+Mặc dù vay mượn ý tưởng từ các ngôn ngữ hiện có,
+Go có những đặc tính khác thường khiến các chương trình Go hiệu quả
+có đặc điểm khác với các chương trình được viết bằng những ngôn ngữ họ hàng.
+Việc dịch trực tiếp một chương trình C++ hoặc Java sang Go
+khó có khả năng tạo ra kết quả thỏa đáng&mdash;các chương trình Java
 được viết bằng Java, không phải Go.
-Ngược lại, tiếp cận bài toán theo góc nhìn của Go có thể tạo ra một chương trình
-thành công nhưng hoàn toàn khác biệt.
+Mặt khác, việc suy nghĩ về vấn đề từ góc nhìn của Go
+có thể tạo ra một chương trình thành công nhưng khá khác biệt.
 Nói cách khác,
-để viết Go tốt, cần hiểu rõ các đặc tính và idiom của ngôn ngữ.
-Ngoài ra, cần nắm được các quy ước đã được thiết lập khi lập trình bằng Go,
-như cách đặt tên, định dạng code, cấu trúc chương trình, v.v., để các chương trình
-bạn viết dễ hiểu đối với những lập trình viên Go khác.
+để viết Go tốt, điều quan trọng là phải hiểu các đặc tính
+và thành ngữ của nó.
+Việc biết các quy ước đã được thiết lập khi
+lập trình bằng Go, chẳng hạn như đặt tên, định dạng, xây dựng
+chương trình, v.v., cũng rất quan trọng, để các chương trình bạn viết
+sẽ dễ dàng được các lập trình viên Go khác hiểu.
 </p>
 
 <p>
-Tài liệu này cung cấp các gợi ý để viết code Go rõ ràng và chuẩn idiom.
+Tài liệu này cung cấp các mẹo để viết mã Go rõ ràng, đúng thành ngữ.
 Nó bổ sung cho <a href="/ref/spec">đặc tả ngôn ngữ</a>,
 <a href="/tour/">Tour of Go</a>,
-và <a href="/doc/code.html">Cách viết code Go</a>,
-tất cả những tài liệu mà bạn nên đọc trước.
+và <a href="/doc/code.html">Cách viết mã Go</a>,
+tất cả những tài liệu này bạn
+nên đọc trước.
 </p>
-
-
-
 
 <h3 id="examples">Ví dụ</h3>
 
 <p>
-<a href="/src/">Mã nguồn của các gói Go</a>
-không chỉ đóng vai trò là thư viện cốt lõi mà còn là ví dụ về cách sử dụng ngôn ngữ.
-Hơn nữa, nhiều gói chứa các ví dụ thực thi độc lập hoàn chỉnh mà bạn có thể chạy trực tiếp từ
-trang web <a href="/">go.dev</a>, chẳng hạn như
+<a href="/src/">Mã nguồn gói Go</a>
+được dùng không chỉ
+như thư viện cốt lõi mà còn như các ví dụ về cách
+sử dụng ngôn ngữ.
+Hơn nữa, nhiều gói chứa các ví dụ thực thi hoạt động, độc lập
+mà bạn có thể chạy trực tiếp từ trang web
+<a href="/">go.dev</a>, chẳng hạn như
 <a href="/pkg/strings/#example-Map">ví dụ này</a> (nếu
-cần, nhấp vào từ "Example" để mở).
-Nếu bạn có thắc mắc về cách tiếp cận một vấn đề hay cách triển khai một tính năng nào đó,
-tài liệu, code và ví dụ trong thư viện có thể cung cấp câu trả lời, ý tưởng và
-kiến thức nền.
+cần, hãy nhấp vào từ "Example" để mở nó).
+Nếu bạn có câu hỏi về cách tiếp cận một vấn đề hoặc cách một thứ gì đó
+có thể được triển khai, tài liệu, mã và các ví dụ trong
+thư viện có thể cung cấp câu trả lời, ý tưởng và
+bối cảnh.
 </p>
 
 
 <h2 id="formatting">Định dạng</h2>
 
 <p>
-Các vấn đề về định dạng thường gây tranh cãi nhiều nhất nhưng lại ít quan trọng nhất.
-Người ta có thể thích nghi với các phong cách định dạng khác nhau,
-nhưng tốt hơn là không phải làm vậy, và sẽ tốn ít thời gian hơn cho chủ đề này
-nếu tất cả mọi người đều tuân thủ cùng một phong cách.
-Vấn đề là làm thế nào tiếp cận được Utopia đó mà không cần một bộ hướng dẫn phong cách dài dòng và cứng nhắc.
+Các vấn đề về định dạng là những vấn đề gây tranh cãi nhất
+nhưng lại ít quan trọng nhất.
+Mọi người có thể thích nghi với các kiểu định dạng khác nhau,
+nhưng tốt hơn là họ không phải làm vậy, và
+sẽ dành ít thời gian hơn cho chủ đề này
+nếu mọi người tuân thủ cùng một kiểu.
+Vấn đề là làm thế nào để tiếp cận miền Utopia này mà không cần một
+hướng dẫn phong cách mang tính quy định dài dòng.
 </p>
 
 <p>
-Với Go, chúng ta áp dụng một cách tiếp cận khác thường: để máy tính
-xử lý hầu hết các vấn đề định dạng.
+Với Go, chúng tôi áp dụng một
+cách tiếp cận khác thường và để máy móc
+xử lý hầu hết các vấn đề về định dạng.
 Chương trình <code>gofmt</code>
-(cũng có thể dùng dưới dạng <code>go fmt</code>, hoạt động ở cấp độ gói thay vì cấp độ tệp nguồn)
+(cũng có sẵn dưới dạng <code>go fmt</code>, hoạt động
+ở cấp độ gói thay vì cấp độ tệp nguồn)
 đọc một chương trình Go
-và xuất mã nguồn theo phong cách chuẩn về thụt lề
-và căn chỉnh dọc, giữ nguyên và nếu cần thì định dạng lại các comment.
-Nếu bạn muốn biết cách xử lý một tình huống bố cục mới,
-hãy chạy <code>gofmt</code>; nếu kết quả trông không ổn, hãy sắp xếp lại chương trình (hoặc báo lỗi về <code>gofmt</code>),
-đừng cố tìm cách né tránh.
+và xuất mã nguồn theo một kiểu chuẩn về thụt lề
+và căn chỉnh theo chiều dọc, giữ lại và nếu cần
+định dạng lại các chú thích.
+Nếu bạn muốn biết cách xử lý một tình huống bố cục
+mới nào đó, hãy chạy <code>gofmt</code>; nếu câu trả lời không
+có vẻ đúng, hãy sắp xếp lại chương trình của bạn (hoặc báo lỗi về <code>gofmt</code>),
+đừng tìm cách né tránh nó.
 </p>
 
 <p>
-Ví dụ, không cần tốn thời gian căn chỉnh các comment trên các trường của một struct.
-<code>Gofmt</code> sẽ làm điều đó cho bạn. Với khai báo
+Ví dụ, không cần dành thời gian để căn chỉnh
+các chú thích trên các trường của một cấu trúc.
+<code>Gofmt</code> sẽ làm việc đó cho bạn. Với
+khai báo
 </p>
 
 <pre>
@@ -105,71 +118,69 @@ type T struct {
 </pre>
 
 <p>
-Tất cả code Go trong các gói chuẩn đều đã được định dạng bằng <code>gofmt</code>.
+Tất cả mã Go trong các gói chuẩn đã được định dạng bằng <code>gofmt</code>.
 </p>
 
-
 <p>
-Một số chi tiết định dạng vẫn cần lưu ý. Tóm gọn:
+Một số chi tiết về định dạng vẫn còn tồn tại. Tóm tắt:
 </p>
 
 <dl>
     <dt>Thụt lề</dt>
-    <dd>Chúng ta dùng tab để thụt lề và <code>gofmt</code> xuất chúng theo mặc định.
-    Chỉ dùng khoảng trắng khi thực sự cần thiết.
+    <dd>Chúng tôi sử dụng tab để thụt lề và <code>gofmt</code> xuất chúng theo mặc định.
+    Chỉ sử dụng khoảng trắng nếu bắt buộc.
     </dd>
     <dt>Độ dài dòng</dt>
     <dd>
-    Go không giới hạn độ dài dòng. Đừng lo lắng về việc dòng quá dài.
-    Nếu một dòng có vẻ quá dài, hãy xuống dòng và thụt lề thêm một tab.
+    Go không có giới hạn độ dài dòng. Đừng lo lắng về việc vượt quá một thẻ đục lỗ.
+    Nếu một dòng có vẻ quá dài, hãy ngắt dòng đó và thụt lề bằng thêm một tab.
     </dd>
     <dt>Dấu ngoặc đơn</dt>
     <dd>
     Go cần ít dấu ngoặc đơn hơn C và Java: các cấu trúc điều khiển (<code>if</code>,
     <code>for</code>, <code>switch</code>) không có dấu ngoặc đơn trong
     cú pháp của chúng.
-    Ngoài ra, thứ tự ưu tiên của toán tử ngắn gọn và rõ ràng hơn, vì vậy
+    Ngoài ra, thứ bậc ưu tiên của toán tử ngắn gọn và rõ ràng hơn, vì vậy
 <pre>
 x&lt;&lt;8 + y&lt;&lt;16
 </pre>
-    có nghĩa đúng như cách viết với khoảng trắng gợi ý, khác với các ngôn ngữ khác.
+    có nghĩa đúng như cách khoảng trắng thể hiện, không giống như trong các ngôn ngữ khác.
     </dd>
 </dl>
 
-<h2 id="commentary">Comment</h2>
+<h2 id="commentary">Chú thích</h2>
 
 <p>
-Go cung cấp comment khối kiểu C <code>/* */</code>
-và comment dòng kiểu C++ <code>//</code>.
-Comment dòng là chuẩn thông dụng;
-comment khối xuất hiện chủ yếu là comment của gói, nhưng
-cũng hữu ích trong một biểu thức hoặc để vô hiệu hóa một đoạn code lớn.
+Go cung cấp chú thích khối theo kiểu C <code>/* */</code>
+và chú thích dòng theo kiểu C++ <code>//</code>.
+Chú thích dòng là dạng thông dụng;
+chú thích khối chủ yếu xuất hiện dưới dạng chú thích gói, nhưng
+hữu ích bên trong một biểu thức hoặc để vô hiệu hóa các phần lớn của mã.
 </p>
 
 <p>
-Các comment xuất hiện trước các khai báo cấp cao nhất, không có dòng trống ở giữa,
-được coi là tài liệu cho chính khai báo đó.
-Những "doc comment" này là tài liệu chính cho một gói hoặc lệnh Go.
-Để biết thêm về doc comment, xem "<a href="/doc/comment">Go Doc Comments</a>".
+Các chú thích xuất hiện trước khai báo cấp cao nhất, không có dòng trống xen giữa,
+được xem là tài liệu cho chính khai báo đó.
+Những “chú thích tài liệu” này là tài liệu chính cho một gói hoặc lệnh Go cụ thể.
+Để biết thêm về chú thích tài liệu, xem “<a href="/doc/comment">Go Doc Comments</a>”.
 </p>
 
-<h2 id="names">Tên gọi</h2>
+<h2 id="names">Tên</h2>
 
 <p>
-Tên gọi cũng quan trọng trong Go như trong bất kỳ ngôn ngữ nào khác.
+Tên cũng quan trọng trong Go như trong bất kỳ ngôn ngữ nào khác.
 Chúng thậm chí còn có tác động về mặt ngữ nghĩa:
-khả năng hiển thị của một tên bên ngoài gói được xác định bởi việc
-ký tự đầu tiên của tên đó có phải chữ hoa hay không.
-Do đó, nên dành một chút thời gian để nói về các quy ước đặt tên
-trong các chương trình Go.
+khả năng hiển thị của một tên bên ngoài một gói được xác định bởi việc
+ký tự đầu tiên của nó có viết hoa hay không.
+Vì vậy, dành một chút thời gian để nói về các quy ước đặt tên
+trong chương trình Go là điều đáng làm.
 </p>
-
 
 <h3 id="package-names">Tên gói</h3>
 
 <p>
-Khi một gói được import, tên gói trở thành bộ truy cập cho
-các nội dung của nó. Sau
+Khi một gói được import, tên gói trở thành bộ truy cập đến
+nội dung của nó. Sau
 </p>
 
 <pre>
@@ -177,17 +188,19 @@ import "bytes"
 </pre>
 
 <p>
-gói đang import có thể tham chiếu đến <code>bytes.Buffer</code>. Sẽ rất tiện
-nếu tất cả những ai sử dụng gói đều có thể dùng cùng một tên để chỉ
-nội dung của nó, điều này ngụ ý rằng tên gói nên hay: ngắn gọn, súc tích, gợi nghĩa.
-Theo quy ước, tên gói được viết thường, một từ duy nhất; không cần dùng dấu gạch dưới
-hay mixedCaps.
-Hãy nghiêng về phía ngắn gọn, vì tất cả mọi người sử dụng gói của bạn sẽ phải gõ tên đó.
-Và đừng lo lắng về xung đột tên <i>a priori</i>.
-Tên gói chỉ là tên mặc định cho các lần import; nó không cần phải là duy nhất
-trên tất cả mã nguồn, và trong trường hợp hiếm gặp khi xung đột, gói đang import
-có thể chọn một tên khác để dùng cục bộ.
-Trong mọi trường hợp, sự nhầm lẫn hiếm khi xảy ra vì tên tệp trong câu lệnh import
+gói import có thể đề cập đến <code>bytes.Buffer</code>. Sẽ hữu ích
+nếu mọi người sử dụng gói đó có thể dùng cùng một tên để tham chiếu đến
+nội dung của nó, điều này có nghĩa là tên gói nên là một tên tốt:
+ngắn, súc tích, gợi nhớ. Theo quy ước, các gói được đặt
+tên viết thường, một từ; không nên cần đến dấu gạch dưới
+hoặc mixedCaps.
+Hãy ưu tiên sự ngắn gọn, vì mọi người sử dụng
+gói của bạn sẽ phải gõ tên đó.
+Và đừng lo lắng về các xung đột <i>a priori</i>.
+Tên gói chỉ là tên mặc định cho các import; nó không cần phải là duy nhất
+trong toàn bộ mã nguồn, và trong trường hợp hiếm xảy ra xung đột,
+gói import có thể chọn một tên khác để sử dụng cục bộ.
+Trong mọi trường hợp, sự nhầm lẫn hiếm khi xảy ra vì tên tệp trong import
 xác định chính xác gói nào đang được sử dụng.
 </p>
 
@@ -195,51 +208,54 @@ xác định chính xác gói nào đang được sử dụng.
 Một quy ước khác là tên gói là tên cơ sở của
 thư mục nguồn của nó;
 gói trong <code>src/encoding/base64</code>
-được import là <code>"encoding/base64"</code> nhưng có tên là <code>base64</code>,
+được import dưới dạng <code>"encoding/base64"</code> nhưng có tên <code>base64</code>,
 không phải <code>encoding_base64</code> và cũng không phải <code>encodingBase64</code>.
 </p>
 
 <p>
-Người import một gói sẽ dùng tên đó để tham chiếu đến nội dung của nó,
-vì vậy các tên được xuất trong gói có thể tận dụng điều này
+Bên import của một gói sẽ sử dụng tên đó để tham chiếu đến nội dung của nó,
+vì vậy các tên được export trong gói có thể tận dụng điều này
 để tránh lặp lại.
-(Đừng dùng ký hiệu <code>import .</code>, có thể đơn giản hóa
-các test phải chạy bên ngoài gói mà chúng đang kiểm tra, nhưng nên tránh trong các trường hợp khác.)
-Ví dụ, kiểu buffered reader trong gói <code>bufio</code> có tên là <code>Reader</code>,
-không phải <code>BufReader</code>, vì người dùng nhìn thấy nó là <code>bufio.Reader</code>,
+(Không sử dụng ký hiệu <code>import .</code>, vốn có thể đơn giản hóa
+các bài kiểm thử phải chạy bên ngoài gói mà chúng đang kiểm thử, nhưng
+nên tránh sử dụng trong các trường hợp khác.)
+Ví dụ, kiểu trình đọc có bộ đệm trong gói <code>bufio</code> được gọi là <code>Reader</code>,
+không phải <code>BufReader</code>, vì người dùng thấy nó là <code>bufio.Reader</code>,
 một tên rõ ràng và súc tích.
 Hơn nữa,
-vì các thực thể được import luôn được truy cập kèm theo tên gói, <code>bufio.Reader</code>
+vì các thực thể được import luôn được truy cập bằng tên gói của chúng, <code>bufio.Reader</code>
 không xung đột với <code>io.Reader</code>.
-Tương tự, hàm tạo các instance mới của <code>ring.Ring</code>&mdash;đây chính là
-định nghĩa của một <em>constructor</em> trong Go&mdash;thông thường sẽ được đặt tên là <code>NewRing</code>, nhưng vì
-<code>Ring</code> là kiểu duy nhất được xuất bởi gói, và gói có tên là
-<code>ring</code>, nên nó chỉ được gọi là <code>New</code>,
-mà người dùng gói thấy là <code>ring.New</code>.
-Hãy dùng cấu trúc gói để giúp bạn chọn tên hay.
+Tương tự, hàm tạo các thể hiện mới của <code>ring.Ring</code>&mdash;đây
+là định nghĩa của một <em>constructor</em> trong Go&mdash;thông thường
+sẽ được gọi là <code>NewRing</code>, nhưng vì
+<code>Ring</code> là kiểu duy nhất được export bởi gói, và vì
+gói có tên là <code>ring</code>, nó chỉ được gọi là <code>New</code>,
+mà người dùng gói sẽ thấy là <code>ring.New</code>.
+Hãy sử dụng cấu trúc gói để giúp bạn chọn các tên tốt.
 </p>
 
 <p>
 Một ví dụ ngắn khác là <code>once.Do</code>;
-<code>once.Do(setup)</code> đọc rất tự nhiên và sẽ không hay hơn nếu viết là
-<code>once.DoOrWaitUntilDone(setup)</code>.
+<code>once.Do(setup)</code> đọc tự nhiên và sẽ không được cải thiện bằng cách
+viết <code>once.DoOrWaitUntilDone(setup)</code>.
 Tên dài không tự động làm cho mọi thứ dễ đọc hơn.
-Một doc comment hữu ích thường có giá trị hơn một cái tên quá dài.
+Một chú thích tài liệu hữu ích thường có thể có giá trị hơn một cái tên dài thêm.
 </p>
 
-<h3 id="Getters">Getter</h3>
+<h3 id="Getters">Getters</h3>
 
 <p>
-Go không hỗ trợ tự động getter và setter.
-Việc tự viết getter và setter không có gì sai,
-và thường là phù hợp, nhưng việc đưa <code>Get</code> vào tên getter
-không phải là idiom Go cũng không phải bắt buộc. Nếu bạn có trường tên là
-<code>owner</code> (viết thường, không được xuất), phương thức getter nên được
-đặt tên là <code>Owner</code> (viết hoa, được xuất), không phải <code>GetOwner</code>.
-Việc dùng chữ hoa để xuất cung cấp cơ chế phân biệt
+Go không cung cấp hỗ trợ tự động cho getter và setter.
+Không có gì sai khi tự cung cấp getter và setter,
+và thường thì làm như vậy là phù hợp, nhưng việc thêm <code>Get</code>
+vào tên của getter không phải là phong cách thành ngữ cũng không cần thiết.
+Nếu bạn có một trường có tên là
+<code>owner</code> (chữ thường, không được export), phương thức getter nên được
+gọi là <code>Owner</code> (chữ hoa, được export), không phải <code>GetOwner</code>.
+Việc dùng tên chữ hoa để export cung cấp cách phân biệt
 trường với phương thức.
-Hàm setter, nếu cần, thường sẽ được đặt tên là <code>SetOwner</code>.
-Cả hai tên đọc rất tự nhiên trong thực tế:
+Một hàm setter, nếu cần, có thể sẽ được gọi là <code>SetOwner</code>.
+Cả hai tên đều dễ đọc trong thực tế:
 </p>
 <pre>
 owner := obj.Owner()
@@ -251,31 +267,31 @@ if owner != user {
 <h3 id="interface-names">Tên interface</h3>
 
 <p>
-Theo quy ước, các interface có một phương thức được đặt tên theo
-tên phương thức cộng với hậu tố -er hoặc biến đổi tương tự
-để tạo thành danh từ chỉ hành động: <code>Reader</code>,
+Theo quy ước, các interface có một phương thức được đặt tên bằng
+tên phương thức cộng với hậu tố -er hoặc một biến thể tương tự
+để tạo thành danh từ chỉ tác nhân: <code>Reader</code>,
 <code>Writer</code>, <code>Formatter</code>,
 <code>CloseNotifier</code> v.v.
 </p>
 
 <p>
-Có nhiều tên như vậy và nên tuân thủ chúng cùng với
-các tên hàm mà chúng thể hiện.
+Có một số tên như vậy và việc tuân thủ chúng cũng như các tên hàm
+mà chúng đại diện là điều hữu ích.
 <code>Read</code>, <code>Write</code>, <code>Close</code>, <code>Flush</code>,
-<code>String</code> v.v. đều có
+<code>String</code> và các tên tương tự có
 chữ ký và ý nghĩa chuẩn. Để tránh nhầm lẫn,
 đừng đặt cho phương thức của bạn một trong những tên đó trừ khi nó
 có cùng chữ ký và ý nghĩa.
 Ngược lại, nếu kiểu của bạn triển khai một phương thức có
-cùng ý nghĩa với một phương thức trên một kiểu nổi tiếng,
+cùng ý nghĩa với một phương thức trên một kiểu quen thuộc,
 hãy đặt cho nó cùng tên và chữ ký;
-gọi phương thức chuyển đổi sang chuỗi của bạn là <code>String</code> chứ không phải <code>ToString</code>.
+gọi phương thức chuyển đổi chuỗi của bạn là <code>String</code> chứ không phải <code>ToString</code>.
 </p>
 
 <h3 id="mixed-caps">MixedCaps</h3>
 
 <p>
-Cuối cùng, quy ước trong Go là dùng <code>MixedCaps</code>
+Cuối cùng, quy ước trong Go là sử dụng <code>MixedCaps</code>
 hoặc <code>mixedCaps</code> thay vì dấu gạch dưới để viết
 các tên gồm nhiều từ.
 </p>
@@ -283,27 +299,29 @@ các tên gồm nhiều từ.
 <h2 id="semicolons">Dấu chấm phẩy</h2>
 
 <p>
-Giống như C, ngữ pháp hình thức của Go sử dụng dấu chấm phẩy để kết thúc câu lệnh,
-nhưng khác với C, những dấu chấm phẩy đó không xuất hiện trong mã nguồn.
-Thay vào đó, lexer dùng một quy tắc đơn giản để tự động chèn dấu chấm phẩy
-khi quét, vì vậy văn bản đầu vào hầu như không có chúng.
+Giống như C, ngữ pháp chính thức của Go sử dụng dấu chấm phẩy để kết thúc câu lệnh,
+nhưng không giống C, các dấu chấm phẩy đó không xuất hiện trong mã nguồn.
+Thay vào đó, bộ phân tích từ vựng sử dụng một quy tắc đơn giản để tự động chèn
+dấu chấm phẩy khi quét, vì vậy văn bản đầu vào hầu như không có chúng.
 </p>
 
 <p>
-Quy tắc như sau. Nếu token cuối cùng trước một dòng mới là một định danh
+Quy tắc là như sau. Nếu token cuối cùng trước một dòng mới là một định danh
 (bao gồm các từ như <code>int</code> và <code>float64</code>),
-một literal cơ bản như một số hoặc hằng số chuỗi, hoặc một trong các token
+một literal cơ bản như số hoặc hằng chuỗi, hoặc một trong các
+token
 </p>
 <pre>
 break continue fallthrough return ++ -- ) }
 </pre>
 <p>
-lexer luôn chèn một dấu chấm phẩy sau token đó.
-Điều này có thể tóm gọn là: &ldquo;nếu dòng mới đến sau một token có thể kết thúc một câu lệnh, hãy chèn dấu chấm phẩy&rdquo;.
+bộ phân tích từ vựng luôn chèn một dấu chấm phẩy sau token đó.
+Điều này có thể được tóm tắt là, &ldquo;nếu dòng mới xuất hiện
+sau một token có thể kết thúc câu lệnh, hãy chèn một dấu chấm phẩy&rdquo;.
 </p>
 
 <p>
-Dấu chấm phẩy cũng có thể bỏ qua ngay trước dấu đóng ngoặc nhọn,
+Một dấu chấm phẩy cũng có thể được bỏ qua ngay trước dấu ngoặc nhọn đóng,
 vì vậy một câu lệnh như
 </p>
 <pre>
@@ -311,18 +329,19 @@ vì vậy một câu lệnh như
 </pre>
 <p>
 không cần dấu chấm phẩy.
-Các chương trình Go chuẩn idiom chỉ có dấu chấm phẩy ở những nơi như
-mệnh đề vòng lặp <code>for</code>, để phân tách phần khởi tạo, điều kiện và
-phần tiếp tục. Chúng cũng cần thiết để phân tách nhiều câu lệnh trên một dòng,
-nếu bạn viết code theo cách đó.
+Các chương trình Go theo phong cách thành ngữ chỉ có dấu chấm phẩy ở những nơi như
+các mệnh đề vòng lặp <code>for</code>, để phân tách phần khởi tạo, điều kiện và
+các phần tiếp diễn. Chúng cũng cần thiết để phân tách nhiều
+câu lệnh trên cùng một dòng, nếu bạn viết mã theo cách đó.
 </p>
 
 <p>
 Một hệ quả của các quy tắc chèn dấu chấm phẩy
-là bạn không thể đặt dấu mở ngoặc nhọn của một
+là bạn không thể đặt dấu ngoặc nhọn mở của một
 cấu trúc điều khiển (<code>if</code>, <code>for</code>, <code>switch</code>,
-hoặc <code>select</code>) ở dòng tiếp theo. Nếu làm vậy, một dấu chấm phẩy
-sẽ được chèn trước dấu ngoặc, có thể gây ra các hiệu ứng không mong muốn. Hãy viết như thế này
+hoặc <code>select</code>) trên dòng tiếp theo. Nếu làm vậy, một dấu chấm phẩy
+sẽ được chèn trước dấu ngoặc nhọn, điều này có thể gây ra các
+hiệu ứng không mong muốn. Hãy viết chúng như sau
 </p>
 
 <pre>
@@ -331,11 +350,11 @@ if i &lt; f() {
 }
 </pre>
 <p>
-chứ không phải như thế này
+không phải như sau
 </p>
 <pre>
-if i &lt; f()  // wrong!
-{           // wrong!
+if i &lt; f()  // sai!
+{           // sai!
     g()
 }
 </pre>
@@ -344,25 +363,27 @@ if i &lt; f()  // wrong!
 <h2 id="control-structures">Cấu trúc điều khiển</h2>
 
 <p>
-Các cấu trúc điều khiển của Go có liên quan đến những cấu trúc của C nhưng khác biệt
-theo những cách quan trọng.
-Không có vòng lặp <code>do</code> hay <code>while</code>, chỉ có một
-<code>for</code> được tổng quát hóa;
+Các cấu trúc điều khiển của Go có liên quan đến các cấu trúc của C nhưng
+khác biệt theo những cách quan trọng.
+Không có vòng lặp <code>do</code> hoặc <code>while</code>, chỉ có
+<code>for</code> được tổng quát hóa
+hơn một chút;
 <code>switch</code> linh hoạt hơn;
-<code>if</code> và <code>switch</code> chấp nhận một câu lệnh khởi tạo tùy chọn giống như của <code>for</code>;
+<code>if</code> và <code>switch</code> chấp nhận một câu lệnh khởi tạo
+tùy chọn giống như của <code>for</code>;
 các câu lệnh <code>break</code> và <code>continue</code>
-nhận một nhãn tùy chọn để xác định cần break hoặc continue cái gì;
-và có các cấu trúc điều khiển mới bao gồm type switch và
-bộ ghép kênh truyền thông đa chiều, <code>select</code>.
+nhận một nhãn tùy chọn để xác định phần cần thoát khỏi hoặc tiếp tục;
+và có các cấu trúc điều khiển mới bao gồm switch theo kiểu và bộ ghép kênh
+giao tiếp nhiều nhánh, <code>select</code>.
 Cú pháp cũng hơi khác:
 không có dấu ngoặc đơn
-và thân lệnh phải luôn được bao trong dấu ngoặc nhọn.
+và thân của các cấu trúc luôn phải được bao quanh bởi dấu ngoặc nhọn.
 </p>
 
 <h3 id="if">If</h3>
 
 <p>
-Trong Go, một câu lệnh <code>if</code> đơn giản trông như thế này:
+Trong Go, một câu lệnh <code>if</code> đơn giản có dạng như sau:
 </p>
 <pre>
 if x &gt; 0 {
@@ -371,15 +392,15 @@ if x &gt; 0 {
 </pre>
 
 <p>
-Dấu ngoặc nhọn bắt buộc khuyến khích viết các câu lệnh <code>if</code> đơn giản
-trên nhiều dòng. Đây là phong cách tốt dù sao cũng nên làm,
-đặc biệt khi thân lệnh chứa một câu lệnh điều khiển như
+Các dấu ngoặc nhọn bắt buộc khuyến khích việc viết các câu lệnh <code>if</code>
+đơn giản trên nhiều dòng.  Dù sao thì đây cũng là phong cách tốt,
+đặc biệt khi thân câu lệnh chứa một câu lệnh điều khiển như
 <code>return</code> hoặc <code>break</code>.
 </p>
 
 <p>
 Vì <code>if</code> và <code>switch</code> chấp nhận một câu lệnh khởi tạo,
-thường thấy cách dùng nó để thiết lập một biến cục bộ.
+thường thấy chúng được dùng để thiết lập một biến cục bộ.
 </p>
 
 <pre>
@@ -391,10 +412,10 @@ if err := file.Chmod(0664); err != nil {
 
 <p id="else">
 Trong các thư viện Go, bạn sẽ thấy rằng
-khi một câu lệnh <code>if</code> không tiếp tục sang câu lệnh tiếp theo&mdash;nghĩa là,
-thân lệnh kết thúc bằng <code>break</code>, <code>continue</code>,
-<code>goto</code>, hoặc <code>return</code>&mdash;thì <code>else</code>
-không cần thiết sẽ được bỏ qua.
+khi một câu lệnh <code>if</code> không chuyển sang câu lệnh tiếp theo—nghĩa là,
+thân của nó kết thúc bằng <code>break</code>, <code>continue</code>,
+<code>goto</code>, hoặc <code>return</code>—thì
+<code>else</code> không cần thiết sẽ được bỏ qua.
 </p>
 
 <pre>
@@ -406,10 +427,11 @@ codeUsing(f)
 </pre>
 
 <p>
-Đây là ví dụ về một tình huống phổ biến khi code phải xử lý một
-chuỗi các điều kiện lỗi. Code dễ đọc nếu luồng điều khiển thành công
-chạy xuống theo trang, loại trừ các trường hợp lỗi khi chúng phát sinh. Vì các trường hợp lỗi thường kết thúc bằng các câu lệnh <code>return</code>,
-code kết quả không cần các câu lệnh <code>else</code>.
+Đây là một ví dụ về tình huống phổ biến trong đó mã cần bảo vệ trước một
+chuỗi điều kiện lỗi.  Mã sẽ dễ đọc hơn nếu
+luồng điều khiển thành công chạy dọc theo trang, loại bỏ các trường hợp lỗi
+khi chúng phát sinh.  Vì các trường hợp lỗi thường kết thúc bằng các câu lệnh
+<code>return</code>, mã kết quả không cần các câu lệnh <code>else</code>.
 </p>
 
 <pre>
@@ -429,9 +451,9 @@ codeUsing(f, d)
 <h3 id="redeclaration">Khai báo lại và gán lại</h3>
 
 <p>
-Nói thêm: Ví dụ cuối cùng trong phần trước minh họa một chi tiết về cách
-dạng khai báo ngắn <code>:=</code> hoạt động.
-Khai báo gọi <code>os.Open</code> là:
+Một chú thích bên lề: Ví dụ cuối cùng trong phần trước minh họa một chi tiết về cách dạng khai báo ngắn
+<code>:=</code> hoạt động.
+Khai báo gọi <code>os.Open</code> có dạng,
 </p>
 
 <pre>
@@ -440,7 +462,7 @@ f, err := os.Open(name)
 
 <p>
 Câu lệnh này khai báo hai biến, <code>f</code> và <code>err</code>.
-Vài dòng sau, lời gọi đến <code>f.Stat</code> là:
+Vài dòng sau, lời gọi đến <code>f.Stat</code> có dạng,
 </p>
 
 <pre>
@@ -450,58 +472,58 @@ d, err := f.Stat()
 <p>
 trông như thể nó khai báo <code>d</code> và <code>err</code>.
 Tuy nhiên, hãy chú ý rằng <code>err</code> xuất hiện trong cả hai câu lệnh.
-Sự lặp lại này là hợp lệ: <code>err</code> được khai báo bởi câu lệnh đầu tiên,
+Việc trùng lặp này là hợp lệ: <code>err</code> được khai báo bởi câu lệnh đầu tiên,
 nhưng chỉ được <em>gán lại</em> trong câu lệnh thứ hai.
 Điều này có nghĩa là lời gọi đến <code>f.Stat</code> sử dụng biến
-<code>err</code> hiện có được khai báo ở trên, và chỉ đơn giản là gán cho nó một giá trị mới.
+<code>err</code> hiện có đã được khai báo ở trên, và chỉ cung cấp cho nó một giá trị mới.
 </p>
 
 <p>
-Trong một khai báo <code>:=</code>, một biến <code>v</code> có thể xuất hiện
-dù nó đã được khai báo trước, với điều kiện:
+Trong một khai báo <code>:=</code>, một biến <code>v</code> có thể xuất hiện ngay cả
+khi nó đã được khai báo, với điều kiện:
 </p>
 
 <ul>
 <li>khai báo này nằm trong cùng phạm vi với khai báo hiện có của <code>v</code>
-(nếu <code>v</code> đã được khai báo trong phạm vi ngoài, khai báo sẽ tạo một biến mới §),</li>
-<li>giá trị tương ứng trong quá trình khởi tạo có thể gán được cho <code>v</code>, và</li>
-<li>có ít nhất một biến khác được tạo bởi khai báo đó.</li>
+(nếu <code>v</code> đã được khai báo trong một phạm vi bên ngoài, khai báo sẽ tạo một biến mới §),</li>
+<li>giá trị tương ứng trong phần khởi tạo có thể được gán cho <code>v</code>, và</li>
+<li>có ít nhất một biến khác được tạo bởi khai báo này.</li>
 </ul>
 
 <p>
-Thuộc tính bất thường này hoàn toàn mang tính thực dụng,
-giúp dễ dàng sử dụng một giá trị <code>err</code> duy nhất, ví dụ,
+Đặc tính bất thường này hoàn toàn mang tính thực dụng,
+giúp việc sử dụng một giá trị <code>err</code> duy nhất trở nên dễ dàng, chẳng hạn,
 trong một chuỗi <code>if-else</code> dài.
-Bạn sẽ thấy nó được dùng thường xuyên.
+Bạn sẽ thấy nó được sử dụng thường xuyên.
 </p>
 
 <p>
-§ Đáng chú ý ở đây là trong Go, phạm vi của các tham số hàm và giá trị trả về
-giống như thân hàm, dù chúng xuất hiện về mặt từ vựng ở ngoài dấu ngoặc nhọn
+§ Cần lưu ý ở đây rằng trong Go, phạm vi của các tham số hàm và giá trị trả về
+giống với thân hàm, mặc dù về mặt cú pháp chúng xuất hiện bên ngoài các dấu ngoặc
 bao quanh thân hàm.
 </p>
 
 <h3 id="for">For</h3>
 
 <p>
-Vòng lặp <code>for</code> của Go tương tự&mdash;nhưng không giống hoàn toàn&mdash;với C.
+Vòng lặp <code>for</code> của Go tương tự&mdash;nhưng không hoàn toàn giống&mdash;với vòng lặp của C.
 Nó hợp nhất <code>for</code>
 và <code>while</code> và không có <code>do-while</code>.
 Có ba dạng, chỉ một trong số đó có dấu chấm phẩy.
 </p>
 <pre>
-// Like a C for
+// Giống for trong C
 for init; condition; post { }
 
-// Like a C while
+// Giống while trong C
 for condition { }
 
-// Like a C for(;;)
+// Giống for(;;) trong C
 for { }
 </pre>
 
 <p>
-Khai báo ngắn giúp dễ dàng khai báo biến chỉ mục ngay trong vòng lặp.
+Các khai báo ngắn giúp dễ dàng khai báo biến chỉ số ngay trong vòng lặp.
 </p>
 <pre>
 sum := 0
@@ -511,7 +533,7 @@ for i := 0; i &lt; 10; i++ {
 </pre>
 
 <p>
-Nếu bạn đang lặp qua một mảng, slice, chuỗi hoặc map,
+Nếu bạn lặp qua một mảng, slice, chuỗi hoặc map,
 hoặc đọc từ một channel, mệnh đề <code>range</code> có thể
 quản lý vòng lặp.
 </p>
@@ -522,7 +544,7 @@ for key, value := range oldMap {
 </pre>
 
 <p>
-Nếu bạn chỉ cần phần tử đầu tiên trong range (key hoặc index), hãy bỏ phần tử thứ hai:
+Nếu bạn chỉ cần mục đầu tiên trong range (khóa hoặc chỉ số), hãy bỏ mục thứ hai:
 </p>
 <pre>
 for key := range m {
@@ -533,7 +555,7 @@ for key := range m {
 </pre>
 
 <p>
-Nếu bạn chỉ cần phần tử thứ hai trong range (giá trị), hãy dùng <em>blank identifier</em> (định danh trống), một dấu gạch dưới, để loại bỏ phần tử đầu tiên:
+Nếu bạn chỉ cần mục thứ hai trong range (giá trị), hãy dùng <em>blank identifier</em>, một dấu gạch dưới, để bỏ qua mục đầu tiên:
 </p>
 <pre>
 sum := 0
@@ -543,22 +565,22 @@ for _, value := range array {
 </pre>
 
 <p>
-Blank identifier có nhiều công dụng, như được mô tả trong <a href="#blank">một phần sau</a>.
+Blank identifier có nhiều cách sử dụng, như được mô tả trong <a href="#blank">phần sau</a>.
 </p>
 
 <p>
-Với chuỗi, <code>range</code> làm thêm công việc cho bạn, tách ra từng
-điểm code Unicode bằng cách phân tích UTF-8.
-Các mã hóa lỗi tiêu thụ một byte và tạo ra
+Đối với chuỗi, <code>range</code> thực hiện thêm nhiều công việc cho bạn, tách ra từng
+điểm mã Unicode riêng lẻ bằng cách phân tích UTF-8.
+Các mã hóa không hợp lệ tiêu thụ một byte và tạo ra
 rune thay thế U+FFFD.
-(Tên (cùng với kiểu builtin liên kết) <code>rune</code> là thuật ngữ Go cho
-một điểm code Unicode đơn lẻ.
+(Tên <code>rune</code> (cùng với kiểu dựng sẵn tương ứng) là thuật ngữ của Go dùng cho
+một điểm mã Unicode đơn lẻ.
 Xem <a href="/ref/spec#Rune_literals">đặc tả ngôn ngữ</a>
 để biết chi tiết.)
 Vòng lặp
 </p>
 <pre>
-for pos, char := range "日本\x80語" { // \x80 is an illegal UTF-8 encoding
+for pos, char := range "日本\x80語" { // \x80 là một mã hóa UTF-8 không hợp lệ
     fmt.Printf("character %#U starts at byte position %d\n", char, pos)
 }
 </pre>
@@ -575,11 +597,11 @@ character U+8A9E '語' starts at byte position 7
 <p>
 Cuối cùng, Go không có toán tử dấu phẩy và <code>++</code> cùng <code>--</code>
 là các câu lệnh chứ không phải biểu thức.
-Vì vậy, nếu bạn muốn chạy nhiều biến trong một vòng lặp <code>for</code>,
-bạn nên dùng gán song song (mặc dù điều đó loại trừ <code>++</code> và <code>--</code>).
+Vì vậy, nếu bạn muốn chạy nhiều biến trong một <code>for</code>
+bạn nên sử dụng phép gán song song (mặc dù điều đó không cho phép dùng <code>++</code> và <code>--</code>).
 </p>
 <pre>
-// Reverse a
+// Đảo ngược a
 for i, j := 0, len(a)-1; i &lt; j; i, j = i+1, j-1 {
     a[i], a[j] = a[j], a[i]
 }
@@ -589,13 +611,13 @@ for i, j := 0, len(a)-1; i &lt; j; i, j = i+1, j-1 {
 
 <p>
 <code>switch</code> của Go tổng quát hơn của C.
-Các biểu thức không cần phải là hằng số hay thậm chí số nguyên,
-các case được đánh giá từ trên xuống dưới cho đến khi tìm thấy kết quả khớp,
-và nếu <code>switch</code> không có biểu thức thì nó chuyển đổi theo
+Các biểu thức không nhất thiết phải là hằng số hoặc thậm chí là số nguyên,
+các trường hợp được đánh giá từ trên xuống dưới cho đến khi tìm thấy kết quả khớp,
+và nếu <code>switch</code> không có biểu thức thì nó chuyển đổi dựa trên
 <code>true</code>.
-Do đó, có thể&mdash;và là idiom Go&mdash;để viết một
-chuỗi <code>if</code>-<code>else</code>-<code>if</code>-<code>else</code>
-dưới dạng <code>switch</code>.
+Do đó có thể&mdash;và cũng là cách viết theo phong cách Go&mdash;chuyển một chuỗi
+<code>if</code>-<code>else</code>-<code>if</code>-<code>else</code>
+thành một <code>switch</code>.
 </p>
 
 <pre>
@@ -613,8 +635,7 @@ func unhex(c byte) byte {
 </pre>
 
 <p>
-Không có fall through tự động, nhưng các case có thể được trình bày
-trong danh sách phân cách bằng dấu phẩy.
+Không có cơ chế tự động rơi xuống trường hợp tiếp theo (fall through), nhưng các trường hợp có thể được trình bày trong các danh sách phân tách bằng dấu phẩy.
 </p>
 <pre>
 func shouldEscape(c byte) bool {
@@ -627,13 +648,13 @@ func shouldEscape(c byte) bool {
 </pre>
 
 <p>
-Mặc dù không phổ biến trong Go như trong một số ngôn ngữ kiểu C khác,
-câu lệnh <code>break</code> có thể được dùng để kết thúc sớm
-một <code>switch</code>.
-Đôi khi, tuy nhiên, cần thoát khỏi một vòng lặp bao ngoài,
-chứ không phải switch, và trong Go điều đó có thể thực hiện bằng cách đặt một nhãn
-lên vòng lặp và "break" đến nhãn đó.
-Ví dụ này cho thấy cả hai cách dùng.
+Mặc dù không phổ biến ở Go như trong một số ngôn ngữ tương tự C khác,
+các câu lệnh <code>break</code> có thể được dùng để kết thúc
+một <code>switch</code> sớm.
+Tuy nhiên, đôi khi cần thoát khỏi vòng lặp bao quanh,
+chứ không phải switch, và trong Go có thể thực hiện điều đó bằng cách đặt nhãn
+cho vòng lặp rồi "break" đến nhãn đó.
+Ví dụ này minh họa cả hai cách sử dụng.
 </p>
 
 <pre>
@@ -662,12 +683,12 @@ Loop:
 </pre>
 
 <p>
-Tất nhiên, câu lệnh <code>continue</code> cũng nhận một nhãn tùy chọn
+Dĩ nhiên, câu lệnh <code>continue</code> cũng chấp nhận một nhãn tùy chọn,
 nhưng nó chỉ áp dụng cho các vòng lặp.
 </p>
 
 <p>
-Để kết thúc phần này, đây là một thủ tục so sánh cho byte slice sử dụng hai
+Để kết thúc phần này, dưới đây là một hàm so sánh cho các lát byte sử dụng hai
 câu lệnh <code>switch</code>:
 </p>
 <pre>
@@ -693,31 +714,32 @@ func Compare(a, b []byte) int {
 }
 </pre>
 
-<h3 id="type_switch">Type switch</h3>
+<h3 id="type_switch">Chuyển đổi type</h3>
 
 <p>
-Switch cũng có thể được dùng để khám phá kiểu động của một biến interface.
-Một <em>type switch</em> như vậy sử dụng cú pháp của type assertion
-với từ khóa <code>type</code> bên trong dấu ngoặc đơn.
-Nếu switch khai báo một biến trong biểu thức, biến sẽ
-có kiểu tương ứng trong mỗi mệnh đề.
-Cũng là idiom Go khi tái sử dụng tên trong những trường hợp như vậy, thực chất là khai báo
-một biến mới cùng tên nhưng kiểu khác nhau trong mỗi case.
+Một switch cũng có thể được dùng để phát hiện type động của một biến
+interface. Một <em>type switch</em> như vậy sử dụng cú pháp của một
+phép khẳng định type với từ khóa <code>type</code> bên trong dấu ngoặc.
+Nếu switch khai báo một biến trong biểu thức, biến đó sẽ có
+type tương ứng trong từng mệnh đề.
+Việc tái sử dụng tên trong các trường hợp như vậy cũng là cách viết
+thông dụng, về bản chất là khai báo một biến mới cùng tên nhưng có
+type khác nhau trong mỗi trường hợp.
 </p>
 <pre>
 var t interface{}
 t = functionOfSomeType()
 switch t := t.(type) {
 default:
-    fmt.Printf("unexpected type %T\n", t)     // %T prints whatever type t has
+    fmt.Printf("unexpected type %T\n", t)     // %T in ra bất kỳ type nào mà t có
 case bool:
-    fmt.Printf("boolean %t\n", t)             // t has type bool
+    fmt.Printf("boolean %t\n", t)             // t có type bool
 case int:
-    fmt.Printf("integer %d\n", t)             // t has type int
+    fmt.Printf("integer %d\n", t)             // t có type int
 case *bool:
-    fmt.Printf("pointer to boolean %t\n", *t) // t has type *bool
+    fmt.Printf("pointer to boolean %t\n", *t) // t có type *bool
 case *int:
-    fmt.Printf("pointer to integer %d\n", *t) // t has type *int
+    fmt.Printf("pointer to integer %d\n", *t) // t có type *int
 }
 </pre>
 
@@ -726,19 +748,19 @@ case *int:
 <h3 id="multiple-returns">Nhiều giá trị trả về</h3>
 
 <p>
-Một trong những tính năng khác thường của Go là các hàm và phương thức
-có thể trả về nhiều giá trị. Dạng này có thể được dùng để
-cải thiện một số idiom bất tiện trong các chương trình C: trả về lỗi trong băng
-như <code>-1</code> cho <code>EOF</code>
-và sửa đổi một đối số được truyền theo địa chỉ.
+Một trong những tính năng không thông thường của Go là các hàm và phương thức
+có thể trả về nhiều giá trị. Cách này có thể được dùng để
+cải thiện một vài thành ngữ vụng về trong chương trình C: các kiểu trả về
+lỗi trong cùng luồng như <code>-1</code> cho <code>EOF</code>
+và việc sửa đổi một đối số được truyền bằng địa chỉ.
 </p>
 
 <p>
-Trong C, lỗi ghi được báo hiệu bằng một số đếm âm với
-mã lỗi được ẩn đi ở một vị trí dễ bay hơi.
+Trong C, lỗi ghi được biểu thị bằng số lượng âm với
+mã lỗi được cất giấu trong một vị trí dễ thay đổi.
 Trong Go, <code>Write</code>
-có thể trả về một số đếm <i>và</i> một lỗi: &ldquo;Đúng, bạn đã ghi một số
-byte nhưng không phải tất cả vì bạn đã làm đầy thiết bị&rdquo;.
+có thể trả về một số lượng <i>và</i> một lỗi: “Có, bạn đã ghi một số
+byte nhưng không phải tất cả vì bạn đã làm đầy thiết bị”.
 Chữ ký của phương thức <code>Write</code> trên các tệp từ
 gói <code>os</code> là:
 </p>
@@ -751,14 +773,14 @@ func (file *File) Write(b []byte) (n int, err error)
 và như tài liệu mô tả, nó trả về số byte
 đã ghi và một <code>error</code> khác nil khi <code>n</code>
 <code>!=</code> <code>len(b)</code>.
-Đây là một phong cách phổ biến; xem phần xử lý lỗi để có thêm ví dụ.
+Đây là một kiểu viết phổ biến; xem phần về xử lý lỗi để có thêm ví dụ.
 </p>
 
 <p>
-Cách tiếp cận tương tự giúp tránh cần phải truyền một con trỏ đến một giá trị trả về
-để mô phỏng một tham số tham chiếu.
-Đây là một hàm đơn giản để
-lấy một số từ một vị trí trong một byte slice, trả về số đó
+Một cách tiếp cận tương tự loại bỏ nhu cầu truyền con trỏ tới một
+giá trị trả về để mô phỏng tham số tham chiếu.
+Dưới đây là một hàm đơn giản để
+lấy một số từ một vị trí trong một lát byte, trả về số đó
 và vị trí tiếp theo.
 </p>
 
@@ -775,7 +797,7 @@ func nextInt(b []byte, i int) (int, int) {
 </pre>
 
 <p>
-Bạn có thể dùng nó để quét các số trong một input slice <code>b</code> như thế này:
+Bạn có thể dùng nó để quét các số trong lát đầu vào <code>b</code> như sau:
 </p>
 
 <pre>
@@ -785,22 +807,23 @@ Bạn có thể dùng nó để quét các số trong một input slice <code>b<
     }
 </pre>
 
-<h3 id="named-results">Tham số kết quả có tên</h3>
+<h3 id="named-results">Tham số kết quả được đặt tên</h3>
 
 <p>
 Các "tham số" trả về hoặc kết quả của một hàm Go có thể được đặt tên và
-dùng như các biến thông thường, giống như các tham số đầu vào.
-Khi được đặt tên, chúng được khởi tạo với các giá trị zero của kiểu tương ứng khi
-hàm bắt đầu; nếu hàm thực thi câu lệnh <code>return</code>
+được sử dụng như các biến thông thường, giống như các tham số đầu vào.
+Khi được đặt tên, chúng được khởi tạo thành các giá trị zero tương ứng với kiểu
+của chúng khi hàm bắt đầu; nếu hàm thực thi câu lệnh <code>return</code>
 không có đối số, các giá trị hiện tại của các tham số kết quả sẽ được
-dùng làm các giá trị trả về.
+sử dụng làm các giá trị trả về.
 </p>
 
 <p>
-Các tên không bắt buộc nhưng chúng có thể làm code ngắn gọn và rõ ràng hơn:
-chúng là tài liệu.
-Nếu chúng ta đặt tên cho các kết quả của <code>nextInt</code>, rõ ràng là <code>int</code>
-nào được trả về là cái nào.
+Việc đặt tên không bắt buộc nhưng có thể giúp mã ngắn gọn và rõ ràng hơn:
+chúng là tài liệu mô tả.
+Nếu chúng ta đặt tên cho các kết quả của <code>nextInt</code>, sẽ trở nên
+rõ ràng giá trị <code>int</code> nào được trả về
+là giá trị nào.
 </p>
 
 <pre>
@@ -808,9 +831,9 @@ func nextInt(b []byte, pos int) (value, nextPos int) {
 </pre>
 
 <p>
-Vì các kết quả có tên được khởi tạo và gắn với một return không có tham số, chúng có thể đơn giản hóa
-cũng như làm rõ. Đây là một phiên bản
-của <code>io.ReadFull</code> sử dụng chúng tốt:
+Vì các kết quả được đặt tên được khởi tạo và gắn với lệnh return không có đối số,
+chúng có thể giúp đơn giản hóa cũng như làm rõ mã. Đây là một phiên bản
+của <code>io.ReadFull</code> sử dụng chúng hiệu quả:
 </p>
 
 <pre>
@@ -828,11 +851,12 @@ func ReadFull(r Reader, buf []byte) (n int, err error) {
 <h3 id="defer">Defer</h3>
 
 <p>
-Câu lệnh <code>defer</code> của Go lên lịch một lời gọi hàm (hàm
-<i>được defer</i>) để chạy ngay trước khi hàm
-thực thi <code>defer</code> trả về. Đây là một cách bất thường nhưng
-hiệu quả để xử lý các tình huống như các tài nguyên phải được
-giải phóng bất kể hàm đi theo đường nào để trả về. Các ví dụ điển hình là mở khóa một mutex hoặc đóng một tệp.
+Câu lệnh <code>defer</code> của Go lên lịch một lệnh gọi hàm (hàm
+<i>được trì hoãn</i>) để chạy ngay trước khi hàm
+thực thi <code>defer</code> trả về. Đây là một cách không thông thường nhưng
+hiệu quả để xử lý các tình huống như tài nguyên phải được
+giải phóng bất kể hàm đi theo đường dẫn nào để trả về. Các
+ví dụ điển hình là mở khóa mutex hoặc đóng tệp.
 </p>
 
 <pre>
@@ -842,38 +866,39 @@ func Contents(filename string) (string, error) {
     if err != nil {
         return "", err
     }
-    defer f.Close()  // f.Close will run when we're finished.
+    defer f.Close()  // f.Close sẽ chạy khi chúng ta hoàn tất.
 
     var result []byte
     buf := make([]byte, 100)
     for {
         n, err := f.Read(buf[0:])
-        result = append(result, buf[0:n]...) // append is discussed later.
+        result = append(result, buf[0:n]...) // append được thảo luận sau.
         if err != nil {
             if err == io.EOF {
                 break
             }
-            return "", err  // f will be closed if we return here.
+            return "", err  // f sẽ được đóng nếu chúng ta trả về ở đây.
         }
     }
-    return string(result), nil // f will be closed if we return here.
+    return string(result), nil // f sẽ được đóng nếu chúng ta trả về ở đây.
 }
 </pre>
 
 <p>
-Việc defer một lời gọi đến một hàm như <code>Close</code> có hai ưu điểm. Thứ nhất, nó
+Việc trì hoãn một lệnh gọi đến một hàm như <code>Close</code> có hai ưu điểm. Thứ nhất, nó
 đảm bảo rằng bạn sẽ không bao giờ quên đóng tệp, một lỗi
-dễ mắc phải nếu bạn sau đó chỉnh sửa hàm để thêm một đường trả về mới.
-Thứ hai, nó có nghĩa là việc đóng tệp nằm gần chỗ mở tệp,
+rất dễ mắc phải nếu sau đó bạn chỉnh sửa hàm để thêm một đường dẫn
+trả về mới. Thứ hai, điều đó có nghĩa là thao tác đóng nằm gần thao tác mở,
 rõ ràng hơn nhiều so với việc đặt nó ở cuối hàm.
 </p>
 
 <p>
-Các đối số của hàm được defer (bao gồm cả receiver nếu
+Các đối số của hàm được trì hoãn (bao gồm cả receiver nếu
 hàm là một phương thức) được đánh giá khi <i>defer</i>
-thực thi, không phải khi <i>lời gọi</i> thực thi. Ngoài việc tránh lo lắng
-về các biến thay đổi giá trị khi hàm thực thi, điều này có nghĩa là
-một điểm gọi defer đơn lẻ có thể defer nhiều lần thực thi hàm. Đây là một ví dụ buồn cười.
+thực thi, không phải khi <i>call</i> thực thi. Ngoài việc tránh lo lắng
+về các biến thay đổi giá trị trong quá trình hàm thực thi, điều này còn có nghĩa
+là một vị trí gọi hàm được trì hoãn duy nhất có thể trì hoãn nhiều lần
+thực thi hàm. Đây là một ví dụ hơi ngớ ngẩn.
 </p>
 
 <pre>
@@ -883,10 +908,11 @@ for i := 0; i &lt; 5; i++ {
 </pre>
 
 <p>
-Các hàm được defer thực thi theo thứ tự LIFO, vì vậy code này sẽ khiến
+Các hàm được trì hoãn được thực thi theo thứ tự LIFO, vì vậy đoạn mã này sẽ khiến
 <code>4 3 2 1 0</code> được in ra khi hàm trả về. Một
-ví dụ thực tế hơn là một cách đơn giản để theo dõi việc thực thi hàm
-qua chương trình. Chúng ta có thể viết một vài routine theo dõi đơn giản như thế này:
+ví dụ hợp lý hơn là một cách đơn giản để theo dõi việc thực thi hàm
+trong chương trình. Chúng ta có thể viết một vài
+hàm theo dõi đơn giản như sau:
 </p>
 
 <pre>
@@ -902,8 +928,9 @@ func a() {
 </pre>
 
 <p>
-Chúng ta có thể làm tốt hơn bằng cách khai thác thực tế là các đối số cho các hàm được defer
-được đánh giá khi <code>defer</code> thực thi. Routine theo dõi có thể thiết lập đối số cho routine bỏ theo dõi.
+Chúng ta có thể làm tốt hơn bằng cách tận dụng thực tế rằng các đối số của
+hàm được trì hoãn được đánh giá khi <code>defer</code> thực thi. Hàm
+theo dõi có thể thiết lập đối số cho hàm bỏ theo dõi.
 Ví dụ này:
 </p>
 
@@ -947,56 +974,57 @@ leaving: b
 </pre>
 
 <p>
-Đối với các lập trình viên quen với quản lý tài nguyên cấp độ khối từ
-các ngôn ngữ khác, <code>defer</code> có thể trông lạ, nhưng các ứng dụng
-thú vị và mạnh mẽ nhất của nó xuất phát chính xác từ thực tế
+Đối với các lập trình viên quen với việc quản lý tài nguyên ở mức khối từ
+các ngôn ngữ khác, <code>defer</code> có thể có vẻ kỳ lạ, nhưng các
+ứng dụng thú vị và mạnh mẽ nhất của nó đến chính xác từ thực tế
 rằng nó không dựa trên khối mà dựa trên hàm. Trong phần về
 <code>panic</code> và <code>recover</code>, chúng ta sẽ thấy một
-ví dụ khác về khả năng của nó.
+ví dụ khác về các khả năng của nó.
 </p>
 
 <h2 id="data">Dữ liệu</h2>
 
-<h3 id="allocation_new">Cấp phát bộ nhớ với <code>new</code></h3>
+<h3 id="allocation_new">Cấp phát với <code>new</code></h3>
 
 <p>
-Go có hai hàm cấp phát nguyên thủy, các hàm built-in
+Go có hai nguyên thủy cấp phát, là các hàm dựng sẵn
 <code>new</code> và <code>make</code>.
-Chúng làm những việc khác nhau và áp dụng cho các kiểu khác nhau, điều này có thể gây nhầm lẫn,
+Chúng thực hiện những việc khác nhau và áp dụng cho các kiểu khác nhau, điều này có thể gây nhầm lẫn,
 nhưng các quy tắc rất đơn giản.
 Hãy nói về <code>new</code> trước.
-Đây là một hàm built-in cấp phát bộ nhớ, nhưng khác với các hàm cùng tên
+Đây là một hàm dựng sẵn cấp phát bộ nhớ, nhưng không giống như các hàm cùng tên
 trong một số ngôn ngữ khác, nó không <em>khởi tạo</em> bộ nhớ,
-nó chỉ <em>zeroed</em> (đặt về không) nó.
-Tức là,
-<code>new(T)</code> cấp phát bộ nhớ zeroed cho một biến mới kiểu
-<code>T</code> và trả về địa chỉ của nó, một giá trị kiểu <code>*T</code>.
-Theo thuật ngữ Go, nó trả về một con trỏ đến giá trị zero mới được cấp phát của kiểu
+mà chỉ <em>đặt về không</em>.
+Nghĩa là,
+<code>new(T)</code> cấp phát vùng lưu trữ đã được đặt về không cho một biến mới có kiểu
+<code>T</code> và trả về địa chỉ của biến đó, một giá trị có kiểu <code>*T</code>.
+Theo thuật ngữ của Go, nó trả về một con trỏ đến giá trị không mới được cấp phát có kiểu
 <code>T</code>.
 </p>
 
 <p>
-Kể từ Go 1.26, <code>new</code> cũng chấp nhận một biểu thức (giá trị) làm đối số,
-chỉ định giá trị khởi tạo của biến.
-Ví dụ, <code>new(int64(300))</code> cấp phát một biến mới kiểu <code>int64</code>,
-khởi tạo với giá trị 300, và trả về địa chỉ của nó.
+Bắt đầu từ Go 1.26, <code>new</code> cũng chấp nhận một biểu thức (giá trị) làm
+đối số, biểu thức này chỉ định giá trị ban đầu của biến.
+Ví dụ, <code>new(int64(300))</code> cấp phát một biến mới có kiểu <code>int64</code>,
+được khởi tạo bằng 300, và trả về địa chỉ của biến đó.
 </p>
 
 <p>
-Vì bộ nhớ được trả về bởi <code>new</code> đã được zeroed, nên hữu ích khi sắp xếp
-khi thiết kế cấu trúc dữ liệu của bạn rằng
-giá trị zero của mỗi kiểu có thể được sử dụng mà không cần khởi tạo thêm. Điều này có nghĩa là người dùng
-cấu trúc dữ liệu có thể tạo một cái bằng <code>new</code> và bắt đầu làm việc ngay.
-Ví dụ, tài liệu cho <code>bytes.Buffer</code> nêu rằng
-"giá trị zero của <code>Buffer</code> là một buffer trống sẵn sàng sử dụng."
+Vì bộ nhớ được trả về bởi <code>new</code> được đặt về không, nên khi thiết kế
+cấu trúc dữ liệu, bạn nên sắp xếp sao cho
+giá trị không của mỗi kiểu có thể được sử dụng mà không cần khởi tạo thêm. Điều này có nghĩa là người dùng của
+cấu trúc dữ liệu có thể tạo một giá trị bằng <code>new</code> và bắt tay ngay vào
+công việc.
+Ví dụ, tài liệu của <code>bytes.Buffer</code> nói rằng
+"giá trị không của <code>Buffer</code> là một bộ đệm rỗng sẵn sàng để sử dụng."
 Tương tự, <code>sync.Mutex</code> không
-có constructor rõ ràng hoặc phương thức <code>Init</code>.
-Thay vào đó, giá trị zero cho một <code>sync.Mutex</code>
-được định nghĩa là một mutex chưa bị khóa.
+có hàm tạo rõ ràng hoặc phương thức <code>Init</code>.
+Thay vào đó, giá trị không của một <code>sync.Mutex</code>
+được định nghĩa là một mutex đang mở khóa.
 </p>
 
 <p>
-Thuộc tính giá trị zero hữu ích này hoạt động theo kiểu bắc cầu. Xem xét khai báo kiểu này.
+Tính chất giá trị không hữu ích này hoạt động có tính bắc cầu. Hãy xem khai báo kiểu sau.
 </p>
 
 <pre>
@@ -1007,21 +1035,21 @@ type SyncedBuffer struct {
 </pre>
 
 <p>
-Các giá trị kiểu <code>SyncedBuffer</code> cũng sẵn sàng sử dụng ngay lập tức khi cấp phát
-hoặc chỉ khai báo. Trong đoạn tiếp theo, cả <code>p</code> và <code>v</code> sẽ hoạt động
+Các giá trị có kiểu <code>SyncedBuffer</code> cũng sẵn sàng để sử dụng ngay lập tức khi được cấp phát
+hoặc chỉ khi khai báo. Trong đoạn mã tiếp theo, cả <code>p</code> và <code>v</code> đều sẽ hoạt động
 đúng mà không cần sắp xếp thêm.
 </p>
 
 <pre>
-p := new(SyncedBuffer)  // type *SyncedBuffer
-var v SyncedBuffer      // type  SyncedBuffer
+p := new(SyncedBuffer)  // kiểu *SyncedBuffer
+var v SyncedBuffer      // kiểu  SyncedBuffer
 </pre>
 
-<h3 id="composite_literals">Constructor và composite literal</h3>
+<h3 id="composite_literals">Hàm khởi tạo và literal tổ hợp</h3>
 
 <p>
-Đôi khi giá trị zero không đủ và cần một constructor khởi tạo,
-như trong ví dụ này được lấy từ
+Đôi khi giá trị zero không đủ tốt và cần một
+hàm khởi tạo để khởi tạo, như trong ví dụ này lấy từ
 gói <code>os</code>.
 </p>
 
@@ -1040,10 +1068,10 @@ func NewFile(fd int, name string) *File {
 </pre>
 
 <p>
-Có nhiều code lặp lại trong đó. Chúng ta có thể đơn giản hóa nó
-bằng cách dùng một <i>composite literal</i>, là
-một biểu thức tạo ra
-một instance mới mỗi lần nó được đánh giá.
+Có khá nhiều mã soạn sẵn trong đó. Chúng ta có thể đơn giản hóa nó
+bằng cách sử dụng một <i>literal tổ hợp</i>, là
+một biểu thức tạo ra một
+thể hiện mới mỗi khi nó được đánh giá.
 </p>
 
 <pre>
@@ -1057,12 +1085,12 @@ func NewFile(fd int, name string) *File {
 </pre>
 
 <p>
-Lưu ý rằng, khác với C, việc trả về địa chỉ của một biến cục bộ hoàn toàn ổn;
-bộ nhớ liên kết với biến vẫn tồn tại sau khi hàm
+Lưu ý rằng, không giống như trong C, hoàn toàn hợp lệ khi trả về địa chỉ của một biến cục bộ;
+bộ nhớ liên kết với biến đó tồn tại sau khi hàm
 trả về.
-Thực ra, lấy địa chỉ của một composite literal
-cấp phát một instance mới mỗi lần nó được đánh giá,
-vì vậy chúng ta có thể kết hợp hai dòng cuối này.
+Thực tế, lấy địa chỉ của một literal tổ hợp
+sẽ cấp phát một thể hiện mới mỗi khi nó được đánh giá,
+vì vậy chúng ta có thể gộp hai dòng cuối này.
 </p>
 
 <pre>
@@ -1070,10 +1098,11 @@ vì vậy chúng ta có thể kết hợp hai dòng cuối này.
 </pre>
 
 <p>
-Các trường của một composite literal được trình bày theo thứ tự và phải có mặt đầy đủ.
-Tuy nhiên, bằng cách ghi nhãn rõ ràng các phần tử dưới dạng cặp <i>field</i><code>:</code><i>value</i>,
-các phần khởi tạo có thể xuất hiện theo bất kỳ
-thứ tự nào, với những cái còn thiếu được để nguyên ở giá trị zero của chúng. Vì vậy chúng ta có thể viết
+Các trường của một literal tổ hợp được sắp xếp theo thứ tự và tất cả phải có mặt.
+Tuy nhiên, bằng cách gắn nhãn rõ ràng các phần tử dưới dạng các cặp
+<i>field</i><code>:</code><i>value</i>,
+các giá trị khởi tạo có thể xuất hiện theo bất kỳ
+thứ tự nào, với những phần bị thiếu được giữ lại dưới dạng các giá trị zero tương ứng. Vì vậy chúng ta có thể viết
 </p>
 
 <pre>
@@ -1081,14 +1110,14 @@ thứ tự nào, với những cái còn thiếu được để nguyên ở giá
 </pre>
 
 <p>
-Trong trường hợp giới hạn, nếu một composite literal không chứa trường nào, nó tạo ra
-một giá trị zero cho kiểu đó. Các biểu thức <code>new(File)</code> và <code>&amp;File{}</code> là tương đương.
+Trong trường hợp giới hạn, nếu một literal tổ hợp không chứa trường nào cả, nó sẽ tạo ra
+giá trị zero cho kiểu đó. Các biểu thức <code>new(File)</code> và <code>&amp;File{}</code> là tương đương.
 </p>
 
 <p>
-Composite literal cũng có thể được tạo cho mảng, slice và map,
-với các nhãn trường là index hoặc map key tùy theo trường hợp.
-Trong các ví dụ này, các phần khởi tạo hoạt động bất kể giá trị của <code>Enone</code>,
+Literal tổ hợp cũng có thể được tạo cho mảng, slice và map,
+trong đó nhãn trường là chỉ mục hoặc khóa map tương ứng.
+Trong các ví dụ này, việc khởi tạo hoạt động bất kể giá trị của <code>Enone</code>,
 <code>Eio</code> và <code>Einval</code>, miễn là chúng khác nhau.
 </p>
 
@@ -1098,22 +1127,22 @@ s := []string      {Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
 m := map[int]string{Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
 </pre>
 
-<h3 id="allocation_make">Cấp phát bộ nhớ với <code>make</code></h3>
+<h3 id="allocation_make">Cấp phát với <code>make</code></h3>
 
 <p>
-Quay lại chủ đề cấp phát bộ nhớ.
-Hàm built-in <code>make(T, </code><i>args</i><code>)</code> phục vụ
-một mục đích khác với <code>new(T)</code>.
-Nó chỉ tạo slice, map và channel, và trả về một giá trị
-<em>đã được khởi tạo</em>
-(không phải <em>zeroed</em>)
-kiểu <code>T</code> (không phải <code>*T</code>).
-Lý do cho sự phân biệt
-là ba kiểu này đại diện, bên dưới, cho các tham chiếu đến các cấu trúc dữ liệu
+Quay lại việc cấp phát.
+Hàm dựng sẵn <code>make(T, </code><i>args</i><code>)</code> phục vụ
+mục đích khác với <code>new(T)</code>.
+Nó chỉ tạo slice, map và channel, đồng thời trả về một
+giá trị <em>đã được khởi tạo</em>
+(không <em>được đặt về 0</em>)
+có kiểu <code>T</code> (không phải <code>*T</code>).
+Lý do của sự khác biệt này
+là ba kiểu này, bên dưới lớp triển khai, biểu diễn các tham chiếu đến cấu trúc dữ liệu
 phải được khởi tạo trước khi sử dụng.
-Một slice, ví dụ, là một bộ mô tả ba phần tử
+Ví dụ, một slice là một bộ mô tả gồm ba phần
 chứa một con trỏ đến dữ liệu (bên trong một mảng), độ dài và
-dung lượng, và cho đến khi những phần tử đó được khởi tạo, slice là <code>nil</code>.
+dung lượng, và cho đến khi các phần đó được khởi tạo, slice là <code>nil</code>.
 Đối với slice, map và channel,
 <code>make</code> khởi tạo cấu trúc dữ liệu nội bộ và chuẩn bị
 giá trị để sử dụng.
@@ -1125,13 +1154,13 @@ make([]int, 10, 100)
 </pre>
 
 <p>
-cấp phát một mảng 100 int và sau đó tạo một cấu trúc slice
-với độ dài 10 và dung lượng 100 trỏ vào
-10 phần tử đầu tiên của mảng.
-(Khi tạo một slice, dung lượng có thể bỏ qua; xem phần về slice
+cấp phát một mảng gồm 100 số nguyên rồi tạo một cấu trúc slice
+có độ dài 10 và dung lượng 100 trỏ đến 10 phần tử đầu tiên
+của mảng.
+(Khi tạo slice, có thể bỏ qua dung lượng; xem phần về slice
 để biết thêm thông tin.)
-Ngược lại, <code>new([]int)</code> trả về một con trỏ đến một cấu trúc slice mới được cấp phát và zeroed,
-tức là, một con trỏ đến một giá trị slice <code>nil</code>.
+Ngược lại, <code>new([]int)</code> trả về một con trỏ đến cấu trúc slice mới được cấp phát và đặt về 0,
+tức là một con trỏ đến một giá trị slice <code>nil</code>.
 </p>
 
 <p>
@@ -1141,18 +1170,18 @@ Các ví dụ này minh họa sự khác biệt giữa <code>new</code> và
 
 <pre>
 var p *[]int = new([]int)       // cấp phát cấu trúc slice; *p == nil; hiếm khi hữu ích
-var v  []int = make([]int, 100) // slice v giờ tham chiếu đến một mảng mới gồm 100 phần tử int
+var v  []int = make([]int, 100) // slice v giờ tham chiếu đến một mảng mới gồm 100 số nguyên
 
-// Không cần thiết, phức tạp:
+// Không cần thiết phức tạp:
 var p *[]int = new([]int)
 *p = make([]int, 100, 100)
 
-// Cách dùng thông thường:
+// Theo phong cách thông dụng:
 v := make([]int, 100)
 </pre>
 
 <p>
-Cần nhớ rằng <code>make</code> chỉ áp dụng cho map, slice và channel
+Hãy nhớ rằng <code>make</code> chỉ áp dụng cho map, slice và channel
 và không trả về con trỏ.
 Để lấy một con trỏ tường minh, hãy cấp phát bằng <code>new</code> hoặc lấy địa chỉ
 của một biến một cách tường minh.
@@ -1161,31 +1190,32 @@ của một biến một cách tường minh.
 <h3 id="arrays">Mảng</h3>
 
 <p>
-Mảng hữu ích khi cần lên kế hoạch bố cục bộ nhớ chi tiết và đôi khi
-có thể giúp tránh cấp phát bộ nhớ, nhưng vai trò chính của chúng
-là làm nền tảng cho slice, chủ đề của phần tiếp theo.
-Để đặt nền tảng cho chủ đề đó, đây là một vài điều cần biết về mảng.
+Mảng hữu ích khi lập kế hoạch bố cục chi tiết của bộ nhớ và đôi khi
+có thể giúp tránh cấp phát, nhưng chủ yếu
+chúng là khối xây dựng cho slice, chủ đề của phần tiếp theo.
+Để đặt nền tảng cho chủ đề đó, dưới đây là một vài lời về mảng.
 </p>
 
 <p>
-Có những khác biệt quan trọng giữa cách mảng hoạt động trong Go và C.
+Có những khác biệt lớn giữa cách mảng hoạt động trong Go và C.
 Trong Go,
 </p>
 <ul>
 <li>
-Mảng là giá trị. Gán một mảng cho mảng khác sẽ sao chép toàn bộ phần tử.
+Mảng là giá trị. Việc gán một mảng cho một mảng khác sẽ sao chép toàn bộ các phần tử.
 </li>
 <li>
-Cụ thể, nếu bạn truyền một mảng vào hàm, hàm sẽ nhận một <i>bản sao</i> của mảng đó, không phải con trỏ đến nó.
+Đặc biệt, nếu bạn truyền một mảng cho một hàm, hàm đó
+sẽ nhận một <i>bản sao</i> của mảng, không phải một con trỏ đến nó.
 <li>
-Kích thước của mảng là một phần của kiểu. Kiểu <code>[10]int</code>
-và <code>[20]int</code> là hai kiểu khác nhau.
+Kích thước của mảng là một phần của kiểu của nó. Các kiểu <code>[10]int</code>
+và <code>[20]int</code> là khác nhau.
 </li>
 </ul>
 
 <p>
-Tính chất giá trị này có thể hữu ích nhưng cũng tốn kém; nếu bạn muốn hành vi và hiệu suất như trong C,
-bạn có thể truyền con trỏ đến mảng.
+Tính chất giá trị có thể hữu ích nhưng cũng tốn kém; nếu bạn muốn hành vi và hiệu suất giống C,
+bạn có thể truyền một con trỏ đến mảng.
 </p>
 
 <pre>
@@ -1201,43 +1231,45 @@ x := Sum(&amp;array)  // Lưu ý toán tử lấy địa chỉ tường minh
 </pre>
 
 <p>
-Nhưng ngay cả cách này cũng không phải cách dùng thông thường trong Go.
+Nhưng ngay cả phong cách này cũng không phải là phong cách Go thông dụng.
 Hãy dùng slice thay thế.
 </p>
 
-<h3 id="slices">Slice</h3>
+<h3 id="slices">Slices</h3>
 
 <p>
-Slice bọc bên ngoài mảng để cung cấp một giao diện tổng quát hơn, mạnh mẽ hơn và tiện lợi hơn
-cho các chuỗi dữ liệu. Ngoại trừ những trường hợp cần kích thước tường minh như ma trận biến đổi,
-hầu hết các thao tác lập trình với mảng trong Go đều dùng slice thay vì mảng thuần túy.
+Slices bao bọc các mảng để cung cấp một interface tổng quát hơn, mạnh mẽ hơn và thuận tiện hơn
+cho các chuỗi dữ liệu. Ngoại trừ những trường hợp có
+kích thước rõ ràng như các ma trận biến đổi, phần lớn việc lập trình mảng trong
+Go được thực hiện bằng slices thay vì các mảng đơn giản.
 </p>
 <p>
-Slice giữ tham chiếu đến một mảng bên dưới, và nếu bạn gán một
-slice cho slice khác, cả hai đều tham chiếu đến cùng mảng đó.
-Nếu một hàm nhận đối số là slice, những thay đổi mà hàm thực hiện lên
-các phần tử của slice sẽ hiển thị với người gọi, tương tự như
-truyền con trỏ đến mảng bên dưới. Vì vậy, hàm <code>Read</code>
-có thể nhận đối số là slice thay vì con trỏ
-và số lượng phần tử; độ dài của slice đặt ra giới hạn trên
-cho lượng dữ liệu có thể đọc. Đây là chữ ký phương thức
-<code>Read</code> của kiểu <code>File</code> trong package
+Slices lưu giữ tham chiếu đến một mảng bên dưới, và nếu bạn gán một
+slice cho một slice khác, cả hai đều tham chiếu đến cùng một mảng.
+Nếu một hàm nhận đối số là slice, các thay đổi mà nó thực hiện đối với
+các phần tử của slice sẽ được nhìn thấy bởi bên gọi, tương tự như
+việc truyền một con trỏ đến mảng bên dưới. Vì vậy, một hàm <code>Read</code>
+có thể nhận một đối số slice thay vì một con trỏ
+và một số lượng; độ dài bên trong slice đặt giới hạn trên
+cho lượng dữ liệu có thể đọc. Sau đây là chữ ký của phương thức
+<code>Read</code> của kiểu <code>File</code> trong gói
 <code>os</code>:
 </p>
 <pre>
 func (f *File) Read(buf []byte) (n int, err error)
 </pre>
 <p>
-Phương thức trả về số byte đã đọc và giá trị lỗi, nếu có.
-Để đọc vào 32 byte đầu tiên của bộ đệm lớn hơn
-<code>buf</code>, hãy <i>cắt</i> (dùng như động từ) bộ đệm đó.
+Phương thức trả về số byte đã đọc và một giá trị lỗi, nếu
+có.
+Để đọc vào 32 byte đầu tiên của một bộ đệm lớn hơn
+<code>buf</code>, hãy <i>slice</i> (ở đây được dùng như một động từ) bộ đệm.
 </p>
 <pre>
     n, err := f.Read(buf[0:32])
 </pre>
 <p>
-Cách cắt như vậy rất phổ biến và hiệu quả. Thực ra, tạm bỏ qua hiệu suất,
-đoạn mã sau đây cũng đọc 32 byte đầu tiên của bộ đệm.
+Việc cắt slice như vậy là phổ biến và hiệu quả. Trên thực tế, tạm thời bỏ qua hiệu quả
+trong lúc này, đoạn mã sau cũng sẽ đọc 32 byte đầu tiên của bộ đệm.
 </p>
 <pre>
     var n int
@@ -1252,19 +1284,21 @@ Cách cắt như vậy rất phổ biến và hiệu quả. Thực ra, tạm b�
     }
 </pre>
 <p>
-Độ dài của slice có thể thay đổi miễn là vẫn nằm trong giới hạn
-của mảng bên dưới; chỉ cần gán lại slice từ chính nó. <i>Dung lượng</i> của slice,
-truy cập được qua hàm dựng sẵn <code>cap</code>, cho biết độ dài tối đa mà slice có thể đạt được.
-Đây là hàm để nối thêm dữ liệu vào slice. Nếu dữ liệu
-vượt quá dung lượng, slice sẽ được cấp phát lại. Slice kết quả được trả về.
-Hàm tận dụng thực tế là <code>len</code> và <code>cap</code> hợp lệ khi áp dụng lên
-slice <code>nil</code> và trả về 0.
+Độ dài của một slice có thể được thay đổi miễn là nó vẫn nằm trong
+giới hạn của mảng bên dưới; chỉ cần gán nó cho một slice của
+chính nó. <i>capacity</i> của một slice, có thể truy cập bằng
+hàm dựng sẵn <code>cap</code>, cho biết độ dài tối đa mà slice có thể
+đạt tới. Sau đây là một hàm để nối thêm dữ liệu vào một slice. Nếu dữ liệu
+vượt quá capacity, slice sẽ được cấp phát lại. Slice
+kết quả được trả về. Hàm này sử dụng thực tế rằng
+<code>len</code> và <code>cap</code> hợp lệ khi áp dụng cho
+slice <code>nil</code>, và trả về 0.
 </p>
 <pre>
 func Append(slice, data []byte) []byte {
     l := len(slice)
     if l + len(data) &gt; cap(slice) {  // cấp phát lại
-        // Cấp phát gấp đôi lượng cần thiết, để dự phòng tăng trưởng sau này.
+        // Cấp phát gấp đôi lượng cần thiết để mở rộng trong tương lai.
         newSlice := make([]byte, (l+len(data))*2)
         // Hàm copy được khai báo sẵn và hoạt động với mọi kiểu slice.
         copy(newSlice, slice)
@@ -1276,34 +1310,36 @@ func Append(slice, data []byte) []byte {
 }
 </pre>
 <p>
-Chúng ta phải trả về slice sau đó bởi vì, dù <code>Append</code>
-có thể sửa đổi các phần tử của <code>slice</code>, bản thân slice (cấu trúc dữ liệu thời gian chạy
-chứa con trỏ, độ dài, và dung lượng) được truyền bằng giá trị.
+Chúng ta phải trả về slice sau đó vì, mặc dù <code>Append</code>
+có thể sửa đổi các phần tử của <code>slice</code>, bản thân slice (cấu trúc dữ liệu
+thời gian chạy chứa con trỏ, độ dài và capacity) được truyền theo giá trị.
 </p>
 
 <p>
-Ý tưởng nối thêm vào slice hữu ích đến mức nó được hiện thực hóa bởi
-hàm dựng sẵn <code>append</code>. Tuy nhiên, để hiểu thiết kế của hàm đó,
-chúng ta cần thêm một ít thông tin, vì vậy chúng ta sẽ quay lại sau.
+Ý tưởng nối thêm vào một slice hữu ích đến mức nó được đưa vào trong
+hàm dựng sẵn <code>append</code>. Tuy nhiên, để hiểu thiết kế của
+hàm đó, chúng ta cần thêm một chút thông tin, vì vậy chúng ta sẽ quay lại
+với nó sau.
 </p>
 
 <h3 id="two_dimensional_slices">Slice hai chiều</h3>
 
 <p>
-Mảng và slice trong Go là một chiều.
-Để tạo tương đương của mảng 2D hay slice 2D, cần định nghĩa mảng của mảng
-hoặc slice của slice, như sau:
+Mảng và slice của Go là một chiều.
+Để tạo tương đương với một mảng hoặc slice 2D, cần định nghĩa một mảng của các mảng
+hoặc slice của các slice, như sau:
 </p>
 
 <pre>
-type Transform [3][3]float64  // Mảng 3x3, thực ra là mảng của mảng.
-type LinesOfText [][]byte     // Slice của các slice byte.
+type Transform [3][3]float64  // Một mảng 3x3, thực chất là một mảng các mảng.
+type LinesOfText [][]byte     // Một slice gồm các slice byte.
 </pre>
 
 <p>
-Vì slice có độ dài thay đổi được, mỗi slice con có thể có độ dài khác nhau.
-Đây là tình huống thường gặp, như trong ví dụ <code>LinesOfText</code>
-của chúng ta: mỗi dòng có độ dài riêng.
+Vì slice có độ dài thay đổi, có thể để mỗi
+slice bên trong có một độ dài khác nhau.
+Đây có thể là tình huống phổ biến, như trong ví dụ
+<code>LinesOfText</code> của chúng ta: mỗi dòng có độ dài độc lập.
 </p>
 
 <pre>
@@ -1315,65 +1351,65 @@ text := LinesOfText{
 </pre>
 
 <p>
-Đôi khi cần cấp phát một slice 2D, tình huống có thể xảy ra khi
-xử lý các dòng quét điểm ảnh chẳng hạn.
-Có hai cách để thực hiện điều này.
-Một là cấp phát từng slice riêng biệt; cách kia
+Đôi khi cần cấp phát một slice 2D, một tình huống có thể xảy ra khi
+xử lý các dòng quét pixel chẳng hạn.
+Có hai cách để thực hiện việc này.
+Một cách là cấp phát từng slice độc lập; cách còn lại
 là cấp phát một mảng duy nhất và trỏ các slice riêng lẻ vào đó.
-Cách nào phù hợp tùy thuộc vào ứng dụng của bạn.
-Nếu các slice có thể tăng hoặc giảm kích thước, chúng nên được cấp phát riêng biệt
-để tránh ghi đè lên dòng tiếp theo; nếu không, có thể hiệu quả hơn khi tạo
+Việc chọn cách nào phụ thuộc vào ứng dụng của bạn.
+Nếu các slice có thể tăng hoặc giảm kích thước, chúng nên được cấp phát độc lập
+để tránh ghi đè lên dòng tiếp theo; nếu không, có thể hiệu quả hơn khi xây dựng
 đối tượng bằng một lần cấp phát duy nhất.
-Dưới đây là phác thảo hai phương pháp.
-Đầu tiên, cấp phát từng dòng:
+Để tham khảo, dưới đây là phác thảo của hai phương pháp.
+Đầu tiên, từng dòng một:
 </p>
 
 <pre>
 // Cấp phát slice cấp cao nhất.
 picture := make([][]uint8, YSize) // Một hàng cho mỗi đơn vị y.
-// Lặp qua các hàng, cấp phát slice cho mỗi hàng.
+// Lặp qua các hàng, cấp phát slice cho từng hàng.
 for i := range picture {
     picture[i] = make([]uint8, XSize)
 }
 </pre>
 
 <p>
-Và bây giờ là một lần cấp phát duy nhất, cắt thành các dòng:
+Và bây giờ là một lần cấp phát duy nhất, được chia thành các dòng:
 </p>
 
 <pre>
-// Cấp phát slice cấp cao nhất, như trước.
+// Cấp phát slice cấp cao nhất, giống như trước.
 picture := make([][]uint8, YSize) // Một hàng cho mỗi đơn vị y.
-// Cấp phát một slice lớn để chứa toàn bộ điểm ảnh.
-pixels := make([]uint8, XSize*YSize) // Kiểu []uint8 dù picture là [][]uint8.
-// Lặp qua các hàng, cắt mỗi hàng từ đầu của phần pixels còn lại.
+// Cấp phát một slice lớn để chứa toàn bộ pixel.
+pixels := make([]uint8, XSize*YSize) // Có kiểu []uint8 mặc dù picture có kiểu [][]uint8.
+// Lặp qua các hàng, lấy từng hàng từ đầu của slice pixel còn lại.
 for i := range picture {
     picture[i], pixels = pixels[:XSize], pixels[XSize:]
 }
 </pre>
 
-<h3 id="maps">Map</h3>
+<h3 id="maps">Maps</h3>
 
 <p>
-Map là cấu trúc dữ liệu dựng sẵn tiện lợi và mạnh mẽ, liên kết
-các giá trị của một kiểu (<em>khóa</em>) với các giá trị của kiểu khác
-(<em>phần tử</em> hay <em>giá trị</em>).
-Khóa có thể là bất kỳ kiểu nào mà toán tử bằng nhau được định nghĩa,
+map là một cấu trúc dữ liệu tích hợp sẵn tiện lợi và mạnh mẽ, liên kết
+các giá trị của một kiểu (the <em>key</em>) với các giá trị của một kiểu khác
+(the <em>element</em> hoặc <em>value</em>).
+Khóa có thể là bất kỳ kiểu nào mà toán tử so sánh bằng được định nghĩa,
 chẳng hạn như số nguyên,
-số thực và số phức,
+số dấu phẩy động và số phức,
 chuỗi, con trỏ, interface (miễn là kiểu động
-hỗ trợ bằng nhau), struct và mảng.
-Slice không thể dùng làm khóa map,
-vì bằng nhau không được định nghĩa trên chúng.
-Giống như slice, map giữ tham chiếu đến cấu trúc dữ liệu bên dưới.
-Nếu bạn truyền map cho một hàm
-thay đổi nội dung của map, những thay đổi đó sẽ hiển thị
-ở phía người gọi.
+hỗ trợ phép so sánh bằng), struct và mảng.
+Slice không thể được dùng làm khóa của map,
+vì phép so sánh bằng không được định nghĩa cho chúng.
+Giống như slice, map chứa các tham chiếu đến một cấu trúc dữ liệu bên dưới.
+Nếu bạn truyền một map vào một hàm
+thay đổi nội dung của map, các thay đổi sẽ được nhìn thấy
+ở bên gọi.
 </p>
 <p>
-Map có thể được tạo bằng cú pháp composite literal thông thường
-với các cặp khóa-giá trị phân tách bằng dấu hai chấm,
-vì vậy rất dễ khởi tạo chúng.
+Map có thể được tạo bằng cú pháp literal tổng hợp thông thường
+với các cặp key-value được phân tách bằng dấu hai chấm,
+vì vậy việc xây dựng chúng trong quá trình khởi tạo rất dễ dàng.
 </p>
 <pre>
 var timeZone = map[string]int{
@@ -1385,21 +1421,22 @@ var timeZone = map[string]int{
 }
 </pre>
 <p>
-Gán và lấy giá trị map về mặt cú pháp trông giống hệt
-thao tác tương ứng với mảng và slice, ngoại trừ chỉ số
-không cần phải là số nguyên.
+Việc gán và lấy các giá trị map có cú pháp giống như
+thực hiện cùng thao tác với mảng và slice, ngoại trừ việc chỉ mục không
+cần phải là một số nguyên.
 </p>
 <pre>
 offset := timeZone["EST"]
 </pre>
 <p>
-Khi cố lấy một giá trị map với khóa không tồn tại trong map
-sẽ trả về giá trị zero của kiểu phần tử
-trong map. Ví dụ, nếu map chứa số nguyên, tra cứu
+Một nỗ lực lấy giá trị map với một khóa
+không có trong map sẽ trả về giá trị zero cho kiểu
+của các phần tử
+trong map. Ví dụ, nếu map chứa các số nguyên, việc tra cứu
 một khóa không tồn tại sẽ trả về <code>0</code>.
-Có thể cài đặt tập hợp dưới dạng map với kiểu giá trị là <code>bool</code>.
-Đặt phần tử map thành <code>true</code> để đưa giá trị vào tập hợp, rồi
-kiểm tra bằng cách đánh chỉ số đơn giản.
+Một tập hợp có thể được triển khai dưới dạng một map với kiểu giá trị là <code>bool</code>.
+Đặt mục map thành <code>true</code> để đưa giá trị vào tập hợp, sau đó
+kiểm tra nó bằng cách lập chỉ mục đơn giản.
 </p>
 <pre>
 attended := map[string]bool{
@@ -1413,10 +1450,10 @@ if attended[person] { // sẽ là false nếu person không có trong map
 }
 </pre>
 <p>
-Đôi khi bạn cần phân biệt một mục còn thiếu với
-giá trị zero. Liệu có mục nào cho <code>"UTC"</code>
-hay đó là 0 vì nó không có trong map?
-Bạn có thể phân biệt bằng dạng gán nhiều giá trị.
+Đôi khi bạn cần phân biệt một mục bị thiếu với
+một giá trị zero. Có mục nào cho <code>"UTC"</code>
+hay đó là 0 vì nó hoàn toàn không có trong map?
+Bạn có thể phân biệt bằng một dạng gán nhiều giá trị.
 </p>
 <pre>
 var seconds int
@@ -1424,12 +1461,12 @@ var ok bool
 seconds, ok = timeZone[tz]
 </pre>
 <p>
-Vì lý do hiển nhiên, cú pháp này được gọi là thành ngữ &ldquo;comma ok&rdquo;.
+Vì những lý do rõ ràng, cách này được gọi là thành ngữ &ldquo;comma ok&rdquo;.
 Trong ví dụ này, nếu <code>tz</code> tồn tại, <code>seconds</code>
-sẽ được gán giá trị thích hợp và <code>ok</code> sẽ là true; nếu không,
-<code>seconds</code> sẽ được gán bằng zero và <code>ok</code> sẽ
+sẽ được đặt giá trị phù hợp và <code>ok</code> sẽ là true; nếu không,
+<code>seconds</code> sẽ được đặt thành zero và <code>ok</code> sẽ
 là false.
-Đây là hàm kết hợp những điều đó với thông báo lỗi rõ ràng:
+Dưới đây là một hàm kết hợp tất cả với một báo cáo lỗi rõ ràng:
 </p>
 <pre>
 func offset(tz string) int {
@@ -1441,40 +1478,41 @@ func offset(tz string) int {
 }
 </pre>
 <p>
-Để kiểm tra sự tồn tại trong map mà không cần quan tâm đến giá trị thực,
-bạn có thể dùng <a href="#blank">định danh trống</a> (<code>_</code>)
-thay cho biến thông thường cho giá trị.
+Để kiểm tra sự tồn tại trong map mà không cần quan tâm đến giá trị thực tế,
+bạn có thể sử dụng <a href="#blank">blank identifier</a> (<code>_</code>)
+thay cho biến thông thường chứa giá trị.
 </p>
 <pre>
 _, present := timeZone[tz]
 </pre>
 <p>
-Để xóa một phần tử map, dùng hàm dựng sẵn <code>delete</code>,
-với đối số là map và khóa cần xóa.
-Thao tác này an toàn ngay cả khi khóa đã không còn trong map.
+Để xóa một mục trong map, hãy sử dụng hàm tích hợp sẵn <code>delete</code>,
+các đối số của hàm này là map và khóa cần xóa.
+Việc này an toàn ngay cả khi khóa đã không còn tồn tại
+trong map.
 </p>
 <pre>
-delete(timeZone, "PDT")  // Bây giờ chuyển sang Giờ Chuẩn
+delete(timeZone, "PDT")  // Hiện đang ở Giờ chuẩn
 </pre>
 
 <h3 id="printing">In ấn</h3>
 
 <p>
-In theo định dạng trong Go sử dụng phong cách tương tự họ <code>printf</code> của C
-nhưng phong phú và tổng quát hơn. Các hàm này nằm trong package <code>fmt</code>
+Việc in có định dạng trong Go sử dụng một kiểu tương tự họ <code>printf</code>
+của C nhưng phong phú và tổng quát hơn. Các hàm này nằm trong gói <code>fmt</code>
 và có tên viết hoa: <code>fmt.Printf</code>, <code>fmt.Fprintf</code>,
-<code>fmt.Sprintf</code> và các hàm tương tự. Các hàm string (<code>Sprintf</code> v.v.)
-trả về một chuỗi thay vì điền vào bộ đệm được cung cấp.
+<code>fmt.Sprintf</code> và các hàm tương tự. Các hàm xử lý chuỗi (<code>Sprintf</code> v.v.)
+trả về một chuỗi thay vì điền vào một bộ đệm được cung cấp.
 </p>
 <p>
-Bạn không cần phải cung cấp chuỗi định dạng. Cho mỗi hàm trong số <code>Printf</code>,
-<code>Fprintf</code> và <code>Sprintf</code> có thêm một cặp hàm khác,
-ví dụ <code>Print</code> và <code>Println</code>.
-Những hàm này không nhận chuỗi định dạng mà thay vào đó tạo ra định dạng mặc định
-cho mỗi đối số. Phiên bản <code>Println</code> còn chèn một khoảng trắng
-giữa các đối số và thêm ký tự xuống dòng vào đầu ra trong khi
-phiên bản <code>Print</code> chỉ thêm khoảng trắng nếu cả hai phía của toán hạng đều không phải chuỗi.
-Trong ví dụ này mỗi dòng đều tạo ra cùng kết quả đầu ra.
+Bạn không cần cung cấp chuỗi định dạng. Với mỗi hàm <code>Printf</code>,
+<code>Fprintf</code> và <code>Sprintf</code> đều có một cặp hàm khác,
+ví dụ như <code>Print</code> và <code>Println</code>.
+Các hàm này không nhận chuỗi định dạng mà thay vào đó tạo định dạng mặc định
+cho từng đối số. Các phiên bản <code>Println</code> cũng chèn một khoảng trắng
+giữa các đối số và thêm ký tự xuống dòng vào đầu ra, trong khi
+các phiên bản <code>Print</code> chỉ thêm khoảng trắng nếu toán hạng ở cả hai phía
+không phải là chuỗi. Trong ví dụ này, mỗi dòng tạo ra cùng một đầu ra.
 </p>
 <pre>
 fmt.Printf("Hello %d\n", 23)
@@ -1483,15 +1521,15 @@ fmt.Println("Hello", 23)
 fmt.Println(fmt.Sprint("Hello ", 23))
 </pre>
 <p>
-Các hàm in theo định dạng <code>fmt.Fprint</code>
-và các hàm cùng họ nhận bất kỳ đối tượng nào
-cài đặt interface <code>io.Writer</code> làm đối số đầu tiên; các biến <code>os.Stdout</code>
+Các hàm in có định dạng <code>fmt.Fprint</code>
+và các hàm tương tự nhận làm đối số đầu tiên bất kỳ đối tượng nào
+triển khai interface <code>io.Writer</code>; các biến <code>os.Stdout</code>
 và <code>os.Stderr</code> là những ví dụ quen thuộc.
 </p>
 <p>
-Đây là lúc mọi thứ bắt đầu khác so với C. Đầu tiên, các định dạng số như <code>%d</code>
-không nhận cờ cho dấu hay kích thước; thay vào đó, các hàm in dùng
-kiểu của đối số để quyết định những thuộc tính này.
+Đây là lúc mọi thứ bắt đầu khác với C. Trước tiên, các định dạng số như <code>%d</code>
+không nhận cờ cho dấu hoặc kích thước; thay vào đó, các thủ tục in sử dụng
+kiểu của đối số để quyết định các thuộc tính này.
 </p>
 <pre>
 var x uint64 = 1&lt;&lt;64 - 1
@@ -1504,14 +1542,14 @@ in ra
 18446744073709551615 ffffffffffffffff; -1 -1
 </pre>
 <p>
-Nếu bạn chỉ muốn chuyển đổi mặc định, chẳng hạn số thập phân cho số nguyên, bạn có thể dùng
-định dạng bắt tất cả <code>%v</code> (viết tắt của &ldquo;value&rdquo;); kết quả là đúng
-những gì <code>Print</code> và <code>Println</code> sẽ tạo ra.
-Hơn nữa, định dạng đó có thể in <em>bất kỳ</em> giá trị nào, kể cả mảng, slice, struct và
-map. Đây là câu lệnh in cho map múi giờ được định nghĩa ở phần trước.
+Nếu bạn chỉ muốn phép chuyển đổi mặc định, chẳng hạn như dạng thập phân cho số nguyên,
+bạn có thể dùng định dạng tổng quát <code>%v</code> (viết tắt của “value”);
+kết quả chính xác là những gì <code>Print</code> và <code>Println</code> sẽ tạo ra.
+Hơn nữa, định dạng này có thể in <em>bất kỳ</em> giá trị nào, kể cả mảng, slice, struct và
+map. Đây là một câu lệnh in cho map múi giờ được định nghĩa trong phần trước.
 </p>
 <pre>
-fmt.Printf("%v\n", timeZone)  // hoặc chỉ là fmt.Println(timeZone)
+fmt.Printf("%v\n", timeZone)  // hoặc chỉ fmt.Println(timeZone)
 </pre>
 <p>
 cho đầu ra:
@@ -1520,12 +1558,12 @@ cho đầu ra:
 map[CST:-21600 EST:-18000 MST:-25200 PST:-28800 UTC:0]
 </pre>
 <p>
-Với map, <code>Printf</code> và các hàm cùng họ sắp xếp đầu ra theo thứ tự từ điển dựa trên khóa.
+Đối với map, <code>Printf</code> và các hàm tương tự sắp xếp đầu ra theo thứ tự từ điển dựa trên khóa.
 </p>
 <p>
-Khi in một struct, định dạng sửa đổi <code>%+v</code> chú thích
-các trường của cấu trúc bằng tên của chúng, và với bất kỳ giá trị nào thì định dạng thay thế
-<code>%#v</code> in giá trị theo cú pháp Go đầy đủ.
+Khi in một struct, định dạng đã sửa đổi <code>%+v</code> chú thích
+các trường của cấu trúc bằng tên của chúng, và với bất kỳ giá trị nào, định dạng thay thế
+<code>%#v</code> in giá trị theo đầy đủ cú pháp Go.
 </p>
 <pre>
 type T struct {
@@ -1549,18 +1587,18 @@ in ra
 map[string]int{"CST":-21600, "EST":-18000, "MST":-25200, "PST":-28800, "UTC":0}
 </pre>
 <p>
-(Lưu ý các dấu và (&amp;).)
-Định dạng chuỗi có dấu ngoặc kép đó cũng có thể dùng qua <code>%q</code> khi
-áp dụng cho giá trị kiểu <code>string</code> hoặc <code>[]byte</code>.
-Định dạng thay thế <code>%#q</code> sẽ dùng dấu backtick thay thế nếu có thể.
-(Định dạng <code>%q</code> cũng áp dụng cho số nguyên và rune, tạo ra
-hằng số rune trong dấu ngoặc đơn.)
-Ngoài ra, <code>%x</code> hoạt động trên chuỗi, mảng byte và slice byte cũng như
-trên số nguyên, tạo ra một chuỗi thập lục phân dài, và với
-một khoảng trắng trong định dạng (<code>%&nbsp;x</code>) nó đặt khoảng trắng giữa các byte.
+(Lưu ý các dấu và.)
+Định dạng chuỗi có dấu ngoặc kép đó cũng có sẵn thông qua <code>%q</code> khi
+áp dụng cho một giá trị có kiểu <code>string</code> hoặc <code>[]byte</code>.
+Định dạng thay thế <code>%#q</code> sẽ sử dụng dấu nháy ngược thay thế nếu có thể.
+(Định dạng <code>%q</code> cũng áp dụng cho số nguyên và rune, tạo ra một
+hằng rune được đặt trong dấu nháy đơn.)
+Ngoài ra, <code>%x</code> hoạt động với chuỗi, mảng byte và slice byte cũng như
+với số nguyên, tạo ra một chuỗi thập lục phân dài, và khi có
+một khoảng trắng trong định dạng (<code>%&nbsp;x</code>) nó sẽ đặt khoảng trắng giữa các byte.
 </p>
 <p>
-Một định dạng tiện lợi khác là <code>%T</code>, in ra <em>kiểu</em> của một giá trị.
+Một định dạng hữu ích khác là <code>%T</code>, in ra <em>kiểu</em> của một giá trị.
 </p>
 <pre>
 fmt.Printf(&quot;%T\n&quot;, timeZone)
@@ -1572,9 +1610,9 @@ in ra
 map[string]int
 </pre>
 <p>
-Nếu bạn muốn kiểm soát định dạng mặc định cho một kiểu tùy chỉnh, tất cả những gì cần là định nghĩa
-phương thức với chữ ký <code>String() string</code> trên kiểu đó.
-Với kiểu đơn giản <code>T</code> của chúng ta, trông như thế này.
+Nếu bạn muốn kiểm soát định dạng mặc định cho một kiểu tùy chỉnh, tất cả những gì cần làm là định nghĩa
+một phương thức có chữ ký <code>String() string</code> trên kiểu đó.
+Với kiểu đơn giản <code>T</code> của chúng ta, nó có thể trông như sau.
 </p>
 <pre>
 func (t *T) String() string {
@@ -1589,81 +1627,83 @@ fmt.Printf("%v\n", t)
 7/-2.35/"abc\tdef"
 </pre>
 <p>
-(Nếu bạn cần in các <em>giá trị</em> kiểu <code>T</code> cũng như con trỏ đến <code>T</code>,
-receiver của <code>String</code> phải là kiểu giá trị; ví dụ này dùng con trỏ vì
-đó là cách hiệu quả hơn và thông thường hơn cho kiểu struct.
-Xem phần <a href="#pointers_vs_values">con trỏ so với receiver giá trị</a> bên dưới để biết thêm thông tin.)
+(Nếu bạn cần in <em>các giá trị</em> có kiểu <code>T</code> cũng như con trỏ tới <code>T</code>,
+receiver cho <code>String</code> phải có kiểu giá trị; ví dụ này sử dụng con trỏ vì
+cách đó hiệu quả hơn và phù hợp với quy ước hơn đối với các kiểu struct.
+Xem phần bên dưới về <a href="#pointers_vs_values">receiver con trỏ so với receiver giá trị</a> để biết thêm thông tin.)
 </p>
 
 <p>
-Phương thức <code>String</code> của chúng ta có thể gọi <code>Sprintf</code> vì
-các hàm in hoàn toàn có thể tái nhập và có thể được bọc lại theo cách này.
+Phương thức <code>String</code> của chúng ta có thể gọi <code>Sprintf</code> vì các
+thủ tục in hoàn toàn có thể tái nhập và có thể được bao bọc theo cách này.
 Tuy nhiên, có một chi tiết quan trọng cần hiểu về cách tiếp cận này:
-đừng tạo phương thức <code>String</code> bằng cách gọi
-<code>Sprintf</code> theo cách sẽ đệ quy vào phương thức <code>String</code>
+đừng xây dựng một phương thức <code>String</code> bằng cách gọi
+<code>Sprintf</code> theo cách sẽ quay lại phương thức <code>String</code>
 của bạn vô hạn. Điều này có thể xảy ra nếu lời gọi <code>Sprintf</code>
-cố in receiver trực tiếp dưới dạng chuỗi, điều đó lại sẽ gọi phương thức lần nữa.
-Đây là lỗi phổ biến và dễ mắc phải, như ví dụ này cho thấy.
+cố in trực tiếp receiver dưới dạng chuỗi, việc này
+sẽ gọi lại phương thức một lần nữa. Đây là một lỗi phổ biến và dễ mắc phải,
+như ví dụ này cho thấy.
 </p>
 
 <pre>
 type MyString string
 
 func (m MyString) String() string {
-    return fmt.Sprintf("MyString=%s", m) // Lỗi: sẽ đệ quy mãi mãi.
+    return fmt.Sprintf("MyString=%s", m) // Lỗi: sẽ lặp lại vô hạn.
 }
 </pre>
 
 <p>
-Cũng dễ sửa: chuyển đổi đối số sang kiểu string cơ bản, vốn không có phương thức đó.
+Cách sửa cũng dễ: chuyển đổi đối số thành kiểu chuỗi cơ bản, kiểu này không có
+phương thức đó.
 </p>
 
 <pre>
 type MyString string
 func (m MyString) String() string {
-    return fmt.Sprintf("MyString=%s", string(m)) // OK: lưu ý chuyển đổi kiểu.
+    return fmt.Sprintf("MyString=%s", string(m)) // OK: lưu ý phép chuyển đổi.
 }
 </pre>
 
 <p>
-Trong <a href="#initialization">phần khởi tạo</a> chúng ta sẽ thấy thêm một kỹ thuật khác giúp tránh đệ quy này.
+Trong <a href="#initialization">phần khởi tạo</a>, chúng ta sẽ thấy một kỹ thuật khác tránh được việc đệ quy này.
 </p>
 
 <p>
-Một kỹ thuật in khác là truyền trực tiếp đối số của một hàm in sang một hàm in khác tương tự.
-Chữ ký của <code>Printf</code> dùng kiểu <code>...interface{}</code>
-cho đối số cuối cùng của nó để chỉ định rằng có thể xuất hiện một số lượng tùy ý các tham số (kiểu tùy ý)
-sau chuỗi định dạng.
+Một kỹ thuật in khác là truyền trực tiếp các đối số của một hàm in sang một hàm tương tự khác.
+Chữ ký của <code>Printf</code> sử dụng kiểu <code>...interface{}</code>
+cho đối số cuối cùng để chỉ định rằng một số lượng tham số tùy ý (với kiểu bất kỳ)
+có thể xuất hiện sau định dạng.
 </p>
 <pre>
 func Printf(format string, v ...interface{}) (n int, err error) {
 </pre>
 <p>
-Bên trong hàm <code>Printf</code>, <code>v</code> hoạt động như một biến kiểu
-<code>[]interface{}</code> nhưng nếu được truyền sang một hàm variadic khác, nó hoạt động như
-danh sách đối số thông thường.
-Đây là cài đặt của hàm
-<code>log.Println</code> chúng ta đã dùng ở trên. Nó truyền đối số trực tiếp cho
-<code>fmt.Sprintln</code> để định dạng thực sự.
+Bên trong hàm <code>Printf</code>, <code>v</code> hoạt động như một biến có kiểu
+<code>[]interface{}</code> nhưng nếu được truyền cho một hàm biến đối số khác, nó hoạt động như
+một danh sách đối số thông thường.
+Dưới đây là cách triển khai của
+hàm <code>log.Println</code> mà chúng ta đã sử dụng ở trên. Nó truyền trực tiếp các đối số của mình tới
+<code>fmt.Sprintln</code> để thực hiện việc định dạng thực tế.
 </p>
 <pre>
-// Println in ra logger chuẩn theo cách của fmt.Println.
+// Println in ra trình ghi log chuẩn theo cách của fmt.Println.
 func Println(v ...interface{}) {
-    std.Output(2, fmt.Sprintln(v...))  // Output nhận tham số (int, string)
+    std.Output(2, fmt.Sprintln(v...))  // Output nhận các tham số (int, string)
 }
 </pre>
 <p>
-Chúng ta viết <code>...</code> sau <code>v</code> trong lời gọi lồng nhau tới <code>Sprintln</code> để báo cho
-trình biên dịch xử lý <code>v</code> như danh sách đối số; nếu không nó chỉ truyền
+Chúng ta viết <code>...</code> sau <code>v</code> trong lời gọi lồng nhau tới <code>Sprintln</code> để bảo
+trình biên dịch coi <code>v</code> như một danh sách các đối số; nếu không, nó sẽ chỉ truyền
 <code>v</code> như một đối số slice duy nhất.
 </p>
 <p>
-Còn nhiều điều về in ấn hơn những gì chúng ta đã đề cập ở đây. Xem tài liệu <code>godoc</code>
-cho package <code>fmt</code> để biết chi tiết.
+Việc in còn nhiều điều khác ngoài những gì chúng ta đã đề cập ở đây. Hãy xem tài liệu
+<code>godoc</code> của gói <code>fmt</code> để biết chi tiết.
 </p>
 <p>
-Nhân tiện, tham số <code>...</code> có thể là một kiểu cụ thể, ví dụ <code>...int</code>
-cho một hàm min tìm giá trị nhỏ nhất trong danh sách số nguyên:
+Nhân tiện, một tham số <code>...</code> có thể có một kiểu cụ thể, ví dụ <code>...int</code>
+cho một hàm min chọn giá trị nhỏ nhất trong một danh sách số nguyên:
 </p>
 <pre>
 func Min(a ...int) int {
@@ -1679,26 +1719,26 @@ func Min(a ...int) int {
 
 <h3 id="append">Append</h3>
 <p>
-Bây giờ chúng ta có mảnh còn thiếu để giải thích thiết kế của
+Bây giờ chúng ta đã có phần còn thiếu cần thiết để giải thích thiết kế của
 hàm dựng sẵn <code>append</code>. Chữ ký của <code>append</code>
-khác với hàm <code>Append</code> tùy chỉnh của chúng ta ở trên.
-Về mặt sơ đồ, nó như thế này:
+khác với hàm <code>Append</code> tùy chỉnh ở trên.
+Về mặt sơ đồ, nó giống như sau:
 </p>
 <pre>
 func append(slice []<i>T</i>, elements ...<i>T</i>) []<i>T</i>
 </pre>
 <p>
-trong đó <i>T</i> là placeholder cho bất kỳ kiểu nào. Bạn không thể
+trong đó <i>T</i> là một ký hiệu giữ chỗ cho bất kỳ kiểu đã cho nào. Bạn không thể
 thực sự viết một hàm trong Go mà kiểu <code>T</code>
-được xác định bởi người gọi.
-Đó là lý do <code>append</code> là dựng sẵn: nó cần sự hỗ trợ từ
+được xác định bởi bên gọi.
+Đó là lý do <code>append</code> được tích hợp sẵn: nó cần sự hỗ trợ từ
 trình biên dịch.
 </p>
 <p>
-Những gì <code>append</code> làm là thêm các phần tử vào cuối
+Điều <code>append</code> thực hiện là thêm các phần tử vào cuối
 slice và trả về kết quả. Kết quả cần được trả về
-vì, như với hàm <code>Append</code> tự viết của chúng ta, mảng bên dưới
-có thể thay đổi. Ví dụ đơn giản này
+vì, giống như <code>Append</code> được viết thủ công của chúng ta, mảng
+bên dưới có thể thay đổi. Ví dụ đơn giản này
 </p>
 <pre>
 x := []int{1,2,3}
@@ -1706,14 +1746,14 @@ x = append(x, 4, 5, 6)
 fmt.Println(x)
 </pre>
 <p>
-in ra <code>[1 2 3 4 5 6]</code>. Vậy <code>append</code> hoạt động giống
-một chút với <code>Printf</code>, thu thập một số lượng đối số tùy ý.
+in ra <code>[1 2 3 4 5 6]</code>. Vì vậy <code>append</code> hoạt động hơi
+giống <code>Printf</code>, thu thập một số lượng đối số tùy ý.
 </p>
 <p>
-Nhưng nếu chúng ta muốn làm những gì <code>Append</code> của chúng ta làm và
-nối một slice vào một slice? Đơn giản: dùng <code>...</code> tại vị trí
-gọi hàm, như chúng ta đã làm trong lời gọi tới <code>Output</code> ở trên. Đoạn mã
-này tạo ra đầu ra giống với đoạn trên.
+Nhưng nếu chúng ta muốn làm điều mà <code>Append</code> của mình làm và
+thêm một slice vào một slice thì sao? Dễ thôi: sử dụng <code>...</code> tại vị trí
+gọi hàm, giống như chúng ta đã làm trong lời gọi tới <code>Output</code> ở trên. Đoạn
+mã này tạo ra kết quả giống hệt đoạn trên.
 </p>
 <pre>
 x := []int{1,2,3}
@@ -1722,71 +1762,71 @@ x = append(x, y...)
 fmt.Println(x)
 </pre>
 <p>
-Nếu không có <code>...</code> đó, mã sẽ không biên dịch được vì các kiểu
-sẽ sai; <code>y</code> không có kiểu <code>int</code>.
+Nếu không có <code>...</code> đó, nó sẽ không biên dịch được vì các kiểu
+sẽ không đúng; <code>y</code> không có kiểu <code>int</code>.
 </p>
 
 <h2 id="initialization">Khởi tạo</h2>
 
 <p>
-Dù nhìn bề ngoài không khác nhiều so với
-khởi tạo trong C hay C++, khởi tạo trong Go mạnh mẽ hơn.
-Có thể xây dựng các cấu trúc phức tạp trong quá trình khởi tạo và các vấn đề về thứ tự
-giữa các đối tượng được khởi tạo, ngay cả giữa các package khác nhau, đều được
-xử lý đúng cách.
+Mặc dù bề ngoài không có vẻ khác biệt nhiều so với
+việc khởi tạo trong C hoặc C++, việc khởi tạo trong Go mạnh mẽ hơn.
+Các cấu trúc phức tạp có thể được xây dựng trong quá trình khởi tạo và các vấn đề
+về thứ tự giữa những đối tượng đã được khởi tạo, ngay cả giữa các gói khác nhau,
+được xử lý chính xác.
 </p>
 
 <h3 id="constants">Hằng số</h3>
 
 <p>
-Hằng số trong Go đúng nghĩa là hằng số.
-Chúng được tạo ra tại thời điểm biên dịch, ngay cả khi được định nghĩa như
+Các hằng số trong Go đúng như tên gọi&mdash;là hằng số.
+Chúng được tạo tại thời điểm biên dịch, ngay cả khi được định nghĩa dưới dạng
 biến cục bộ trong hàm,
 và chỉ có thể là số, ký tự (rune), chuỗi hoặc boolean.
-Do ràng buộc thời điểm biên dịch, các biểu thức
+Do giới hạn tại thời điểm biên dịch, các biểu thức
 định nghĩa chúng phải là biểu thức hằng số,
-có thể tính toán được bởi trình biên dịch. Ví dụ,
-<code>1&lt;&lt;3</code> là biểu thức hằng số, trong khi
+có thể được trình biên dịch đánh giá. Ví dụ,
+<code>1&lt;&lt;3</code> là một biểu thức hằng số, trong khi
 <code>math.Sin(math.Pi/4)</code> thì không vì
 lời gọi hàm tới <code>math.Sin</code> cần
-xảy ra tại thời gian chạy.
+được thực hiện tại thời gian chạy.
 </p>
 
 <p>
-Trong Go, các hằng số được liệt kê tạo ra bằng bộ đếm <code>iota</code>.
+Trong Go, các hằng số liệt kê được tạo bằng bộ liệt kê <code>iota</code>.
 Vì <code>iota</code> có thể là một phần của biểu thức và
-biểu thức có thể được lặp lại ngầm định, nên dễ dàng xây dựng các
-tập hợp giá trị phức tạp.
+các biểu thức có thể được lặp lại một cách ngầm định, nên việc xây dựng
+các tập giá trị phức tạp trở nên dễ dàng.
 </p>
 {{code "/doc/progs/eff_bytesize.go" `/^type ByteSize/` `/^\)/`}}
 <p>
 Khả năng gắn một phương thức như <code>String</code> vào bất kỳ
-kiểu do người dùng định nghĩa nào giúp các giá trị tùy ý có thể tự định dạng
-một cách tự động khi in.
-Dù bạn thường thấy kỹ thuật này áp dụng cho struct nhất, nó cũng hữu ích cho
-các kiểu vô hướng như kiểu số thực ví dụ <code>ByteSize</code>.
+kiểu do người dùng định nghĩa nào cho phép các giá trị tùy ý tự
+định dạng để in ra một cách tự động.
+Mặc dù bạn sẽ thường thấy kỹ thuật này được áp dụng cho các struct nhất,
+kỹ thuật này cũng hữu ích cho các kiểu vô hướng như các kiểu số thực
+chẳng hạn như <code>ByteSize</code>.
 </p>
 {{code "/doc/progs/eff_bytesize.go" `/^func.*ByteSize.*String/` `/^}/`}}
 <p>
-Biểu thức <code>YB</code> in ra là <code>1.00YB</code>,
-trong khi <code>ByteSize(1e13)</code> in ra là <code>9.09TB</code>.
+Biểu thức <code>YB</code> được in ra là <code>1.00YB</code>,
+trong khi <code>ByteSize(1e13)</code> được in ra là <code>9.09TB</code>.
 </p>
 
 <p>
-Việc dùng <code>Sprintf</code>
-ở đây để cài đặt phương thức <code>String</code> của <code>ByteSize</code> là an toàn
-(tránh đệ quy vô hạn) không phải vì chuyển đổi mà
+Việc sử dụng <code>Sprintf</code> ở đây
+để triển khai phương thức <code>String</code> của <code>ByteSize</code> là an toàn
+(tránh lặp vô hạn) không phải do một phép chuyển đổi mà
 vì nó gọi <code>Sprintf</code> với <code>%f</code>,
-vốn không phải định dạng chuỗi: <code>Sprintf</code> chỉ gọi
-phương thức <code>String</code> khi nó cần một chuỗi, còn <code>%f</code>
-cần một giá trị số thực.
+đây không phải là định dạng chuỗi: <code>Sprintf</code> sẽ chỉ gọi
+phương thức <code>String</code> khi nó cần một chuỗi, và <code>%f</code>
+yêu cầu một giá trị số thực.
 </p>
 
 <h3 id="variables">Biến</h3>
 
 <p>
-Biến có thể được khởi tạo giống như hằng số nhưng
-bộ khởi tạo có thể là biểu thức tổng quát được tính toán tại thời gian chạy.
+Biến có thể được khởi tạo giống như hằng số, nhưng biểu thức khởi tạo có thể là một biểu thức tổng quát được tính toán tại thời điểm chạy.
 </p>
 <pre>
 var (
@@ -1799,18 +1839,18 @@ var (
 <h3 id="init">Hàm init</h3>
 
 <p>
-Cuối cùng, mỗi tệp nguồn có thể định nghĩa hàm <code>init</code> không tham số của riêng mình để
-thiết lập bất kỳ trạng thái nào cần thiết. (Thực ra mỗi tệp có thể có nhiều
+Cuối cùng, mỗi tệp mã nguồn có thể định nghĩa hàm <code>init</code> không có tham số của riêng nó để
+thiết lập bất kỳ trạng thái nào được yêu cầu.  (Trên thực tế, mỗi tệp có thể có nhiều
 hàm <code>init</code>.)
-Và "cuối cùng" có nghĩa là thực sự cuối cùng: <code>init</code> được gọi sau khi tất cả
-khai báo biến trong package đã được đánh giá bộ khởi tạo của chúng,
-và những điều đó chỉ được đánh giá sau khi tất cả các package được import đã được
+Và "cuối cùng" có nghĩa là cuối cùng: <code>init</code> được gọi sau khi tất cả
+các khai báo biến trong gói đã đánh giá các trình khởi tạo của chúng,
+và những trình khởi tạo đó chỉ được đánh giá sau khi tất cả các gói được nhập đã được
 khởi tạo.
 </p>
 <p>
-Ngoài các khởi tạo không thể biểu diễn dưới dạng khai báo,
-một cách dùng phổ biến của hàm <code>init</code> là kiểm tra hay sửa chữa
-tính đúng đắn của trạng thái chương trình trước khi thực thi thực sự bắt đầu.
+Ngoài các khởi tạo không thể biểu diễn bằng khai báo,
+một cách sử dụng phổ biến của các hàm <code>init</code> là xác minh hoặc sửa chữa
+tính đúng đắn của trạng thái chương trình trước khi quá trình thực thi thực sự bắt đầu.
 </p>
 
 <pre>
@@ -1824,7 +1864,7 @@ func init() {
     if gopath == "" {
         gopath = home + "/go"
     }
-    // gopath có thể bị ghi đè bởi cờ --gopath trên dòng lệnh.
+    // gopath có thể được ghi đè bằng cờ --gopath trên dòng lệnh.
     flag.StringVar(&amp;gopath, "gopath", gopath, "override default GOPATH")
 }
 </pre>
@@ -1833,116 +1873,116 @@ func init() {
 
 <h3 id="pointers_vs_values">Con trỏ so với Giá trị</h3>
 <p>
-Như chúng ta đã thấy với <code>ByteSize</code>,
-phương thức có thể được định nghĩa cho bất kỳ kiểu có tên nào (ngoại trừ con trỏ hoặc interface);
-receiver không nhất thiết phải là struct.
+Như đã thấy với <code>ByteSize</code>,
+các phương thức có thể được định nghĩa cho bất kỳ kiểu có tên nào (ngoại trừ con trỏ hoặc interface);
+bộ nhận không nhất thiết phải là một struct.
 </p>
 <p>
-Trong phần thảo luận về slice ở trên, chúng ta đã viết hàm <code>Append</code>.
-Chúng ta có thể định nghĩa nó như một phương thức trên slice thay thế. Để
-làm điều này, trước tiên chúng ta khai báo một kiểu có tên để có thể gắn phương thức, và
-sau đó đặt receiver cho phương thức là một giá trị của kiểu đó.
+Trong phần thảo luận về slice ở trên, chúng ta đã viết một hàm <code>Append</code>.
+Thay vào đó, chúng ta có thể định nghĩa nó như một phương thức trên slice. Để
+làm điều này, trước tiên chúng ta khai báo một kiểu có tên mà chúng ta có thể gắn phương thức vào,
+sau đó tạo bộ nhận của phương thức là một giá trị của kiểu đó.
 </p>
 <pre>
 type ByteSlice []byte
 
 func (slice ByteSlice) Append(data []byte) []byte {
-    // Thân hàm giống hệt hàm Append đã định nghĩa ở trên.
+    // Phần thân hoàn toàn giống với hàm Append được định nghĩa ở trên.
 }
 </pre>
 <p>
-Cách này vẫn yêu cầu phương thức trả về slice đã cập nhật. Chúng ta có thể
-loại bỏ sự vụng về đó bằng cách định nghĩa lại phương thức để nhận
-<i>con trỏ</i> đến <code>ByteSlice</code> làm receiver, để
-phương thức có thể ghi đè slice của người gọi.
+Điều này vẫn yêu cầu phương thức trả về slice đã được cập nhật. Chúng ta có thể
+loại bỏ sự bất tiện đó bằng cách định nghĩa lại phương thức để nhận một
+<i>con trỏ</i> tới <code>ByteSlice</code> làm bộ nhận, để
+phương thức có thể ghi đè slice của bên gọi.
 </p>
 <pre>
 func (p *ByteSlice) Append(data []byte) {
     slice := *p
-    // Thân hàm như trên, không có câu lệnh return.
+    // Phần thân như trên, không có phần trả về.
     *p = slice
 }
 </pre>
 <p>
-Thực ra, chúng ta có thể làm tốt hơn nữa. Nếu chúng ta sửa đổi hàm để trông
-giống phương thức <code>Write</code> chuẩn, như thế này,
+Thực tế, chúng ta còn có thể làm tốt hơn. Nếu chúng ta sửa đổi hàm của mình để nó trông
+giống một phương thức <code>Write</code> tiêu chuẩn, như sau,
 </p>
 <pre>
 func (p *ByteSlice) Write(data []byte) (n int, err error) {
     slice := *p
-    // Lại như trên.
+    // Một lần nữa như trên.
     *p = slice
     return len(data), nil
 }
 </pre>
 <p>
-thì kiểu <code>*ByteSlice</code> thỏa mãn interface chuẩn
-<code>io.Writer</code>, điều này rất tiện. Ví dụ, chúng ta có thể
-in vào nó.
+thì kiểu <code>*ByteSlice</code> thỏa mãn interface tiêu chuẩn
+<code>io.Writer</code>, điều này rất tiện lợi. Ví dụ, chúng ta có thể
+ghi dữ liệu vào một giá trị như vậy.
 </p>
 <pre>
     var b ByteSlice
     fmt.Fprintf(&amp;b, "This hour has %d days\n", 7)
 </pre>
 <p>
-Chúng ta truyền địa chỉ của <code>ByteSlice</code>
-vì chỉ có <code>*ByteSlice</code> thỏa mãn <code>io.Writer</code>.
-Quy tắc về con trỏ so với giá trị cho receiver là các phương thức giá trị
+Chúng ta truyền địa chỉ của một <code>ByteSlice</code>
+vì chỉ <code>*ByteSlice</code> thỏa mãn <code>io.Writer</code>.
+Quy tắc về con trỏ so với giá trị đối với bộ nhận là các phương thức giá trị
 có thể được gọi trên cả con trỏ và giá trị, nhưng các phương thức con trỏ chỉ có thể được
 gọi trên con trỏ.
 </p>
 
 <p>
-Quy tắc này xuất phát từ việc các phương thức con trỏ có thể sửa đổi receiver; gọi
-chúng trên một giá trị sẽ khiến phương thức nhận một bản sao của giá trị, vì vậy
+Quy tắc này xuất phát từ việc các phương thức con trỏ có thể sửa đổi bộ nhận; việc gọi
+chúng trên một giá trị sẽ khiến phương thức nhận một bản sao của giá trị đó, vì vậy
 mọi sửa đổi sẽ bị loại bỏ.
-Do đó ngôn ngữ không cho phép lỗi này.
-Tuy nhiên có một ngoại lệ tiện lợi. Khi giá trị có thể lấy địa chỉ, ngôn ngữ
-sẽ xử lý trường hợp phổ biến là gọi phương thức con trỏ trên một giá trị
-bằng cách tự động chèn toán tử địa chỉ.
+Ngôn ngữ do đó ngăn chặn lỗi này.
+Tuy nhiên, có một ngoại lệ hữu ích. Khi giá trị có thể lấy địa chỉ, ngôn ngữ
+tự xử lý trường hợp phổ biến là gọi một phương thức con trỏ trên một
+giá trị bằng cách tự động chèn toán tử lấy địa chỉ.
 Trong ví dụ của chúng ta, biến <code>b</code> có thể lấy địa chỉ, vì vậy chúng ta có thể gọi
-phương thức <code>Write</code> của nó chỉ với <code>b.Write</code>. Trình biên dịch
-sẽ viết lại thành <code>(&amp;b).Write</code> cho chúng ta.
+phương thức <code>Write</code> của nó chỉ bằng <code>b.Write</code>. Trình biên dịch
+sẽ viết lại thành <code>(&amp;b).Write</code> giúp chúng ta.
 </p>
 
 <p>
-Nhân tiện, ý tưởng dùng <code>Write</code> trên một slice byte
-là trọng tâm của cài đặt <code>bytes.Buffer</code>.
+Nhân tiện, ý tưởng sử dụng <code>Write</code> trên một slice byte
+là phần cốt lõi trong việc triển khai <code>bytes.Buffer</code>.
 </p>
 
-<h2 id="interfaces_and_types">Interface và các kiểu khác</h2>
+<h2 id="interfaces_and_types">interface và các kiểu khác</h2>
 
-<h3 id="interfaces">Interface</h3>
+<h3 id="interfaces">interface</h3>
 <p>
-Interface trong Go cung cấp cách để chỉ định hành vi của một
-đối tượng: nếu điều gì đó có thể làm <em>này</em>, thì nó có thể được dùng
-<em>ở đây</em>. Chúng ta đã thấy một vài ví dụ đơn giản;
-bộ in tùy chỉnh có thể được cài đặt bằng phương thức <code>String</code>
-trong khi <code>Fprintf</code> có thể tạo đầu ra cho bất kỳ thứ gì
+interface trong Go cung cấp một cách để chỉ định hành vi của một
+đối tượng: nếu một thứ có thể làm <em>việc này</em>, thì nó có thể được sử dụng
+<em>ở đây</em>.  Chúng ta đã thấy một vài ví dụ đơn giản trước đó;
+các bộ in tùy chỉnh có thể được triển khai bằng một phương thức
+<code>String</code>, trong khi <code>Fprintf</code> có thể tạo đầu ra cho bất kỳ thứ gì
 có phương thức <code>Write</code>.
-Interface với chỉ một hoặc hai phương thức rất phổ biến trong mã Go, và thường
-được đặt tên dẫn xuất từ phương thức, chẳng hạn <code>io.Writer</code>
-cho thứ cài đặt <code>Write</code>.
+Các interface chỉ có một hoặc hai phương thức rất phổ biến trong mã Go, và thường
+được đặt tên dựa trên phương thức, chẳng hạn như <code>io.Writer</code>
+cho thứ triển khai <code>Write</code>.
 </p>
 <p>
-Một kiểu có thể cài đặt nhiều interface.
-Ví dụ, một collection có thể được sắp xếp
-bởi các hàm trong package <code>sort</code> nếu nó cài đặt
-<code>sort.Interface</code>, bao gồm <code>Len()</code>,
+Một kiểu có thể triển khai nhiều interface.
+Ví dụ, một tập hợp có thể được sắp xếp
+bằng các hàm trong gói <code>sort</code> nếu nó triển khai
+<code>sort.Interface</code>, chứa <code>Len()</code>,
 <code>Less(i, j int) bool</code>, và <code>Swap(i, j int)</code>,
-và nó cũng có thể có bộ định dạng tùy chỉnh.
-Trong ví dụ giả tạo này <code>Sequence</code> thỏa mãn cả hai.
+đồng thời nó cũng có thể có một bộ định dạng tùy chỉnh.
+Trong ví dụ được tạo ra này, <code>Sequence</code> thỏa mãn cả hai.
 </p>
 {{code "/doc/progs/eff_sequence.go" `/^type/` "$"}}
 
-<h3 id="conversions">Chuyển đổi kiểu</h3>
+<h3 id="conversions">Chuyển đổi</h3>
 
 <p>
-Phương thức <code>String</code> của <code>Sequence</code> đang làm lại
-công việc mà <code>Sprint</code> đã làm cho slice.
-(Nó cũng có độ phức tạp O(N²), vốn kém hiệu quả.) Chúng ta có thể chia sẻ
-công sức (và tăng tốc nó) nếu chúng ta chuyển đổi <code>Sequence</code> thành một
-<code>[]int</code> đơn giản trước khi gọi <code>Sprint</code>.
+Phương thức <code>String</code> của <code>Sequence</code> đang tái tạo
+công việc mà <code>Sprint</code> đã thực hiện cho các slice.
+(Nó cũng có độ phức tạp O(N²), vốn không tốt.) Chúng ta có thể chia sẻ
+phần công sức này (đồng thời tăng tốc nó) nếu chuyển đổi <code>Sequence</code> thành
+một <code>[]int</code> thông thường trước khi gọi <code>Sprint</code>.
 </p>
 <pre>
 func (s Sequence) String() string {
@@ -1952,25 +1992,26 @@ func (s Sequence) String() string {
 }
 </pre>
 <p>
-Phương thức này là ví dụ khác về kỹ thuật chuyển đổi để gọi
-<code>Sprintf</code> một cách an toàn từ phương thức <code>String</code>.
+Phương thức này là một ví dụ khác về kỹ thuật chuyển đổi để gọi
+<code>Sprintf</code> an toàn từ một phương thức <code>String</code>.
 Vì hai kiểu (<code>Sequence</code> và <code>[]int</code>)
-giống nhau nếu bỏ qua tên kiểu, nên hợp lệ khi chuyển đổi giữa chúng.
-Chuyển đổi không tạo ra giá trị mới, nó chỉ tạm thời hoạt động
+giống nhau nếu bỏ qua tên kiểu, việc chuyển đổi giữa chúng là hợp lệ.
+Việc chuyển đổi không tạo ra một giá trị mới, nó chỉ tạm thời hoạt động
 như thể giá trị hiện có có một kiểu mới.
-(Có các chuyển đổi hợp lệ khác, chẳng hạn từ số nguyên sang số thực, vốn
+(Có những chuyển đổi hợp lệ khác, chẳng hạn từ số nguyên sang số thực, cũng
 tạo ra một giá trị mới.)
 </p>
 <p>
-Trong các chương trình Go, chuyển đổi kiểu của một biểu thức để truy cập một
-tập hợp phương thức khác là một thành ngữ phổ biến. Ví dụ, chúng ta có thể dùng kiểu
-có sẵn <code>sort.IntSlice</code> để rút gọn toàn bộ ví dụ
-thành đây:
+Trong các chương trình Go, có một thành ngữ là chuyển đổi
+kiểu của một biểu thức để truy cập một
+tập phương thức khác. Ví dụ, chúng ta có thể sử dụng
+kiểu hiện có <code>sort.IntSlice</code> để rút gọn toàn bộ ví dụ
+thành:
 </p>
 <pre>
 type Sequence []int
 
-// Phương thức để in - sắp xếp các phần tử trước khi in
+// Phương thức in - sắp xếp các phần tử trước khi in
 func (s Sequence) String() string {
     s = s.Copy()
     sort.IntSlice(s).Sort()
@@ -1978,22 +2019,20 @@ func (s Sequence) String() string {
 }
 </pre>
 <p>
-Bây giờ, thay vì có <code>Sequence</code> cài đặt nhiều
-interface (sắp xếp và in), chúng ta đang dùng khả năng một mục dữ liệu có thể được
-chuyển đổi sang nhiều kiểu (<code>Sequence</code>, <code>sort.IntSlice</code>
+Bây giờ, thay vì để <code>Sequence</code> triển khai nhiều
+interface (sắp xếp và in), chúng ta đang sử dụng khả năng của một mục dữ liệu để
+được chuyển đổi thành nhiều kiểu (<code>Sequence</code>, <code>sort.IntSlice</code>
 và <code>[]int</code>), mỗi kiểu thực hiện một phần công việc.
-Cách này ít thông dụng hơn trong thực tế nhưng có thể hiệu quả.
+Cách này ít phổ biến hơn trong thực tế nhưng có thể hiệu quả.
 </p>
 
-<h3 id="interface_conversions">Chuyển đổi interface và type assertion</h3>
+<h3 id="interface_conversions">Chuyển đổi interface và khẳng định kiểu</h3>
 
 <p>
-<a href="#type_switch">Type switch</a> là một dạng chuyển đổi: chúng nhận một interface và, với
-mỗi trường hợp trong switch, về mặt nào đó chuyển đổi nó sang kiểu của trường hợp đó.
-Đây là phiên bản rút gọn về cách mã bên dưới <code>fmt.Printf</code> biến một giá trị thành
-chuỗi bằng type switch.
-Nếu nó đã là chuỗi, chúng ta muốn giá trị chuỗi thực tế được giữ bởi interface, còn nếu nó có
-phương thức <code>String</code> chúng ta muốn kết quả của việc gọi phương thức đó.
+<a href="#type_switch">Chuyển đổi kiểu</a> là một dạng chuyển đổi: chúng nhận một interface và, với mỗi trường hợp trong lệnh chuyển đổi, theo một nghĩa nào đó chuyển đổi nó thành kiểu của trường hợp đó.
+Dưới đây là phiên bản đơn giản hóa về cách mã bên dưới <code>fmt.Printf</code> chuyển một giá trị thành chuỗi bằng cách sử dụng chuyển đổi kiểu.
+Nếu nó đã là một chuỗi, chúng ta muốn giá trị chuỗi thực tế được giữ bởi interface, còn nếu nó có phương thức
+<code>String</code> thì chúng ta muốn kết quả của việc gọi phương thức đó.
 </p>
 
 <pre>
@@ -2001,7 +2040,7 @@ type Stringer interface {
     String() string
 }
 
-var value interface{} // Giá trị được cung cấp bởi người gọi.
+var value interface{} // Giá trị do người gọi cung cấp.
 switch str := value.(type) {
 case string:
     return str
@@ -2011,17 +2050,17 @@ case Stringer:
 </pre>
 
 <p>
-Trường hợp đầu tiên tìm ra một giá trị cụ thể; trường hợp thứ hai chuyển đổi interface thành một interface khác.
-Hoàn toàn ổn khi kết hợp các kiểu theo cách này.
+Trường hợp đầu tiên tìm thấy một giá trị cụ thể; trường hợp thứ hai chuyển đổi interface thành một interface khác.
+Hoàn toàn hợp lệ khi trộn các kiểu theo cách này.
 </p>
 
 <p>
-Nếu chỉ có một kiểu mà chúng ta quan tâm thì sao? Nếu chúng ta biết giá trị giữ một <code>string</code>
-và chúng ta chỉ muốn lấy nó ra?
-Một type switch với một trường hợp sẽ làm được, nhưng <em>type assertion</em> cũng vậy.
-Type assertion lấy một giá trị interface và trích xuất từ đó một giá trị của kiểu tường minh được chỉ định.
-Cú pháp mượn từ mệnh đề mở đầu một type switch, nhưng với một
-kiểu tường minh thay vì từ khóa <code>type</code>:
+Nếu chỉ có một kiểu mà chúng ta quan tâm thì sao? Nếu biết giá trị chứa một <code>string</code>
+và chỉ muốn lấy nó ra?
+Một lệnh chuyển đổi kiểu với một trường hợp cũng có thể làm được, nhưng <em>khẳng định kiểu</em> cũng vậy.
+Khẳng định kiểu nhận một giá trị interface và lấy ra từ đó một giá trị có kiểu rõ ràng được chỉ định.
+Cú pháp này mượn từ phần mở đầu của lệnh chuyển đổi kiểu, nhưng dùng
+kiểu rõ ràng thay vì từ khóa <code>type</code>:
 </p>
 
 <pre>
@@ -2029,10 +2068,10 @@ value.(typeName)
 </pre>
 
 <p>
-và kết quả là một giá trị mới với kiểu tĩnh là <code>typeName</code>.
-Kiểu đó phải là kiểu cụ thể được giữ bởi interface, hoặc một kiểu interface thứ hai
-mà giá trị có thể được chuyển đổi sang.
-Để trích xuất chuỗi chúng ta biết là có trong giá trị, chúng ta có thể viết:
+và kết quả là một giá trị mới có kiểu tĩnh là <code>typeName</code>.
+Kiểu đó phải là kiểu cụ thể mà interface đang giữ, hoặc là một kiểu interface thứ hai
+mà giá trị có thể được chuyển đổi thành.
+Để lấy chuỗi mà chúng ta biết là nằm trong giá trị, chúng ta có thể viết:
 </p>
 
 <pre>
@@ -2040,8 +2079,8 @@ str := value.(string)
 </pre>
 
 <p>
-Nhưng nếu hóa ra giá trị không chứa chuỗi, chương trình sẽ bị sập với lỗi thời gian chạy.
-Để phòng tránh điều đó, dùng thành ngữ "comma, ok" để kiểm tra, an toàn, xem giá trị có phải là chuỗi không:
+Nhưng nếu hóa ra giá trị không chứa chuỗi, chương trình sẽ bị dừng với lỗi thời gian chạy.
+Để tránh điều đó, hãy sử dụng thành ngữ "dấu phẩy, ok" để kiểm tra một cách an toàn xem giá trị có phải là chuỗi hay không:
 </p>
 
 <pre>
@@ -2054,13 +2093,13 @@ if ok {
 </pre>
 
 <p>
-Nếu type assertion thất bại, <code>str</code> vẫn tồn tại và có kiểu string, nhưng nó sẽ có
-giá trị zero, tức là chuỗi rỗng.
+Nếu khẳng định kiểu thất bại, <code>str</code> vẫn tồn tại và có kiểu string, nhưng nó sẽ có
+giá trị zero, một chuỗi rỗng.
 </p>
 
 <p>
-Để minh họa khả năng này, đây là câu lệnh <code>if</code>-<code>else</code>
-tương đương với type switch ở đầu phần này.
+Để minh họa khả năng này, đây là một câu lệnh <code>if</code>-<code>else</code>
+tương đương với lệnh chuyển đổi kiểu mở đầu phần này.
 </p>
 
 <pre>
@@ -2073,41 +2112,41 @@ if str, ok := value.(string); ok {
 
 <h3 id="generality">Tính tổng quát</h3>
 <p>
-Nếu một kiểu chỉ tồn tại để cài đặt một interface và sẽ
-không bao giờ có phương thức được xuất khẩu ngoài interface đó, không cần
-xuất khẩu bản thân kiểu đó.
-Chỉ xuất khẩu interface làm rõ giá trị không có
-hành vi thú vị nào ngoài những gì được mô tả trong
+Nếu một kiểu chỉ tồn tại để triển khai một interface và
+sẽ không bao giờ có các phương thức được export vượt ra ngoài
+interface đó, thì không cần export chính kiểu đó.
+Chỉ export interface giúp làm rõ rằng giá trị không có
+hành vi đáng chú ý nào ngoài những gì được mô tả trong
 interface.
-Nó cũng tránh sự cần thiết phải lặp lại tài liệu
-trên mọi trường hợp của phương thức chung.
+Điều này cũng tránh việc phải lặp lại tài liệu
+cho từng thể hiện của một phương thức phổ biến.
 </p>
 <p>
-Trong những trường hợp như vậy, constructor nên trả về một giá trị interface
-thay vì kiểu cài đặt.
-Ví dụ, trong các thư viện hash
+Trong những trường hợp như vậy, hàm khởi tạo nên trả về một giá trị interface
+thay vì kiểu triển khai.
+Ví dụ, trong các thư viện hash,
 cả <code>crc32.NewIEEE</code> và <code>adler32.New</code>
 đều trả về kiểu interface <code>hash.Hash32</code>.
-Việc thay thế thuật toán CRC-32 bằng Adler-32 trong một chương trình Go
-chỉ yêu cầu thay đổi lời gọi constructor;
+Thay thế thuật toán CRC-32 bằng Adler-32 trong một chương trình Go
+chỉ yêu cầu thay đổi lời gọi hàm khởi tạo;
 phần còn lại của mã không bị ảnh hưởng bởi sự thay đổi thuật toán.
 </p>
 <p>
-Cách tiếp cận tương tự cho phép các thuật toán mật mã luồng
-trong các package <code>crypto</code> khác nhau được
-tách rời khỏi các mật mã khối mà chúng kết hợp.
+Cách tiếp cận tương tự cho phép các thuật toán mã hóa dạng luồng
+trong nhiều gói <code>crypto</code> khác nhau được
+tách khỏi các mã khối mà chúng kết hợp với nhau.
 Interface <code>Block</code>
-trong package <code>crypto/cipher</code> chỉ định
-hành vi của một mật mã khối, cung cấp mã hóa
-của một khối dữ liệu duy nhất.
-Sau đó, theo tương tự với package <code>bufio</code>,
-các package mật mã cài đặt interface này
-có thể được dùng để xây dựng mật mã luồng, được biểu diễn
-bởi interface <code>Stream</code>, mà không cần
-biết chi tiết về mã hóa khối.
+trong gói <code>crypto/cipher</code> xác định
+hành vi của một bộ mã hóa khối, cung cấp việc mã hóa
+một khối dữ liệu đơn lẻ.
+Sau đó, tương tự như gói <code>bufio</code>,
+các gói mã hóa triển khai interface này
+có thể được dùng để tạo các bộ mã hóa dạng luồng, được biểu diễn
+bởi interface <code>Stream</code>, mà không
+cần biết chi tiết của việc mã hóa khối.
 </p>
 <p>
-Các interface <code>crypto/cipher</code> trông như thế này:
+Các interface <code>crypto/cipher</code> có dạng như sau:
 </p>
 <pre>
 type Block interface {
@@ -2122,33 +2161,33 @@ type Stream interface {
 </pre>
 
 <p>
-Đây là định nghĩa của luồng chế độ đếm (CTR),
-biến đổi một mật mã khối thành mật mã luồng; lưu ý
-rằng các chi tiết của mật mã khối được trừu tượng hóa:
+Sau đây là định nghĩa của luồng chế độ bộ đếm (CTR),
+chuyển một bộ mã hóa khối thành một bộ mã hóa dạng luồng; lưu ý
+rằng các chi tiết của bộ mã hóa khối đã được trừu tượng hóa:
 </p>
 
 <pre>
-// NewCTR trả về một Stream mã hóa/giải mã dùng Block đã cho theo
-// chế độ đếm. Độ dài của iv phải bằng kích thước khối của Block.
+// NewCTR trả về một Stream mã hóa/giải mã bằng Block đã cho trong
+// chế độ bộ đếm. Độ dài của iv phải giống với kích thước khối của Block.
 func NewCTR(block Block, iv []byte) Stream
 </pre>
 <p>
-<code>NewCTR</code> không chỉ áp dụng
-cho một thuật toán mã hóa và nguồn dữ liệu cụ thể mà cho bất kỳ
+<code>NewCTR</code> áp dụng không chỉ
+cho một thuật toán mã hóa và nguồn dữ liệu cụ thể mà còn cho bất kỳ
 cài đặt nào của interface <code>Block</code> và bất kỳ
 <code>Stream</code> nào. Vì chúng trả về
-giá trị interface, việc thay thế mã hóa CTR
-bằng các chế độ mã hóa khác là một thay đổi cục bộ. Các lời gọi
-constructor phải được chỉnh sửa, nhưng vì mã xung quanh phải xử lý kết quả chỉ
-như một <code>Stream</code>, nó sẽ không nhận ra sự khác biệt.
+các giá trị interface, việc thay thế mã hóa CTR
+bằng các chế độ mã hóa khác là một thay đổi cục bộ. Các lời gọi hàm khởi tạo
+phải được chỉnh sửa, nhưng vì mã xung quanh chỉ phải xử lý kết quả
+như một <code>Stream</code>, nó sẽ không nhận thấy sự khác biệt.
 </p>
 
 <h3 id="interface_methods">Interface và phương thức</h3>
 <p>
-Vì hầu hết mọi thứ đều có thể có phương thức gắn vào, hầu hết mọi thứ đều có thể
-thỏa mãn một interface. Một ví dụ minh họa là trong package <code>http</code>,
-định nghĩa interface <code>Handler</code>. Bất kỳ đối tượng nào
-cài đặt <code>Handler</code> đều có thể phục vụ các yêu cầu HTTP.
+Vì hầu hết mọi thứ đều có thể được gắn phương thức, nên hầu hết mọi thứ đều có
+thể thỏa mãn một interface. Một ví dụ minh họa là trong gói <code>http</code>
+, gói này định nghĩa interface <code>Handler</code>. Bất kỳ đối tượng nào
+triển khai <code>Handler</code> đều có thể phục vụ các yêu cầu HTTP.
 </p>
 <pre>
 type Handler interface {
@@ -2156,22 +2195,22 @@ type Handler interface {
 }
 </pre>
 <p>
-<code>ResponseWriter</code> là interface cung cấp quyền truy cập
-vào các phương thức cần thiết để trả về phản hồi cho client.
-Các phương thức đó bao gồm phương thức <code>Write</code> chuẩn, vì vậy một
-<code>http.ResponseWriter</code> có thể được dùng ở bất kỳ đâu mà <code>io.Writer</code>
-có thể được dùng.
-<code>Request</code> là struct chứa biểu diễn đã được phân tích
+<code>ResponseWriter</code> bản thân nó là một interface cung cấp quyền truy cập
+đến các phương thức cần thiết để trả về phản hồi cho client.
+Các phương thức đó bao gồm phương thức chuẩn <code>Write</code>, vì vậy một
+<code>http.ResponseWriter</code> có thể được sử dụng ở bất kỳ nơi nào mà
+<code>io.Writer</code> có thể được sử dụng.
+<code>Request</code> là một struct chứa biểu diễn đã được phân tích cú pháp
 của yêu cầu từ client.
 </p>
 <p>
-Để ngắn gọn, hãy bỏ qua POST và giả định các yêu cầu HTTP luôn là
-GET; sự đơn giản hóa đó không ảnh hưởng đến cách thiết lập các handler.
-Đây là cài đặt tầm thường của một handler để đếm số lần
+Để ngắn gọn, hãy bỏ qua các POST và giả sử các yêu cầu HTTP luôn là
+GET; sự đơn giản hóa này không ảnh hưởng đến cách thiết lập các handler.
+Sau đây là một triển khai đơn giản của một handler để đếm số lần
 trang được truy cập.
 </p>
 <pre>
-// Máy chủ đếm đơn giản.
+// Máy chủ bộ đếm đơn giản.
 type Counter struct {
     n int
 }
@@ -2182,14 +2221,14 @@ func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 </pre>
 <p>
-(Theo chủ đề của chúng ta, hãy lưu ý cách <code>Fprintf</code> có thể in vào
-<code>http.ResponseWriter</code>.)
-Trong một máy chủ thực tế, việc truy cập vào <code>ctr.n</code> sẽ cần bảo vệ khỏi
-truy cập đồng thời.
-Xem các package <code>sync</code> và <code>atomic</code> để tham khảo.
+(Theo đúng chủ đề của chúng ta, hãy lưu ý cách <code>Fprintf</code> có thể in
+ra một <code>http.ResponseWriter</code>.)
+Trong một máy chủ thực tế, quyền truy cập vào <code>ctr.n</code> sẽ cần được
+bảo vệ khỏi việc truy cập đồng thời.
+Xem các gói <code>sync</code> và <code>atomic</code> để có các gợi ý.
 </p>
 <p>
-Để tham khảo, đây là cách gắn một máy chủ như vậy vào một node trên cây URL.
+Để tham khảo, đây là cách gắn một máy chủ như vậy vào một nút trong cây URL.
 </p>
 <pre>
 import "net/http"
@@ -2198,11 +2237,12 @@ ctr := new(Counter)
 http.Handle("/counter", ctr)
 </pre>
 <p>
-Nhưng tại sao lại làm <code>Counter</code> là struct? Một số nguyên là tất cả những gì cần.
-(Receiver cần là con trỏ để phép tăng hiển thị với người gọi.)
+Nhưng tại sao lại tạo <code>Counter</code> thành một struct? Một số nguyên là tất
+cả những gì cần thiết.
+(Bộ nhận cần là một con trỏ để việc tăng giá trị được nhìn thấy bởi bên gọi.)
 </p>
 <pre>
-// Máy chủ đếm đơn giản hơn.
+// Máy chủ bộ đếm đơn giản hơn.
 type Counter int
 
 func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -2211,12 +2251,12 @@ func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 </pre>
 <p>
-Nếu chương trình của bạn có một số trạng thái nội bộ cần được thông báo khi một trang
-được truy cập thì sao? Gắn một channel vào trang web.
+Nếu chương trình của bạn có một trạng thái nội bộ nào đó cần được thông báo rằng
+một trang đã được truy cập thì sao? Hãy gắn một channel vào trang web.
 </p>
 <pre>
-// Channel gửi thông báo mỗi lần truy cập.
-// (Có thể muốn channel được đệm.)
+// Một channel gửi thông báo cho mỗi lần truy cập.
+// (Có lẽ nên dùng channel có bộ đệm.)
 type Chan chan *http.Request
 
 func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -2225,9 +2265,9 @@ func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 </pre>
 <p>
-Cuối cùng, giả sử chúng ta muốn trình bày trên <code>/args</code> các đối số
-được dùng khi gọi binary của máy chủ.
-Dễ dàng viết một hàm để in các đối số.
+Cuối cùng, giả sử chúng ta muốn hiển thị trên <code>/args</code> các đối số
+được sử dụng khi gọi binary của máy chủ.
+Việc viết một hàm để in các đối số rất dễ dàng.
 </p>
 <pre>
 func ArgServer() {
@@ -2235,16 +2275,17 @@ func ArgServer() {
 }
 </pre>
 <p>
-Làm thế nào để biến đó thành một máy chủ HTTP? Chúng ta có thể làm <code>ArgServer</code>
-thành phương thức của một kiểu nào đó mà giá trị của nó bị bỏ qua, nhưng có cách sạch hơn.
-Vì chúng ta có thể định nghĩa phương thức cho bất kỳ kiểu nào ngoại trừ con trỏ và interface,
-chúng ta có thể viết phương thức cho một hàm.
-Package <code>http</code> chứa mã này:
+Làm thế nào để biến điều đó thành một máy chủ HTTP? Chúng ta có thể tạo
+<code>ArgServer</code> thành một phương thức của một kiểu nào đó mà chúng ta
+bỏ qua giá trị của nó, nhưng có một cách gọn gàng hơn.
+Vì chúng ta có thể định nghĩa một phương thức cho mọi kiểu ngoại trừ con trỏ
+và interface, chúng ta có thể viết một phương thức cho một hàm.
+Gói <code>http</code> chứa đoạn mã này:
 </p>
 <pre>
-// Kiểu HandlerFunc là một adapter để cho phép dùng
+// Kiểu HandlerFunc là một bộ chuyển đổi cho phép sử dụng
 // các hàm thông thường làm HTTP handler. Nếu f là một hàm
-// với chữ ký phù hợp, HandlerFunc(f) là một đối tượng
+// có chữ ký phù hợp, HandlerFunc(f) là một đối tượng
 // Handler gọi f.
 type HandlerFunc func(ResponseWriter, *Request)
 
@@ -2254,15 +2295,15 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, req *Request) {
 }
 </pre>
 <p>
-<code>HandlerFunc</code> là kiểu có phương thức, <code>ServeHTTP</code>,
-vì vậy các giá trị của kiểu đó có thể phục vụ các yêu cầu HTTP. Hãy nhìn vào cài đặt
-của phương thức: receiver là một hàm, <code>f</code>, và phương thức
-gọi <code>f</code>. Điều đó có thể có vẻ kỳ lạ nhưng không khác lắm so với, chẳng hạn,
-receiver là channel và phương thức gửi trên channel.
+<code>HandlerFunc</code> là một kiểu có phương thức, <code>ServeHTTP</code>,
+vì vậy các giá trị của kiểu đó có thể phục vụ các yêu cầu HTTP. Hãy xem cách
+triển khai phương thức: bộ nhận là một hàm, <code>f</code>, và phương thức
+gọi <code>f</code>. Điều này có thể có vẻ kỳ lạ nhưng không khác nhiều so với,
+ví dụ, bộ nhận là một channel và phương thức gửi dữ liệu trên channel đó.
 </p>
 <p>
-Để biến <code>ArgServer</code> thành máy chủ HTTP, trước tiên chúng ta sửa đổi nó
-để có chữ ký phù hợp.
+Để biến <code>ArgServer</code> thành một máy chủ HTTP, trước tiên chúng ta sửa đổi
+nó để có chữ ký phù hợp.
 </p>
 <pre>
 // Máy chủ đối số.
@@ -2271,11 +2312,11 @@ func ArgServer(w http.ResponseWriter, req *http.Request) {
 }
 </pre>
 <p>
-<code>ArgServer</code> giờ có cùng chữ ký như <code>HandlerFunc</code>,
-vì vậy nó có thể được chuyển đổi sang kiểu đó để truy cập các phương thức của nó,
-giống như chúng ta đã chuyển đổi <code>Sequence</code> thành <code>IntSlice</code>
-để truy cập <code>IntSlice.Sort</code>.
-Mã để thiết lập nó thật ngắn gọn:
+<code>ArgServer</code> hiện có cùng chữ ký với <code>HandlerFunc</code>,
+vì vậy nó có thể được chuyển đổi thành kiểu đó để truy cập các phương thức của
+nó, giống như chúng ta đã chuyển đổi <code>Sequence</code> thành
+<code>IntSlice</code> để truy cập <code>IntSlice.Sort</code>.
+Đoạn mã để thiết lập nó rất ngắn gọn:
 </p>
 <pre>
 http.Handle("/args", http.HandlerFunc(ArgServer))
@@ -2285,47 +2326,49 @@ Khi ai đó truy cập trang <code>/args</code>,
 handler được cài đặt tại trang đó có giá trị <code>ArgServer</code>
 và kiểu <code>HandlerFunc</code>.
 Máy chủ HTTP sẽ gọi phương thức <code>ServeHTTP</code>
-của kiểu đó, với <code>ArgServer</code> làm receiver, điều đó lần lượt sẽ gọi
-<code>ArgServer</code> (qua lời gọi <code>f(w, req)</code>
+của kiểu đó, với <code>ArgServer</code> làm bộ nhận, phương thức này sau đó sẽ
+gọi <code>ArgServer</code> (thông qua lời gọi <code>f(w, req)</code>
 bên trong <code>HandlerFunc.ServeHTTP</code>).
 Các đối số sau đó sẽ được hiển thị.
 </p>
 <p>
-Trong phần này chúng ta đã tạo một máy chủ HTTP từ một struct, một số nguyên,
-một channel và một hàm, tất cả vì interface chỉ là tập hợp các
-phương thức, có thể được định nghĩa cho (hầu hết) bất kỳ kiểu nào.
+Trong phần này, chúng ta đã tạo một máy chủ HTTP từ một struct, một số nguyên,
+một channel và một hàm, tất cả là vì interface chỉ là các tập hợp
+phương thức, có thể được định nghĩa cho (gần như) mọi kiểu.
 </p>
 
-<h2 id="blank">Định danh rỗng</h2>
+<h2 id="blank">Định danh trống</h2>
 
 <p>
-Chúng ta đã đề cập đến định danh rỗng vài lần, trong ngữ cảnh của
-<a href="#for">vòng lặp <code>for</code> <code>range</code></a>
-và <a href="#maps">maps</a>.
-Định danh rỗng có thể được gán hoặc khai báo với bất kỳ giá trị nào thuộc bất kỳ kiểu nào,
-và giá trị đó sẽ bị bỏ đi một cách vô hại.
-Nó giống như việc ghi vào tệp <code>/dev/null</code> trên Unix:
-nó đại diện cho một giá trị chỉ ghi được dùng làm chỗ giữ chỗ
-khi cần một biến nhưng giá trị thực sự không quan trọng.
-Nó còn có những công dụng khác ngoài những gì chúng ta đã thấy.
+Chúng ta đã đề cập đến định danh trống vài lần, trong ngữ cảnh của
+<a href="#for"><code>for</code> <code>range</code> loop</a>
+và <a href="#maps">map</a>.
+Định danh trống có thể được gán hoặc khai báo với bất kỳ giá trị nào thuộc bất kỳ kiểu nào, với
+giá trị đó được loại bỏ một cách an toàn.
+Nó hơi giống như việc ghi vào tệp Unix <code>/dev/null</code>:
+nó đại diện cho một giá trị chỉ ghi
+được dùng làm chỗ giữ chỗ
+nơi cần một biến nhưng giá trị thực tế không quan trọng.
+Nó có những cách sử dụng vượt ra ngoài những gì chúng ta đã thấy.
 </p>
 
-<h3 id="blank_assign">Định danh rỗng trong phép gán nhiều giá trị</h3>
+<h3 id="blank_assign">Định danh trống trong phép gán nhiều giá trị</h3>
 
 <p>
-Việc dùng định danh rỗng trong vòng lặp <code>for</code> <code>range</code> là
-trường hợp đặc biệt của một tình huống tổng quát hơn: phép gán nhiều giá trị.
+Việc sử dụng định danh trống trong một <code>for</code> <code>range</code> loop là một
+trường hợp đặc biệt của một tình huống tổng quát: phép gán nhiều giá trị.
 </p>
 
 <p>
-Nếu một phép gán cần nhiều giá trị ở phía bên trái,
-nhưng một trong số các giá trị đó sẽ không được dùng đến,
-thì việc đặt định danh rỗng ở phía bên trái của phép gán
-giúp tránh phải tạo một biến tạm và làm rõ rằng
-giá trị đó sẽ bị bỏ đi.
-Chẳng hạn, khi gọi một hàm trả về một giá trị và một lỗi,
-nhưng chỉ cần quan tâm đến lỗi,
-hãy dùng định danh rỗng để bỏ qua giá trị không cần thiết.
+Nếu một phép gán yêu cầu nhiều giá trị ở phía bên trái,
+nhưng một trong các giá trị đó sẽ không được chương trình sử dụng,
+một định danh trống ở phía bên trái của
+phép gán sẽ tránh việc phải
+tạo một biến giả và làm rõ rằng
+giá trị đó sẽ bị loại bỏ.
+Ví dụ, khi gọi một hàm trả về
+một giá trị và một lỗi, nhưng chỉ lỗi là quan trọng,
+hãy dùng định danh trống để loại bỏ giá trị không liên quan.
 </p>
 
 <pre>
@@ -2335,100 +2378,102 @@ if _, err := os.Stat(path); os.IsNotExist(err) {
 </pre>
 
 <p>
-Thỉnh thoảng bạn sẽ thấy code bỏ qua giá trị lỗi để không xử lý lỗi;
-đây là cách làm rất tệ. Luôn kiểm tra giá trị lỗi trả về;
-chúng được cung cấp vì một lý do nhất định.
+Đôi khi bạn sẽ thấy mã loại bỏ giá trị lỗi để
+bỏ qua lỗi; đây là một thực hành rất tệ. Luôn kiểm tra các giá trị trả về lỗi;
+chúng được cung cấp vì một lý do.
 </p>
 
 <pre>
-// Tệ! Code này sẽ crash nếu path không tồn tại.
+// Tệ! Mã này sẽ gặp sự cố nếu path không tồn tại.
 fi, _ := os.Stat(path)
 if fi.IsDir() {
     fmt.Printf("%s is a directory\n", path)
 }
 </pre>
 
-<h3 id="blank_unused">Import và biến không dùng đến</h3>
+<h3 id="blank_unused">Các import và biến không được sử dụng</h3>
 
 <p>
-Việc import một package hoặc khai báo một biến mà không sử dụng là lỗi biên dịch.
-Các import không dùng làm phình to chương trình và làm chậm quá trình biên dịch,
-trong khi một biến được khởi tạo nhưng không dùng đến ít nhất là lãng phí tính toán
-và có thể là dấu hiệu của một lỗi nghiêm trọng hơn.
-Tuy nhiên, khi chương trình đang trong quá trình phát triển tích cực,
-các import và biến không dùng đến thường xuất hiện và việc phải xóa chúng đi
-chỉ để chương trình biên dịch được, rồi lại cần đến chúng sau này, thực sự rất phiền.
-Định danh rỗng cung cấp một cách giải quyết vấn đề này.
+Việc import một gói hoặc khai báo một biến mà không sử dụng nó là một lỗi.
+Các import không được sử dụng làm chương trình phình to và làm chậm quá trình biên dịch,
+trong khi một biến được khởi tạo nhưng không được sử dụng ít nhất là
+một phép tính bị lãng phí và có thể là dấu hiệu của một
+lỗi lớn hơn.
+Tuy nhiên, khi một chương trình đang được phát triển tích cực,
+các import và biến không được sử dụng thường xuất hiện và có thể
+gây khó chịu khi phải xóa chúng chỉ để quá trình biên dịch tiếp tục,
+rồi sau đó lại cần chúng.
+Định danh trống cung cấp một cách giải quyết.
 </p>
 <p>
-Chương trình viết dở này có hai import không dùng đến
+Chương trình viết dở này có hai import không được sử dụng
 (<code>fmt</code> và <code>io</code>)
-và một biến không dùng đến (<code>fd</code>),
-nên nó sẽ không biên dịch được, nhưng sẽ tiện nếu có thể kiểm tra xem
-code cho đến nay có đúng không.
+và một biến không được sử dụng (<code>fd</code>),
+vì vậy nó sẽ không biên dịch được, nhưng sẽ hữu ích nếu xem liệu
+mã hiện có có đúng hay không.
 </p>
 {{code "/doc/progs/eff_unused1.go" `/package/` `$`}}
 <p>
-Để tắt các cảnh báo về import không dùng đến, hãy dùng định danh rỗng
-để tham chiếu một ký hiệu từ package được import.
-Tương tự, gán biến không dùng đến <code>fd</code> vào định danh rỗng
-sẽ tắt lỗi biến không dùng đến.
-Phiên bản này của chương trình sẽ biên dịch được.
+Để loại bỏ các cảnh báo về những import không được sử dụng, hãy dùng một
+định danh trống để tham chiếu đến một ký hiệu từ gói đã import.
+Tương tự, việc gán biến không được sử dụng <code>fd</code>
+cho định danh trống sẽ loại bỏ lỗi biến không được sử dụng.
+Phiên bản này của chương trình có thể biên dịch.
 </p>
 {{code "/doc/progs/eff_unused2.go" `/package/` `$`}}
 
 <p>
-Theo quy ước, các khai báo toàn cục để tắt lỗi import
-nên đặt ngay sau phần import và có chú thích,
-vừa để dễ tìm vừa như một lời nhắc nhở cần dọn dẹp sau này.
+Theo quy ước, các khai báo toàn cục để loại bỏ lỗi import
+nên được đặt ngay sau các import và có chú thích,
+vừa để dễ tìm thấy chúng vừa để nhắc nhở dọn dẹp sau này.
 </p>
 
-<h3 id="blank_import">Import vì tác dụng phụ</h3>
+<h3 id="blank_import">Nhập gói để lấy tác dụng phụ</h3>
 
 <p>
-Một import không dùng đến như <code>fmt</code> hay <code>io</code> trong
-ví dụ trước cuối cùng phải được dùng đến hoặc xóa đi:
-các phép gán rỗng là dấu hiệu cho thấy code đang trong quá trình hoàn thiện.
-Nhưng đôi khi việc import một package chỉ để lấy tác dụng phụ của nó,
-mà không có bất kỳ sử dụng tường minh nào, lại có ích.
-Ví dụ, trong hàm <code>init</code> của nó,
-package <code><a href="/pkg/net/http/pprof/">net/http/pprof</a></code>
-đăng ký các HTTP handler cung cấp thông tin gỡ lỗi.
-Package này có API được xuất, nhưng
-hầu hết các client chỉ cần việc đăng ký handler và
-truy cập dữ liệu qua một trang web.
-Để import package chỉ vì tác dụng phụ, hãy đổi tên package thành định danh rỗng:
+Một import không được sử dụng như <code>fmt</code> hoặc <code>io</code> trong ví dụ trước cuối cùng nên được sử dụng hoặc loại bỏ:
+các phép gán cho định danh trống xác định mã nguồn đang trong quá trình phát triển.
+Nhưng đôi khi việc import một gói chỉ vì các tác dụng phụ của nó là hữu ích,
+mà không có bất kỳ cách sử dụng rõ ràng nào.
+Ví dụ, trong hàm <code>init</code> của mình,
+gói <code><a href="/pkg/net/http/pprof/">net/http/pprof</a></code>
+đăng ký các trình xử lý HTTP cung cấp
+thông tin gỡ lỗi. Gói này có API được export, nhưng
+hầu hết client chỉ cần việc đăng ký trình xử lý và
+truy cập dữ liệu thông qua một trang web.
+Để import gói chỉ vì các tác dụng phụ của nó, hãy đổi tên gói
+thành định danh trống:
 </p>
 <pre>
 import _ "net/http/pprof"
 </pre>
 <p>
-Cách import này làm rõ rằng package được import chỉ vì tác dụng phụ,
-vì không còn cách sử dụng nào khác cho package đó:
-trong tệp này, nó không có tên.
-(Nếu có, và chúng ta không dùng cái tên đó, trình biên dịch sẽ từ chối chương trình.)
+Dạng import này làm rõ rằng gói đang được
+import vì các tác dụng phụ của nó, vì không còn cách sử dụng nào khác
+cho gói: trong tệp này, nó không có tên.
+(Nếu có tên và chúng ta không sử dụng tên đó, trình biên dịch sẽ từ chối chương trình.)
 </p>
 
 <h3 id="blank_implements">Kiểm tra interface</h3>
 
 <p>
-Như đã thấy trong phần thảo luận về <a href="#interfaces_and_types">interfaces</a> ở trên,
-một kiểu không cần khai báo tường minh rằng nó implements một interface.
-Thay vào đó, kiểu implement interface chỉ bằng cách implement các method của interface đó.
-Trong thực tế, hầu hết các chuyển đổi interface là tĩnh và do đó được kiểm tra lúc biên dịch.
+Như đã thấy trong phần thảo luận về <a href="#interfaces_and_types">interface</a> ở trên,
+một kiểu không cần khai báo rõ ràng rằng nó triển khai một interface.
+Thay vào đó, một kiểu triển khai interface chỉ bằng cách triển khai các phương thức của interface đó.
+Trong thực tế, hầu hết phép chuyển đổi interface là tĩnh và do đó được kiểm tra tại thời điểm biên dịch.
 Ví dụ, truyền một <code>*os.File</code> vào một hàm
-yêu cầu <code>io.Reader</code> sẽ không biên dịch được trừ khi
-<code>*os.File</code> implements interface <code>io.Reader</code>.
+mong đợi <code>io.Reader</code> sẽ không biên dịch được trừ khi
+<code>*os.File</code> triển khai interface <code>io.Reader</code>.
 </p>
 
 <p>
-Tuy nhiên, một số kiểm tra interface xảy ra lúc chạy chương trình.
-Một trường hợp là trong package <code><a href="/pkg/encoding/json/">encoding/json</a></code>,
-package này định nghĩa interface <code><a href="/pkg/encoding/json/#Marshaler">Marshaler</a></code>.
-Khi bộ mã hóa JSON nhận được một giá trị implements interface đó,
-bộ mã hóa sẽ gọi method marshaling của giá trị đó để chuyển nó thành JSON
-thay vì thực hiện chuyển đổi chuẩn.
-Bộ mã hóa kiểm tra thuộc tính này lúc chạy với một <a href="#interface_conversions">type assertion</a> như:
+Tuy nhiên, một số kiểm tra interface vẫn diễn ra trong thời gian chạy.
+Một trường hợp là trong gói <code><a href="/pkg/encoding/json/">encoding/json</a></code>,
+gói này định nghĩa một interface <code><a href="/pkg/encoding/json/#Marshaler">Marshaler</a></code>.
+Khi bộ mã hóa JSON nhận một giá trị triển khai interface đó,
+bộ mã hóa gọi phương thức marshal của giá trị để chuyển đổi nó thành JSON
+thay vì thực hiện phép chuyển đổi tiêu chuẩn.
+Bộ mã hóa kiểm tra thuộc tính này trong thời gian chạy bằng một <a href="#interface_conversions">phép khẳng định kiểu</a> như sau:
 </p>
 
 <pre>
@@ -2436,9 +2481,9 @@ m, ok := val.(json.Marshaler)
 </pre>
 
 <p>
-Nếu chỉ cần hỏi liệu một kiểu có implement một interface hay không,
-mà không thực sự dùng đến interface đó, chẳng hạn như là một phần của kiểm tra lỗi,
-hãy dùng định danh rỗng để bỏ qua giá trị type-asserted:
+Nếu chỉ cần hỏi liệu một kiểu có triển khai một interface hay không mà không
+thực sự sử dụng chính interface đó, có thể như một phần của việc kiểm tra lỗi, hãy dùng định danh trống
+để bỏ qua giá trị sau phép khẳng định kiểu:
 </p>
 
 <pre>
@@ -2448,52 +2493,53 @@ if _, ok := val.(json.Marshaler); ok {
 </pre>
 
 <p>
-Một tình huống như vậy phát sinh khi cần đảm bảo trong package implement kiểu đó rằng
+Một nơi tình huống này xuất hiện là khi cần đảm bảo trong phạm vi gói triển khai kiểu đó rằng
 nó thực sự thỏa mãn interface.
-Nếu một kiểu, chẳng hạn
-<code><a href="/pkg/encoding/json/#RawMessage">json.RawMessage</a></code>, cần
-một biểu diễn JSON tùy chỉnh, nó phải implement
-<code>json.Marshaler</code>, nhưng không có chuyển đổi tĩnh nào khiến
-trình biên dịch tự động xác minh điều này.
-Nếu kiểu đó vô tình không thỏa mãn interface, bộ mã hóa JSON vẫn hoạt động
-nhưng sẽ không dùng implement tùy chỉnh.
-Để đảm bảo rằng implement là đúng,
-có thể dùng một khai báo toàn cục với định danh rỗng trong package:
+Nếu một kiểu — ví dụ,
+<code><a href="/pkg/encoding/json/#RawMessage">json.RawMessage</a></code> — cần
+một biểu diễn JSON tùy chỉnh, nó nên triển khai
+<code>json.Marshaler</code>, nhưng không có phép chuyển đổi tĩnh nào có thể
+khiến trình biên dịch tự động xác minh điều này.
+Nếu kiểu đó vô tình không thỏa mãn interface, bộ mã hóa JSON vẫn sẽ hoạt động,
+nhưng sẽ không sử dụng triển khai tùy chỉnh.
+Để đảm bảo triển khai là chính xác,
+có thể sử dụng một khai báo toàn cục với định danh trống trong gói:
 </p>
 <pre>
 var _ json.Marshaler = (*RawMessage)(nil)
 </pre>
 <p>
-Trong khai báo này, phép gán có chuyển đổi từ
-<code>*RawMessage</code> sang <code>Marshaler</code>
-yêu cầu <code>*RawMessage</code> phải implement <code>Marshaler</code>,
-và thuộc tính đó sẽ được kiểm tra lúc biên dịch.
-Nếu interface <code>json.Marshaler</code> thay đổi, package này
-sẽ không còn biên dịch được nữa và chúng ta sẽ biết rằng nó cần được cập nhật.
+Trong khai báo này, phép gán liên quan đến việc chuyển đổi một
+<code>*RawMessage</code> thành <code>Marshaler</code>
+yêu cầu rằng <code>*RawMessage</code> triển khai <code>Marshaler</code>,
+và thuộc tính đó sẽ được kiểm tra tại thời điểm biên dịch.
+Nếu interface <code>json.Marshaler</code> thay đổi, gói này
+sẽ không còn biên dịch được và chúng ta sẽ nhận biết rằng cần cập nhật nó.
 </p>
 
 <p>
-Sự xuất hiện của định danh rỗng trong cấu trúc này cho thấy
+Việc xuất hiện định danh trống trong cấu trúc này cho biết rằng
 khai báo chỉ tồn tại để kiểm tra kiểu,
-chứ không phải để tạo ra một biến.
+không phải để tạo một biến.
 Tuy nhiên, đừng làm điều này cho mọi kiểu thỏa mãn một interface.
-Theo quy ước, các khai báo như vậy chỉ được dùng
-khi không có chuyển đổi tĩnh nào đã tồn tại trong code,
-đây là trường hợp hiếm gặp.
+Theo quy ước, các khai báo như vậy chỉ được sử dụng
+khi không có phép chuyển đổi tĩnh nào đã tồn tại trong mã nguồn,
+đây là một trường hợp hiếm gặp.
 </p>
 
 
-<h2 id="embedding">Nhúng kiểu (Embedding)</h2>
+<h2 id="embedding">Nhúng</h2>
 
 <p>
-Go không cung cấp khái niệm subclassing theo kiểu hướng kiểu truyền thống,
-nhưng nó có khả năng &ldquo;mượn&rdquo; các phần của một
-implement bằng cách <em>nhúng</em> các kiểu vào trong một struct hoặc interface.
+Go không cung cấp khái niệm kế thừa lớp theo kiểu thông thường, dựa trên
+kiểu, nhưng nó có khả năng &ldquo;mượn&rdquo; các phần của một
+cài đặt bằng cách <em>nhúng</em> các kiểu trong một struct hoặc
+interface.
 </p>
 <p>
-Nhúng interface rất đơn giản.
-Chúng ta đã đề cập đến interface <code>io.Reader</code> và <code>io.Writer</code>;
-đây là định nghĩa của chúng.
+Việc nhúng interface rất đơn giản.
+Trước đây chúng ta đã đề cập đến các interface <code>io.Reader</code> và <code>io.Writer</code>;
+sau đây là định nghĩa của chúng.
 </p>
 <pre>
 type Reader interface {
@@ -2505,51 +2551,51 @@ type Writer interface {
 }
 </pre>
 <p>
-Package <code>io</code> cũng xuất một số interface khác
-chỉ định các đối tượng có thể implement nhiều method như vậy.
+Gói <code>io</code> cũng xuất ra một số interface khác
+xác định các đối tượng có thể triển khai nhiều phương thức như vậy.
 Ví dụ, có <code>io.ReadWriter</code>, một interface
 chứa cả <code>Read</code> và <code>Write</code>.
-Chúng ta có thể chỉ định <code>io.ReadWriter</code> bằng cách liệt kê
-hai method tường minh, nhưng dễ hơn và gợi hình hơn là
-nhúng hai interface để tạo thành cái mới, như sau:
+Chúng ta có thể xác định <code>io.ReadWriter</code> bằng cách liệt kê
+rõ ràng hai phương thức, nhưng việc nhúng hai interface để tạo thành
+interface mới sẽ dễ dàng và diễn đạt hơn, như sau:
 </p>
 <pre>
-// ReadWriter is the interface that combines the Reader and Writer interfaces.
+// ReadWriter là interface kết hợp các interface Reader và Writer.
 type ReadWriter interface {
     Reader
     Writer
 }
 </pre>
 <p>
-Điều này nói lên đúng những gì nó trông như vậy: một <code>ReadWriter</code> có thể làm
+Điều này đúng như vẻ ngoài của nó: Một <code>ReadWriter</code> có thể làm
 những gì <code>Reader</code> làm <em>và</em> những gì <code>Writer</code>
-làm; nó là hợp nhất của các interface được nhúng.
-Chỉ có interface mới có thể được nhúng vào trong interface.
+làm; nó là hợp của các interface được nhúng.
+Chỉ các interface mới có thể được nhúng trong interface.
 </p>
 <p>
-Ý tưởng cơ bản tương tự áp dụng cho struct, nhưng với những tác động sâu rộng hơn.
-Package <code>bufio</code> có hai kiểu struct,
-<code>bufio.Reader</code> và <code>bufio.Writer</code>, mỗi cái
-tất nhiên implement các interface tương ứng từ package
+Cùng một ý tưởng cơ bản cũng áp dụng cho struct, nhưng với những
+hệ quả sâu rộng hơn. Gói <code>bufio</code> có hai kiểu struct,
+<code>bufio.Reader</code> và <code>bufio.Writer</code>, mỗi kiểu
+dĩ nhiên triển khai các interface tương ứng từ gói
 <code>io</code>.
-Và <code>bufio</code> cũng implement một buffered reader/writer,
-thực hiện bằng cách kết hợp một reader và một writer vào một struct
-dùng embedding: nó liệt kê các kiểu trong struct
+Và <code>bufio</code> cũng triển khai một bộ đọc/ghi có bộ đệm,
+bằng cách kết hợp một bộ đọc và một bộ ghi vào một struct duy nhất
+sử dụng nhúng: nó liệt kê các kiểu bên trong struct
 nhưng không đặt tên trường cho chúng.
 </p>
 <pre>
-// ReadWriter stores pointers to a Reader and a Writer.
-// It implements io.ReadWriter.
+// ReadWriter lưu các con trỏ tới một Reader và một Writer.
+// Nó triển khai io.ReadWriter.
 type ReadWriter struct {
     *Reader  // *bufio.Reader
     *Writer  // *bufio.Writer
 }
 </pre>
 <p>
-Các phần tử được nhúng là con trỏ đến struct và tất nhiên
-phải được khởi tạo để trỏ đến các struct hợp lệ trước khi
-có thể dùng được.
-Struct <code>ReadWriter</code> có thể viết là
+Các phần tử được nhúng là con trỏ tới struct và dĩ nhiên
+phải được khởi tạo để trỏ tới các struct hợp lệ trước khi
+có thể sử dụng.
+Struct <code>ReadWriter</code> có thể được viết như sau
 </p>
 <pre>
 type ReadWriter struct {
@@ -2558,9 +2604,9 @@ type ReadWriter struct {
 }
 </pre>
 <p>
-nhưng khi đó để thăng cấp các method của các trường và
+nhưng khi đó để nâng cấp các phương thức của các trường và để
 thỏa mãn các interface <code>io</code>, chúng ta cũng cần
-cung cấp các forwarding method, như sau:
+cung cấp các phương thức chuyển tiếp, như sau:
 </p>
 <pre>
 func (rw *ReadWriter) Read(p []byte) (n int, err error) {
@@ -2568,25 +2614,25 @@ func (rw *ReadWriter) Read(p []byte) (n int, err error) {
 }
 </pre>
 <p>
-Bằng cách nhúng trực tiếp các struct, chúng ta tránh được sự phiền phức này.
-Các method của các kiểu được nhúng đi kèm miễn phí, nghĩa là <code>bufio.ReadWriter</code>
-không chỉ có các method của <code>bufio.Reader</code> và <code>bufio.Writer</code>,
+Bằng cách nhúng trực tiếp các struct, chúng ta tránh được việc quản lý này.
+Các phương thức của các kiểu được nhúng được cung cấp miễn phí, điều đó có nghĩa là <code>bufio.ReadWriter</code>
+không chỉ có các phương thức của <code>bufio.Reader</code> và <code>bufio.Writer</code>,
 mà còn thỏa mãn cả ba interface:
 <code>io.Reader</code>,
 <code>io.Writer</code>, và
 <code>io.ReadWriter</code>.
 </p>
 <p>
-Có một điểm quan trọng phân biệt embedding với subclassing. Khi chúng ta nhúng một kiểu,
-các method của kiểu đó trở thành method của kiểu ngoài,
-nhưng khi chúng được gọi, receiver của method là kiểu trong, không phải kiểu ngoài.
-Trong ví dụ của chúng ta, khi method <code>Read</code> của một <code>bufio.ReadWriter</code> được
-gọi, nó có đúng tác dụng như forwarding method đã viết ở trên;
+Có một điểm quan trọng khiến việc nhúng khác với kế thừa lớp. Khi chúng ta nhúng một kiểu,
+các phương thức của kiểu đó trở thành phương thức của kiểu bên ngoài,
+nhưng khi chúng được gọi, receiver của phương thức là kiểu bên trong, không phải kiểu bên ngoài.
+Trong ví dụ của chúng ta, khi phương thức <code>Read</code> của một <code>bufio.ReadWriter</code> được
+gọi, nó có chính xác cùng tác dụng như phương thức chuyển tiếp được viết ở trên;
 receiver là trường <code>reader</code> của <code>ReadWriter</code>, không phải
 bản thân <code>ReadWriter</code>.
 </p>
 <p>
-Embedding cũng có thể là một tiện lợi đơn giản.
+Nhúng cũng có thể là một tiện ích đơn giản.
 Ví dụ này cho thấy một trường được nhúng bên cạnh một trường thông thường có tên.
 </p>
 <pre>
@@ -2596,17 +2642,19 @@ type Job struct {
 }
 </pre>
 <p>
-Kiểu <code>Job</code> bây giờ có các method <code>Print</code>, <code>Printf</code>, <code>Println</code>
-và các method khác của <code>*log.Logger</code>. Chúng ta có thể đặt tên trường cho <code>Logger</code>,
-tất nhiên, nhưng không cần thiết phải làm vậy. Và bây giờ, sau khi
-khởi tạo, chúng ta có thể ghi log vào <code>Job</code>:
+Kiểu <code>Job</code> giờ đây có các phương thức <code>Print</code>, <code>Printf</code>, <code>Println</code>
+và các phương thức khác
+của <code>*log.Logger</code>. Dĩ nhiên chúng ta có thể đặt cho <code>Logger</code>
+một tên trường, nhưng không cần thiết phải làm vậy. Và giờ đây, sau khi
+được khởi tạo, chúng ta có thể
+ghi log vào <code>Job</code>:
 </p>
 <pre>
 job.Println("starting now...")
 </pre>
 <p>
 <code>Logger</code> là một trường thông thường của struct <code>Job</code>,
-nên chúng ta có thể khởi tạo nó theo cách thông thường bên trong constructor của <code>Job</code>, như sau:
+vì vậy chúng ta có thể khởi tạo nó theo cách thông thường bên trong hàm tạo của <code>Job</code>, như sau,
 </p>
 <pre>
 func NewJob(command string, logger *log.Logger) *Job {
@@ -2614,19 +2662,19 @@ func NewJob(command string, logger *log.Logger) *Job {
 }
 </pre>
 <p>
-hoặc với composite literal,
+hoặc với một literal hợp thành,
 </p>
 <pre>
 job := &amp;Job{command, log.New(os.Stderr, "Job: ", log.Ldate)}
 </pre>
 <p>
-Nếu cần tham chiếu trực tiếp đến một trường được nhúng, tên kiểu của trường đó,
-bỏ qua phần định danh package, dùng làm tên trường, giống như đã làm
-trong method <code>Read</code> của struct <code>ReadWriter</code>.
+Nếu cần tham chiếu trực tiếp tới một trường được nhúng, tên kiểu của trường,
+bỏ qua phần định danh gói, sẽ đóng vai trò là tên trường, như đã làm
+trong phương thức <code>Read</code> của struct <code>ReadWriter</code> của chúng ta.
 Ở đây, nếu cần truy cập
-<code>*log.Logger</code> của biến <code>Job</code> tên <code>job</code>,
+<code>*log.Logger</code> của một biến <code>job</code> kiểu <code>Job</code>,
 chúng ta sẽ viết <code>job.Logger</code>,
-điều này hữu ích nếu muốn tinh chỉnh các method của <code>Logger</code>.
+điều này sẽ hữu ích nếu muốn tinh chỉnh các phương thức của <code>Logger</code>.
 </p>
 <pre>
 func (job *Job) Printf(format string, args ...interface{}) {
@@ -2634,190 +2682,169 @@ func (job *Job) Printf(format string, args ...interface{}) {
 }
 </pre>
 <p>
-Nhúng kiểu đưa ra vấn đề xung đột tên nhưng các quy tắc giải quyết
+Việc nhúng các kiểu tạo ra vấn đề xung đột tên nhưng các quy tắc để giải quyết
 chúng rất đơn giản.
-Thứ nhất, một trường hoặc method <code>X</code> che khuất bất kỳ mục <code>X</code> nào khác ở phần
-lồng sâu hơn của kiểu.
-Nếu <code>log.Logger</code> chứa một trường hoặc method tên <code>Command</code>, thì trường <code>Command</code>
-của <code>Job</code> sẽ chiếm ưu thế.
+Đầu tiên, một trường hoặc phương thức <code>X</code> che khuất bất kỳ mục <code>X</code> nào khác
+ở phần lồng nhau sâu hơn của kiểu.
+Nếu <code>log.Logger</code> chứa một trường hoặc phương thức có tên <code>Command</code>, trường <code>Command</code>
+của <code>Job</code> sẽ chiếm ưu thế so với nó.
 </p>
 <p>
-Thứ hai, nếu cùng tên xuất hiện ở cùng mức lồng nhau, thường là lỗi;
+Thứ hai, nếu cùng một tên xuất hiện ở cùng một mức lồng nhau, điều đó thường là lỗi;
 sẽ là lỗi nếu nhúng <code>log.Logger</code> khi struct <code>Job</code>
-đã chứa một trường hoặc method tên <code>Logger</code>.
-Tuy nhiên, nếu tên trùng lặp không bao giờ được đề cập trong chương trình ngoài định nghĩa kiểu, thì không sao.
-Điều kiện này cung cấp một số bảo vệ trước những thay đổi được thực hiện với các kiểu nhúng từ bên ngoài;
-không có vấn đề gì nếu một trường được thêm vào mà xung đột với một trường khác trong subtype khác nếu cả hai trường đó
-không bao giờ được dùng đến.
+chứa một trường hoặc phương thức khác có tên <code>Logger</code>.
+Tuy nhiên, nếu tên trùng lặp không bao giờ được đề cập trong chương trình bên ngoài định nghĩa kiểu, thì điều đó vẫn hợp lệ.
+Điều kiện này cung cấp một số bảo vệ trước các thay đổi được thực hiện đối với các kiểu được nhúng từ bên ngoài; sẽ
+không có vấn đề nếu một trường được thêm vào gây xung đột với một trường khác trong một kiểu con khác nếu không trường nào
+từng được sử dụng.
 </p>
 
 
-<h2 id="concurrency">Concurrency (Lập trình đồng thời)</h2>
+<h2 id="concurrency">Lập trình đồng thời</h2>
 
 <h3 id="sharing">Chia sẻ bằng cách giao tiếp</h3>
 
 <p>
-Lập trình đồng thời là một chủ đề rộng lớn và ở đây chỉ có chỗ cho một số
-điểm nổi bật đặc trưng của Go.
+Lập trình đồng thời là một chủ đề lớn và ở đây chỉ có chỗ cho một số điểm nổi bật riêng của Go.
 </p>
 <p>
-Lập trình đồng thời trong nhiều môi trường trở nên khó khăn vì
-những tinh tế cần thiết để implement việc truy cập đúng đắn vào các biến chia sẻ. Go khuyến khích
-một cách tiếp cận khác trong đó các giá trị chia sẻ được truyền đi trên các channel
-và thực ra không bao giờ được chia sẻ tích cực bởi các luồng thực thi riêng biệt.
+Lập trình đồng thời trong nhiều môi trường trở nên khó khăn do những chi tiết phức tạp cần thiết để triển khai việc truy cập chính xác vào các biến dùng chung. Go khuyến khích một cách tiếp cận khác, trong đó các giá trị dùng chung được truyền qua các channel và trên thực tế không bao giờ được các luồng thực thi riêng biệt chia sẻ một cách chủ động.
 Chỉ một goroutine có quyền truy cập vào giá trị tại bất kỳ thời điểm nào.
-Data race không thể xảy ra, theo thiết kế.
-Để khuyến khích cách suy nghĩ này, chúng ta đã rút gọn nó thành một khẩu hiệu:
+Theo thiết kế, các cuộc đua dữ liệu không thể xảy ra.
+Để khuyến khích cách suy nghĩ này, chúng tôi đã rút gọn nó thành một khẩu hiệu:
 </p>
 <blockquote>
-Do not communicate by sharing memory;
-instead, share memory by communicating.
+Đừng giao tiếp bằng cách chia sẻ bộ nhớ;
+thay vào đó, hãy chia sẻ bộ nhớ bằng cách giao tiếp.
 </blockquote>
 <p>
-Cách tiếp cận này có thể bị đẩy đi quá xa. Reference count có thể được thực hiện tốt nhất
-bằng cách đặt một mutex xung quanh một biến integer, chẳng hạn. Nhưng như một
-cách tiếp cận cấp cao, dùng channel để kiểm soát quyền truy cập giúp
-viết các chương trình rõ ràng, đúng đắn hơn.
+Cách tiếp cận này có thể bị áp dụng quá mức. Chẳng hạn, việc đếm tham chiếu có thể được thực hiện tốt nhất bằng cách đặt một mutex xung quanh một biến số nguyên. Nhưng với tư cách là một cách tiếp cận cấp cao, sử dụng channel để kiểm soát quyền truy cập giúp viết các chương trình rõ ràng và chính xác dễ dàng hơn.
 </p>
 <p>
-Một cách suy nghĩ về mô hình này là hãy coi một chương trình single-threaded điển hình
-chạy trên một CPU. Nó không cần các primitive đồng bộ hóa.
-Bây giờ chạy một instance khác; nó cũng không cần đồng bộ hóa. Bây giờ hãy để
-hai cái đó giao tiếp; nếu giao tiếp là bộ đồng bộ hóa, thì vẫn không cần
-đồng bộ hóa nào khác. Unix pipeline, ví dụ, phù hợp hoàn hảo với mô hình này.
-Mặc dù cách tiếp cận concurrency của Go bắt nguồn từ
-Communicating Sequential Processes (CSP) của Hoare,
-nó cũng có thể được xem là một tổng quát hóa type-safe của Unix pipe.
+Một cách để suy nghĩ về mô hình này là xem xét một chương trình đơn luồng điển hình đang chạy trên một CPU. Nó không cần các nguyên thủy đồng bộ hóa.
+Bây giờ chạy thêm một thực thể tương tự; nó cũng không cần đồng bộ hóa. Bây giờ cho hai thực thể đó giao tiếp với nhau; nếu việc giao tiếp chính là cơ chế đồng bộ hóa, vẫn không cần thêm cơ chế đồng bộ hóa nào khác. Ví dụ, các đường ống Unix hoàn toàn phù hợp với mô hình này. Mặc dù cách tiếp cận của Go đối với tính đồng thời bắt nguồn từ Communicating Sequential Processes (CSP) của Hoare,
+nó cũng có thể được xem là một sự tổng quát hóa an toàn kiểu của các pipe Unix.
 </p>
 
 <h3 id="goroutines">Goroutine</h3>
 
 <p>
-Chúng được gọi là <em>goroutine</em> vì các thuật ngữ hiện có như
-thread, coroutine, process và các thuật ngữ tương tự mang những nghĩa ngụ ý không chính xác.
-Một goroutine có một mô hình đơn giản: đó là một
-hàm thực thi đồng thời với các goroutine khác trong cùng
-không gian địa chỉ. Nó nhẹ, chỉ tốn kém hơn một chút so với
-việc cấp phát stack space.
-Và các stack bắt đầu nhỏ, nên chúng rẻ, và tăng lên
-bằng cách cấp phát (và giải phóng) heap storage khi cần.
+Chúng được gọi là <em>goroutine</em> vì các thuật ngữ hiện có&mdash;thread, coroutine, process, v.v.&mdash;mang theo những hàm ý không chính xác. Một goroutine có một mô hình đơn giản: đó là một hàm thực thi đồng thời với các goroutine khác trong cùng một không gian địa chỉ. Nó nhẹ, chỉ tốn nhiều hơn một chút so với việc cấp phát không gian stack.
+Và các stack bắt đầu nhỏ, nên chúng rẻ, đồng thời phát triển bằng cách cấp phát (và giải phóng) bộ nhớ heap khi cần thiết.
 </p>
 <p>
-Goroutine được ghép kênh (multiplexed) lên nhiều OS thread, nên nếu một cái
-bị chặn, chẳng hạn như khi đang chờ I/O, những cái khác vẫn tiếp tục chạy. Thiết kế của chúng
-ẩn đi nhiều sự phức tạp của việc tạo và quản lý thread.
+Các goroutine được ghép kênh trên nhiều thread của hệ điều hành, vì vậy nếu một goroutine bị chặn, chẳng hạn khi chờ I/O, các goroutine khác vẫn tiếp tục chạy. Thiết kế của chúng ẩn đi nhiều sự phức tạp trong việc tạo và quản lý thread.
 </p>
 <p>
-Thêm tiền tố từ khóa <code>go</code> vào một lời gọi hàm hoặc method để chạy lời gọi đó trong một goroutine mới.
-Khi lời gọi hoàn thành, goroutine
-thoát ra một cách lặng lẽ. (Hiệu ứng tương tự như ký hiệu
-<code>&amp;</code> trong Unix shell để chạy một lệnh ở
+Thêm từ khóa <code>go</code> trước một lời gọi hàm hoặc phương thức để chạy lời gọi đó trong một goroutine mới.
+Khi lời gọi hoàn tất, goroutine
+thoát một cách im lặng. (Hiệu ứng này tương tự ký hiệu
+<code>&amp;</code> của shell Unix để chạy một lệnh trong
 nền.)
 </p>
 <pre>
-go list.Sort()  // run list.Sort concurrently; don't wait for it.
+go list.Sort()  // chạy list.Sort đồng thời; không chờ nó.
 </pre>
 <p>
-Một function literal có thể tiện dụng trong lời gọi goroutine.
+Một function literal có thể hữu ích trong một lời gọi goroutine.
 </p>
 <pre>
 func Announce(message string, delay time.Duration) {
     go func() {
         time.Sleep(delay)
         fmt.Println(message)
-    }()  // Note the parentheses - must call the function.
+    }()  // Lưu ý dấu ngoặc đơn - phải gọi hàm.
 }
 </pre>
 <p>
-Trong Go, function literal là closure: implement
-đảm bảo rằng các biến được tham chiếu bởi hàm tồn tại miễn là chúng đang được dùng.
+Trong Go, function literal là closure: phần triển khai đảm bảo rằng các biến được hàm tham chiếu đến tồn tại chừng nào chúng còn đang hoạt động.
 </p>
 <p>
-Những ví dụ này không thực tế lắm vì các hàm không có cách nào báo hiệu
-khi hoàn thành. Để làm điều đó, chúng ta cần channel.
+Những ví dụ này không quá thực tế vì các hàm không có cách nào báo hiệu việc hoàn tất.
+Để làm điều đó, chúng ta cần các channel.
 </p>
 
-<h3 id="channels">Channel</h3>
+<h3 id="channels">Kênh</h3>
 
 <p>
-Giống như map, channel được cấp phát bằng <code>make</code>, và
-giá trị trả về hoạt động như một tham chiếu đến cấu trúc dữ liệu bên dưới.
-Nếu có một tham số integer tùy chọn, nó đặt kích thước buffer cho channel.
-Mặc định là không (zero), cho channel unbuffered hoặc đồng bộ.
+Giống như map, các kênh được cấp phát bằng <code>make</code>, và
+giá trị nhận được đóng vai trò là tham chiếu đến một cấu trúc dữ liệu bên dưới.
+Nếu cung cấp một tham số số nguyên tùy chọn, nó sẽ đặt kích thước bộ đệm cho kênh.
+Giá trị mặc định là không, đối với kênh không có bộ đệm hoặc kênh đồng bộ.
 </p>
 <pre>
-ci := make(chan int)            // unbuffered channel of integers
-cj := make(chan int, 0)         // unbuffered channel of integers
-cs := make(chan *os.File, 100)  // buffered channel of pointers to Files
+ci := make(chan int)            // kênh số nguyên không có bộ đệm
+cj := make(chan int, 0)         // kênh số nguyên không có bộ đệm
+cs := make(chan *os.File, 100)  // kênh có bộ đệm chứa các con trỏ đến File
 </pre>
 <p>
-Channel unbuffered kết hợp giao tiếp, tức là trao đổi một giá trị, với
-đồng bộ hóa, đảm bảo rằng hai phép tính (goroutine) đang ở
+Các kênh không có bộ đệm kết hợp giao tiếp&mdash;việc trao đổi một giá trị&mdash;với
+đồng bộ hóa&mdash;đảm bảo rằng hai phép tính (goroutine) đang ở
 một trạng thái đã biết.
 </p>
 <p>
-Có rất nhiều thành ngữ hay khi dùng channel. Đây là một để bắt đầu.
-Trong phần trước, chúng ta đã khởi chạy một sort ở nền. Một channel
-có thể cho phép goroutine khởi chạy chờ đợi sort hoàn thành.
+Có rất nhiều thành ngữ hay sử dụng kênh.  Sau đây là một ví dụ để bắt đầu.
+Trong phần trước, chúng ta đã khởi chạy một thao tác sắp xếp ở chế độ nền. Một kênh
+có thể cho phép goroutine khởi chạy chờ thao tác sắp xếp hoàn tất.
 </p>
 <pre>
-c := make(chan int)  // Allocate a channel.
-// Start the sort in a goroutine; when it completes, signal on the channel.
+c := make(chan int)  // Cấp phát một kênh.
+// Bắt đầu thao tác sắp xếp trong một goroutine; khi hoàn tất, gửi tín hiệu trên kênh.
 go func() {
     list.Sort()
-    c &lt;- 1  // Send a signal; value does not matter.
+    c &lt;- 1  // Gửi tín hiệu; giá trị không quan trọng.
 }()
 doSomethingForAWhile()
-&lt;-c   // Wait for sort to finish; discard sent value.
+&lt;-c   // Chờ thao tác sắp xếp hoàn tất; bỏ qua giá trị đã gửi.
 </pre>
 <p>
-Receiver luôn chặn cho đến khi có dữ liệu để nhận.
-Nếu channel là unbuffered, sender chặn cho đến khi receiver đã
-nhận được giá trị.
-Nếu channel có buffer, sender chỉ chặn cho đến khi
-giá trị đã được sao chép vào buffer; nếu buffer đầy, điều này
-có nghĩa là phải chờ cho đến khi một receiver nào đó lấy đi một giá trị.
+Bên nhận luôn bị chặn cho đến khi có dữ liệu để nhận.
+Nếu kênh không có bộ đệm, bên gửi bị chặn cho đến khi bên nhận
+đã nhận được giá trị.
+Nếu kênh có bộ đệm, bên gửi chỉ bị chặn cho đến khi
+giá trị được sao chép vào bộ đệm; nếu bộ đệm đầy, điều này
+có nghĩa là phải chờ cho đến khi một bên nhận nào đó lấy đi một giá trị.
 </p>
 <p>
-Một buffered channel có thể được dùng như một semaphore, chẳng hạn để
-giới hạn thông lượng. Trong ví dụ này, các request đến được truyền vào
-<code>handle</code>, cái này gửi một giá trị vào channel, xử lý
-request, rồi nhận một giá trị từ channel để sẵn sàng
-&ldquo;semaphore&rdquo; cho consumer tiếp theo.
-Dung lượng của channel buffer giới hạn số lượng
+Một kênh có bộ đệm có thể được sử dụng như một semaphore, chẳng hạn để
+giới hạn thông lượng. Trong ví dụ này, các yêu cầu đến được chuyển
+đến <code>handle</code>, hàm này gửi một giá trị vào kênh, xử lý
+yêu cầu, sau đó nhận một giá trị từ kênh
+để chuẩn bị &ldquo;semaphore&rdquo; cho consumer tiếp theo.
+Dung lượng của bộ đệm kênh giới hạn số lượng
 lời gọi đồng thời đến <code>process</code>.
 </p>
 <pre>
 var sem = make(chan int, MaxOutstanding)
 
 func handle(r *Request) {
-    sem &lt;- 1    // Wait for active queue to drain.
-    process(r)  // May take a long time.
-    &lt;-sem       // Done; enable next request to run.
+    sem &lt;- 1    // Chờ hàng đợi đang hoạt động được giải phóng.
+    process(r)  // Có thể mất nhiều thời gian.
+    &lt;-sem       // Hoàn tất; cho phép yêu cầu tiếp theo chạy.
 }
 
 func Serve(queue chan *Request) {
     for {
         req := &lt;-queue
-        go handle(req)  // Don't wait for handle to finish.
+        go handle(req)  // Không chờ handle hoàn tất.
     }
 }
 </pre>
 
 <p>
-Khi <code>MaxOutstanding</code> handler đang thực thi <code>process</code>,
-bất kỳ handler nào khác sẽ chặn khi cố gửi vào channel buffer đầy,
-cho đến khi một trong các handler hiện có hoàn thành và nhận từ buffer.
+Khi đã có <code>MaxOutstanding</code> trình xử lý đang thực thi <code>process</code>,
+mọi trình xử lý khác sẽ bị chặn khi cố gửi vào bộ đệm kênh đã đầy,
+cho đến khi một trong các trình xử lý hiện có hoàn tất và nhận từ bộ đệm.
 </p>
 
 <p>
 Tuy nhiên, thiết kế này có một vấn đề: <code>Serve</code>
 tạo một goroutine mới cho
-mỗi request đến, mặc dù chỉ có <code>MaxOutstanding</code>
-trong số đó có thể chạy tại bất kỳ thời điểm nào.
-Do đó, chương trình có thể tiêu thụ tài nguyên không giới hạn nếu request đến quá nhanh.
+mỗi yêu cầu đến, mặc dù chỉ <code>MaxOutstanding</code>
+trong số chúng có thể chạy tại bất kỳ thời điểm nào.
+Kết quả là chương trình có thể tiêu thụ tài nguyên không giới hạn nếu các yêu cầu đến quá nhanh.
 Chúng ta có thể khắc phục thiếu sót đó bằng cách thay đổi <code>Serve</code> để
-kiểm soát việc tạo goroutine:
+kiểm soát việc tạo các goroutine:
 </p>
 
 <pre>
@@ -2832,19 +2859,20 @@ func Serve(queue chan *Request) {
 }</pre>
 
 <p>
-(Lưu ý rằng trong các phiên bản Go trước 1.22, code này có bug: biến vòng lặp
-được chia sẻ qua tất cả các goroutine.
+(Lưu ý rằng trong các phiên bản Go trước 1.22, mã này có một lỗi: biến vòng lặp
+được dùng chung giữa tất cả các goroutine.
 Xem <a href="/wiki/LoopvarExperiment">Go wiki</a> để biết chi tiết.)
 </p>
 
 <p>
-Một cách tiếp cận khác quản lý tài nguyên tốt là khởi động một số lượng cố định
-goroutine <code>handle</code> tất cả đều đọc từ channel request.
-Số lượng goroutine giới hạn số lượng lời gọi đồng thời
-đến <code>process</code>.
-Hàm <code>Serve</code> này cũng chấp nhận một channel mà qua đó
-nó sẽ được báo để thoát; sau khi khởi chạy các goroutine, nó chặn
-nhận từ channel đó.
+Một cách tiếp cận khác quản lý tài nguyên tốt là khởi chạy một số lượng cố định
+các goroutine <code>handle</code> cùng đọc từ kênh
+yêu cầu.
+Số lượng goroutine giới hạn số lượng
+lời gọi đồng thời đến <code>process</code>.
+Hàm <code>Serve</code> này cũng chấp nhận một kênh mà
+nó sẽ được thông báo để thoát; sau khi khởi chạy các goroutine, nó bị chặn
+khi nhận từ kênh đó.
 </p>
 
 <pre>
@@ -2855,27 +2883,27 @@ func handle(queue chan *Request) {
 }
 
 func Serve(clientRequests chan *Request, quit chan bool) {
-    // Start handlers
+    // Khởi động các trình xử lý
     for i := 0; i &lt; MaxOutstanding; i++ {
         go handle(clientRequests)
     }
-    &lt;-quit  // Wait to be told to exit.
+    &lt;-quit  // Chờ được thông báo để thoát.
 }
 </pre>
 
-<h3 id="chan_of_chan">Channel của channel</h3>
+<h3 id="chan_of_chan">Các channel của channel</h3>
 <p>
 Một trong những thuộc tính quan trọng nhất của Go là
-một channel là một giá trị first-class có thể được cấp phát và truyền đi
-giống như bất kỳ giá trị nào khác. Một cách dùng phổ biến thuộc tính này là
-để implement demultiplexing an toàn, song song.
+một channel là một giá trị hạng nhất có thể được cấp phát và truyền
+xung quanh như mọi giá trị khác. Một cách sử dụng phổ biến của thuộc tính này là
+triển khai việc phân kênh an toàn, song song.
 </p>
 <p>
 Trong ví dụ ở phần trước, <code>handle</code> là
-một handler lý tưởng hóa cho một request nhưng chúng ta không định nghĩa
-kiểu mà nó xử lý. Nếu kiểu đó bao gồm một channel để
-trả lời, mỗi client có thể cung cấp đường dẫn riêng cho câu trả lời.
-Đây là định nghĩa sơ đồ của kiểu <code>Request</code>.
+một trình xử lý được lý tưởng hóa cho một yêu cầu nhưng chúng ta chưa định nghĩa
+kiểu mà nó xử lý. Nếu kiểu đó bao gồm một channel dùng để
+phản hồi, mỗi client có thể cung cấp đường đi riêng cho câu trả lời.
+Sau đây là định nghĩa sơ đồ của kiểu <code>Request</code>.
 </p>
 <pre>
 type Request struct {
@@ -2886,7 +2914,7 @@ type Request struct {
 </pre>
 <p>
 Client cung cấp một hàm và các đối số của nó, cũng như
-một channel bên trong đối tượng request để nhận câu trả lời.
+một channel bên trong đối tượng yêu cầu để nhận câu trả lời.
 </p>
 <pre>
 func sum(a []int) (s int) {
@@ -2897,13 +2925,13 @@ func sum(a []int) (s int) {
 }
 
 request := &amp;Request{[]int{3, 4, 5}, sum, make(chan int)}
-// Send request
+// Gửi yêu cầu
 clientRequests &lt;- request
-// Wait for response.
+// Chờ phản hồi.
 fmt.Printf("answer: %d\n", &lt;-request.resultChan)
 </pre>
 <p>
-Ở phía server, hàm handler là thứ duy nhất thay đổi.
+Ở phía server, hàm xử lý là thứ duy nhất thay đổi.
 </p>
 <pre>
 func handle(queue chan *Request) {
@@ -2913,14 +2941,14 @@ func handle(queue chan *Request) {
 }
 </pre>
 <p>
-Rõ ràng còn nhiều việc phải làm để nó thực tế hơn, nhưng
-code này là khung cho một hệ thống RPC song song, không chặn, giới hạn tốc độ,
-và không có một mutex nào trong đó.
+Rõ ràng còn nhiều việc cần làm để biến nó thành hiện thực, nhưng đoạn
+mã này là một khung cho hệ thống RPC song song, không chặn, có giới hạn tốc độ
+và không hề có mutex nào xuất hiện.
 </p>
 
-<h3 id="parallel">Song song hóa (Parallelization)</h3>
+<h3 id="parallel">Song song hóa</h3>
 <p>
-Một ứng dụng khác của những ý tưởng này là song song hóa một phép tính
+Một ứng dụng khác của các ý tưởng này là song song hóa một phép tính
 trên nhiều lõi CPU. Nếu phép tính có thể được chia thành
 các phần riêng biệt có thể thực thi độc lập, nó có thể được song song hóa,
 với một channel để báo hiệu khi mỗi phần hoàn thành.
@@ -2933,38 +2961,38 @@ như trong ví dụ lý tưởng hóa này.
 <pre>
 type Vector []float64
 
-// Apply the operation to v[i], v[i+1] ... up to v[n-1].
+// Áp dụng phép toán cho v[i], v[i+1] ... đến v[n-1].
 func (v Vector) DoSome(i, n int, u Vector, c chan int) {
     for ; i &lt; n; i++ {
         v[i] += u.Op(v[i])
     }
-    c &lt;- 1    // signal that this piece is done
+    c &lt;- 1    // báo hiệu rằng phần này đã hoàn thành
 }
 </pre>
 <p>
-Chúng ta khởi chạy các phần độc lập trong một vòng lặp, mỗi phần trên một CPU.
-Chúng có thể hoàn thành theo bất kỳ thứ tự nào nhưng điều đó không quan trọng;
-chúng ta chỉ đếm các tín hiệu hoàn thành bằng cách drain channel sau
-khi khởi chạy tất cả các goroutine.
+Chúng ta khởi chạy các phần một cách độc lập trong một vòng lặp, mỗi phần cho một CPU.
+Chúng có thể hoàn thành theo bất kỳ thứ tự nào nhưng điều đó không quan trọng; chúng ta chỉ
+đếm các tín hiệu hoàn thành bằng cách rút hết channel sau khi
+khởi chạy tất cả goroutine.
 </p>
 <pre>
-const numCPU = 4 // number of CPU cores
+const numCPU = 4 // số lõi CPU
 
 func (v Vector) DoAll(u Vector) {
-    c := make(chan int, numCPU)  // Buffering optional but sensible.
+    c := make(chan int, numCPU)  // Đệm là tùy chọn nhưng hợp lý.
     for i := 0; i &lt; numCPU; i++ {
         go v.DoSome(i*len(v)/numCPU, (i+1)*len(v)/numCPU, u, c)
     }
-    // Drain the channel.
+    // Rút hết channel.
     for i := 0; i &lt; numCPU; i++ {
-        &lt;-c    // wait for one task to complete
+        &lt;-c    // chờ một tác vụ hoàn thành
     }
-    // All done.
+    // Hoàn tất.
 }
 </pre>
 <p>
-Thay vì tạo một hằng số cho numCPU, chúng ta có thể hỏi runtime xem
-giá trị nào là phù hợp.
+Thay vì tạo một giá trị hằng cho numCPU, chúng ta có thể hỏi runtime giá trị nào
+là phù hợp.
 Hàm <code><a href="/pkg/runtime#NumCPU">runtime.NumCPU</a></code>
 trả về số lõi CPU phần cứng trong máy, vì vậy chúng ta có thể viết
 </p>
@@ -2972,40 +3000,41 @@ trả về số lõi CPU phần cứng trong máy, vì vậy chúng ta có thể
 var numCPU = runtime.NumCPU()
 </pre>
 <p>
-Ngoài ra còn có hàm
+Cũng có một hàm
 <code><a href="/pkg/runtime#GOMAXPROCS">runtime.GOMAXPROCS</a></code>,
-hàm này báo cáo (hoặc đặt)
-số lõi do người dùng chỉ định mà một chương trình Go có thể chạy
+hàm này báo cáo (hoặc thiết lập)
+số lõi do người dùng chỉ định mà một chương trình Go có thể cho chạy
 đồng thời.
-Nó mặc định theo giá trị của <code>runtime.NumCPU</code> nhưng có thể
-được ghi đè bằng cách đặt biến môi trường shell cùng tên
-hoặc bằng cách gọi hàm với một số dương. Gọi nó với
-zero chỉ truy vấn giá trị.
-Vì vậy, nếu muốn tôn trọng yêu cầu tài nguyên của người dùng, chúng ta nên viết
+Giá trị mặc định của nó là giá trị của <code>runtime.NumCPU</code> nhưng có thể
+bị ghi đè bằng cách thiết lập biến môi trường shell có tên tương tự
+hoặc bằng cách gọi hàm với một số dương. Gọi hàm với
+số không chỉ truy vấn giá trị.
+Vì vậy nếu muốn tôn trọng yêu cầu tài nguyên của người dùng, chúng ta nên viết
 </p>
 <pre>
 var numCPU = runtime.GOMAXPROCS(0)
 </pre>
 <p>
-Hãy chắc chắn không nhầm lẫn giữa các khái niệm concurrency (cấu trúc một chương trình
-thành các thành phần thực thi độc lập) và parallelism (thực thi
-các phép tính song song để tăng hiệu quả trên nhiều CPU).
-Mặc dù các tính năng concurrency của Go có thể làm cho một số vấn đề dễ dàng
-cấu trúc như các phép tính song song, Go là một ngôn ngữ concurrent,
-không phải parallel, và không phải tất cả vấn đề song song hóa đều phù hợp với mô hình của Go.
-Để thảo luận về sự khác biệt này, hãy xem bài nói chuyện được trích dẫn trong
-<a href="/blog/concurrency-is-not-parallelism">bài blog này</a>.
+Hãy chắc chắn không nhầm lẫn các khái niệm về concurrency—cấu trúc một chương trình
+thành các thành phần thực thi độc lập—và parallelism—thực thi
+các phép tính song song để đạt hiệu quả trên nhiều CPU.
+Mặc dù các tính năng concurrency của Go có thể giúp một số vấn đề dễ dàng
+được cấu trúc thành các phép tính song song, Go là một ngôn ngữ đồng thời,
+không phải ngôn ngữ song song, và không phải mọi bài toán song song hóa đều phù hợp với mô hình của Go.
+Để thảo luận về sự khác biệt này, xem bài nói chuyện được trích dẫn trong
+<a href="/blog/concurrency-is-not-parallelism">bài đăng blog này</a>.
 
-<h3 id="leaky_buffer">Leaky buffer</h3>
+<h3 id="leaky_buffer">Một bộ đệm bị rò rỉ</h3>
 
 <p>
-Các công cụ của lập trình đồng thời thậm chí có thể làm cho những
-ý tưởng không đồng thời dễ diễn đạt hơn. Đây là một ví dụ được trừu tượng hóa từ một
-package RPC. Goroutine client lặp nhận dữ liệu từ một nguồn nào đó,
-có thể là mạng. Để tránh cấp phát và giải phóng buffer, nó giữ
-một danh sách rảnh (free list), và dùng một buffered channel để biểu diễn nó. Nếu
-channel trống, một buffer mới được cấp phát.
-Khi message buffer sẵn sàng, nó được gửi đến server trên
+Các công cụ của lập trình đồng thời thậm chí có thể giúp những
+ý tưởng không đồng thời dễ biểu đạt hơn. Đây là một ví dụ được rút
+gọn từ một gói RPC. Goroutine phía máy khách lặp lại việc nhận dữ liệu
+từ một nguồn nào đó, có thể là mạng. Để tránh việc cấp phát và giải
+phóng các bộ đệm, nó duy trì một danh sách trống và dùng một channel có
+bộ đệm để biểu diễn danh sách đó. Nếu channel trống, một bộ đệm mới sẽ
+được cấp phát.
+Khi bộ đệm thông báo đã sẵn sàng, nó được gửi đến máy chủ qua
 <code>serverChan</code>.
 </p>
 <pre>
@@ -3015,60 +3044,62 @@ var serverChan = make(chan *Buffer)
 func client() {
     for {
         var b *Buffer
-        // Grab a buffer if available; allocate if not.
+        // Lấy một bộ đệm nếu có; cấp phát nếu không có.
         select {
         case b = &lt;-freeList:
-            // Got one; nothing more to do.
+            // Đã lấy được một cái; không cần làm gì thêm.
         default:
-            // None free, so allocate a new one.
+            // Không có bộ đệm trống, nên cấp phát một cái mới.
             b = new(Buffer)
         }
-        load(b)              // Read next message from the net.
-        serverChan &lt;- b      // Send to server.
+        load(b)              // Đọc thông báo tiếp theo từ mạng.
+        serverChan &lt;- b      // Gửi đến máy chủ.
     }
 }
 </pre>
 <p>
-Vòng lặp server nhận mỗi message từ client, xử lý nó,
-và trả buffer về danh sách rảnh.
+Vòng lặp của máy chủ nhận từng thông báo từ máy khách, xử lý nó,
+và trả bộ đệm về danh sách trống.
 </p>
 <pre>
 func server() {
     for {
-        b := &lt;-serverChan    // Wait for work.
+        b := &lt;-serverChan    // Chờ công việc.
         process(b)
-        // Reuse buffer if there's room.
+        // Tái sử dụng bộ đệm nếu còn chỗ.
         select {
         case freeList &lt;- b:
-            // Buffer on free list; nothing more to do.
+            // Bộ đệm trong danh sách trống; không cần làm gì thêm.
         default:
-            // Free list full, just carry on.
+            // Danh sách trống đã đầy, cứ tiếp tục.
         }
     }
 }
 </pre>
 <p>
-Client cố lấy một buffer từ <code>freeList</code>;
-nếu không có, nó cấp phát một cái mới.
-Việc server gửi vào <code>freeList</code> đặt <code>b</code> trở lại
-vào danh sách rảnh trừ khi danh sách đầy, trong trường hợp đó
-buffer bị bỏ đi để bộ gom rác thu hồi.
-(Mệnh đề <code>default</code> trong các câu lệnh <code>select</code>
-thực thi khi không có trường hợp nào khác sẵn sàng,
-nghĩa là các <code>select</code> không bao giờ chặn.)
-Implement này xây dựng một free list dạng leaky bucket
-chỉ trong vài dòng, dựa vào buffered channel và
-bộ gom rác để quản lý bookkeeping.
+Máy khách cố gắng lấy một bộ đệm từ <code>freeList</code>;
+nếu không có bộ đệm nào khả dụng, nó cấp phát một bộ đệm mới.
+Việc máy chủ gửi đến <code>freeList</code> sẽ đưa <code>b</code> trở lại
+danh sách trống, trừ khi danh sách đã đầy; trong trường hợp đó,
+bộ đệm bị loại bỏ để được thu hồi bởi
+bộ gom rác.
+(Các mệnh đề <code>default</code> trong các câu lệnh <code>select</code>
+được thực thi khi không có trường hợp nào khác sẵn sàng,
+nghĩa là các <code>select</code> không bao giờ bị chặn.)
+Cách triển khai này xây dựng một danh sách trống dạng xô bị rò rỉ
+chỉ trong vài dòng, dựa vào channel có bộ đệm và
+bộ gom rác để quản lý việc theo dõi.
 </p>
 
-<h2 id="errors">Lỗi (Errors)</h2>
+<h2 id="errors">Lỗi</h2>
 
 <p>
-Các routine thư viện thường phải trả về một số loại thông báo lỗi cho
-caller.
-Như đã đề cập trước đó, khả năng trả về nhiều giá trị của Go giúp
-dễ dàng trả về một mô tả lỗi chi tiết cùng với giá trị trả về thông thường.
-Đây là phong cách tốt khi dùng tính năng này để cung cấp thông tin lỗi chi tiết.
+Các hàm thư viện thường phải trả về một dạng chỉ báo lỗi nào đó cho
+bên gọi.
+Như đã đề cập trước đó, việc trả về nhiều giá trị của Go giúp
+dễ dàng trả về mô tả lỗi chi tiết cùng với
+giá trị trả về thông thường.
+Đây là một phong cách tốt khi sử dụng tính năng này để cung cấp thông tin lỗi chi tiết.
 Ví dụ, như chúng ta sẽ thấy, <code>os.Open</code> không
 chỉ trả về một con trỏ <code>nil</code> khi thất bại, mà còn trả về một
 giá trị lỗi mô tả điều gì đã xảy ra.
@@ -3076,7 +3107,7 @@ giá trị lỗi mô tả điều gì đã xảy ra.
 
 <p>
 Theo quy ước, lỗi có kiểu <code>error</code>,
-một interface built-in đơn giản.
+một interface tích hợp đơn giản.
 </p>
 <pre>
 type error interface {
@@ -3084,23 +3115,23 @@ type error interface {
 }
 </pre>
 <p>
-Người viết thư viện tự do implement interface này với một
-mô hình phong phú hơn bên dưới, giúp không chỉ có thể
-thấy lỗi mà còn cung cấp một số ngữ cảnh.
-Như đã đề cập, cùng với giá trị trả về thông thường <code>*os.File</code>,
-<code>os.Open</code> cũng trả về một
+Người viết thư viện có thể tự do triển khai interface này với một
+mô hình phong phú hơn ở bên trong, cho phép không chỉ
+xem lỗi mà còn cung cấp một số ngữ cảnh.
+Như đã đề cập, bên cạnh giá trị trả về
+<code>*os.File</code> thông thường, <code>os.Open</code> cũng trả về một
 giá trị lỗi.
 Nếu tệp được mở thành công, lỗi sẽ là <code>nil</code>,
 nhưng khi có vấn đề, nó sẽ chứa một
 <code>os.PathError</code>:
 </p>
 <pre>
-// PathError records an error and the operation and
-// file path that caused it.
+// PathError ghi lại một lỗi cùng thao tác và
+// đường dẫn tệp đã gây ra lỗi đó.
 type PathError struct {
-    Op string    // "open", "unlink", etc.
-    Path string  // The associated file.
-    Err error    // Returned by the system call.
+    Op string    // "open", "unlink", v.v.
+    Path string  // Tệp liên quan.
+    Err error    // Được trả về bởi lời gọi hệ thống.
 }
 
 func (e *PathError) Error() string {
@@ -3108,33 +3139,33 @@ func (e *PathError) Error() string {
 }
 </pre>
 <p>
-<code>Error</code> của <code>PathError</code> tạo ra
-một chuỗi như thế này:
+<code>PathError</code>'s <code>Error</code> tạo ra
+một chuỗi như sau:
 </p>
 <pre>
 open /etc/passwx: no such file or directory
 </pre>
 <p>
 Một lỗi như vậy, bao gồm tên tệp có vấn đề, thao tác,
-và lỗi hệ điều hành mà nó kích hoạt, rất hữu ích ngay cả khi được in
-ở xa nơi gây ra lỗi;
-nó có nhiều thông tin hơn nhiều so với thông báo đơn giản
+và lỗi của hệ điều hành mà nó gây ra, vẫn hữu ích ngay cả
+khi được in cách xa lời gọi đã gây ra nó;
+nó cung cấp nhiều thông tin hơn so với chuỗi đơn giản
 "no such file or directory".
 </p>
 
 <p>
 Khi có thể, chuỗi lỗi nên xác định nguồn gốc của chúng, chẳng hạn bằng cách có
-một tiền tố đặt tên thao tác hoặc package đã tạo ra lỗi. Ví dụ, trong package
-<code>image</code>, biểu diễn chuỗi cho lỗi giải mã do
+một tiền tố đặt tên cho thao tác hoặc gói đã tạo ra lỗi. Ví dụ, trong gói
+<code>image</code>, biểu diễn chuỗi cho lỗi giải mã do một
 định dạng không xác định là "image: unknown format".
 </p>
 
 <p>
-Các caller quan tâm đến chi tiết lỗi chính xác có thể
-dùng type switch hoặc type assertion để tìm kiếm các lỗi cụ thể
-và trích xuất chi tiết. Đối với <code>PathErrors</code>,
-điều này có thể bao gồm kiểm tra trường nội bộ <code>Err</code>
-để tìm các lỗi có thể phục hồi.
+Các bên gọi quan tâm đến chi tiết lỗi chính xác có thể
+sử dụng chuyển đổi kiểu hoặc khẳng định kiểu để tìm các
+lỗi cụ thể và trích xuất chi tiết. Với <code>PathErrors</code>,
+điều này có thể bao gồm việc kiểm tra trường
+<code>Err</code> nội bộ để tìm các lỗi có thể khôi phục.
 </p>
 
 <pre>
@@ -3144,7 +3175,7 @@ for try := 0; try &lt; 2; try++ {
         return
     }
     if e, ok := err.(*os.PathError); ok &amp;&amp; e.Err == syscall.ENOSPC {
-        deleteTempFiles()  // Recover some space.
+        deleteTempFiles()  // Khôi phục một phần dung lượng.
         continue
     }
     return
@@ -3152,37 +3183,38 @@ for try := 0; try &lt; 2; try++ {
 </pre>
 
 <p>
-Câu lệnh <code>if</code> thứ hai ở đây là một <a href="#interface_conversions">type assertion</a> khác.
-Nếu nó thất bại, <code>ok</code> sẽ là false, và <code>e</code>
+Câu lệnh <code>if</code> thứ hai ở đây là một <a href="#interface_conversions">khẳng định kiểu</a> khác.
+Nếu thất bại, <code>ok</code> sẽ là false, và <code>e</code>
 sẽ là <code>nil</code>.
-Nếu nó thành công, <code>ok</code> sẽ là true, có nghĩa là
-lỗi thuộc kiểu <code>*os.PathError</code>, và <code>e</code> cũng vậy,
-chúng ta có thể kiểm tra để biết thêm thông tin về lỗi.
+Nếu thành công, <code>ok</code> sẽ là true, nghĩa là
+lỗi có kiểu <code>*os.PathError</code>, và khi đó <code>e</code>
+cũng có kiểu đó, cho phép chúng ta kiểm tra để biết thêm thông tin
+về lỗi.
 </p>
 
 <h3 id="panic">Panic</h3>
 
 <p>
-Cách thông thường để báo cáo lỗi cho caller là trả về một
-<code>error</code> như một giá trị trả về thêm. Method <code>Read</code> chuẩn là một ví dụ nổi tiếng;
-nó trả về một byte count và một <code>error</code>. Nhưng nếu lỗi là
-không thể phục hồi thì sao? Đôi khi chương trình đơn giản không thể tiếp tục.
+Cách thông thường để báo cáo lỗi cho bên gọi là trả về một
+<code>error</code> như một giá trị trả về bổ sung. Phương thức
+<code>Read</code> kinh điển là một ví dụ quen thuộc; nó trả về số
+byte và một <code>error</code>. Nhưng nếu lỗi không thể khôi phục
+thì sao? Đôi khi chương trình đơn giản là không thể tiếp tục.
 </p>
 
 <p>
-Cho mục đích này, có một hàm built-in <code>panic</code>
-tạo ra một lỗi runtime thực sự sẽ dừng chương trình
-(nhưng hãy xem phần tiếp theo). Hàm nhận một đối số duy nhất
-thuộc kiểu tùy ý, thường là một chuỗi, để được in ra khi
-chương trình chết. Đây cũng là một cách để chỉ ra rằng điều gì đó không thể xảy ra đã
-xảy ra, chẳng hạn như thoát ra khỏi một vòng lặp vô hạn.
+Với mục đích này, có một hàm dựng sẵn <code>panic</code> mà về cơ bản
+tạo ra một lỗi thời gian chạy khiến chương trình dừng lại
+(nhưng xem phần tiếp theo). Hàm này nhận một đối số duy nhất thuộc
+kiểu bất kỳ&mdash;thường là một chuỗi&mdash;để được in ra khi
+chương trình kết thúc. Đây cũng là một cách cho biết rằng một điều
+không thể xảy ra đã xảy ra, chẳng hạn như thoát khỏi một vòng lặp vô hạn.
 </p>
 
-
 <pre>
-// A toy implementation of cube root using Newton's method.
+// Một cài đặt thử nghiệm của căn bậc ba sử dụng phương pháp Newton.
 func CubeRoot(x float64) float64 {
-    z := x/3   // Arbitrary initial value
+    z := x/3   // Giá trị ban đầu tùy ý
     for i := 0; i &lt; 1e6; i++ {
         prevz := z
         z -= (z*z*z-x) / (3*z*z)
@@ -3190,18 +3222,18 @@ func CubeRoot(x float64) float64 {
             return z
         }
     }
-    // A million iterations has not converged; something is wrong.
+    // Một triệu lần lặp vẫn chưa hội tụ; có điều gì đó không đúng.
     panic(fmt.Sprintf("CubeRoot(%g) did not converge", x))
 }
 </pre>
 
 <p>
 Đây chỉ là một ví dụ nhưng các hàm thư viện thực tế nên
-tránh <code>panic</code>. Nếu vấn đề có thể được che giấu hoặc giải quyết,
-tốt hơn là hãy để mọi thứ tiếp tục chạy thay vì
-làm sập toàn bộ chương trình. Một ví dụ phản bác có thể xảy ra
-là trong quá trình khởi tạo: nếu thư viện thực sự không thể tự thiết lập,
-có thể hợp lý để panic, theo một nghĩa nào đó.
+tránh <code>panic</code>. Nếu vấn đề có thể được che giấu hoặc xử lý
+vòng quanh, luôn tốt hơn nếu để mọi thứ tiếp tục chạy thay vì
+khiến toàn bộ chương trình dừng lại. Một trường hợp ngoại lệ có thể
+xảy ra là trong quá trình khởi tạo: nếu thư viện thực sự không thể
+tự thiết lập, có thể hợp lý khi gọi panic, có thể nói như vậy.
 </p>
 
 <pre>
@@ -3217,26 +3249,26 @@ func init() {
 <h3 id="recover">Recover</h3>
 
 <p>
-Khi <code>panic</code> được gọi, bao gồm cả ngầm định cho các
-lỗi runtime như truy cập ngoài giới hạn slice hoặc type assertion thất bại,
-nó ngay lập tức dừng thực thi hàm hiện tại
-và bắt đầu unwind stack của goroutine, chạy bất kỳ hàm deferred nào
-trên đường đó. Nếu việc unwind đó đạt đến đỉnh của
-stack goroutine, chương trình chết. Tuy nhiên, có thể
-dùng hàm built-in <code>recover</code> để lấy lại quyền kiểm soát
+Khi <code>panic</code> được gọi, bao gồm cả trường hợp ngầm định đối với
+các lỗi thời gian chạy như truy cập phần tử của slice vượt ngoài giới hạn
+hoặc kiểm tra kiểu thất bại, nó ngay lập tức dừng việc thực thi của hàm
+hiện tại và bắt đầu tháo ngăn xếp của goroutine, chạy mọi hàm
+deferred trên đường đi. Nếu quá trình tháo ngăn xếp này đến đỉnh
+ngăn xếp của goroutine, chương trình sẽ kết thúc. Tuy nhiên, có thể
+sử dụng hàm dựng sẵn <code>recover</code> để giành lại quyền điều khiển
 goroutine và tiếp tục thực thi bình thường.
 </p>
 
 <p>
-Một lời gọi <code>recover</code> dừng việc unwind và trả về
-đối số đã truyền cho <code>panic</code>. Vì code duy nhất
-chạy trong khi unwind là bên trong các hàm deferred, <code>recover</code>
+Một lời gọi tới <code>recover</code> dừng quá trình tháo ngăn xếp và trả về
+đối số đã truyền cho <code>panic</code>. Vì đoạn mã duy nhất chạy trong
+khi tháo ngăn xếp nằm bên trong các hàm deferred, <code>recover</code>
 chỉ hữu ích bên trong các hàm deferred.
 </p>
 
 <p>
-Một ứng dụng của <code>recover</code> là tắt một goroutine thất bại
-bên trong một server mà không giết các goroutine đang thực thi khác.
+Một ứng dụng của <code>recover</code> là tắt một goroutine bị lỗi
+bên trong máy chủ mà không làm dừng các goroutine khác đang thực thi.
 </p>
 
 <pre>
@@ -3257,53 +3289,53 @@ func safelyDo(work *Work) {
 </pre>
 
 <p>
-Trong ví dụ này, nếu <code>do(work)</code> panic, kết quả sẽ được
-ghi log và goroutine sẽ thoát ra gọn gàng mà không làm xáo trộn các goroutine
-khác. Không cần làm gì thêm trong closure deferred;
-gọi <code>recover</code> xử lý hoàn toàn điều kiện đó.
+Trong ví dụ này, nếu <code>do(work)</code> gọi panic, kết quả sẽ được
+ghi log và goroutine sẽ thoát sạch sẽ mà không ảnh hưởng đến các
+goroutine khác. Không cần làm gì thêm trong closure deferred;
+gọi <code>recover</code> xử lý hoàn toàn tình huống này.
 </p>
 
 <p>
 Vì <code>recover</code> luôn trả về <code>nil</code> trừ khi được gọi trực tiếp
-từ một hàm deferred, code deferred có thể gọi các routine thư viện mà bản thân chúng
-sử dụng <code>panic</code> và <code>recover</code> mà không bị lỗi. Ví dụ,
-hàm deferred trong <code>safelyDo</code> có thể gọi một hàm logging trước khi
-gọi <code>recover</code>, và code logging đó sẽ chạy không bị ảnh hưởng
-bởi trạng thái panicking.
+từ một hàm deferred, mã deferred có thể gọi các thủ tục thư viện mà bản thân
+chúng sử dụng <code>panic</code> và <code>recover</code> mà không thất bại. Ví dụ,
+hàm deferred trong <code>safelyDo</code> có thể gọi một hàm ghi log trước khi
+gọi <code>recover</code>, và mã ghi log đó sẽ chạy mà không bị ảnh hưởng
+bởi trạng thái panic.
 </p>
 
 <p>
-Với pattern recovery của chúng ta, hàm <code>do</code>
-(và bất cứ thứ gì nó gọi) có thể thoát khỏi bất kỳ tình huống tệ nào
-một cách gọn gàng bằng cách gọi <code>panic</code>. Chúng ta có thể dùng ý tưởng đó để
-đơn giản hóa xử lý lỗi trong phần mềm phức tạp. Hãy xem một phiên bản
-lý tưởng hóa của package <code>regexp</code>, cái này báo cáo
-lỗi phân tích cú pháp bằng cách gọi <code>panic</code> với một kiểu lỗi cục bộ.
-Đây là định nghĩa của <code>Error</code>,
-một method <code>error</code>, và hàm <code>Compile</code>.
+Với mẫu khôi phục đã thiết lập, hàm <code>do</code>
+(và mọi thứ mà nó gọi) có thể thoát khỏi mọi tình huống xấu
+một cách sạch sẽ bằng cách gọi <code>panic</code>. Chúng ta có thể dùng
+ý tưởng đó để đơn giản hóa việc xử lý lỗi trong phần mềm phức tạp.
+Hãy xem một phiên bản lý tưởng hóa của gói <code>regexp</code>,
+gói này báo cáo lỗi phân tích cú pháp bằng cách gọi <code>panic</code>
+với một kiểu lỗi cục bộ. Dưới đây là định nghĩa của <code>Error</code>,
+một phương thức <code>error</code>, và hàm <code>Compile</code>.
 </p>
 
 <pre>
-// Error is the type of a parse error; it satisfies the error interface.
+// Error là kiểu của một lỗi phân tích cú pháp; nó thỏa mãn interface error.
 type Error string
 func (e Error) Error() string {
     return string(e)
 }
 
-// error is a method of *Regexp that reports parsing errors by
-// panicking with an Error.
+// error là một phương thức của *Regexp báo cáo lỗi phân tích cú pháp bằng
+// cách gọi panic với một Error.
 func (regexp *Regexp) error(err string) {
     panic(Error(err))
 }
 
-// Compile returns a parsed representation of the regular expression.
+// Compile trả về biểu diễn đã phân tích cú pháp của biểu thức chính quy.
 func Compile(str string) (regexp *Regexp, err error) {
     regexp = new(Regexp)
-    // doParse will panic if there is a parse error.
+    // doParse sẽ gọi panic nếu có lỗi phân tích cú pháp.
     defer func() {
         if e := recover(); e != nil {
-            regexp = nil    // Clear return value.
-            err = e.(Error) // Will re-panic if not a parse error.
+            regexp = nil    // Xóa giá trị trả về.
+            err = e.(Error) // Sẽ gọi panic lại nếu không phải lỗi phân tích cú pháp.
         }
     }()
     return regexp.doParse(str), nil
@@ -3311,26 +3343,26 @@ func Compile(str string) (regexp *Regexp, err error) {
 </pre>
 
 <p>
-Nếu <code>doParse</code> panic, khối recovery sẽ đặt
-giá trị trả về thành <code>nil</code> (các hàm deferred có thể sửa đổi
-các giá trị trả về có tên). Sau đó nó sẽ kiểm tra, trong phép gán
-cho <code>err</code>, rằng vấn đề là lỗi phân tích cú pháp bằng cách assert
+Nếu <code>doParse</code> gọi panic, khối phục hồi sẽ đặt
+giá trị trả về thành <code>nil</code>&mdash;các hàm deferred có thể sửa đổi
+các giá trị trả về có tên. Sau đó nó sẽ kiểm tra, trong phép gán
+cho <code>err</code>, rằng vấn đề là lỗi phân tích cú pháp bằng cách xác nhận
 rằng nó có kiểu cục bộ <code>Error</code>.
-Nếu không, type assertion sẽ thất bại, gây ra một lỗi runtime
-tiếp tục việc unwind stack như thể không có gì đã gián đoạn
+Nếu không phải, phép xác nhận kiểu sẽ thất bại, gây ra một lỗi thời gian chạy
+tiếp tục việc tháo ngăn xếp như thể không có gì đã ngắt quãng
 nó.
-Kiểm tra này có nghĩa là nếu điều gì đó bất ngờ xảy ra, chẳng hạn
-như truy cập ngoài giới hạn index, code sẽ thất bại ngay cả khi chúng ta
+Việc kiểm tra này có nghĩa là nếu xảy ra điều gì đó không mong đợi,
+chẳng hạn như truy cập phần tử vượt ngoài giới hạn, mã sẽ thất bại dù chúng ta
 đang dùng <code>panic</code> và <code>recover</code> để xử lý
-lỗi phân tích cú pháp.
+các lỗi phân tích cú pháp.
 </p>
 
 <p>
-Với xử lý lỗi, method <code>error</code> (vì nó là một
-method gắn với một kiểu, nên hoàn toàn ổn, thậm chí tự nhiên, khi nó có cùng tên
-với kiểu built-in <code>error</code>)
-giúp dễ dàng báo cáo lỗi phân tích cú pháp mà không cần lo lắng về việc unwind
-stack phân tích cú pháp bằng tay:
+Khi việc xử lý lỗi đã được đặt vào, phương thức <code>error</code> (vì nó là một
+phương thức gắn với một kiểu, việc nó có cùng tên với kiểu dựng sẵn
+<code>error</code> là hoàn toàn ổn, thậm chí tự nhiên)
+giúp việc báo cáo lỗi phân tích cú pháp trở nên dễ dàng mà không cần lo lắng
+về việc tháo ngăn xếp phân tích cú pháp theo cách thủ công:
 </p>
 
 <pre>
@@ -3340,98 +3372,98 @@ if pos == 0 {
 </pre>
 
 <p>
-Mặc dù pattern này hữu ích, nó chỉ nên được dùng trong nội bộ một package.
+Dù mẫu này hữu ích, nó chỉ nên được sử dụng bên trong một gói.
 <code>Parse</code> chuyển các lời gọi <code>panic</code> nội bộ của nó thành
-các giá trị <code>error</code>; nó không để lộ <code>panic</code>
-cho client của nó. Đó là một quy tắc tốt để tuân theo.
+các giá trị <code>error</code>; nó không đưa các <code>panics</code>
+ra cho phía máy khách. Đây là một quy tắc tốt nên tuân theo.
 </p>
 
 <p>
-Nhân tiện, thành ngữ re-panic này thay đổi giá trị panic nếu một lỗi thực sự
-xảy ra. Tuy nhiên, cả hai lỗi ban đầu và mới sẽ được
-trình bày trong báo cáo crash, nên nguyên nhân gốc rễ của vấn đề vẫn
-còn có thể nhìn thấy. Vì vậy cách tiếp cận re-panic đơn giản này thường
-là đủ (dù sao nó cũng là crash) nhưng nếu muốn
-chỉ hiển thị giá trị ban đầu, bạn có thể viết thêm một ít code để
-lọc các vấn đề bất ngờ và re-panic với lỗi ban đầu.
-Bài tập đó dành cho người đọc.
+Nhân tiện, thành ngữ re-panic này thay đổi giá trị panic nếu một
+lỗi thực sự xảy ra. Tuy nhiên, cả lỗi ban đầu và lỗi mới sẽ được
+trình bày trong báo cáo sự cố, vì vậy nguyên nhân gốc của vấn đề vẫn
+sẽ hiển thị. Do đó, cách tiếp cận re-panic đơn giản này thường là
+đủ&mdash;sau cùng thì đó vẫn là một sự cố&mdash;nhưng nếu bạn muốn
+chỉ hiển thị giá trị ban đầu, bạn có thể viết thêm một chút mã để
+lọc các vấn đề không mong muốn và re-panic với lỗi ban đầu.
+Phần này được để lại như một bài tập cho người đọc.
 </p>
 
-
-<h2 id="web_server">Một web server</h2>
+<h2 id="web_server">Một máy chủ web</h2>
 
 <p>
-Hãy kết thúc bằng một chương trình Go hoàn chỉnh, một web server.
-Đây thực ra là một loại web re-server.
+Hãy kết thúc bằng một chương trình Go hoàn chỉnh, một máy chủ web.
+Chương trình này thực ra là một dạng máy chủ web chuyển tiếp.
 Google cung cấp một dịch vụ tại <code>chart.apis.google.com</code>
-thực hiện định dạng tự động dữ liệu thành biểu đồ và đồ thị.
-Tuy nhiên, nó khó dùng theo cách tương tác
-vì bạn cần đặt dữ liệu vào URL như một query.
-Chương trình ở đây cung cấp một giao diện tiện hơn cho một dạng dữ liệu: cho một đoạn văn bản ngắn,
-nó gọi chart server để tạo ra một mã QR, một ma trận các ô mã hóa
-văn bản đó.
-Ảnh đó có thể được chụp bằng camera điện thoại của bạn và được giải thích là,
-ví dụ, một URL, giúp bạn không phải gõ URL vào bàn phím nhỏ của điện thoại.
+thực hiện việc định dạng dữ liệu tự động thành biểu đồ và đồ thị.
+Tuy nhiên, rất khó sử dụng tương tác,
+vì bạn cần đặt dữ liệu vào URL dưới dạng truy vấn.
+Chương trình ở đây cung cấp một giao diện thuận tiện hơn cho một dạng dữ liệu:
+với một đoạn văn bản ngắn,
+nó gọi máy chủ biểu đồ để tạo ra mã QR, một ma trận các ô vuông mã hóa
+văn bản.
+Hình ảnh đó có thể được chụp bằng camera điện thoại của bạn và được diễn giải thành,
+ví dụ như một URL, giúp bạn không phải nhập URL vào bàn phím nhỏ của điện thoại.
 </p>
 <p>
 Đây là chương trình hoàn chỉnh.
-Phần giải thích theo sau.
+Phần giải thích tiếp theo.
 </p>
 {{code "/doc/progs/eff_qr.go" `/package/` `$`}}
 <p>
-Các phần cho đến <code>main</code> nên dễ theo dõi.
-Flag duy nhất đặt một cổng HTTP mặc định cho server của chúng ta. Biến template
-<code>templ</code> là nơi điều thú vị xảy ra. Nó xây dựng một HTML template
-sẽ được server thực thi để hiển thị trang; thêm về điều đó
-sau một lúc.
+Các phần cho đến <code>main</code> sẽ khá dễ theo dõi.
+Một cờ thiết lập cổng HTTP mặc định cho máy chủ của chúng ta. Biến
+template <code>templ</code> là nơi phần thú vị diễn ra. Nó xây dựng một template HTML
+sẽ được máy chủ thực thi để hiển thị trang; chúng ta sẽ nói thêm
+về điều đó sau một chút.
 </p>
 <p>
-Hàm <code>main</code> phân tích các flag và, dùng cơ chế
-chúng ta đã nói ở trên, gắn hàm <code>QR</code> vào đường dẫn gốc
-của server. Sau đó <code>http.ListenAndServe</code> được gọi để khởi động
-server; nó chặn trong khi server chạy.
+Hàm <code>main</code> phân tích các cờ và, sử dụng cơ chế
+chúng ta đã nói ở trên, liên kết hàm <code>QR</code> với đường dẫn gốc
+của máy chủ. Sau đó <code>http.ListenAndServe</code> được gọi để khởi động
+máy chủ; nó chặn trong khi máy chủ đang chạy.
 </p>
 <p>
-<code>QR</code> chỉ nhận request, chứa dữ liệu form, và
-thực thi template trên dữ liệu trong giá trị form tên <code>s</code>.
+<code>QR</code> chỉ nhận yêu cầu, trong đó chứa dữ liệu biểu mẫu, và
+thực thi template trên dữ liệu trong giá trị biểu mẫu có tên <code>s</code>.
 </p>
 <p>
-Package template <code>html/template</code> rất mạnh;
-chương trình này chỉ chạm vào một phần nhỏ khả năng của nó.
-Về bản chất, nó viết lại một đoạn HTML text một cách linh hoạt bằng cách thay thế các phần tử được lấy
-từ các mục dữ liệu được truyền cho <code>templ.Execute</code>, trong trường hợp này là
-giá trị form.
-Trong văn bản template (<code>templateStr</code>),
-các đoạn được phân cách bằng dấu ngoặc nhọn kép biểu thị các hành động template.
-Đoạn từ <code>{{"{{if .}}"}}</code>
-đến <code>{{"{{end}}"}}</code> chỉ thực thi nếu giá trị của mục dữ liệu hiện tại, được gọi là <code>.</code> (dấu chấm),
-khác rỗng.
-Nghĩa là, khi chuỗi rỗng, đoạn này của template bị ẩn đi.
+Gói template <code>html/template</code> rất mạnh;
+chương trình này chỉ chạm đến một phần khả năng của nó.
+Về cơ bản, nó viết lại một phần văn bản HTML ngay khi chạy bằng cách thay thế các phần tử
+được tạo từ các mục dữ liệu truyền vào <code>templ.Execute</code>, trong trường hợp này là
+giá trị biểu mẫu.
+Bên trong văn bản template (<code>templateStr</code>),
+các phần được bao bởi hai dấu ngoặc nhọn biểu thị các hành động template.
+Phần từ <code>{{"{{if .}}"}}</code>
+đến <code>{{"{{end}}"}}</code> chỉ được thực thi nếu giá trị của mục dữ liệu hiện tại, được gọi là <code>.</code> (dấu chấm),
+không rỗng.
+Nghĩa là, khi chuỗi rỗng, phần này của template bị loại bỏ.
 </p>
 <p>
-Hai đoạn <code>{{"{{.}}"}}</code> nói hãy hiển thị dữ liệu được trình bày cho
-template (chuỗi query) trên trang web.
-Package HTML template tự động cung cấp các ký tự escape phù hợp để
-văn bản an toàn để hiển thị.
+Hai đoạn <code>{{"{{.}}"}}</code> có nghĩa là hiển thị dữ liệu được đưa vào
+template—chuỗi truy vấn—trên trang web.
+Gói template HTML tự động cung cấp cơ chế thoát ký tự thích hợp để
+văn bản an toàn khi hiển thị.
 </p>
 <p>
-Phần còn lại của chuỗi template chỉ là HTML để hiển thị khi trang tải.
-Nếu đây là giải thích quá ngắn gọn, hãy xem <a href="/pkg/html/template/">tài liệu</a>
-của package template để thảo luận chi tiết hơn.
+Phần còn lại của chuỗi template chỉ là HTML được hiển thị khi trang tải.
+Nếu phần giải thích này quá ngắn gọn, hãy xem <a href="/pkg/html/template/">tài liệu</a>
+của gói template để có phần thảo luận chi tiết hơn.
 </p>
 <p>
-Và đây là kết quả: một web server hữu ích trong vài dòng code cộng với một ít
-HTML text theo hướng dữ liệu.
-Go đủ mạnh để làm được nhiều việc trong vài dòng.
+Vậy là xong: một máy chủ web hữu ích chỉ với vài dòng mã cùng một ít
+văn bản HTML điều khiển bởi dữ liệu.
+Go đủ mạnh để thực hiện nhiều việc chỉ trong vài dòng.
 </p>
 
 <!--
 TODO
 <pre>
-verifying implementation
+xác minh triển khai
 type Color uint32
 
-// Check that Color implements image.Color and image.Image
+// Kiểm tra rằng Color triển khai image.Color và image.Image
 var _ image.Color = Black
 var _ image.Image = Black
 </pre>

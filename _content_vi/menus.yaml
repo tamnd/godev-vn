@@ -2,52 +2,52 @@ main:
   - name: Tại sao Go
     url: /solutions/
     children:
-      - name: Case Studies
-        explanation: Các vấn đề phổ biến mà doanh nghiệp giải quyết bằng Go
+      - name: Nghiên cứu điển hình
+        explanation: Các vấn đề phổ biến mà các công ty giải quyết bằng Go
         url: /solutions/case-studies
-      - name: Use Cases
+      - name: Trường hợp sử dụng
         explanation: Câu chuyện về cách thức và lý do các công ty sử dụng Go
         url: /solutions/use-cases
       - name: Bảo mật
-        explanation: Go giúp bạn bảo mật theo mặc định như thế nào
+        explanation: Cách Go có thể giúp bạn an toàn theo mặc định
         url: /security/
   - name: Học
     url: /learn/
   - name: Tài liệu
     url: /doc/
     children:
-      - name: Go Spec
+      - name: Đặc tả Go
         explanation: Đặc tả ngôn ngữ Go chính thức
         url: /ref/spec
       - name: Hướng dẫn sử dụng Go
-        explanation: Giới thiệu đầy đủ về cách xây dựng phần mềm với Go
+        explanation: Giới thiệu đầy đủ về việc xây dựng phần mềm với Go
         url: /doc
       - name: Thư viện chuẩn
-        explanation: Tài liệu tham chiếu cho thư viện chuẩn của Go
+        explanation: Tài liệu tham khảo cho thư viện chuẩn của Go
         url: https://pkg.go.dev/std
       - name: Ghi chú bản phát hành
-        explanation: Tìm hiểu những điểm mới trong từng bản phát hành Go
+        explanation: Tìm hiểu những điểm mới trong mỗi bản phát hành Go
         url: /doc/devel/release
-      - name: Effective Go
-        explanation: Mẹo viết code Go rõ ràng, hiệu quả và đúng phong cách
+      - name: Go hiệu quả
+        explanation: Mẹo để viết mã Go rõ ràng, hiệu năng cao và đúng phong cách
         url: /doc/effective_go
-  - name: Packages
+  - name: Gói
     url: https://pkg.go.dev
   - name: Cộng đồng
     url: /example/
     children:
-      - name: Recorded Talks
+      - name: Các bài nói đã ghi hình
         explanation: Video từ các sự kiện trước đây
         url: /talks/
-      - name: Meetups
-        explanation: Gặp gỡ các lập trình viên Go địa phương khác
+      - name: Gặp mặt
+        explanation: Gặp gỡ các nhà phát triển Go tại địa phương khác
         url: https://www.meetup.com/pro/go
         external: true
       - name: Hội nghị
-        explanation: Học hỏi và kết nối với các lập trình viên Go trên toàn thế giới
+        explanation: Học hỏi và kết nối với các nhà phát triển Go trên khắp thế giới
         url: /wiki/Conferences
         external: true
-      - name: Go blog
+      - name: Blog Go
         explanation: Blog chính thức của dự án Go.
         url: /blog
       - name: Dự án Go
@@ -78,9 +78,9 @@ footer:
   - name: Tại sao Go
     url: /solutions/
     children:
-      - name: Use Cases
+      - name: Trường hợp sử dụng
         url: /solutions/use-cases
-      - name: Case Studies
+      - name: Nghiên cứu điển hình
         url: /solutions/case-studies
 
   - name: Bắt đầu
@@ -95,13 +95,15 @@ footer:
       - name: Trợ giúp
         url: /help/
 
-  - name: Packages
+  - name: Gói
     url: https://pkg.go.dev
     children:
       - name: Thư viện chuẩn
         url: /pkg/
-      - name: Giới thiệu về Go Packages
+      - name: Về các gói Go
         url: https://pkg.go.dev/about
+      - name: API pkg.go.dev
+        url: https://pkg.go.dev/api
 
   - name: Giới thiệu
     url: /project
@@ -110,7 +112,7 @@ footer:
         url: /dl/
       - name: Blog
         url: /blog/
-      - name: Issue Tracker
+      - name: Trình theo dõi vấn đề
         url: https://github.com/golang/go/issues
       - name: Ghi chú bản phát hành
         url: /doc/devel/release

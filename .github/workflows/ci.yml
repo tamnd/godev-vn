@@ -56,15 +56,15 @@ jobs:
         run: go test -run 'TestOverlay|TestGODEVCONTENT' -v .
 
   # The quality gates, from tamnd/godev-vn-translator, run against this
-  # checkout. Fifteen deterministic rules over every English and Vietnamese
-  # pair: dropped links, invented heading anchors, edited code blocks,
-  # translated template actions, front matter that moved, and whether each
-  # translation still matches the English it was made from.
+  # checkout. Nineteen deterministic rules over every English and Vietnamese
+  # pair: dropped links, invented links, invented heading anchors, edited code
+  # blocks, translated template actions, front matter that moved, and whether
+  # each translation still matches the English it was made from.
   #
-  # -max is a ratchet and not a target. The corpus has 63 refusals today, so a
+  # -max is a ratchet and not a target. The corpus has 6 refusals today, so a
   # gate demanding zero would be red on every pull request including the ones
   # fixing it, and a check that is always red is a check somebody turns off.
-  # This one fails at 64. The number comes down in the same diff as the work
+  # This one fails at 7. The number comes down in the same diff as the work
   # that lowers it, which makes it a reviewable claim, and the day it reaches
   # zero the flag comes off.
   #
@@ -136,6 +136,30 @@ jobs:
   # glossary, which puts them in the prompt for the next run and under L10 for
   # the files already written. That found five more, which are notices and are
   # not in this diff.
+  #
+  # 63 to 6, and this is the large one. Most of it is the 41 file sync gap
+  # finishing: the pages that were stale or missing have been asked for again
+  # and come back, so the refusals that were waiting on a translation are gone
+  # rather than suppressed. The 6 left are all L13, ref/mod.md and the five
+  # tour/*.article files, which are still in the queue.
+  #
+  # The rest of it is four repairs to the transport in the translator, in its
+  # #45 through #49. Three of the four routes drive chatgpt.com in a browser and
+  # the answer is scraped back out of HTML, so it arrives with damage the model
+  # never wrote, and each of these is one more shape of it: a code block that
+  # lost the indentation putting it inside its list item, a bare url wrapped in
+  # a link to itself, a rebuild that gave up on a piece and would have written
+  # English over a finished translation, and the escaped quotes in front matter
+  # that the repair for the first three was itself taking off.
+  #
+  # This diff also carries 202 self linked urls that the repair now takes out,
+  # applied to the files already on disk by `godev repair` rather than by asking
+  # for those pages again. 169 of them are in doc/go1.24.md and doc/go1.25.md,
+  # where the release notes write `(from https://go.dev/cl/531935)` and both
+  # urls came back linked. Four are link reference definitions, which stop being
+  # definitions when their target is a link, so every reference to them on the
+  # page stopped being a link too. L19 refuses that shape from now on and lands
+  # in the translator after this merges, for the reason two paragraphs up.
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -157,7 +181,7 @@ jobs:
       # exactly when it is worth reading.
       - name: audit
         working-directory: translator
-        run: go run ./cmd/godev -C ../godev-vn audit -max 63 -report audit.md
+        run: go run ./cmd/godev -C ../godev-vn audit -max 6 -report audit.md
 
       - uses: actions/upload-artifact@v7
         if: always()
